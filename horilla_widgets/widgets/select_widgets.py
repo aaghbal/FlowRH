@@ -1,7 +1,7 @@
 """
 select_widgets.py
 
-This module is used to write horilla form select widgets
+This module is used to write flowHR form select widgets
 """
 
 import uuid

@@ -1,5 +1,5 @@
 """
-This module provides Horilla ModelForms for creating and managing leave-related data,
+This module provides flowHR ModelForms for creating and managing leave-related data,
 including leave type, leave request, leave allocation request, holidays and company leaves.
 """
 

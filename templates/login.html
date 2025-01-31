@@ -56,9 +56,10 @@
                     </div>
                     <button type="submit"
                         class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-4"
+                        style="background-color: #c1ff72;"
                         role="button">
-                        <ion-icon class="me-2" name="lock-closed-outline"></ion-icon>
-                        {% trans "Secure Sign-in" %}
+                        <ion-icon class="me-2" name="lock-closed-outline" style="color: #0a0a0a;"></ion-icon>
+                        <span style="color: #0a0a0a;">{% trans "Secure Sign-in" %}</span>
                     </button>
                     {% if not initialize_database %}
                         <small class="text-center">
@@ -74,8 +75,8 @@
                             <a href="{% url 'initialize-database' %}"
                                 class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-4"
                                 role="button" style="
-                                background-color: rgba(229, 79, 56, 0.1);
-                                color: hsl(8, 77%, 56%);
+                                background-color: #928C6F;
+                                color: #0a0a0a;
                                 ">
                                 {% trans "Initialize Database" %}
                                 <ion-icon class="ms-2" name="arrow-forward-outline"></ion-icon>
@@ -83,7 +84,7 @@
                             <a
                                 onclick="$('#dataLoadAuthentication').toggleClass('oh-modal--show');"
                                 class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-4"
-                                style="background-color: #31b46e1f; color: #1fad61" role="button">
+                                style="background-color: #CBC8BA; color: #0a0a0a" role="button">
                                 {% trans "Load Demo Data" %}
                                 <ion-icon class="ms-2" name="arrow-forward-outline"></ion-icon>
                             </a>
@@ -102,7 +103,9 @@
                         alt="{{white_label_company_name}}"
                         style=" opacity:.90; 200px; height: 140px;"
                     {% else %}
-                        "{% static 'images/ui/auth-logo.png' %}" alt="Horilla"
+                        "{% static 'images/ui/LOGO.png' %}"
+                            alt="flowRH"
+                            style="width: 200px; height: 90px;"
                     {% endif %}
                 />
                 {% if white_label_company %}
