@@ -2974,7 +2974,7 @@ def anonymous_feedback_add(request):
             if feedback.based_on == "employee":
                 try:
                     notify.send(
-                        User.objects.filter(username="flowHR Bot").first(),
+                        User.objects.filter(username="flowRH Bot").first(),
                         recipient=feedback.employee_id.employee_user_id,
                         verb="You received an anonymous feedback!",
                         verb_ar="لقد تلقيت تقييمًا مجهولًا!",

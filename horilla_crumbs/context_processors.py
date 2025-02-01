@@ -167,11 +167,6 @@ user_breadcrumbs = {}
 def breadcrumbs(request):
     base_url = request.build_absolute_uri("/")
     company = white_labelling_company(request)["white_label_company_name"]
-    print("------------")
-    print(base_url) 
-    print("------------")
-    print(company)
-    print("------------")
 
     # Initialize breadcrumbs in the session if not already present
     if "breadcrumbs" not in request.session:

@@ -17,10 +17,10 @@ class Bot:
         self.__str__()
 
     def __str__(self) -> str:
-        return "flowHR Bot"
+        return "flowRH Bot"
 
     def get_avatar(self):
-        return "https://ui-avatars.com/api/?name=flowHR+Bot&background=random"
+        return "https://ui-avatars.com/api/?name=flowRH+Bot&background=random"
 
 
 def _check_and_delete(entry1, entry2, dry_run=False):

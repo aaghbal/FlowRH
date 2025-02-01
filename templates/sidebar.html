@@ -51,7 +51,7 @@ function initializeSummernote(candId,searchWords,) {
   class="oh-sidebar"
   style="position: -webkit-sticky; position: sticky; top: 0;height:100vh; overflow-x:hidden;"
 >
-<div class="oh-sidebar__company" style="padding: 14px">
+<div class="oh-sidebar__company" style="padding: 4px">
     {% if request.session.selected_company_instance %}
     <span class="mr-3">
       {% if not request.session.selected_company_instance %}
@@ -288,9 +288,133 @@ function initializeSummernote(candId,searchWords,) {
           </ul>
         </div>
       </li>
+      <li
+        class="oh-sidebar__menu-item"
+        x-data="{ isOpen: getOpenState('configNav') }"
+       >
+        <a
+          class="oh-sidebar__menu-link"
+          style="cursor: pointer"
+        >
+          <div class="oh-sidebar__menu-icon">
+            <svg
+              fill="#ffffff"
+              height="20"
+              width="24"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 512 512"
+              xml:space="preserve"
+              stroke="#ffffff"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <g>
+                <g>
+                  <path
+                    d="M448,0H64C28.704,0,0,28.704,0,64v288c0,35.296,28.704,64,64,64h32v80
+                    c0,6.208,3.584,11.872,9.216,14.496c2.144,0.992,4.48,1.504,6.784,1.504
+                    c3.68,0,7.328-1.28,10.24-3.712L232.992,416H448c35.296,0,64-28.704,64-64
+                    V64C512,28.704,483.296,0,448,0z M480,352c0,17.632-14.368,32-32,32H227.2
+                    c-3.744,0-7.36,1.312-10.24,3.712L128,461.856V400c0-8.832-7.168-16-16-16H64
+                    c-17.632,0-32-14.368-32-32V64c0-17.632,14.368-32,32-32h384c17.632,0,32,
+                    14.368,32,32V352z"
+                  />
+                </g>
+              </g>
+              <g>
+                <g>
+                  <circle cx="128" cy="208" r="32"/>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <circle cx="256" cy="208" r="32"/>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <circle cx="384" cy="208" r="32"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+          </div>
+          <span>{% trans "Live chat" %}</span>
+        </a>
+        <div
+          class="oh-sidebar__submenu"
+          id="configNav"
+          x-show="isOpen"
+          x-transition
+          style="display: none"
+          >
+          <ul class="oh-sidebar__submenu-items">
+            {% if "leave"|app_installed and perms.Leave.view_leaverequest %}
+            <li class="oh-sidebar__submenu-item">
+              <a
+                href="{% url 'multiple-approval-condition' %}"
+                class="oh-sidebar__submenu-link"
+                >{% trans "Multiple Approvals" %}</a
+              >
+            </li>
+            {% endif %}
+            {% if perms.base.view_horillamailtemplate %}
+            <li class="oh-sidebar__submenu-item">
+              <a
+                class="oh-sidebar__submenu-link"
+                href="{% url 'view-mail-templates' %}"
+                class="oh-sidebar__submenu-link"
+                >{% trans "Mail Templates" %}</a
+              >
+            </li>
+            {% endif %}
+            {% if "horilla_automations"|app_installed and perms.horilla_automations.view_mailautomation %}
+            <li class="oh-sidebar__submenu-item">
+              <a
+                class="oh-sidebar__submenu-link"
+                href="{% url 'mail-automations' %}"
+                class="oh-sidebar__submenu-link"
+                >{% trans "Mail Automations" %}</a
+              >
+            </li>
+            {% endif %}
+            {% if perms.base.add_holiday %}
+            <li class="oh-sidebar__submenu-item">
+              <a
+                href="{% url 'holiday-view' %}"
+                class="oh-sidebar__submenu-link"
+                >{% trans "Holidays" %}</a
+              >
+            </li>
+            {% endif %}
+            {% if perms.base.view_companyleave %}
+            <li class="oh-sidebar__submenu-item">
+              <a
+              href="{% url 'company-leave-view' %}"
+              class="oh-sidebar__submenu-link"
+              >{% trans "Company Leaves" %}</a
+              >
+            </li>
+            {% endif %}
+            {% if "leave"|app_installed %}
+            <li class="oh-sidebar__submenu-item">
+              <a
+                href="{% url 'restrict-view' %}"
+                class="oh-sidebar__submenu-link"
+                >{% trans "Restrict Leaves" %}</a
+              >
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </li>
       {% endif %}
     </ul>
   </div>
+  
 </div>
 <style>
   .highlight-selected{
