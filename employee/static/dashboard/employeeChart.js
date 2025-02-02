@@ -1,5 +1,6 @@
 $(document).ready(function () {
     function employeeChart(dataSet, labels) {
+        
         const data = {
             labels: labels,
             datasets: dataSet,
@@ -115,7 +116,7 @@ $(document).ready(function () {
           // Code to handle the response
           dataSet = response.dataSet;
           labels = response.labels;
-
+         
           employeeChart(dataSet, labels);
         },
     });
