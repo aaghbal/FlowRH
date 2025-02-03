@@ -53,7 +53,7 @@
                     <span> {% trans "Contact" %} </span>
                 </div>
                 <div class="oh-sticky-table__th oh-table-config__th" style="width: 155px;">
-                    <span> {% trans "Scheduled Interviews" %} </span>
+                    <span> {% trans "Entretiens programmés" %} </span>
                 </div>
                 {% if request.user.employee_get in stage.stage_managers.all or request.user.employee_get in rec.recruitment_managers.all or perms.recruitment.change_candidate %}
                 <div class="oh-sticky-table__th oh-table-config__th" style="width: 135px;">

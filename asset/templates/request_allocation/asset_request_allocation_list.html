@@ -32,7 +32,7 @@
 					<div class="oh-sticky-table__table">
 						<div class="oh-sticky-table__thead">
 							<div class="oh-sticky-table__tr">
-								<div class="oh-sticky-table__th">{% trans "Asset" %}</div>
+								<div class="oh-sticky-table__th">{% trans "Actif" %}</div>
 								<div data-cell-index="1" data-cell-title="{% trans 'Category' %}" class="oh-sticky-table__th">{% trans "Category" %}</div>
 								<div data-cell-index="2" data-cell-title="{% trans 'Expiry Date' %}" class="oh-sticky-table__th">{% trans "Expiry Date" %}</div>
 								<div class="oh-sticky-table__th">{% trans "Actions" %}</div>
@@ -338,7 +338,7 @@
 									hx-get="{% url 'asset-request-allocation-view-search-filter' %}?{{pg}}&assign_sortby=assigned_to_employee_id"
 									hx-target="#asset_request_allocation_list">{% trans "Allocated User" %}</div>
 								<div class="oh-sticky-table__th" data-cell-index="201"
-									data-cell-title='{% trans "Asset" %}'>{% trans "Asset" %}</div>
+									data-cell-title='{% trans "Actif" %}'>{% trans "Actif" %}</div>
 								<div class="oh-sticky-table__th {% if request.sort_option.order == '-assigned_date' %}arrow-up {% elif request.sort_option.order == 'assigned_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
 									data-cell-index="202" data-cell-title='{% trans "Assigned Date" %}'
 									hx-get="{% url 'asset-request-allocation-view-search-filter' %}?{{pg}}&assign_sortby=assigned_date"

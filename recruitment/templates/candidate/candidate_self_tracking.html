@@ -363,7 +363,7 @@
                     <div class="tracking-card">
                         {% if candidate.converted %}
                             <div class="banner-container fw-bold">
-                                <span>{% trans "Converted" %}</span>
+                                <span>{% trans "Converti(e)" %}</span>
                             </div>
                         {% endif %}
                         <div class="d-flex align-items-center mb-3 flex-wrap">
@@ -499,7 +499,7 @@
 
                 <div class="col-12 col-md-6 col-lg-4 order-2 order-md-1">
                     <div class="tracking-card">
-                        <h3 class="h5 mb-4 fw-bold">{% trans "Scheduled Interviews" %}</h3>
+                        <h3 class="h5 mb-4 fw-bold">{% trans "Entretiens programmés" %}</h3>
                         <div class="interview-list">
                             {% for interview in interviews %}
                                 <div class="interview-item">
@@ -508,7 +508,7 @@
                                     </div>
                                     <div class="interview-time">{% trans "Time" %}: {{ interview.interview_time }}</div>
                                     <div class="interview-interviewer">
-                                        {% trans "Interviewer" %}:
+                                        {% trans "Intervieweur" %}:
                                         <div class="mt-1">
                                             {% for interviewer in  interview.employee_id.all %}
                                                 <span class="interviewer-chip">

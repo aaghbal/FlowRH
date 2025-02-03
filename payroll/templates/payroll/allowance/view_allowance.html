@@ -91,7 +91,7 @@
             <span class="me-3" style="cursor: pointer"
                 onclick="$('[name=is_taxable]').val('false');$('[name=is_fixed]').val('unknown');$('.filterButton').click()">
                 <span class="oh-dot oh-dot--small me-1" style="background-color: grey"></span>
-                {% trans "Non Taxable" %}
+                {% trans "Non imposable" %}
             </span>
             <span class="me-3" style="cursor: pointer"
                 onclick="$('[name=is_fixed]').val('true');$('[name=is_taxable]').val('unknown');$('.filterButton').click()">
@@ -101,7 +101,7 @@
             <span class="me-3" style="cursor: pointer"
                 onclick="$('[name=is_fixed]').val('false');$('[name=is_taxable]').val('unknown');$('.filterButton').click()">
                 <span class="oh-dot oh-dot--small me-1" style="background-color: yellowgreen"></span>
-                {% trans "Not Fixed" %}
+                {% trans "Non corrigé" %}
             </span>
         </div>
     {% endif %}

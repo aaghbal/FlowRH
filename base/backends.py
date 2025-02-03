@@ -177,9 +177,10 @@ class ConfiguredEmailBackend(BACKEND_CLASS):
     def send_messages(self, email_messages):
         response = super(BACKEND_CLASS, self).send_messages(email_messages)
         for message in email_messages:
+            from_email = self.dynamic_from_email_with_display_name or getattr(settings, "DEFAULT_FROM_EMAIL", "flowrh@gmail.com")
             email_log = EmailLog(
                 subject=message.subject,
-                from_email=self.dynamic_from_email_with_display_name,
+                from_email=from_email,
                 to=message.to,
                 body=message.body,
                 status="sent" if response else "failed",
@@ -189,8 +190,8 @@ class ConfiguredEmailBackend(BACKEND_CLASS):
 
 
 if EMAIL_BACKEND != default:
-    from_mail = getattr(settings, "DEFAULT_FROM_EMAIL", "example@gmail.com")
-    username = getattr(settings, "EMAIL_HOST_USER", "example@gmail.com")
+    from_mail = getattr(settings, "DEFAULT_FROM_EMAIL", "flowrh@gmail.com")
+    username = getattr(settings, "EMAIL_HOST_USER", "flowrh@gmail.com")
     ConfiguredEmailBackend.dynamic_username = from_mail
     ConfiguredEmailBackend.dynamic_from_email_with_display_name = from_mail
 
@@ -222,7 +223,7 @@ def new_init(
     if request:
         try:
             display_email_name = f"{request.user.employee_get.get_full_name()} <{request.user.employee_get.email}>"
-            from_email = display_email_name if not from_email else from_email
+            from_email = from_email or display_email_name
             reply_to = [display_email_name] if not reply_to else reply_to
 
         except Exception as e:

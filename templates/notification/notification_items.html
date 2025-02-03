@@ -110,7 +110,7 @@
         hx-get="{% url 'all-notifications' %}"
         hx-target="#allNotificationBody"
         class="oh-navbar__notification-tray-link oh-activity-sidebar__open"
-        >{% trans "View all notifications" %} </a
+        >{% trans "Afficher toutes les notifications" %} </a
     >
     <div class="oh-navbar__volume-icon" title="{% trans 'Notification Sound' %}" style="position:absolute; right:25px" hx-get="{% url 'notifications:notification-sound' %}" hx-swap="none">
         {% if request.user.employee_get.notification_sound.sound_enabled %}

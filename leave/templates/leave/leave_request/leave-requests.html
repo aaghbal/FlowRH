@@ -16,7 +16,7 @@
 <div class="d-flex flex-row-reverse">
     <span class="m-3 review_ongoing" hx-get="{% url "request-filter" %}?{{pd}}&status=cancelled" hx-target="#leaveRequest" style="cursor: pointer">
       <span class="oh-dot oh-dot--small me-1" style="background-color:red"></span>
-      {% trans "Cancelled" %}
+      {% trans "Annulé" %}
     </span>
     <span class="m-3 confirmed" hx-get="{% url "request-filter" %}?{{pd}}&status=requested" hx-target="#leaveRequest" style="cursor: pointer">
       <span class="oh-dot oh-dot--small me-1" style="background-color:rgb(103, 171, 238)"></span>
@@ -33,7 +33,7 @@
         <div class="oh-sticky-table__table ">
             <div class="oh-sticky-table__thead">
                 <div class="oh-sticky-table__tr">
-                    <div class="oh-sticky-table__th">{% trans "Employee" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Employé(e)" %}</div>
                     <div class="oh-sticky-table__th">{% trans "Leave Type" %}</div>
                     <div class="oh-sticky-table__th">{% trans "Start Date" %}</div>
                     <div class="oh-sticky-table__th">{% trans "End Date" %}</div>

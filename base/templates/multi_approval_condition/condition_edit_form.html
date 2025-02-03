@@ -16,7 +16,7 @@
 {% endif %}
 <div class="oh-modal__dialog-header pb-0">
   <h2 class="oh-modal__dialog-title" id="objectUpdateModalLabel">
-    {% trans "Multiple Approval Condition" %}
+    {% trans "Condition d'approbation multiple" %}
   </h2>
   <button
     class="oh-modal__close"
@@ -50,7 +50,7 @@
           <label
             class="oh-input__label"
             for="{{form.condition_field.id_for_label}}"
-            >{% trans "Condition Field" %}</label
+            >{% trans "Champ de condition" %}</label
           >
           {{ form.condition_field }}
           {{ form.condition_field.errors }}
@@ -64,7 +64,7 @@
             class="oh-input__label"
             for="{{ form.condition_operator.id_for_label }}"
           >
-            {% trans "Condition Operator" %}
+            {% trans "Opérateur de condition" %}
           </label>
           {{ form.condition_operator }}
           {{ form.condition_operator.errors }}
@@ -104,7 +104,7 @@
             class="oh-input__label"
             for="{{ form.condition_value.id_for_label }}"
           >
-            {% trans "Condition Value" %}
+            {% trans "Valeur de l'état" %}
           </label>
           {{ form.condition_value }}
           {{ form.condition_value.errors }}
@@ -130,7 +130,7 @@
         class="oh-input__label"
         for="{{ form.multi_approval_manager.id_for_label }}"
       >
-        {% trans "Approval Managers" %}
+        {% trans "Gestionnaires d'approbation" %}
       </label>
       {{ form.multi_approval_manager }}
       {{ form.multi_approval_manager.errors }}

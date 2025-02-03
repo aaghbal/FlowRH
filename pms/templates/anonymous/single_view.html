@@ -32,7 +32,7 @@
     {% if not feedback.based_on == "general" %}
       <div class="oh-timeoff-modal__stat" style="margin-left: 20px">
         {% if feedback.based_on == "employee" %}
-          <span class="oh-timeoff-modal__stat-title">{% trans "Employee" %}</span>
+          <span class="oh-timeoff-modal__stat-title">{% trans "Employé(e)" %}</span>
           <span class="oh-timeoff-modal__stat-count">{{feedback.employee_id}}</span>
         {% endif %}
         {% if feedback.based_on == "department" %}

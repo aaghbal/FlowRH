@@ -199,7 +199,7 @@
                 <div class="oh-dashboard__events" hx-get="{% url 'get-birthday' %}" hx-trigger="load"> </div>
                 <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent mb-3">
                     <div style="display: flex;align-items:center;justify-content:space-between;margin-right:20px">
-                        <span class="oh-card-dashboard__title">{% trans "Announcements" %}</span>
+                        <span class="oh-card-dashboard__title">{% trans "Annonces" %}</span>
                         {% if perms.base.add_announcement %}
                         <span>
                             <button id="addAnnouncement" style="display: inline-block;padding: 0px;
@@ -520,10 +520,10 @@ function Letter(char, x, y) {
     this.lightColor = 'hsl(hue,80%,light%)'.replace('hue', hue);
     this.alphaColor = 'hsla(hue,80%,50%,alp)'.replace('hue', hue);
 
-    {% comment %} this.color = 'hsl(8, 77%, 56%)'; // Base color
-    this.lightAlphaColor = 'hsla(8, 77%, 56%, 0.5)'; // Semi-transparent
-    this.lightColor = 'hsla(8, 77%, 56%, 0.8)'; // Slightly transparent
-    this.alphaColor = 'hsla(8, 77%, 56%, 0.6)'; // Semi-transparent {% endcomment %}
+    {% comment %} this.color = '#c4fc74'; // Base color
+    this.lightAlphaColor = '#c4fc74'; // Semi-transparent
+    this.lightColor = '#c4fc74'; // Slightly transparent
+    this.alphaColor = '#c4fc74'; // Semi-transparent {% endcomment %}
 
 
     this.reset();

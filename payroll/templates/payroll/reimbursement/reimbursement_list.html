@@ -43,11 +43,11 @@
         </li>
         {% if "leave"|app_installed %}
         <li class="oh-tabs__tab" data-target="#leave_encashment_tab">
-            {% trans "Leave Encashments" %}
+            {% trans "Indemnités de congés" %}
         </li>
         {% endif %}
         <li class="oh-tabs__tab" data-target="#bonus_encashment_tab">
-            {% trans "Bonus Encashments" %}
+            {% trans "Encaissements de bonus" %}
         </li>
     </ul>
     <!-- start of tabs -->
@@ -88,7 +88,7 @@
                                         hx-get="{% url 'search-reimbursement' %}?{{pd}}&sortby=employee_id"
                                         hx-target="#reimbursementContainer"
                                     >
-                                        {% trans "Employee" %}
+                                        {% trans "Employé(e)" %}
                                     </div>
                                     <div data-cell-index="1" data-cell-title='{% trans "Date" %}'
                                         class="oh-sticky-table__th {% if request.sort_option.order == '-created_at' %}arrow-up {% elif request.sort_option.order == 'created_at' %}arrow-down {% else %}arrow-up-down {% endif %}"
@@ -408,7 +408,7 @@
                                         hx-get="{% url 'search-reimbursement' %}?{{pd}}&sortby=employee_id"
                                         hx-target="#reimbursementContainer"
                                         >
-                                        {% trans "Employee" %}
+                                        {% trans "Employé(e)" %}
                                     </div>
                                     <div
                                         data-cell-index="11" data-cell-title='{% trans "Date" %}'
@@ -743,7 +743,7 @@
                                         hx-get="{% url 'search-reimbursement' %}?{{pd}}&sortby=employee_id"
                                         hx-target="#reimbursementContainer"
                                         >
-                                        {% trans "Employee" %}
+                                        {% trans "Employé(e)" %}
                                     </div>
                                     <div
                                         data-cell-index="21" data-cell-title='{% trans "Date" %}'

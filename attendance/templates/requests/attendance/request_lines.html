@@ -33,12 +33,12 @@
                                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                         hx-target='#view-container'
                                         hx-get="{% url 'search-attendance-requests' %}?{{pd}}&sortby=employee_id__employee_first_name">
-                                        {% trans "Employee" %}</div>
-                                    <div data-cell-index="1" data-cell-title='{% trans "Batch" %}'
+                                        {% trans "Employé(e)" %}</div>
+                                    <div data-cell-index="1" data-cell-title='{% trans "Lot" %}'
                                         class="oh-sticky-table__th {% if request.sort_option.order == '-batch_attendance_id__title' %}arrow-up {% elif request.sort_option.order == 'batch_attendance_id__title' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                         hx-target='#view-container'
                                         hx-get="{% url 'search-attendance-requests' %}?{{pd}}&sortby=batch_attendance_id__title">
-                                        {% trans "Batch" %}
+                                        {% trans "Lot" %}
                                     </div>
                                     <div data-cell-index="2" data-cell-title='{% trans "Date" %}'
                                         class="oh-sticky-table__th {% if request.sort_option.order == '-attendance_date' %}arrow-up {% elif request.sort_option.order == 'attendance_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
@@ -263,13 +263,13 @@
                                     <div class="oh-sticky-table__th oh-sticky-table__top  {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                         hx-target='#view-container'
                                         hx-get="{% url 'search-attendance-requests' %}?{{pd}}&sortby=employee_id__employee_first_name">
-                                        {% trans "Employee" %}
+                                        {% trans "Employé(e)" %}
                                     </div>
-                                    <div data-cell-index="21" data-cell-title='{% trans "Batch" %}'
+                                    <div data-cell-index="21" data-cell-title='{% trans "Lot" %}'
                                         class="oh-sticky-table__th {% if request.sort_option.order == '-batch_attendance_id__title' %}arrow-up {% elif request.sort_option.order == 'batch_attendance_id__title' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                         hx-target='#view-container'
                                         hx-get="{% url 'search-attendance-requests' %}?{{pd}}&sortby=batch_attendance_id__title">
-                                        {% trans "Batch" %}
+                                        {% trans "Lot" %}
                                     </div>
                                     <div data-cell-index="22" data-cell-title='{% trans "Date" %}'
                                         class="oh-sticky-table__th {% if request.sort_option.order == '-attendance_date' %}arrow-up {% elif request.sort_option.order == 'attendance_date' %}arrow-down {% else %}arrow-up-down {% endif %}"

@@ -1,7 +1,7 @@
 """
 select_widgets.py
 
-This module is used to write flowRH form select widgets
+This module is used to write FlowRH form select widgets
 """
 
 import uuid

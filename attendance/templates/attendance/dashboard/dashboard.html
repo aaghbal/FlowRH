@@ -1,5 +1,6 @@
 {% extends 'index.html' %} {% load i18n %} {% block content %} {% load static %}
 {% load attendancefilters %}
+{% load i18n %}
 <style>
     .oh-sticky-table__right {
         position: sticky;
@@ -64,7 +65,7 @@
                             <div class="oh-card-dashboard__header oh-card-dashboard__header--divider"
                                 style="margin-bottom:2.25rem;" id="attendance_header">
                                 <div class="oh-card-dashboard__title mb-2">
-                                    {% trans "Attendance Analytic" %}
+                                    {% trans "Analyse de présence" %}
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <select id="type" class="oh-select" name="type" onchange="changeView(this)" style="
@@ -101,7 +102,7 @@
                         <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent"
                             style="min-height: 423px">
                             <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                                <span class="oh-card-dashboard__title">{% trans 'Offline Employees' %}
+                                <span class="oh-card-dashboard__title">{% trans 'Employés hors ligne' %}
                                 </span>
                             </div>
                             <div class="oh-card-dashboard__body" hx-get="{% url 'not-in-yet' %}" hx-trigger="load"
@@ -118,7 +119,7 @@
                                 id="pendingHoursHeader">
                                 <div class="d-flex justify-content-between">
                                     <div class="oh-card-dashboard__title mb-2">
-                                        {% trans "Hours Chart" %}
+                                        {% trans "Tableau des heures" %}
                                     </div>
                                     <div class="d-flex justify-content-between mb-2">
                                         <input type="month" class="mb-2 float-end pointer oh-select"
@@ -151,7 +152,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-9">
                     <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                         <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                            <span class="oh-card-dashboard__title">{% trans "Overtime To Approve" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "heures supplémentaires à approuver" %}</span>
                         </div>
                         <div class="oh-card-dashboard__body pb-4" style="height:400px"
                             hx-get="{% url 'dashboard-approve-overtimes' %}" hx-trigger="load"
@@ -167,7 +168,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-8">
                     <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent h-100">
                         <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                            <span class="oh-card-dashboard__title">{% trans "Attendance To Validate" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Présence à valider" %}</span>
                         </div>
                         <div class="oh-card-dashboard__body" style="height:400px" id="attendanceValidateCardBody"
                             hx-get="{% url 'dashboard-validate-attendances' %}" hx-trigger="load">
@@ -180,7 +181,7 @@
                         <div class="oh-card-dashboard__header oh-card-dashboard__header--divider"
                             id="departmentChartHeader">
                             <div class="oh-card-dashboard__title mb-2">
-                                {% trans "Department Overtime Chart" %}
+                                {% trans "Tableau des heures supplémentaires du département" %}
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <select id="department_date_type" class="oh-select" name="type" style="

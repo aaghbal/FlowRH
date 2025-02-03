@@ -17,7 +17,7 @@ class Bot:
         self.__str__()
 
     def __str__(self) -> str:
-        return "flowRH Bot"
+        return "FlowRH Bot"
 
     def get_avatar(self):
         return "https://ui-avatars.com/api/?name=flowRH+Bot&background=random"

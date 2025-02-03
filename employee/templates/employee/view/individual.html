@@ -333,7 +333,7 @@
 								<li data-cell-index="11" data-cell-title="{% trans 'Attendance' %}" class="oh-general__tab">
 									<a hx-get="{% url 'attendance-tab' employee.id %}" hx-target="#attendance_target"
 										data-action="general-tab" data-target="#attendance_target"
-										class="oh-general__tab-link" role="button">{% trans "Attendance" %}</a>
+										class="oh-general__tab-link" role="button">{% trans "Présence" %}</a>
 								</li>
 								{% endif %}
 							{% endif %}
@@ -343,7 +343,7 @@
 									<li data-cell-index="12" data-cell-title="{% trans 'Leave' %}" class="oh-general__tab">
 										<a hx-get="{% url 'leave-tab' employee.id %}" hx-target="#leave"
 											class="oh-general__tab-link" data-action="general-tab" data-target="#leave"
-											role="button">{% trans "Leave" %}</a>
+											role="button">{% trans "Partir" %}</a>
 									</li>
 								{% endif %}
 							{% endif %}
@@ -352,7 +352,7 @@
 								{% if perms.payroll.view_payslip or request.user == employee.employee_user_id %}
 									<li data-cell-index="13" data-cell-title="{% trans 'Payroll' %}" class="oh-general__tab">
 										<a href="#" class="oh-general__tab-link" data-action="general-tab"
-											data-target="#payroll">{% trans "Payroll" %}</a>
+											data-target="#payroll">{% trans "Paie" %}</a>
 									</li>
 								{% endif %}
 

@@ -46,7 +46,7 @@
 			<div class="oh-sticky-table">
 				<div class="oh-sticky-table__table oh-table--sortable">
 				<div class="oh-sticky-table__tr">
-					<div class="oh-sticky-table__sd oh-sticky-table__top">{% trans "Employee" %}</div>
+					<div class="oh-sticky-table__sd oh-sticky-table__top">{% trans "Employé(e)" %}</div>
 					<div class="oh-sticky-table__th">{% trans "Date" %}</div>
 					<div class="oh-sticky-table__th">{% trans "Day" %}</div>
 					<div class="oh-sticky-table__th">{% trans "Check-In" %}</div>
@@ -165,7 +165,7 @@
 					<div class="oh-sticky-table__table oh-table--sortable">
 						<div class="oh-sticky-table__thead">
 							<div class="oh-sticky-table__tr">
-								<div class="oh-sticky-table__th" hx-get="{% url 'attendance-ot-search' %}?{{pd}}&sortby=employee_id__employee_first_name" hx-target="#ot-table">{% trans "Employee" %}</div>
+								<div class="oh-sticky-table__th" hx-get="{% url 'attendance-ot-search' %}?{{pd}}&sortby=employee_id__employee_first_name" hx-target="#ot-table">{% trans "Employé(e)" %}</div>
 								<div class="oh-sticky-table__th" hx-get="{% url 'attendance-ot-search' %}?{{pd}}&sortby=month" hx-target="#ot-table">{% trans "Month" %}</div>
 								<div class="oh-sticky-table__th" hx-get="{% url 'attendance-ot-search' %}?{{pd}}&sortby=year" hx-target="#ot-table">{% trans "Year" %}</div>
 								<div class="oh-sticky-table__th" hx-get="{% url 'attendance-ot-search' %}?{{pd}}&sortby=hour_account_second" hx-target="#ot-table">{% trans "Hour Account" %}</div>
@@ -232,7 +232,7 @@
 							<div class="oh-sticky-table__th"  >
 								<div class="d-flex">
 								<div hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=employee_id__employee_first_name" hx-target="#tab_contents">
-									{% trans "Employee" %}
+									{% trans "Employé(e)" %}
 								</div>
 								</div>
 							</div>

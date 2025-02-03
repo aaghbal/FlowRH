@@ -41,7 +41,7 @@ urlpatterns = [
         name="faq-delete",
     ),
     path("ticket-view/", views.ticket_view, name="ticket-view"),
-    path("ticket-create", views.ticket_create, name="ticket-create"),
+    path("ticket-create/", views.ticket_create, name="ticket-create"),
     path("ticket-update/<int:ticket_id>", views.ticket_update, name="ticket-update"),
     path("ticket-archive/<int:ticket_id>", views.ticket_archive, name="ticket-archive"),
     path(

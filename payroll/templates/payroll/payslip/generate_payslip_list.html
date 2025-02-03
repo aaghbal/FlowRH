@@ -3,7 +3,7 @@
 <section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
     <div class="oh-main__titlebar oh-main__titlebar--left">
         <h1 class="oh-main__titlebar-title fw-bold">
-            {% trans "Payslips" %} - {{ start_date }} to {{ end_date }}
+            {% trans "Bulletins de paie" %} - {{ start_date }} to {{ end_date }}
         </h1>
         <a class="oh-main__titlebar-search-toggle" role="button" aria-label="Toggle Search"
             @click="searchShow = !searchShow">
@@ -35,12 +35,12 @@
                                 </div>
                                 <div hx-target="#section"
                                     hx-get="{% url 'search-candidate' %}?{{pd}}&orderby=name&view=list">
-                                    {% trans "Employee" %}
+                                    {% trans "Employé(e)" %}
                                 </div>
                             </div>
                         </div>
                         <div class="oh-sticky-table__th">{% trans "Status" %}</div>
-                        <div class="oh-sticky-table__th">{% trans "Batch" %}</div>
+                        <div class="oh-sticky-table__th">{% trans "Lot" %}</div>
                         <div class="oh-sticky-table__th">{% trans "Gross Pay" %}</div>
                         <div class="oh-sticky-table__th">{% trans "Deductions" %}</div>
                         <div class="oh-sticky-table__th">{% trans "Net Pay" %}</div>

@@ -3885,7 +3885,7 @@ def shift_request(request):
                     recipient=(
                         instance.employee_id.employee_work_info.reporting_manager_id.employee_user_id
                     ),
-                    verb=f"You have new shift request to approve \
+                    verb=f"You have new Shift Requests To Approve \
                         for {instance.employee_id}",
                     verb_ar=f"لديك طلب وردية جديد للموافقة عليه لـ {instance.employee_id}",
                     verb_de=f"Sie müssen eine neue Schichtanfrage \
@@ -6471,11 +6471,11 @@ def employee_chart_show(request):
         ("objective_status", _("Objective Status")),
         ("key_result_status", _("Key Result Status")),
         ("feedback_status", _("Feedback Status")),
-        ("shift_request_approve", _("Shift Request to Approve")),
+        ("shift_request_approve", _("Shift Requests To Approve")),
         ("work_type_request_approve", _("Work Type Request to Approve")),
         ("overtime_approve", _("Overtime to Approve")),
         ("attendance_validate", _("Attendance to Validate")),
-        ("leave_request_approve", _("Leave Request to Approve")),
+        ("leave_request_approve", _("Demande de congé pour approbation")),
         ("leave_allocation_approve", _("Leave Allocation to Approve")),
         ("feedback_answer", _("Feedbacks to Answer")),
         ("asset_request_approve", _("Asset Request to Approve")),

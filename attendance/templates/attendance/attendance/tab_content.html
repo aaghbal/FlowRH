@@ -59,14 +59,14 @@
                           hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=employee_id__employee_first_name"
                           hx-target="#tab_contents"
                           >
-                          {% trans "Employee" %}
+                          {% trans "Employé(e)" %}
                         </div>
-                        <div data-cell-index="1" data-cell-title='{% trans "Batch" %}'
+                        <div data-cell-index="1" data-cell-title='{% trans "Lot" %}'
                           class="oh-sticky-table__th {% if request.sort_option.order == '-batch_attendance_id__title' %}arrow-up {% elif request.sort_option.order == 'batch_attendance_id__title' %}arrow-down {% else %}arrow-up-down {% endif %}"
                           hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=batch_attendance_id__title"
                           hx-target="#tab_contents"
                           >
-                          {% trans "Batch" %}
+                          {% trans "Lot" %}
                         </div>
                         <div data-cell-index="2" data-cell-title='{% trans "Date" %}'
                           class="oh-sticky-table__th {% if request.sort_option.order == '-attendance_date' %}arrow-up {% elif request.sort_option.order == 'attendance_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
@@ -332,14 +332,14 @@
                           hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=employee_id__employee_first_name"
                           hx-target="#tab_contents"
                           >
-                          {% trans "Employee" %}
+                          {% trans "Employé(e)" %}
                         </div>
-                        <div data-cell-index="21" data-cell-title='{% trans "Batch" %}'
+                        <div data-cell-index="21" data-cell-title='{% trans "Lot" %}'
                           class="oh-sticky-table__th {% if request.sort_option.order == '-batch_attendance_id__title' %}arrow-up {% elif request.sort_option.order == 'batch_attendance_id__title' %}arrow-down {% else %}arrow-up-down {% endif %}"
                           hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=batch_attendance_id__title"
                           hx-target="#tab_contents"
                           >
-                          {% trans "Batch" %}
+                          {% trans "Lot" %}
                         </div>
                         <div data-cell-index="22" data-cell-title='{% trans "Date" %}'
                           class="oh-sticky-table__th {% if request.sort_option.order == '-attendance_date' %}arrow-up {% elif request.sort_option.order == 'attendance_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
@@ -620,14 +620,14 @@
                           hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=employee_id__employee_first_name"
                           hx-target="#tab_contents"
                           >
-                          {% trans "Employee" %}
+                          {% trans "Employé(e)" %}
                         </div>
-                        <div data-cell-index="41" data-cell-title='{% trans "Batch" %}'
+                        <div data-cell-index="41" data-cell-title='{% trans "Lot" %}'
                           class="oh-sticky-table__th {% if request.sort_option.order == '-batch_attendance_id__title' %}arrow-up {% elif request.sort_option.order == 'batch_attendance_id__title' %}arrow-down {% else %}arrow-up-down {% endif %}"
                           hx-get="{% url 'attendance-search' %}?{{pd}}&sortby=batch_attendance_id__title"
                           hx-target="#tab_contents"
                           >
-                          {% trans "Batch" %}
+                          {% trans "Lot" %}
                         </div>
                         <div data-cell-index="42" data-cell-title='{% trans "Date" %}'
                           class="oh-sticky-table__th {% if request.sort_option.order == '-attendance_date' %}arrow-up {% elif request.sort_option.order == 'attendance_date' %}arrow-down {% else %}arrow-up-down {% endif %}"

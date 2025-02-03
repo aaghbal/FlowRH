@@ -60,7 +60,7 @@
 <div class="mt-4">
     <span class="oh-activity-sidebar__title fw-bold"
         >{{request.user.employee_get.get_full_name}}'s
-        {% trans "Scheduled Interviews" %}</span
+        {% trans "Entretiens programmés" %}</span
     >
 </div>
 
@@ -112,7 +112,7 @@
                             {% trans "Time" %}: {{ interview.interview_time }}
                         </div>
                         <div class="interview-interviewer">
-                            {% trans "Interviewer" %}:
+                            {% trans "Intervieweur" %}:
                             <div class="mt-1">
                                 {% for interviewer in interview.employee_id.all %}
                                 <span class="interviewer-chip">

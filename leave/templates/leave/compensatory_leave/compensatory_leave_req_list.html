@@ -33,7 +33,7 @@
                         <div class="oh-sticky-table__tr">
                             <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                 hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=employee_id__employee_first_name" hx-target="#comp-leave-tabs"
-                            >{% trans "Employee" %}</div>
+                            >{% trans "Employé(e)" %}</div>
                             <div class="oh-sticky-table__th {% if request.sort_option.order == '-leave_type_id__name' %}arrow-up {% elif request.sort_option.order == 'leave_type_id__name' %}arrow-down {% else %}arrow-up-down {% endif %}"  hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=leave_type_id__name" hx-target="#comp-leave-tabs">{% trans "Leave Type" %}</div>
                             <div class="oh-sticky-table__th">{% trans "Attendance Dates" %}</div>
                             <div class="oh-sticky-table__th {% if request.sort_option.order == '-requested_days' %}arrow-up {% elif request.sort_option.order == 'requested_days' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=requested_days" hx-target="#comp-leave-tabs">{% trans "Requested Days" %}</div>
@@ -187,7 +187,7 @@
                     <div class="oh-sticky-table__table ">
                         <div class="oh-sticky-table__thead">
                             <div class="oh-sticky-table__tr">
-                                <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=employee_id__employee_first_name" hx-target="#comp-leave-tabs">{% trans "Employee" %}</div>
+                                <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=employee_id__employee_first_name" hx-target="#comp-leave-tabs">{% trans "Employé(e)" %}</div>
                                 <div class="oh-sticky-table__th {% if request.sort_option.order == '-leave_type_id__name' %}arrow-up {% elif request.sort_option.order == 'leave_type_id__name' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=leave_type_id__name" hx-target="#comp-leave-tabs">{% trans "Leave Type" %}</div>
                                 <div class="oh-sticky-table__th">{% trans "Attendance Dates" %}</div>
                                 <div class="oh-sticky-table__th {% if request.sort_option.order == '-requested_days' %}arrow-up {% elif request.sort_option.order == 'requested_days' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'filter-compensatory-leave' %}?{{pd}}&sortby=requested_days" hx-target="#comp-leave-tabs">{% trans "Requested Days" %}</div>

@@ -13,10 +13,10 @@
                                 </div>
                                 <span class="oh-profile__name oh-text--dark">
                                     {{ emp.get_full_name }}
-                                    <span class="oh-recuritment_tag" style="font-size: .5rem;">
+                                    <span class="oh-recuritment_tag" style="font-size: .5rem; background-color: #c4fc74; color: #000;">
                                         {% trans "At work" %} {{ emp.get_forecasted_at_work.forecasted_at_work }}
                                     </span>
-                                    <span class="oh-recuritment_tag" style="font-size: .5rem;">
+                                    <span class="oh-recuritment_tag" style="font-size: .5rem; background-color: #c4fc74; color: #000;">
                                         {% trans "Pending" %} {{ emp.get_forecasted_at_work.forecasted_pending_hours }}
                                     </span>
                                 </span>

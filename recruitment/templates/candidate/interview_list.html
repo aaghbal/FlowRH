@@ -37,13 +37,13 @@
                         <div class="oh-sticky-table__thead">
                             <div class="oh-sticky-table__tr">
                                 <div class="oh-sticky-table__th">{% trans "Candidate" %}</div>
-                                <div data-cell-index="1" data-cell-title='{% trans "Interviewer" %}'
+                                <div data-cell-index="1" data-cell-title='{% trans "Intervieweur" %}'
                                     class="oh-sticky-table__th"
-                                >{% trans "Interviewer" %}</div>
-                                <div data-cell-index="2" data-cell-title='{% trans "Interview Date" %}'
+                                >{% trans "Intervieweur" %}</div>
+                                <div data-cell-index="2" data-cell-title='{% trans "Date de l'entretien" %}'
                                     class="oh-sticky-table__th {% if request.sort_option.order == '-interview_date' %}arrow-up {% elif request.sort_option.order == 'interview_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                     hx-get="{% url 'interview-filter-view' %}?{{pd}}&sortby=interview_date" hx-target="#section"
-                                >{% trans "Interview Date" %}</div>
+                                >{% trans "Date de l'entretien" %}</div>
                                 <div data-cell-index="3" data-cell-title='{% trans "Interview Time" %}'
                                     class="oh-sticky-table__th"
                                 >{% trans "Interview Time" %}</div>

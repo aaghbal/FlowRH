@@ -38,7 +38,7 @@
                     <div class="oh-card-dashboard oh-card-dashboard oh-card-dashboard--neutral filter pointer dash-card"
                         id="requestedLeaves">
                         <div class="oh-card-dashboard__header">
-                            <span class="oh-card-dashboard__title">{% trans "Requests to Approve" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Demandes d'approbation" %}</span>
                         </div>
                         <div class="oh-card-dashboard__body">
                             <div class="oh-card-dashboard__counts">
@@ -51,7 +51,7 @@
                     <div class="oh-card-dashboard oh-card-dashboard--success filter pointer dash-card"
                         id="approvedLeaves">
                         <div class="oh-card-dashboard__header">
-                            <span class="oh-card-dashboard__title">{% trans "Approved Leaves In This Month" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Congés approuvés ce mois-ci" %}</span>
                         </div>
                         <div class="oh-card-dashboard__body">
                             <div class="oh-card-dashboard__counts">
@@ -64,7 +64,7 @@
                     <div class="oh-card-dashboard oh-card-dashboard--danger filter pointer dash-card"
                         id="rejectedLeaves">
                         <div class="oh-card-dashboard__header">
-                            <span class="oh-card-dashboard__title">{% trans "Rejected Leaves In This Month" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Feuilles rejetées ce mois-ci" %}</span>
                         </div>
                         <div class="oh-card-dashboard__body">
                             <div class="oh-card-dashboard__counts">
@@ -82,7 +82,7 @@
                             <span class="oh-card-dashboard__title pointer" id="employee-previous" title="{% trans 'Previous' %}">
                                 <ion-icon name="caret-back-outline"></ion-icon>
                             </span>
-                            <span class="oh-card-dashboard__title">{% trans "Employee Leaves" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Congés des employés" %}</span>
                             <span class="oh-card-dashboard__title float-end pointer" id="employee-next" title="{% trans 'next' %}">
                                 <ion-icon name="caret-forward"></ion-icon>
                             </span>
@@ -113,7 +113,7 @@
                 <div class="w-100">
                     <div class="w-100 mb-1" id="back_button">
                         <a href="{% url 'leave-employee-dashboard' %}?dashboard=true"
-                            class="oh-btn oh-btn--secondary oh-btn--shadow">{% trans "View Personal Dashboard" %}
+                            class="oh-btn oh-btn--secondary oh-btn--shadow">{% trans "Afficher le tableau de bord personnel" %}
                             <ion-icon class="me-2 md hydrated" name="arrow-forward-outline" role="img"
                                 aria-label="arrow-back-outline"></ion-icon></a>
                     </div>
@@ -144,7 +144,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-3 mt-3">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Department Leaves" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Congés du département" %}</span>
                 </div>
                 <div class="oh-card-dashboard__body">
                     {% if current_date == next_holiday.start_date|date:"Y-m-d" %}
@@ -169,7 +169,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-3 mt-3">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Leave Type - Count of leaves" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Type de feuille - Nombre de feuilles" %}</span>
                 </div>
                 <div class="oh-card-dashboard__body">
                     <div class="d-flex flex-row-reverse">
@@ -184,7 +184,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 mt-3">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Weekly Leave Analytics" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Analyse des congés hebdomadaires" %}</span>
                 </div>
                 <div class="oh-card-dashboard__body">
                     <canvas id="leavePeriod" class="pointer"></canvas>

@@ -56,7 +56,7 @@
 {% now "Y-m-d" as now %}
 
 <div class="mt-4 d-flex">
-  <span class="oh-activity-sidebar__title fw-bold">{{candidate}}'s {% trans "Scheduled Interviews" %}</span>
+  <span class="oh-activity-sidebar__title fw-bold">{{candidate}}'s {% trans "Entretiens programmés" %}</span>
 </div>
 {% if perms.recruitment.add_interviewschedule or request.user|stage_manages:candidate.recruitment_id %}
     <div class="d-flex" style="flex-direction: row-reverse;">
@@ -99,7 +99,7 @@
                         </div>
                         <div class="interview-time">{% trans "Time" %}: {{ interview.interview_time }}</div>
                         <div class="interview-interviewer">
-                            {% trans "Interviewer" %}:
+                            {% trans "Intervieweur" %}:
                             <div class="mt-1">
                                 {% for interviewer in  interview.employee_id.all %}
                                     <span class="interviewer-chip">

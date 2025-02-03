@@ -27,7 +27,7 @@
             onclick="$('[name=status]').val('cancelled');$('[name=status]').first().change();$('.filterButton').click()"
             style="cursor: pointer">
             <span class="oh-dot oh-dot--small me-1" style="background-color:grey"></span>
-            {% trans "Cancelled" %}
+            {% trans "Annulé" %}
         </span>
         <span class="me-3 paid"
             onclick="$('[name=status]').val('approved');$('[name=status]').first().change();$('.filterButton').click()"
@@ -73,7 +73,7 @@
                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}"
                         hx-get="{% url 'request-filter' %}?{{pd}}&sortby=employee_id__employee_first_name"
                         hx-target="#leaveRequest">
-                        {% trans "Employee" %}
+                        {% trans "Employé(e)" %}
                     </div>
                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-leave_type_id__name' %}arrow-up {% elif request.sort_option.order == 'leave_type_id__name' %}arrow-down {% else %}arrow-up-down {% endif %}"
                         hx-get="{% url 'request-filter' %}?{{pd}}&sortby=leave_type_id__name" hx-target="#leaveRequest">

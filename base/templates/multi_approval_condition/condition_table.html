@@ -16,10 +16,10 @@
     <div class="oh-sticky-table__thead">
       <div class="oh-sticky-table__tr">
         <div class="oh-sticky-table__th">{% trans "Department" %}</div>
-        <div class="oh-sticky-table__th">{% trans "Condition Field" %}</div>
-        <div class="oh-sticky-table__th">{% trans "Condition Operator" %}</div>
-        <div class="oh-sticky-table__th">{% trans "Condition Value" %}</div>
-        <div class="oh-sticky-table__th">{% trans "Approval Managers" %}</div>
+        <div class="oh-sticky-table__th">{% trans "Champ de condition" %}</div>
+        <div class="oh-sticky-table__th">{% trans "Opérateur de condition" %}</div>
+        <div class="oh-sticky-table__th">{% trans "Valeur de l'état" %}</div>
+        <div class="oh-sticky-table__th">{% trans "Gestionnaires d'approbation" %}</div>
         <div class="oh-sticky-table__th">{% trans "Company" %}</div>
         {% if perms.base.change_multipleapprovalcondition or perms.base.delete_multipleapprovalcondition or request.user|is_reportingmanager %}
             <div class="oh-sticky-table__th">{% trans "Actions" %}</div>

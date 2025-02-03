@@ -43,7 +43,7 @@
         </span>
         <span class="me-3" style="margin-left: 10px;">
             <span class="oh-dot oh-dot--small me-1" style="background-color:#a8b1ff"></span>
-            {% trans "Expected Working" %}
+            {% trans "Travail prévu" %}
         </span>
         <span class="me-3" style="margin-left: 10px;">
             <span class="oh-dot oh-dot--small me-1" style="background-color:#808080"></span>
@@ -51,7 +51,7 @@
         </span>
         <span class="me-3" style="margin-left: 10px;">
             <span class="oh-dot oh-dot--small me-1" style="background-color:#c65d0f"></span>
-            {% trans "On leave, But attendance exist" %}
+            {% trans "En congé, mais la présence existe" %}
         </span>
         <span class="me-3" style="margin-left: 10px;">
             <span class="oh-dot oh-dot--small me-1" style="background-color:#dfdf52"></span>
@@ -67,7 +67,7 @@
     <table>
         <thead>
             <tr>
-                <th class="oh-sticky-table__th header">{% trans "Employee" %}</th>
+                <th class="oh-sticky-table__th header">{% trans "Employé(e)" %}</th>
                 {% for day in current_month_dates_list %}
                 <th class="oh-sticky-table__th {% if day in leave_dates %}holiday {% else %}header{% endif %}">{{ day.day }}</th>
                 {% endfor %}

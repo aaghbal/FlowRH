@@ -55,7 +55,7 @@
                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %}arrow-up-down {% endif %}"
                         hx-get="{% url 'work-type-request-search' %}?{{pd}}&orderby=employee_id__employee_first_name"
                         hx-target="#view-container">
-                        {% trans "Employee" %}
+                        {% trans "Employé(e)" %}
                     </div>
                     <div data-cell-index="1" data-cell-title='{% trans "Requested Work Type" %}'
                         class="oh-sticky-table__th">{% trans "Requested Work Type" %}</div>

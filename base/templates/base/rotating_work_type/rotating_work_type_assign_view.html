@@ -59,7 +59,7 @@
                         <div class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id__employee_first_name' %}arrow-up {% elif request.sort_option.order == 'employee_id__employee_first_name' %}arrow-down {% else %} arrow-up-down {% endif %}"
                             hx-target="#view-container"
                             hx-get="{% url 'rotating-work-type-assign-view' %}?{{pd}}&orderby=employee_id__employee_first_name">
-                            {% trans "Employee" %}
+                            {% trans "Employé(e)" %}
                         </div>
                         <div data-cell-index="1" data-cell-title='{% trans "Title" %}' class="oh-sticky-table__th">{% trans "Title" %}</div>
                         <div data-cell-index="2" data-cell-title='{% trans "Based On" %}' class="oh-sticky-table__th">{% trans "Based On" %}</div>

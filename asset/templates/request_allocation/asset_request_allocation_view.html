@@ -19,7 +19,7 @@
 <main :class="sidebarOpen ? 'oh-main__sidebar-visible' : ''">
 	<section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
 		<div class="oh-main__titlebar oh-main__titlebar--left">
-			<h1 class="oh-main__titlebar-title fw-bold">{% trans "Asset" %}</h1>
+			<h1 class="oh-main__titlebar-title fw-bold">{% trans "Actif" %}</h1>
 
 			<a class="oh-main__titlebar-search-toggle" role="button" aria-label="Toggle Search"
 				@click="searchShow = !searchShow">
@@ -49,7 +49,7 @@
 							@click.outside="open = false" style="display: none">
 							<div class="oh-dropdown__filter-body">
 								<div class="oh-accordion">
-									<div class="oh-accordion-header">{% trans "Asset" %}</div>
+									<div class="oh-accordion-header">{% trans "Actif" %}</div>
 									<div class="oh-accordion-body">
 										<div class="row">
 											<div class="col-sm-12 col-md-12 col-lg-12">
@@ -69,7 +69,7 @@
 								</div>
 								<div class="oh-accordion">
 									<div class="oh-accordion-header">
-										{% trans "Asset Request" %}
+										{% trans "Demande d'actif" %}
 									</div>
 									<div class="oh-accordion-body">
 										<div class="row">
@@ -109,7 +109,7 @@
 													{{asset_allocation_filter_form.assigned_to_employee_id}}
 												</div>
 												<div class="oh-input-group">
-													<label class="oh-label" for="{{asset_allocation_filter_form.asset_id.id_for_label}}">{% trans "Asset" %}</label>
+													<label class="oh-label" for="{{asset_allocation_filter_form.asset_id.id_for_label}}">{% trans "Actif" %}</label>
 													{{asset_allocation_filter_form.asset_id}}
 												</div>
 											</div>
@@ -157,7 +157,7 @@
 							@click.outside="open = false" style="display: none">
 							<div class="oh-accordion">
 								<div class="oh-accordion-header">
-									{% trans "Asset Request" %}
+									{% trans "Demande d'actif" %}
 								</div>
 								<div class="oh-accordion-body">
 									<div class="row">
@@ -225,9 +225,9 @@
 	<div class="oh-wrapper">
 		<div class="oh-tabs">
 			<ul class="oh-tabs__tablist">
-				<li class="oh-tabs__tab" data-target="#tab_3">{% trans "Asset" %}</li>
+				<li class="oh-tabs__tab" data-target="#tab_3">{% trans "Actif" %}</li>
 				<li class="oh-tabs__tab" data-target="#tab_1">
-					{% trans "Asset Request" %}
+					{% trans "Demande d'actif" %}
 					<a class="link-danger oh-btn oh-btn--secondary-outline" role="button"
 						onclick="event.stopPropagation()" data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
 						hx-get="{% url 'asset-request-creation' %}" hx-target="#objectCreateModalTarget"

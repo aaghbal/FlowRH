@@ -1,7 +1,7 @@
 {% load static %} {% load i18n %} {% load mathfilters %} {% load widget_tweaks %}
 <div class="oh-dropdown__filter-body">
     <div class="oh-accordion">
-        <div class="oh-accordion-header">{% trans "Asset History" %}</div>
+        <div class="oh-accordion-header">{% trans "Historique des actifs" %}</div>
         <div class="oh-accordion-body">
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-6">
@@ -17,7 +17,7 @@
                         <label
                             class="oh-label"
                             for="{{f.form.asset_id.id_for_label}}"
-                            >{% trans "Asset" %}</label
+                            >{% trans "Actif" %}</label
                         >
                         {{f.form.asset_id}}
                     </div>

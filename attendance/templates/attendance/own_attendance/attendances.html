@@ -32,7 +32,7 @@
         class="oh-dot oh-dot--small me-1"
         style="background-color: blue"
       ></span>
-      {% trans "Approved request" %}
+      {% trans "Demande approuvée" %}
     </span>
     <span
       class="me-3"
@@ -58,7 +58,7 @@
         class="oh-dot oh-dot--small me-1"
         style="background-color: red"
       ></span>
-      {% trans "Not validated" %}
+      {% trans "Non validé" %}
     </span>
     <span
       class="me-3"
@@ -96,7 +96,7 @@
               hx-target="#attendance-container"
               hx-get="{% url 'own-attendance-filter' %}?{{pd}}&orderby=employee_id__employee_first_name"
             >
-              {% trans "Employee" %}
+              {% trans "Employé(e)" %}
             </div>
             <div
 

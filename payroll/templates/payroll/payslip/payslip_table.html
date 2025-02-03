@@ -70,7 +70,7 @@
               class="oh-sticky-table__th {% if request.sort_option.order == '-employee_id' %}arrow-up {% elif request.sort_option.order == 'employee_id' %}arrow-down {% else %}arrow-up-down {% endif %}"
               hx-get="{% url 'filter-payslip' %}?{{pd}}&sortby=employee_id"
               hx-target="#payslips-table"
-            >{% trans "Employee" %}</div>
+            >{% trans "Employé(e)" %}</div>
             <div data-cell-index="1" data-cell-title='{% trans "Start Date" %}'
               class="oh-sticky-table__th {% if request.sort_option.order == '-start_date' %}arrow-up {% elif request.sort_option.order == 'start_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
               hx-get="{% url 'filter-payslip' %}?{{pd}}&sortby=start_date"
@@ -81,7 +81,7 @@
               hx-get="{% url 'filter-payslip' %}?{{pd}}&sortby=end_date"
               hx-target="#payslips-table"
             >{% trans "End Date" %}</div>
-            <div data-cell-index="4" data-cell-title='{% trans "Batch" %}' class="oh-sticky-table__th">{% trans "Batch" %}</div>
+            <div data-cell-index="4" data-cell-title='{% trans "Lot" %}' class="oh-sticky-table__th">{% trans "Lot" %}</div>
             <div data-cell-index="5" data-cell-title='{% trans "Gross Pay" %}'
             class="oh-sticky-table__th {% if request.sort_option.order == '-gross_pay' %}arrow-up {% elif request.sort_option.order == 'gross_pay' %}arrow-down {% else %}arrow-up-down {% endif %}"
             hx-get="{% url 'filter-payslip' %}?{{pd}}&sortby=gross_pay"

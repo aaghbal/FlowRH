@@ -33,7 +33,7 @@
 <section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
 	<div class="oh-main__titlebar oh-main__titlebar--left">
 		<h1 class="oh-main__titlebar-title fw-bold">
-			{% trans "Leave Allocation Requests" %}
+			{% trans "Demandes d'attribution de congés" %}
 		</h1>
 		<a
 			class="oh-main__titlebar-search-toggle"
@@ -108,7 +108,7 @@
 										</div>
 										<div class="col-sm-12 col-md-12 col-lg-6">
 											<div class="oh-input-group">
-												<label class="oh-label">{% trans "Employee" %}</label>
+												<label class="oh-label">{% trans "Employé(e)" %}</label>
 												{{form.employee_id}}
 											</div>
 										</div>
@@ -269,11 +269,11 @@
 	<div class="oh-tabs">
 		<ul class="oh-tabs__tablist">
 			<li class="oh-tabs__tab oh-tabs__tab--active" data-target="#tab_1">
-				{% trans "My leave allocation request" %}
+				{% trans "Ma demande d'attribution de congés" %}
 			</li>
 			{% if request.user|is_reportingmanager or perms.leave.view_leaveallocationrequest %}
 			<li class="oh-tabs__tab" data-target="#tab_2">
-				{% trans "Leave allocation requests" %}
+				{% trans "Demandes d'attribution de congés" %}
 			</li>
 			{% endif %}
 		</ul>

@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load static basefilters horillafilters employee_filter i18n %} {% load tz %} {% now "Y-m-d" as current_date %}
 {% load accessibility_filters %}
 {% if "attendance"|app_installed %}
@@ -6,8 +7,7 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="notInYetId">
                 <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="min-height: 425px">
                     <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                        <span class="oh-card-dashboard__title">{% trans 'Offline Employees' %}
-                        </span>
+                        <span class="oh-card-dashboard__title">{% trans 'Employés hors ligne' %}</span>
                         <span class="float-end chart_close_button" role="button" data-chart="offline_employees"
                             hx-post="{% url 'dashboard-components-toggle' %}?chart_id=offline_employees" hx-target="#notInYetId"
                             hx-swap="outerHTML">
@@ -27,7 +27,7 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="notoutYetId">
                 <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                     <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                        <span class="oh-card-dashboard__title">{% trans 'Online Employees' %}</span>
+                        <span class="oh-card-dashboard__title">{% trans 'Employés en ligne' %}</span>
                         <span class="float-end chart_close_button fs-5" role="button" data-chart="online_employees"
                             hx-post="{% url 'dashboard-components-toggle' %}?chart_id=online_employees" hx-target="#notoutYetId"
                             hx-swap="outerHTML">
@@ -162,7 +162,7 @@
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider mb-0" id="pendingHoursHeader">
                     <div class="oh-card-dashboard__title mb-2">
-                        {% trans "Hours Chart" %}
+                        {% trans "Tableau des heures" %}
                         <span class="float-end chart_close_button " role="button" data-chart="hours_chart"
                             hx-post="{% url 'dashboard-components-toggle' %}?chart_id=hours_chart" hx-target="#pendingHours"
                             hx-swap="outerHTML">
@@ -279,7 +279,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-4 oh-card-dashboard--moveable dashboardChart" id="movable11">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Feedback Status" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Statut des commentaires" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="feedback_status"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=feedback_status" hx-target="#movable11"
                         hx-swap="outerHTML">
@@ -301,7 +301,7 @@
             id="shiftRequestApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Shift Requests To Approve" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Demandes de changement de poste à approuver" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="shift_request_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=shift_request_approve"
                         hx-target="#shiftRequestApprove" hx-swap="outerHTML">
@@ -322,7 +322,7 @@
             id="WorkTypeRequestApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Work Type Requests To Approve" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Demandes de type de travail à approuver" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="work_type_request_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=work_type_request_approve"
                         hx-target="#WorkTypeRequestApprove" hx-swap="outerHTML">
@@ -345,7 +345,7 @@
                 id="OTApproveTarget">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
                     <span class="oh-card-dashboard__title">
-                        {% trans 'Overtime To Approve' %}
+                        {% trans 'heures supplémentaires à approuver' %}
                     </span>
                     <span class="float-end chart_close_button " role="button" data-chart="overtime_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=overtime_approve" hx-target="#OTApprove"
@@ -390,7 +390,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="LeaveApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Leave Requests To Approve" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Demande de congé pour approbation" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="leave_request_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=leave_request_approve" hx-target="#LeaveApprove"
                         hx-swap="outerHTML">
@@ -411,7 +411,7 @@
             id="LeaveAllocationApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Leave Allocation Request To Approve" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Demande d'attribution de congés à approuver" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="leave_allocation_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=leave_allocation_approve"
                         hx-target="#LeaveAllocationApprove" hx-swap="outerHTML">
@@ -430,7 +430,7 @@
     <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="feedbackAnswer">
         <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
             <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                <span class="oh-card-dashboard__title">{% trans "Feedback To Answers" %}</span>
+                <span class="oh-card-dashboard__title">{% trans "rétroaction aux réponses" %}</span>
                 <span class="float-end chart_close_button " role="button" data-chart="feedback_answer"
                     hx-post="{% url 'dashboard-components-toggle' %}?chart_id=feedback_answer" hx-target="#feedbackAnswer"
                     hx-swap="outerHTML">
@@ -450,7 +450,7 @@
             id="assetRequestApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Asset Requests To Approve" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Demandes d'actifs à approuver" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="asset_request_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=asset_request_approve"
                         hx-target="#assetRequestApprove" hx-swap="outerHTML">
