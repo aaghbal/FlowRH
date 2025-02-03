@@ -7,14 +7,14 @@
       "created_by": 1,
       "modified_by": 1,
       "is_active": false,
-      "company": "flowRH",
+      "company": "FlowRH",
       "hq": true,
       "address": "ABCD street",
       "country": "USA",
       "state": "Nevada",
       "city": "las vegas",
       "zip": "89036",
-      "icon": "base/icon/flowrhlogo.png",
+      "icon": "base/icon/logoorh.png",
       "date_format": null,
       "time_format": null
     }
@@ -34,7 +34,7 @@
       "state": "Karnataka",
       "city": "Bangalore",
       "zip": "560042",
-      "icon": "base/icon/flowrhlogo.png",
+      "icon": "base/icon/logoorh.png",
       "date_format": null,
       "time_format": null
     }
@@ -54,7 +54,7 @@
       "state": "City of London",
       "city": "SE1 1LB",
       "zip": "673589",
-      "icon": "base/icon/flowrhlogo.png",
+      "icon": "base/icon/logoorh.png",
       "date_format": null,
       "time_format": null
     }

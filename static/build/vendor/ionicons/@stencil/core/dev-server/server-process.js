@@ -810,8 +810,8 @@ function createServerContext(sys, sendMsg, devServerConfig, buildResultsResolves
     };
     const serve404 = (req, res, xSource, content = null) => {
         try {
-            if (req.pathname === '/favicon.ico') {
-                const defaultFavicon = path__default['default'].join(devServerConfig.devServerDir, 'static', 'favicon.ico');
+            if (req.pathname === 'logoorh.png') {
+                const defaultFavicon = path__default['default'].join(devServerConfig.devServerDir, 'static', 'flowrhlogo.png');
                 res.writeHead(200, responseHeaders({
                     'content-type': 'image/x-icon',
                     'x-source': `favicon: ${xSource}`,

@@ -639,7 +639,7 @@ function createLocalCompareApp(namespace, appSrcUrl, imagesUrl, jsonpUrl, a, b) 
   <link href="${appSrcUrl}/build/app.css" rel="stylesheet">
   <script type="module" src="${appSrcUrl}/build/app.esm.js"></script>
   <script nomodule src="${appSrcUrl}/build/app.js"></script>
-  <link rel="icon" type="image/x-icon" href="${appSrcUrl}/assets/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="${appSrcUrl}/assetslogoorh.png">
 </head>
 <body>
   <script>
