@@ -1,0 +1,396 @@
+/* Feed Container */
+
+.feed-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.feed-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.feed-header h1 {
+    color: #333;
+    font-size: 2em;
+}
+
+
+/* Post Creation Section */
+
+.post-creation {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.post-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attach-btn,
+.post-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.attach-btn {
+    background: #f0f2f5;
+    color: #333;
+}
+
+.post-btn {
+    background: rgb(131, 179, 36);
+    color: white;
+}
+
+
+/* Feed Posts */
+
+.post {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post-info h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.post-time {
+    color: #65676b;
+    font-size: 13px;
+}
+
+.post-content {
+    margin-bottom: 15px;
+}
+
+.post-content p {
+    margin-bottom: 10px;
+}
+
+.post-image {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+
+/* Post Actions */
+
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.like-btn,
+.comment-btn,
+.share-btn {
+    background: none;
+    border: none;
+    color: #65676b;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.like-btn:hover,
+.comment-btn:hover,
+.share-btn:hover {
+    background: #f0f2f5;
+    border-radius: 4px;
+}
+
+
+/* Comments Section */
+
+.comments-section {
+    padding-top: 15px;
+}
+
+.comment {
+    display: flex;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+.comment-profile-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content {
+    background: #f0f2f5;
+    padding: 8px 12px;
+    border-radius: 18px;
+    flex: 1;
+}
+
+.comment-content h4 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.comment-content p {
+    margin: 5px 0 0;
+    font-size: 13px;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .feed-container {
+        padding: 10px;
+    }
+    .post-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .attach-btn,
+    .post-btn {
+        width: 100%;
+    }
+}
+
+
+/* Poll Section Styles */
+
+
+/* Post Creation Styles */
+
+.post-creation {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.post-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    resize: none;
+    font-size: 15px;
+}
+
+.post-form textarea:focus {
+    outline: none;
+    border-color: rgb(131, 179, 36);
+}
+
+
+/* Post Actions Styles */
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.post-attachments {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.attach-btn,
+.poll-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    background: #f0f2f5;
+    color: #333;
+}
+
+.attach-btn:hover,
+.poll-btn:hover {
+    background: rgb(131, 179, 36);
+}
+
+.attach-btn i,
+.poll-btn i {
+    font-size: 16px;
+}
+
+.post-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: rgb(131, 179, 36);
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.post-btn:hover {
+    background: rgb(170, 252, 7);
+}
+
+
+/* Poll Section Styles */
+
+.poll-section {
+    margin: 15px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.poll-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: rgb(131, 179, 36);
+}
+
+.poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.poll-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.poll-option i {
+    color: #666;
+    font-size: 12px;
+}
+
+.poll-option-input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+}
+
+.poll-option-input:focus {
+    outline: none;
+}
+
+.remove-option-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.remove-option-btn:hover {
+    background: #f0f2f5;
+    color: #dc3545;
+}
+
+.add-option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: white;
+    color: rgb(131, 179, 36);
+    border: 1px dashed rgb(131, 179, 36);
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.add-option-btn:hover {
+    background: #f0f2f5;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .post-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .post-attachments {
+        width: 100%;
+        justify-content: center;
+    }
+    .post-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

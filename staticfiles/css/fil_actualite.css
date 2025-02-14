@@ -1,0 +1,35 @@
+body {
+    background-color: rgb(69, 223, 9);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Actualite Section */
+
+.actualite-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.article-card {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.article-title {
+    color: #881c1c;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .actualite-section {
+        padding: 10px;
+    }
+}

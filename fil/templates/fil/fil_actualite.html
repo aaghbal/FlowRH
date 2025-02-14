@@ -1,2 +1,144 @@
-{% extends 'index.html' %} {% load i18n %} {% block content %}
+
+
+{% extends 'index.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+<div class="feed-container">
+    <div class="feed-header">
+        <h1>Fil d'actualite</h1>
+    </div>
+
+    <div class="post-creation">
+        <form class="post-form">
+            <textarea placeholder="What's on your mind?"></textarea>
+            
+            <!-- Poll Creation Section -->
+            <div id="pollSection" class="poll-section" style="display: none;">
+                <div class="poll-header">
+                    <i class="fas fa-poll"></i>
+                    <span>{% trans "Create Poll" %}</span>
+                </div>
+                <div class="poll-options">
+                    <div class="poll-option">
+                        <i class="fas fa-circle"></i>
+                        <input type="text" placeholder="Option 1" class="poll-option-input">
+                        <button type="button" class="remove-option-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="poll-option">
+                        <i class="fas fa-circle"></i>
+                        <input type="text" placeholder="Option 2" class="poll-option-input">
+                        <button type="button" class="remove-option-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="add-option-btn">
+                    <i class="fas fa-plus"></i> {% trans "Add Option" %}
+                </button>
+            </div>
+    
+            <div class="post-actions">
+                <div class="post-attachments">
+                    <button type="button" class="attach-btn">
+                        <i class="fas fa-image"></i>
+                        <span>{% trans "Photo" %}</span>
+                    </button>
+                    <button type="button" class="attach-btn">
+                        <i class="fas fa-video"></i>
+                        <span>{% trans "Video" %}</span>
+                    </button>
+                    <button type="button" class="attach-btn">
+                        <i class="fas fa-file"></i>
+                        <span>{% trans "Document" %}</span>
+                    </button>
+                    <button type="button" class="poll-btn" onclick="togglePollSection()">
+                        <i class="fas fa-poll"></i>
+                        <span>{% trans "Poll" %}</span>
+                    </button>
+                </div>
+                <button type="submit" class="post-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    {% trans "Post" %}
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Feed Posts -->
+    <div class="feed-posts">
+        <!-- Sample Post -->
+        <div class="post">
+            <div class="post-header">
+                <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
+                <div class="post-info">
+                    <h3 class="user-name">John Doe</h3>
+                    <span class="post-time">2 hours ago</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>This is a sample post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <img src="{% static 'images/ui/post.jpg' %}"  alt="Post image" class="post-image">
+            </div>
+            <div class="post-actions">
+                <button class="like-btn">
+                    <i class="fas fa-heart"></i> Like
+                </button>
+                <button class="comment-btn">
+                    <i class="fas fa-comment"></i> Comment
+                </button>
+                <button class="share-btn">
+                    <i class="fas fa-share"></i> Share
+                </button>
+            </div>
+            <div class="comments-section">
+                <div class="comment">
+                    <img src="{% static 'images/ui/women.jpg' %}" alt="Profile" class="comment-profile-pic">
+                    <div class="comment-content">
+                        <h4>Jane Smith</h4>
+                        <p>Great post!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="feed-posts">
+        <!-- Sample Post -->
+        <div class="post">
+            <div class="post-header">
+                <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
+                <div class="post-info">
+                    <h3 class="user-name">John Doe</h3>
+                    <span class="post-time">2 hours ago</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>This is a sample post content. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+            <div class="post-actions">
+                <button class="like-btn">
+                    <i class="fas fa-heart"></i> Like
+                </button>
+                <button class="comment-btn">
+                    <i class="fas fa-comment"></i> Comment
+                </button>
+                <button class="share-btn">
+                    <i class="fas fa-share"></i> Share
+                </button>
+            </div>
+            <div class="comments-section">
+                <div class="comment">
+                    <img src="{% static 'images/ui/women.jpg' %}" alt="Profile" class="comment-profile-pic">
+                    <div class="comment-content">
+                        <h4>Jane Smith</h4>
+                        <p>Great post!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
