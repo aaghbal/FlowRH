@@ -1,0 +1,50 @@
+<!-- templates/polls/poll_form.html -->
+<div class="oh-modal__dialog-body">
+    <form hx-post="{% url 'create-poll' %}" 
+          hx-target="#objectCreateModalTarget"
+          class="oh-profile-section">
+        {% csrf_token %}
+        
+        <div class="form-group mb-4">
+            <label class="oh-label">Question</label>
+            {{ form.question }}
+            {% if form.question.errors %}
+            <div class="oh-alert oh-alert--danger mt-2">
+                {{ form.question.errors }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="oh-label">Options</label>
+            <div class="poll-options-container">
+                <div class="mb-2">{{ form.option1 }}</div>
+                <div class="mb-2">{{ form.option2 }}</div>
+                <div class="mb-2 optional-option">{{ form.option3 }}</div>
+                <div class="mb-2 optional-option">{{ form.option4 }}</div>
+            </div>
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="oh-label">Poll Settings</label>
+            <div class="poll-settings">
+                <div class="setting-item mb-2">
+                    {{ form.allow_multiple_votes }}
+                    <label for="{{ form.allow_multiple_votes.id_for_label }}">
+                        Allow multiple votes
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label for="{{ form.duration.id_for_label }}">Duration:</label>
+                    {{ form.duration }}
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-row-reverse">
+            <button type="submit" class="oh-btn oh-btn--secondary mt-2 mr-0 oh-btn--w-100-resp">
+                {% trans "Create Poll" %}
+            </button>
+        </div>
+    </form>
+</div>

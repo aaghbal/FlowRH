@@ -56,10 +56,10 @@
                         <i class="fas fa-file"></i>
                         <span>{% trans "Document" %}</span>
                     </button>
-                    <button type="button" class="poll-btn" onclick="togglePollSection()">
+                    <button type="button" class="attach-btn" onclick="openPollModal()">
                         <i class="fas fa-poll"></i>
                         <span>{% trans "Poll" %}</span>
-                    </button>
+                    </button>          
                 </div>
                 <button type="submit" class="post-btn">
                     <i class="fas fa-paper-plane"></i>
@@ -141,4 +141,182 @@
         </div>
     </div>
 </div>
+<!-- Poll Creation Modal -->
+<!-- Poll Creation Modal -->
+<div id="pollModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>{% trans "Create New Poll" %}</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        
+        <div class="modal-body">
+            <form class="poll-form">
+                {% csrf_token %}
+                
+                <!-- Poll Title -->
+                <div class="form-group">
+                    <label class="form-label">{% trans "Poll Question" %}</label>
+                    <input type="text" 
+                           name="title" 
+                           class="form-input" 
+                           placeholder="{% trans 'Enter your question' %}"
+                           required>
+                </div>
+
+                <!-- Poll Description -->
+                <div class="form-group">
+                    <label class="form-label">{% trans "Description" %}</label>
+                    <textarea name="description" 
+                              class="form-input" 
+                              rows="3" 
+                              placeholder="{% trans 'Describe your poll (optional)' %}"></textarea>
+                </div>
+
+                <!-- Poll Duration -->
+                <div class="form-group">
+                    <label class="form-label">{% trans "Poll End Date" %}</label>
+                    <input type="datetime-local" 
+                           name="end_date" 
+                           class="form-input"
+                           required>
+                </div>
+
+                <!-- Poll Choices -->
+                <div class="choices-section">
+                    <h4 class="choices-title">{% trans "Poll Options" %}</h4>
+                    <div id="pollOptions">
+                        <div class="form-group poll-option">
+                            <input type="text" 
+                                   name="choice1" 
+                                   class="form-input" 
+                                   placeholder="{% trans 'Option 1' %}"
+                                   required>
+                            <button type="button" class="remove-option" style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="form-group poll-option">
+                            <input type="text" 
+                                   name="choice2" 
+                                   class="form-input" 
+                                   placeholder="{% trans 'Option 2' %}"
+                                   required>
+                            <button type="button" class="remove-option" style="display: none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" id="addOption" class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> {% trans "Add Option" %}
+                    </button>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closePollModal()">
+                        {% trans "Cancel" %}
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        {% trans "Create Poll" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // Poll Modal Functions
+    function openPollModal() {
+        document.getElementById('pollModal').style.display = 'block';
+    }
+
+    function closePollModal() {
+        document.getElementById('pollModal').style.display = 'none';
+    }
+
+    // Update your existing togglePollSection function
+    function togglePollSection() {
+        openPollModal();
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        const modal = document.getElementById('pollModal');
+        if (event.target == modal) {
+            closePollModal();
+        }
+    }
+
+    // Add Option functionality
+    document.getElementById('addOption').addEventListener('click', function() {
+        const pollOptions = document.getElementById('pollOptions');
+        const optionCount = pollOptions.children.length + 1;
+        
+        if (optionCount <= 10) { // Maximum 10 options
+            const newOption = document.createElement('div');
+            newOption.className = 'form-group poll-option';
+            newOption.innerHTML = `
+                <input type="text" 
+                       name="choice${optionCount}" 
+                       class="form-input" 
+                       placeholder="Option ${optionCount}"
+                       required>
+                <button type="button" class="remove-option">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            pollOptions.appendChild(newOption);
+        }
+        
+        updateRemoveButtons();
+    });
+
+    // Remove Option functionality
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.remove-option')) {
+            const option = e.target.closest('.poll-option');
+            option.remove();
+            updateRemoveButtons();
+        }
+    });
+
+    function updateRemoveButtons() {
+        const options = document.querySelectorAll('.poll-option');
+        options.forEach(option => {
+            const removeBtn = option.querySelector('.remove-option');
+            if (options.length <= 2) {
+                removeBtn.style.display = 'none';
+            } else {
+                removeBtn.style.display = 'block';
+            }
+        });
+    }
+
+    // Form submission
+    document.querySelector('.poll-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        // Example AJAX submission:
+        /*
+        fetch('/create-poll/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                closePollModal();
+                // Show success message
+            }
+        });
+        */
+    });
+
+    // Initialize remove buttons on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateRemoveButtons();
+    });
+</script>
+
 {% endblock content %}

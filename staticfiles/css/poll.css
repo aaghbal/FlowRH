@@ -1,0 +1,60 @@
+/* static/css/polls.css */
+
+.poll-options-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.poll-settings {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.oh-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.oh-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.oh-checkbox {
+    width: 18px;
+    height: 18px;
+}
+
+.oh-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.optional-option {
+    position: relative;
+}
+
+.optional-option::before {
+    content: '(Optional)';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #666;
+}

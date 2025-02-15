@@ -394,3 +394,365 @@
         justify-content: center;
     }
 }
+
+
+/* Poll Modal Styles */
+
+.poll-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.poll-modal.active {
+    display: flex;
+}
+
+.poll-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.poll-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.poll-modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1877f2;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.poll-modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.poll-question {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.poll-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.poll-option-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.poll-option-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.remove-option {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.add-option-btn {
+    width: 100%;
+    padding: 8px;
+    background: #f0f2f5;
+    border: 1px dashed #1877f2;
+    border-radius: 6px;
+    color: #1877f2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.add-option-btn:hover {
+    background: #e4e6e9;
+}
+
+.poll-settings {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.setting-item {
+    margin-bottom: 10px;
+}
+
+.setting-item label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+.setting-item select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.poll-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.cancel-btn,
+.create-poll-btn {
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.cancel-btn {
+    background: #f0f2f5;
+    border: none;
+    color: #333;
+}
+
+.create-poll-btn {
+    background: #1877f2;
+    border: none;
+    color: white;
+}
+
+.create-poll-btn:hover {
+    background: #166fe5;
+}
+
+@media (max-width: 768px) {
+    .poll-modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+}
+
+
+/* Modal Styles */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    /* Add these properties for better scrolling behavior */
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 0;
+    /* Remove padding here */
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Add max-height if you want to limit modal height */
+    max-height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    border-radius: 8px 8px 0 0;
+    /* Make header sticky */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.modal-body {
+    padding: 20px;
+    /* Add scroll to body */
+    overflow-y: auto;
+    max-height: calc(100vh - 140px);
+    /* Adjust based on header and footer height */
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+    /* Make footer sticky */
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+}
+
+
+/* Form Styles */
+
+.btn-secondary {
+    background-color: #dc3545;
+    border-radius: 2px;
+    border: none;
+    padding: 4px;
+}
+
+.poll-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.choices-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+}
+
+.poll-option {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.remove-option {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 5px;
+    flex-shrink: 0;
+}
+
+
+/* Scrollbar Styling (Optional) */
+
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 0;
+    }
+    .modal-content {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    .modal-header,
+    .modal-footer {
+        border-radius: 0;
+    }
+    .modal-body {
+        max-height: calc(100vh - 120px);
+    }
+}
