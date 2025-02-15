@@ -58,8 +58,8 @@
 }
 
 .post-btn {
-    background: rgb(131, 179, 36);
-    color: white;
+    background: #94ff3c;
+    color: black;
 }
 
 
@@ -275,13 +275,13 @@
     border: none;
     cursor: pointer;
     font-weight: 600;
-    background: rgb(131, 179, 36);
-    color: white;
+    background: #94FF3C;
+    color: black;
     transition: all 0.2s ease;
 }
 
 .post-btn:hover {
-    background: rgb(170, 252, 7);
+    background: rgb(72, 99, 18);
 }
 
 
@@ -439,7 +439,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #1877f2;
+    color: #94FF3C;
 }
 
 .close-modal {
@@ -499,10 +499,11 @@
 }
 
 .remove-option {
-    background: none;
+    background: url('/static/images/ui/remove.png') no-repeat center;
+    background-size: 22px;
+    width: 24px;
+    height: 24px;
     border: none;
-    color: #dc3545;
-    cursor: pointer;
     padding: 5px;
 }
 
@@ -510,9 +511,9 @@
     width: 100%;
     padding: 8px;
     background: #f0f2f5;
-    border: 1px dashed #1877f2;
+    border: 1px dashed #94FF3C;
     border-radius: 6px;
-    color: #1877f2;
+    color: #94FF3C;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -572,13 +573,13 @@
 }
 
 .create-poll-btn {
-    background: #1877f2;
+    background: #94FF3C;
     border: none;
     color: white;
 }
 
 .create-poll-btn:hover {
-    background: #166fe5;
+    background: #94FF3C;
 }
 
 @media (max-width: 768px) {
@@ -647,7 +648,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    padding: 15px 20px;
+    padding: 20px 24px;
     border-top: 1px solid #eee;
     background-color: #fff;
     border-radius: 0 0 8px 8px;
@@ -661,10 +662,25 @@
 /* Form Styles */
 
 .btn-secondary {
-    background-color: #dc3545;
-    border-radius: 2px;
+    background-color: #94FF3C;
+    border-radius: 6px;
     border: none;
-    padding: 4px;
+    padding: 10px;
+}
+
+.btn-secondary:hover {
+    background-color: rgb(62, 87, 13);
+}
+
+.btn-primary {
+    background-color: #94FF3C;
+    border-radius: 6px;
+    border: none;
+    padding: 10px;
+}
+
+.btn-primary:hover {
+    background-color: rgb(62, 87, 13);
 }
 
 .poll-form {
@@ -703,15 +719,6 @@
     gap: 7px;
     align-items: center;
     margin-bottom: 10px;
-}
-
-.remove-option {
-    background: none;
-    border: none;
-    color: #dc3545;
-    cursor: pointer;
-    padding: 5px;
-    flex-shrink: 0;
 }
 
 
@@ -755,4 +762,111 @@
     .modal-body {
         max-height: calc(100vh - 120px);
     }
+}
+
+.modal-content {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    flex: 1;
+}
+
+.poll-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.choices-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.poll-options-container {
+    max-height: 200px;
+    /* Adjust this value as needed */
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 10px;
+}
+
+
+/* Styling the scrollbar */
+
+.poll-options-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.poll-options-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.poll-options-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.poll-options-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.modal-content {
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    flex: 1;
+}
+
+.poll-form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.choices-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.poll-options-container {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 10px;
+}
+
+.poll-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* Styling the scrollbar */
+
+.poll-options-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.poll-options-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.poll-options-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.poll-options-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

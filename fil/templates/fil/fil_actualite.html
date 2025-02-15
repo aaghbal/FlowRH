@@ -13,13 +13,13 @@
 
     <div class="post-creation">
         <form class="post-form">
-            <textarea placeholder="What's on your mind?"></textarea>
+            <textarea placeholder="Qu'est-ce qui vous préoccupe ?"></textarea>
             
             <!-- Poll Creation Section -->
             <div id="pollSection" class="poll-section" style="display: none;">
                 <div class="poll-header">
                     <i class="fas fa-poll"></i>
-                    <span>{% trans "Create Poll" %}</span>
+                    <span>{% trans "Créer un sondage" %}</span>
                 </div>
                 <div class="poll-options">
                     <div class="poll-option">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <button type="button" class="add-option-btn">
-                    <i class="fas fa-plus"></i> {% trans "Add Option" %}
+                    <i class="fas fa-plus"></i> {% trans "Ajouter une option" %}
                 </button>
             </div>
     
@@ -49,21 +49,17 @@
                         <span>{% trans "Photo" %}</span>
                     </button>
                     <button type="button" class="attach-btn">
-                        <i class="fas fa-video"></i>
-                        <span>{% trans "Video" %}</span>
-                    </button>
-                    <button type="button" class="attach-btn">
-                        <i class="fas fa-file"></i>
+                        <i class="fas fa-file-alt"></i>
                         <span>{% trans "Document" %}</span>
                     </button>
                     <button type="button" class="attach-btn" onclick="openPollModal()">
                         <i class="fas fa-poll"></i>
-                        <span>{% trans "Poll" %}</span>
+                        <span>{% trans "Sondage" %}</span>
                     </button>          
                 </div>
                 <button type="submit" class="post-btn">
                     <i class="fas fa-paper-plane"></i>
-                    {% trans "Post" %}
+                    {% trans "Publier" %}
                 </button>
             </div>
         </form>
@@ -173,14 +169,7 @@
                               placeholder="{% trans 'Describe your poll (optional)' %}"></textarea>
                 </div>
 
-                <!-- Poll Duration -->
-                <div class="form-group">
-                    <label class="form-label">{% trans "Poll End Date" %}</label>
-                    <input type="datetime-local" 
-                           name="end_date" 
-                           class="form-input"
-                           required>
-                </div>
+
 
                 <!-- Poll Choices -->
                 <div class="choices-section">
