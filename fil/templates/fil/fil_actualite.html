@@ -72,6 +72,57 @@
                 <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
                 <div class="post-info">
                     <h3 class="user-name">John Doe</h3>
+                    <span class="post-time">1 hour ago</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>{% trans "What's your favorite programming language?" %}</p>
+                <form class="poll-form">
+                    <div class="form-group">
+                        <input type="radio" id="option1" name="poll" value="Python">
+                        <label for="option1">{% trans "Python" %}</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" id="option2" name="poll" value="JavaScript">
+                        <label for="option2">{% trans "JavaScript" %}</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" id="option3" name="poll" value="Java">
+                        <label for="option3">{% trans "Java" %}</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" id="option4" name="poll" value="C++">
+                        <label for="option4">{% trans "C++" %}</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% trans "Vote" %}</button>
+                </form>
+            </div>
+            <div class="post-actions">
+                <button class="like-btn">
+                    <i class="fas fa-heart"></i> {% trans "Like" %}
+                </button>
+                <button class="comment-btn">
+                    <i class="fas fa-comment"></i> {% trans "Comment" %}
+                </button>
+                <button class="share-btn">
+                    <i class="fas fa-share"></i> {% trans "Share" %}
+                </button>
+            </div>
+            <div class="comments-section">
+                <div class="comment">
+                    <img src="{% static 'images/ui/women.jpg' %}" alt="Profile" class="comment-profile-pic">
+                    <div class="comment-content">
+                        <h4>Jane Smith</h4>
+                        <p>{% trans "I love Python!" %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="post">
+            <div class="post-header">
+                <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
+                <div class="post-info">
+                    <h3 class="user-name">John Doe</h3>
                     <span class="post-time">2 hours ago</span>
                 </div>
             </div>
