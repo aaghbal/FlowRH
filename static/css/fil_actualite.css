@@ -870,3 +870,47 @@
 .poll-options-container::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.post-actions {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.like-btn,
+.comment-btn {
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.liked {
+    color: green;
+}
+
+.comment-section {
+    margin-top: 10px;
+    display: none;
+}
+
+.comment-input {
+    width: 80%;
+    padding: 5px;
+    margin-right: 5px;
+    margin-bottom: 8px;
+    border-color: #94FF3C;
+    border-radius: 8px;
+}
+
+.submit-comment {
+    padding: 5px 10px;
+    background-color: #94ff3c;
+    border: none;
+    border-radius: 8px;
+}
+
+.comments-list {
+    margin-top: 10px;
+}
