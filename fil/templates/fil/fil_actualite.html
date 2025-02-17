@@ -44,14 +44,14 @@
     
             <div class="post-actions">
                 <div class="post-attachments">
-                    <button type="button" class="attach-btn">
-                        <i class="fas fa-image"></i>
-                        <span>{% trans "Photo" %}</span>
+                    <button type="button" class="attach-btn" onclick="document.getElementById('imageInput').click();">
+                        <i class="fas fa-image"></i> <span>Photo</span>
                     </button>
-                    <button type="button" class="attach-btn">
-                        <i class="fas fa-file-alt"></i>
-                        <span>{% trans "Document" %}</span>
+                    <button type="button" class="attach-btn" onclick="document.getElementById('documentInput').click();">
+                        <i class="fas fa-file-alt"></i> <span>Document</span>
                     </button>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event, 'image')">
+                    <input type="file" id="documentInput" accept=".pdf,.doc,.docx,.txt" style="display: none;" onchange="handleFileSelect(event, 'document')">                
                     <button type="button" class="attach-btn" onclick="openPollModal()">
                         <i class="fas fa-poll"></i>
                         <span>{% trans "Sondage" %}</span>
@@ -74,7 +74,7 @@
                 <div class="user-section">
                     <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
                     <div class="post-info">
-                        <h3 class="user-name">John Doe</h3>
+                        <h3 class="user-name">Brahim amine</h3>
                         <span class="post-time">1 hour ago</span>
                     </div>
                 </div>
@@ -119,10 +119,10 @@
         </div>
         <div class="post-actions">
             <button class="like-btn">
-                <i class="fas fa-heart"></i> Like
+                <i class="fas fa-heart"></i> J'aime
             </button>
             <button class="comment-btn">
-                <i class="fas fa-comment"></i> Comment
+                <i class="fas fa-comment"></i> commentaire
             </button>
             <div class="comment-section">
                 <input type="text" class="comment-input" placeholder="Write a comment...">
@@ -133,19 +133,34 @@
         <div class="comments-section">
             <div class="comment">
                 <img src="{% static 'images/ui/women.jpg' %}" alt="Profile" class="comment-profile-pic">
-                <div class="comment-content">
-                    <h4>Jane Smith</h4>
-                    <p>{% trans "I love Python!" %}</p>
+                <div class="comment-container">
+                    <div class="comment-header">
+                        <h6>Salma iman</h6>
+                        <p class="comment-date">7 févr. 2025</p>
+                    </div>
+                    <h9 class="comment-text">Pourquoi on n'irait pas au bar Bemelmans ?</h9>
+                    <div class="comment-actions">
+                        <button class="action-button reply-btn">Répondre</button>
+                        <button class="action-button like-btn">J'aime</button>
+                    </div>
+                    <div class="reply-input">
+                        <textarea placeholder="Écrivez votre réponse..."></textarea>
+                        <button class="submit-reply">Envoyer</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
         <div class="post">
             <div class="post-header">
-                <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
-                <div class="post-info">
-                    <h3 class="user-name">John Doe</h3>
-                    <span class="post-time">2 hours ago</span>
+                <img src="{% static 'images/ui/write.png' %}" alt="Profile" class="profile-pollll">
+                <h6></h6>
+                <div class="user-section">
+                    <img src="{% static 'images/ui/men2.jpg' %}" alt="Profile" class="profile-pic">
+                    <div class="post-info">
+                        <h3 class="user-name">Hassane bahi</h3>
+                        <span class="post-time">2 hour ago</span>
+                    </div>
                 </div>
             </div>
             <div class="post-content">
@@ -154,10 +169,10 @@
             </div>
             <div class="post-actions">
                 <button class="like-btn">
-                    <i class="fas fa-heart"></i> Like
+                    <i class="fas fa-heart"></i> J'aime
                 </button>
                 <button class="comment-btn">
-                    <i class="fas fa-comment"></i> Comment
+                    <i class="fas fa-comment"></i> commentaire
                 </button>
                 <div class="comment-section">
                     <input type="text" class="comment-input" placeholder="Write a comment...">
@@ -167,10 +182,21 @@
             </div>
             <div class="comments-section">
                 <div class="comment">
-                    <img src="{% static 'images/ui/women.jpg' %}" alt="Profile" class="comment-profile-pic">
-                    <div class="comment-content">
-                        <h4>Jane Smith</h4>
-                        <p>Great post!</p>
+                    <img src="{% static 'images/ui/women3.jpg' %}" alt="Profile" class="comment-profile-pic">
+                    <div class="comment-container">
+                        <div class="comment-header">
+                            <h6>fatima amir</h6>
+                            <p class="comment-date">7 févr. 2025</p>
+                        </div>
+                        <h9 class="comment-text">Good Job!</h9>
+                        <div class="comment-actions">
+                            <button class="action-button reply-btn">Répondre</button>
+                            <button class="action-button like-btn">J'aime</button>
+                        </div>
+                        <div class="reply-input">
+                            <textarea placeholder="Écrivez votre réponse..."></textarea>
+                            <button class="submit-reply">Envoyer</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -180,10 +206,14 @@
         <!-- Sample Post -->
         <div class="post">
             <div class="post-header">
-                <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
-                <div class="post-info">
-                    <h3 class="user-name">John Doe</h3>
-                    <span class="post-time">2 hours ago</span>
+                <img src="{% static 'images/ui/write.png' %}" alt="Profile" class="profile-pollll">
+                <h6></h6>
+                <div class="user-section">
+                    <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
+                    <div class="post-info">
+                        <h3 class="user-name">Brahim amine</h3>
+                        <span class="post-time">3 hour ago</span>
+                    </div>
                 </div>
             </div>
             <div class="post-content">
@@ -191,10 +221,10 @@
             </div>
             <div class="post-actions">
                 <button class="like-btn">
-                    <i class="fas fa-heart"></i> Like
+                    <i class="fas fa-heart"></i> J'aime
                 </button>
                 <button class="comment-btn">
-                    <i class="fas fa-comment"></i> Comment
+                    <i class="fas fa-comment"></i> commentaire
                 </button>
                 <div class="comment-section">
                     <input type="text" class="comment-input" placeholder="Write a comment...">
@@ -204,10 +234,21 @@
             </div>
             <div class="comments-section">
                 <div class="comment">
-                    <img src="{% static 'images/ui/women.jpg' %}" alt="Profile" class="comment-profile-pic">
-                    <div class="comment-content">
-                        <h4>Jane Smith</h4>
-                        <p>Great post!</p>
+                    <img src="{% static 'images/ui/women2.jpg' %}" alt="Profile" class="comment-profile-pic">
+                    <div class="comment-container">
+                        <div class="comment-header">
+                            <h6>amina haddad</h6>
+                            <p class="comment-date">7 févr. 2025</p>
+                        </div>
+                        <h9 class="comment-text">Bon travail!</h9>
+                        <div class="comment-actions">
+                            <button class="action-button reply-btn">Répondre</button>
+                            <button class="action-button like-btn">J'aime</button>
+                        </div>
+                        <div class="reply-input">
+                            <textarea placeholder="Écrivez votre réponse..."></textarea>
+                            <button class="submit-reply">Envoyer</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,12 +256,10 @@
     </div>
 </div>
 <!-- Poll Creation Modal -->
-<!-- Poll Creation Modal -->
 <div id="pollModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>{% trans "Create New Poll" %}</h2>
-            <span class="close-modal">&times;</span>
+            <h2>{% trans "Créer un nouveau sondage" %}</h2>
         </div>
         
         <div class="modal-body">
@@ -229,25 +268,21 @@
                 
                 <!-- Poll Title -->
                 <div class="form-group">
-                    <label class="form-label">{% trans "Poll Question" %}</label>
+                    <label class="form-label">{% trans "Titre du sondage" %}</label>
                     <input type="text" 
                            name="title" 
                            class="form-input" 
-                           placeholder="{% trans 'Enter your question' %}"
+                           placeholder="{% trans 'Entrez votre Titre' %}"
                            required>
                 </div>
-
-                <!-- Poll Description -->
                 <div class="form-group">
-                    <label class="form-label">{% trans "Description" %}</label>
-                    <textarea name="description" 
-                              class="form-input" 
-                              rows="3" 
-                              placeholder="{% trans 'Describe your poll (optional)' %}"></textarea>
+                    <label class="form-label">{% trans "Question du sondage" %}</label>
+                    <input type="text" 
+                           name="title" 
+                           class="form-input" 
+                           placeholder="{% trans 'Entrez votre question' %}"
+                           required>
                 </div>
-
-
-
                 <!-- Poll Choices -->
                 <div class="choices-section">
                     <h4 class="choices-title">{% trans "Poll Options" %}</h4>
@@ -259,7 +294,6 @@
                                    placeholder="{% trans 'Option 1' %}"
                                    required>
                             <button type="button" class="remove-option" style="display: none;">
-                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                         <div class="form-group poll-option">
@@ -269,21 +303,20 @@
                                    placeholder="{% trans 'Option 2' %}"
                                    required>
                             <button type="button" class="remove-option" style="display: none;">
-                                <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
                     <button type="button" id="addOption" class="btn btn-secondary">
-                        <i class="fas fa-plus"></i> {% trans "Add Option" %}
+                        <i class="fas fa-plus"></i> {% trans "Ajouter une option" %}
                     </button>
                 </div>
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closePollModal()">
-                        {% trans "Cancel" %}
+                        {% trans "Annuler" %}
                     </button>
                     <button type="submit" class="btn btn-primary">
-                        {% trans "Create Poll" %}
+                        {% trans "créer" %}
                     </button>
                 </div>
             </form>
@@ -411,6 +444,33 @@
                 comment.textContent = commentInput.value;
                 commentsList.appendChild(comment);
                 commentInput.value = '';
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const replyBtn = document.querySelector('.reply-btn');
+        const likeBtn = document.querySelector('.like-btn');
+        const replyInput = document.querySelector('.reply-input');
+    
+        // Handle reply button click
+        replyBtn.addEventListener('click', function() {
+            replyInput.style.display = replyInput.style.display === 'none' ? 'block' : 'none';
+        });
+    
+        // Handle like button click
+        likeBtn.addEventListener('click', function() {
+            this.classList.toggle('liked');
+        });
+    
+        // Handle reply submission
+        const submitReply = document.querySelector('.submit-reply');
+        submitReply.addEventListener('click', function() {
+            const replyText = document.querySelector('textarea').value;
+            if (replyText.trim()) {
+                // Here you would typically send the reply to your backend
+                alert('Réponse envoyée: ' + replyText);
+                document.querySelector('textarea').value = '';
+                replyInput.style.display = 'none';
             }
         });
     });
