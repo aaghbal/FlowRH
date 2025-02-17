@@ -68,34 +68,54 @@
     <div class="feed-posts">
         <!-- Sample Post -->
          <div class="post">
-        <div class="post-header">
-            <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
-            <div class="post-info">
-                <h3 class="user-name">John Doe</h3>
-                <span class="post-time">1 hour ago</span>
+            <div class="post-header">
+                <img src="{% static 'images/ui/poll.png' %}" alt="Profile" class="profile-polll">
+                <h6>Lieu de prochain rendez-vous</h6>
+                <div class="user-section">
+                    <img src="{% static 'images/ui/men.jpg' %}" alt="Profile" class="profile-pic">
+                    <div class="post-info">
+                        <h3 class="user-name">John Doe</h3>
+                        <span class="post-time">1 hour ago</span>
+                    </div>
+                </div>
             </div>
-        </div>
         <div class="post-content">
-            <p>{% trans "What's your favorite programming language?" %}</p>
-            <form class="poll-form">
-                <div class="form-group">
-                    <input type="radio" id="option1" name="poll" value="Python">
-                    <label for="option1">{% trans "Python" %}</label>
+            <p>{% trans "Nous sommes en train de preparer notre prochaine recontre, et nous voudrions savoir ou vous aimeriez aller?" %}</p>
+            <div class="poll-options">
+                <div class="poll-option">
+                    <input type="radio" name="poll" id="option2">
+                    <div class="barpoll">
+                        <label for="option2">Un café avec Wi-Fi</label>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <span class="vote-count">0 votes</span>
                 </div>
-                <div class="form-group">
-                    <input type="radio" id="option2" name="poll" value="JavaScript">
-                    <label for="option2">{% trans "JavaScript" %}</label>
+            
+                <div class="poll-option">
+                    <input type="radio" name="poll" id="option2">
+                    <div class="barpoll">
+                        <label for="option2">Espace de coworking</label>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 40%"></div>
+                        </div>
+                    </div>
+                    <span class="vote-count">2 votes</span>
                 </div>
-                <div class="form-group">
-                    <input type="radio" id="option3" name="poll" value="Java">
-                    <label for="option3">{% trans "Java" %}</label>
+            
+                <div class="poll-option">
+                    <input type="radio" name="poll" id="option2">
+                    <div class="barpoll">
+                        <label for="option2">Bibliothèque publique</label>
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 20%"></div>
+                        </div>
+                    </div>
+                    <span class="vote-count">1 votes</span>
                 </div>
-                <div class="form-group">
-                    <input type="radio" id="option4" name="poll" value="C++">
-                    <label for="option4">{% trans "C++" %}</label>
-                </div>
-                <button type="submit" class="btn btn-primary">{% trans "Vote" %}</button>
-            </form>
+                <button class="voter">vote</button>
+            </div>
         </div>
         <div class="post-actions">
             <button class="like-btn">
