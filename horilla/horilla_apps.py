@@ -47,13 +47,7 @@ SIDEBARS = [
     "recruitment",
     "onboarding",
     "employee",
-    "attendance",
-    "leave",
-    "payroll",
     "pms",
-    "offboarding",
-    "asset",
-    "helpdesk",
 ]
 
 WHITE_LABELLING = False
