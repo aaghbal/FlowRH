@@ -223,7 +223,7 @@
 								>
 							</li>
 
-							{% if "attendance"|app_installed %}
+							{% comment %} {% if "attendance"|app_installed %}
 								<li data-cell-index="18" data-cell-title="{% trans 'Attendance' %}" class="oh-general__tab">
 									<a
 									hx-get="{% url 'profile-attendance-tab' %}"
@@ -236,9 +236,9 @@
 									>{% trans "Présence" %}</a
 									>
 								</li>
-							{% endif %}
+							{% endif %} {% endcomment %}
 
-							{% if "leave"|app_installed %}
+							{% comment %} {% if "leave"|app_installed %}
                 				{% if perms.leave.view_leaverequest or request.user|check_manager:employee or request.user == employee.employee_user_id %}
                 				  <li data-cell-index="12" data-cell-title="{% trans 'Leave' %}" class="oh-general__tab">
                 				    <a
@@ -252,9 +252,9 @@
                 				    >
                 				  </li>
                 				{% endif %}
-              				{% endif %}
+              				{% endif %} {% endcomment %}
 
-							{% if "payroll"|app_installed %}
+							{% comment %} {% if "payroll"|app_installed %}
 								<li data-cell-index="16" data-cell-title="{% trans 'Payroll' %}" class="oh-general__tab">
 									<a
 									href="#"
@@ -264,7 +264,7 @@
 									>{% trans "Paie" %}</a
 									>
 								</li>
-							{% endif %}
+							{% endif %} {% endcomment %}
 
 							{% if "payroll"|app_installed %}
 								<li data-cell-index="15" data-cell-title="{% trans 'Allowance & Deduction' %}" class="oh-general__tab">
@@ -280,7 +280,7 @@
 								</li>
 							{% endif %}
 
-							{% if "attendance"|app_installed %}
+							{% comment %} {% if "attendance"|app_installed %}
 							<li data-cell-index="14" data-cell-title="{% trans "Penalty Account" %}" class="oh-general__tab">
 								<a
 								data-action="general-tab"
@@ -291,7 +291,7 @@
 								>{% trans "Penalty Account" %}</a
 								>
 							</li>
-							{% endif %}
+							{% endif %} {% endcomment %}
 
 							{% if "asset"|app_installed %}
 								<li data-cell-index="13" data-cell-title="{% trans 'Assets' %}" class="oh-general__tab">

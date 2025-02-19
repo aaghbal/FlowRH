@@ -21,26 +21,12 @@ SUBMENUS = [
         "redirect": reverse("objective-list-view"),
     },
     {
-        "menu": trans("360 Feedback"),
-        "redirect": reverse("feedback-view"),
-    },
-    {
         "menu": trans("Meetings"),
         "redirect": reverse("view-meetings"),
     },
     {
-        "menu": trans("Key Results"),
-        "redirect": reverse("view-key-result"),
-        "accessibility": "pms.sidebar.key_result_accessibility",
-    },
-    {
         "menu": trans("Employee Bonus Point"),
         "redirect": reverse("employee-bonus-point"),
-    },
-    {
-        "menu": trans("Period"),
-        "redirect": reverse("period-view"),
-        "accessibility": "pms.sidebar.period_accessibility",
     },
     {
         "menu": trans("Question Template"),

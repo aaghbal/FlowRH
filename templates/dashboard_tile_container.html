@@ -295,7 +295,7 @@
         </div>
     {% endif %}
 {% endif %}
-{% if not 'shift_request_approve' in charts %}
+{% comment %} {% if not 'shift_request_approve' in charts %}
     {% if perms.base.change_shiftrequest or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"
             id="shiftRequestApprove">
@@ -315,7 +315,7 @@
             </div>
         </div>
     {% endif %}
-{% endif %}
+{% endif %} {% endcomment %}
 {% if not 'work_type_request_approve' in charts %}
     {% if perms.base.change_worktyperequest or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"
@@ -338,7 +338,7 @@
         </div>
     {% endif %}
 {% endif %}
-{% if "attendance"|app_installed and not 'overtime_approve' in charts %}
+{% comment %} {% if "attendance"|app_installed and not 'overtime_approve' in charts %}
     {% if perms.attendance.change_attendance or request.user|is_reportingmanager %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="OTApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px"
@@ -360,7 +360,7 @@
             </div>
         </div>
     {% endif %}
-{% endif %}
+{% endif %} {% endcomment %}
 {% if "attendance"|app_installed %}
     {% if not 'attendance_validate' in charts %}
         {% if perms.attendance.change_attendance or request.user|is_reportingmanager %}
@@ -390,7 +390,7 @@
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="LeaveApprove">
             <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
                 <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                    <span class="oh-card-dashboard__title">{% trans "Demande de congé pour approbation" %}</span>
+                    <span class="oh-card-dashboard__title">{% trans "Demandes de congé en attente d'approbation" %}</span>
                     <span class="float-end chart_close_button " role="button" data-chart="leave_request_approve"
                         hx-post="{% url 'dashboard-components-toggle' %}?chart_id=leave_request_approve" hx-target="#LeaveApprove"
                         hx-swap="outerHTML">
@@ -426,7 +426,7 @@
         </div>
     {% endif %}
 {% endif %}
-{% if "pms"|app_installed and not 'feedback_answer' in charts %}
+{% comment %} {% if "pms"|app_installed and not 'feedback_answer' in charts %}
     <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart" id="feedbackAnswer">
         <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent" style="height:425px">
             <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
@@ -443,7 +443,7 @@
             </div>
         </div>
     </div>
-{% endif %}
+{% endif %} {% endcomment %}
 {% if "asset"|app_installed and not 'asset_request_approve' in charts %}
     {% if perms.asset.view_assetrequest %}
         <div class="col-12 col-sm-12 col-md-12 col-lg-6 oh-card-dashboard--moveable dashboardChart"

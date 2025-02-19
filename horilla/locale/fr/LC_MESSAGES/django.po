@@ -24258,7 +24258,7 @@ msgstr "Date de début de contrat"
 #, fuzzy
 #| msgid "Total Strength"
 msgid "Total Installments"
-msgstr "Force totale"
+msgstr "effectif total"
 
 #: payroll/templates/payroll/loan/view_loan.html:26
 #, fuzzy
@@ -28443,15 +28443,15 @@ msgstr ""
 
 #: templates/dashboard.html:146
 msgid "New Joining Today"
-msgstr "Nouveaux joindre aujourd'hui"
+msgstr "nouveaux employés aujourd'hui"
 
 #: templates/dashboard.html:163
 msgid "New Joining This Week"
-msgstr "Nouveaux joindre cette semaine"
+msgstr "nouveaux employés cette semaine"
 
 #: templates/dashboard.html:180
 msgid "Total Strength"
-msgstr "Force totale"
+msgstr "effectif total"
 
 #: templates/dashboard.html:202
 msgid "Announcements"
