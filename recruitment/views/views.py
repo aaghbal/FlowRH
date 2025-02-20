@@ -503,25 +503,39 @@ def get_stage_badge_count(request):
 @manager_can_enter(perm="recruitment.view_recruitment")
 def stage_component(request, view: str = "list"):
     """
-    This method will stage tab contents
+    This method will stage tab contents with French translations
     """
+    FRENCH_STAGES = {
+        'Applied': 'Candidature reçue',
+        'Initial': 'Première évaluation',
+        'Interview': 'Entretien',
+        'Hired': 'Embauché(e)',
+        'Cancelled': 'Annulé(e)'
+    }
+
     recruitment_id = request.GET["rec_id"]
     recruitment = Recruitment.objects.get(id=recruitment_id)
-    ordered_stages = CACHE.get(request.session.session_key + "pipeline")[
-        "stages"
-    ].filter(recruitment_id__id=recruitment_id)
+    
+    ordered_stages = CACHE.get(request.session.session_key + "pipeline")["stages"].filter(
+        recruitment_id__id=recruitment_id
+    )
+
+    # Add French translations to each stage
+    for stage in ordered_stages:
+        current_stage = str(stage)
+        stage.french_title = FRENCH_STAGES.get(current_stage, current_stage)
+
     template = "pipeline/components/stages_tab_content.html"
     if view == "card":
         template = "pipeline/kanban_components/kanban_stage_components.html"
+
     return render(
         request,
         template,
         {
             "rec": recruitment,
             "ordered_stages": ordered_stages,
-            "filter_dict": CACHE.get(request.session.session_key + "pipeline")[
-                "filter_dict"
-            ],
+            "filter_dict": CACHE.get(request.session.session_key + "pipeline")["filter_dict"],
         },
     )
 
@@ -590,6 +604,7 @@ def candidate_component(request):
     """
     Candidate component
     """
+    
     stage_id = request.GET.get("stage_id")
     stage = (
         CACHE.get(request.session.session_key + "pipeline")["stages"]
@@ -1591,9 +1606,9 @@ def candidate_view_individual(request, cand_id, **kwargs):
             else:
                 previous_id = requests_ids[index - 1]
             break
-
+    print("---------")
+    print(type(candidate_obj.stage_id))
     now = timezone.now()
-
     return render(
         request,
         "candidate/individual.html",

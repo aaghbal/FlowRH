@@ -53,7 +53,7 @@ function attendanceDateChange(selectElement) {
             attendance_date: selectedDate,
             shift_id: shiftId,
         },
-        success: function (response) {
+        success: function(response) {
             parentForm.find("[name=minimum_hour]").val(response.minimum_hour);
         },
     });
@@ -66,7 +66,7 @@ function getAssignedLeave(employeeElement) {
         url: "/payroll/get-assigned-leaves",
         data: { employeeId: employeeId },
         dataType: "json",
-        success: function (response) {
+        success: function(response) {
             let rows = "";
             for (let index = 0; index < response.length; index++) {
                 const element = response[index];
@@ -87,12 +87,13 @@ function getAssignedLeave(employeeElement) {
         },
     });
 }
+
 function selectSelected(viewId, storeKey = "selectedInstances") {
     ids = JSON.parse($(`#${storeKey}`).attr("data-ids") || "[]");
-    $.each(ids, function (indexInArray, valueOfElement) {
+    $.each(ids, function(indexInArray, valueOfElement) {
         $(
-            `${viewId} .oh-sticky-table__tbody .list-table-row[value=${valueOfElement}]`
-        )
+                `${viewId} .oh-sticky-table__tbody .list-table-row[value=${valueOfElement}]`
+            )
             .prop("checked", true)
             .change();
         $(`${viewId} tbody .list-table-row[value=${valueOfElement}]`)
@@ -101,7 +102,7 @@ function selectSelected(viewId, storeKey = "selectedInstances") {
     });
     $(
         `${viewId} .oh-sticky-table__tbody .list-table-row,${viewId} tbody .list-table-row`
-    ).change(function (e) {
+    ).change(function(e) {
         id = $(this).val();
         ids = JSON.parse($(`#${storeKey}`).attr("data-ids") || "[]");
         ids = Array.from(new Set(ids));
@@ -242,7 +243,7 @@ function reloadSelectedCount(targetElement, storeKey = "selectedInstances") {
 }
 
 function removeHighlight() {
-    setTimeout(function () {
+    setTimeout(function() {
         $(".toggle-highlight").removeClass("toggle-highlight");
     }, 200);
 }
@@ -258,6 +259,7 @@ function removeId(element, storeKey = "selectedInstances") {
     ids = JSON.stringify(ids);
     $(`#${storeKey}`).attr("data-ids", ids);
 }
+
 function bulkStageUpdate(canIds, stageId, preStageId) {
     $.ajax({
         type: "POST",
@@ -267,7 +269,7 @@ function bulkStageUpdate(canIds, stageId, preStageId) {
             canIds: JSON.stringify(canIds),
             stageId: stageId,
         },
-        success: function (response, textStatus, jqXHR) {
+        success: function(response, textStatus, jqXHR) {
             if (jqXHR.status === 200) {
                 $(`#stageLoad` + preStageId).click();
                 $(`#stageLoad` + stageId).click();
@@ -293,7 +295,7 @@ function updateCandStage(canIds, stageId, preStageId) {
             canIds: canIds,
             stageId: stageId,
         },
-        success: function (response, textStatus, jqXHR) {
+        success: function(response, textStatus, jqXHR) {
             if (jqXHR.status === 200) {
                 $(`#stageLoad` + preStageId).click();
                 $(`#stageLoad` + stageId).click();
@@ -324,7 +326,7 @@ function checkSequence(element) {
 
     if (
         stageOrder.indexOf(parseInt(stageId)) !=
-            stageOrder.indexOf(parseInt(preStageId)) + 1 &&
+        stageOrder.indexOf(parseInt(preStageId)) + 1 &&
         stage.type != "cancelled"
     ) {
         Swal.fire({
@@ -335,7 +337,7 @@ function checkSequence(element) {
             confirmButtonColor: "#008000",
             cancelButtonColor: "#d33",
             confirmButtonText: "Confirm",
-        }).then(function (result) {
+        }).then(function(result) {
             if (result.isConfirmed) {
                 updateCandStage(canIds, stageId, preStageId);
             }
@@ -371,8 +373,8 @@ function htmxLoadIndicator(e) {
 }
 
 function ajaxWithResponseHandler(event) {
-    $(event.target).each(function () {
-        $.each(this.attributes, function () {
+    $(event.target).each(function() {
+        $.each(this.attributes, function() {
             if (this.specified && this.name === "hx-on-htmx-after-request") {
                 eval(this.value);
             }
@@ -382,7 +384,7 @@ function ajaxWithResponseHandler(event) {
 
 var originalConfirm = window.confirm;
 // Override the default confirm function with SweetAlert
-window.confirm = function (message) {
+window.confirm = function(message) {
     var event = window.event || {};
     event.preventDefault();
     var languageCode = $("#main-section-data").attr("data-lang") || "en";
@@ -402,15 +404,15 @@ window.confirm = function (message) {
         cancelButtonText: cancel,
     }).then((result) => {
         if (result.isConfirmed) {
-            var path = event.target["htmx-internal-data"]?.path;
-            var verb = event.target["htmx-internal-data"]?.verb;
+            var path = event.target["htmx-internal-data"] ? .path;
+            var verb = event.target["htmx-internal-data"] ? .verb;
             var hxTarget = $(event.target).attr("hx-target");
-            var hxVals = $(event.target).attr("hx-vals")
-                ? JSON.parse($(event.target).attr("hx-vals"))
-                : {};
+            var hxVals = $(event.target).attr("hx-vals") ?
+                JSON.parse($(event.target).attr("hx-vals")) :
+                {};
             var hxSwap = $(event.target).attr("hx-swap");
-            $(event.target).each(function () {
-                $.each(this.attributes, function () {
+            $(event.target).each(function() {
+                $.each(this.attributes, function() {
                     if (
                         this.specified &&
                         this.name === "hx-on-htmx-before-request"
@@ -497,7 +499,7 @@ $("#close").attr(
     "oh-activity-sidebar__header-icon me-2 oh-activity-sidebar__close md hydrated"
 );
 
-$("body").on("click", ".select2-search__field", function (e) {
+$("body").on("click", ".select2-search__field", function(e) {
     //When click on Select2 fields in filter form,Auto close issue
     e.stopPropagation();
 });
@@ -511,12 +513,10 @@ nav.after(
     )
 );
 
-$(document).on("htmx:beforeRequest", function (event, data) {
-    if (
-        !Array.from(event.target.getAttributeNames()).some((attr) =>
+$(document).on("htmx:beforeRequest", function(event, data) {
+    if (!Array.from(event.target.getAttributeNames()).some((attr) =>
             attr.startsWith("hx-on")
-        )
-    ) {
+        )) {
         var response = event.detail.xhr.response;
         var target = $(event.detail.elt.getAttribute("hx-target"));
         var avoid_target_ids = [
@@ -527,8 +527,7 @@ $(document).on("htmx:beforeRequest", function (event, data) {
         var avoid_target_class = [
             "oh-badge--small"
         ]
-        if (
-            !target.closest("form").length &&
+        if (!target.closest("form").length &&
             !avoid_target_ids.includes(target.attr("id")) &&
             !avoid_target_class.some((cls) => target.hasClass(cls))
         ) {
@@ -537,7 +536,7 @@ $(document).on("htmx:beforeRequest", function (event, data) {
     }
 });
 
-$(document).on("keydown", function (event) {
+$(document).on("keydown", function(event) {
     // Check if the cursor is not focused on an input field
     var isInputFocused = $(document.activeElement).is(
         "input, textarea, select"
@@ -557,9 +556,9 @@ $(document).on("keydown", function (event) {
         // take delete button inside that else take the delete button from navbar Actions
         if (!isInputFocused) {
             var $modal = $(".oh-modal--show");
-            var $deleteButton = $modal.length
-                ? $modal.find('[data-action="delete"]')
-                : $(".oh-dropdown").find('[data-action="delete"]');
+            var $deleteButton = $modal.length ?
+                $modal.find('[data-action="delete"]') :
+                $(".oh-dropdown").find('[data-action="delete"]');
             if ($deleteButton.length) {
                 $deleteButton.click();
                 $deleteButton[0].click();
@@ -575,9 +574,9 @@ $(document).on("keydown", function (event) {
         // Key code for the right arrow key
         if (!isInputFocused) {
             var $modal = $(".oh-modal--show");
-            var $nextButton = $modal.length
-                ? $modal.find('[data-action="next"]')
-                : $('[data-action="next"]'); // Click on the next button in detail view modal
+            var $nextButton = $modal.length ?
+                $modal.find('[data-action="next"]') :
+                $('[data-action="next"]'); // Click on the next button in detail view modal
             if ($nextButton.length) {
                 $nextButton[0].click();
             }
@@ -587,15 +586,16 @@ $(document).on("keydown", function (event) {
         if (!isInputFocused) {
             // Click on the previous button in detail view modal
             var $modal = $(".oh-modal--show");
-            var $previousButton = $modal.length
-                ? $modal.find('[data-action="previous"]')
-                : $('[data-action="previous"]');
+            var $previousButton = $modal.length ?
+                $modal.find('[data-action="previous"]') :
+                $('[data-action="previous"]');
             if ($previousButton.length) {
                 $previousButton[0].click();
             }
         }
     }
 });
+
 function handleDownloadAndRefresh(event, url) {
     // Use in import_popup.html file
     event.preventDefault();
@@ -607,7 +607,7 @@ function handleDownloadAndRefresh(event, url) {
     document.body.appendChild(iframe);
 
     // Refresh the page after a short delay
-    setTimeout(function () {
+    setTimeout(function() {
         document.body.removeChild(iframe); // Clean up the iframe
         window.location.reload(); // Refresh the page
     }, 500); // Adjust the delay as needed
@@ -650,7 +650,7 @@ function enlargeImage(src, $element) {
     var name = $("<span>").text(src.split("/").pop().replace(/_/g, " "));
     enlargeImageContainer.append(enlargedImage);
     enlargeImageContainer.append(name);
-    setTimeout(function () {
+    setTimeout(function() {
         enlargeImageContainer.show();
 
         const iframe = document.querySelector("iframe").contentWindow;
@@ -665,11 +665,12 @@ function hideEnlargeImage() {
     enlargeImageContainer.empty();
 }
 
-$(document).on("click", function (event) {
+$(document).on("click", function(event) {
     if (!$(event.target).closest("#enlargeImageContainer").length) {
         hideEnlargeImage();
     }
 });
+
 function submitForm(elem) {
     $(elem).siblings(".add_more_submit").click();
 }

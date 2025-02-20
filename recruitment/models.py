@@ -422,7 +422,7 @@ class Candidate(HorillaModel):
         blank=True,
         verbose_name=_("Source"),
     )
-    start_onboard = models.BooleanField(default=False, verbose_name=_("Start Onboard"))
+    start_onboard = models.BooleanField(default=False, verbose_name=_("Début de l'Intégration"))
     hired = models.BooleanField(default=False, verbose_name=_("Hired"))
     canceled = models.BooleanField(default=False, verbose_name=_("Canceled"))
     converted = models.BooleanField(default=False, verbose_name=_("Converted"))

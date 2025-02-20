@@ -11,10 +11,16 @@
                     data-rec-stage-badge="{{rec.id}}"
                     id="stageCount{{stage.id}}">
                     0</span>
-                <input class="oh-tabs__movable-title oh-table__editable-input" value="{{stage}}"
+              <!-- Debug output -->
+            <input class="oh-tabs__movable-title oh-table__editable-input" 
+                value="{{stage.french_title|default:stage}}"
                 {% if perms.recruitment.change_stage or request.user|recruitment_manages:rec %}
-                    hx-post="{% url 'stage-title-update' stage.id %}" name='stage' {% endif %} hx-target="#ohMessages"
-                    style="min-width: 160px;" readonly="" />
+                hx-post="{% url 'stage-title-update' stage.id %}" 
+                name='stage' 
+                {% endif %} 
+                hx-target="#ohMessages"
+                style="min-width: 160px;" 
+                readonly="" />
             </div>
         </div>
         <div class="d-flex justify-content-between custom-scroll">
@@ -56,7 +62,7 @@
                             <li class="oh-dropdown__item" style="cursor: pointer;">
                                 <a hx-get="{% url 'send-mail' %}?stage_id={{stage.id}}" hx-target="#objectCreateModalTarget"
                                 data-toggle="oh-modal-toggle" data-target="#objectCreateModal" class="oh-dropdown__link">
-                                {% trans "Bulk mail" %}
+                                {% trans "Envoi de Courriels en Masse" %}
                                 </a>
                             </li>
                             {% endif %}

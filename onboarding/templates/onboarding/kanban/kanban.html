@@ -109,7 +109,7 @@
                                                             <a href="#" class="oh-dropdown__link oh-dropdown__link--danger oh-kanban__card-delete">Delete</a>
                                                         </li> {% endcomment %}
                                                         <li class="oh-dropdown__item">
-                                                            <a href="#" data-toggle="oh-modal-toggle" data-target="#sendMailModal" hx-get="{% url 'onboarding-send-mail' candidate.candidate_id.id %}" hx-target="#sendMailModalBody" class="oh-dropdown__link">{% trans "Send Mail" %}</a>
+                                                            <a href="#" data-toggle="oh-modal-toggle" data-target="#sendMailModal" hx-get="{% url 'onboarding-send-mail' candidate.candidate_id.id %}" hx-target="#sendMailModalBody" class="oh-dropdown__link">{% trans "Envoyer un Mail" %}</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -250,7 +250,7 @@
 <div class="oh-modal" id="sendMailModal" role="dialog" aria-labelledby="" aria-hidden="true">
     <div class="oh-modal__dialog oh-modal__dialog--timeoff">
         <div class="oh-modal__dialog-header">
-            <span class="oh-modal__dialog-title" id="modalTask">{% trans "Send Mail" %}</span>
+            <span class="oh-modal__dialog-title" id="modalTask">{% trans "Envoyer un Mail" %}</span>
             <button class="oh-modal__close" aria-label="Close" title="{% trans "Close" %}">
                 <ion-icon name="close-outline" role="img" class="md hydrated" aria-label="close outline"></ion-icon>
             </button>

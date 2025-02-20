@@ -197,7 +197,7 @@
                         style="cursor: pointer;"
                         data-toggle='oh-modal-toggle'
                         data-target='#objectDetailsModal'
-                        >{% trans "Send Mail" %}</a
+                        >{% trans "Envoyer un Mail" %}</a
                       >
                     </li>
                     {% endif %}
@@ -254,7 +254,7 @@
                     {% endif %}
                     <li class="oh-dropdown__item">
                       <a style="color: inherit;text-decoration: none;" class="oh-dropdown__link oh-dropdown__link--secondary" href="{{cand.resume.url}}" target="_blank"
-                        >{% trans "Resume" %}</a>
+                        >{% trans "CV" %}</a>
                     </li>
                     {% if perms.recruitment.change_candidate or request.user|is_stagemanager %}
                     <li class="oh-dropdown__item">

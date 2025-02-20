@@ -9,7 +9,7 @@
     </span>
   <span class="m-3 review_ongoing" hx-get="{% url "objective-list-search" %}?{{pg}}&status=Not Started" hx-target="#objective_list" style="cursor: pointer">
     <span class="oh-dot oh-dot--small me-1" style="background-color:grey"></span>
-    {% trans "Not Started" %}
+    {% trans "Non commencé" %}
   </span>
   <span class="m-3 paid" hx-get="{% url "objective-list-search" %}?{{pg}}&status=Behind" hx-target="#objective_list" style="cursor: pointer">
     <span class="oh-dot oh-dot--small me-1" style="background-color:orange"></span>

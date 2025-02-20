@@ -460,7 +460,7 @@ excel_columns = [
     ("phone", trans("Phone")),
     ("experience", trans("Experience")),
     ("gender", trans("Gender")),
-    ("dob", trans("Date of Birth")),
+    ("dob", trans("Date de Naissance")),
     ("country", trans("Country")),
     ("state", trans("State")),
     ("city", trans("City")),

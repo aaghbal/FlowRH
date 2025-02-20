@@ -13075,7 +13075,7 @@ msgstr "ausencia total"
 #: base/views.py:6463 onboarding/templates/onboarding/candidates_view.html:23
 #: recruitment/templates/dashboard/dashboard.html:74
 #: templates/dashboard_tile_container.html:76
-msgid "Hired Candidates"
+msgid "Candidats Recrutés"
 msgstr "Contratado Candidatos"
 
 #: base/views.py:6464
@@ -13112,7 +13112,7 @@ msgid "Objective Status"
 msgstr "Objetivo Estado"
 
 #: base/views.py:6472 templates/dashboard_tile_container.html:264
-msgid "Key Result Status"
+msgid "Performance Management Systems"
 msgstr "Estado del resultado clave"
 
 #: base/views.py:6473 templates/dashboard_tile_container.html:283
@@ -13694,7 +13694,7 @@ msgstr "Hasta Fecha final"
 
 #: biometric/templates/biometric/list_employees_cosec_biometric.html:75
 #, fuzzy
-#| msgid "Not Started"
+#| msgid "Non commencé"
 msgid "Not Enrolled"
 msgstr "No Empezado"
 
@@ -14428,7 +14428,7 @@ msgstr "Banco Direcction"
 #: employee/templates/personal-tab.html:16
 #: employee/templates/tabs/personal_tab.html:15 recruitment/models.py:401
 #: recruitment/templates/candidate/individual.html:310
-msgid "Date of Birth"
+msgid "Date de Naissance"
 msgstr "Fecha de nacimiento"
 
 #: employee/templates/employee/profile/personal_info.html:88
@@ -14859,7 +14859,7 @@ msgstr "Tarjeta"
 #: employee/templates/employee_nav.html:444
 #, fuzzy
 #| msgid "Bulk Payslip"
-msgid "Bulk Mail"
+msgid "Envoi de Courriels en Masse"
 msgstr "hoja de pago a granel"
 
 #: employee/templates/employee_nav.html:453
@@ -16263,7 +16263,7 @@ msgstr ""
 #: employee/views.py:3368 employee/views.py:3380 employee/views.py:3415
 #: employee/views.py:3423
 #, fuzzy
-#| msgid "Not Started"
+#| msgid "Non commencé"
 msgid "Not set"
 msgstr "No Empezado"
 
@@ -17499,7 +17499,7 @@ msgstr "Adjunto"
 #: recruitment/templates/skill_zone/skill_zone_nav.html:102
 #, fuzzy
 #| msgid "Rejected"
-msgid "Reject Reason"
+msgid "Motif de Rejet"
 msgstr "Rechazada"
 
 #: leave/models.py:790
@@ -21166,7 +21166,7 @@ msgstr "Descripción"
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:249
 #, fuzzy
 #| msgid "Send Mail"
-msgid " Send Mail"
+msgid "Envoyer un  Mail"
 msgstr "Enviar Correo"
 
 #: offboarding/templates/offboarding/resignation/request_cards.html:51
@@ -21529,7 +21529,7 @@ msgstr "Dia de ingreso"
 #: recruitment/templates/skill_zone/skill_zone_nav.html:109
 #, fuzzy
 #| msgid "Return Status"
-msgid "Offer Status"
+msgid "Statut de l'Offre"
 msgstr "Devolución Estado"
 
 #: onboarding/templates/onboarding/candidates.html:13
@@ -23531,7 +23531,7 @@ msgid "No payslips have been generated."
 msgstr "No se han generado nóminas."
 
 #: payroll/templates/payroll/payslip/payslips_quick_filter.html:16
-msgid "Mail Not Sent"
+msgid "Mail Non Envoyées"
 msgstr ""
 
 #: payroll/templates/payroll/payslip/test_pdf.html:319
@@ -24107,7 +24107,7 @@ msgstr "En Riesgo"
 #: pms/models.py:154 pms/models.py:289 pms/models.py:493 pms/models.py:613
 #: pms/templates/feedback/feedback_list.html:35
 #: pms/templates/okr/group_by.html:12 pms/templates/okr/objective_list.html:13
-msgid "Not Started"
+msgid "Non commencé"
 msgstr "No Empezado"
 
 #: pms/models.py:380
@@ -24288,8 +24288,8 @@ msgstr "Objetivos creado"
 
 #: pms/templates/dashboard/pms_dashboard.html:84
 #, fuzzy
-#| msgid "Key Result Status"
-msgid "Key result status"
+#| msgid "Performance Management Systems"
+msgid "Performance Management Systems"
 msgstr "Estado del resultado clave"
 
 #: pms/templates/dashboard/pms_dashboard.html:94
@@ -25570,7 +25570,7 @@ msgstr "Solicitud actualizada con éxito"
 
 #: pms/views.py:3260
 #, fuzzy
-#| msgid "Key result status"
+#| msgid "Performance Management Systems"
 msgid "Key result sattus changed to {}."
 msgstr "Clave Resultado Estado "
 
@@ -25784,7 +25784,7 @@ msgstr ""
 #: recruitment/models.py:425
 #, fuzzy
 #| msgid "Candidates Start Onboarding"
-msgid "Start Onboard"
+msgid "Début de l'Intégration"
 msgstr "Candidato comenzó a bordo"
 
 #: recruitment/models.py:428
@@ -25827,7 +25827,7 @@ msgstr "Separe las opciones por ',  '"
 #: recruitment/models.py:865 recruitment/sidebar.py:62
 #: recruitment/templates/candidate/filters.html:130
 #: recruitment/templates/skill_zone/skill_zone_nav.html:5
-msgid "Skill Zone"
+msgid "Zone de Compétences"
 msgstr "Zona de Habilidades"
 
 #: recruitment/models.py:954
@@ -25837,7 +25837,7 @@ msgstr "Zona de Habilidades"
 #: recruitment/templates/candidate/interview_list.html:46
 #, fuzzy
 #| msgid "Interview"
-msgid "Interview Date"
+msgid "Date d'Entretien"
 msgstr "Entrevista"
 
 #: recruitment/models.py:955
@@ -25845,11 +25845,11 @@ msgstr "Entrevista"
 #: recruitment/templates/candidate/interview_list.html:49
 #, fuzzy
 #| msgid "Interview"
-msgid "Interview Time"
+msgid "Heure de l'Entretien"
 msgstr "Entrevista"
 
 #: recruitment/models.py:960
-msgid "Is Interview Completed"
+msgid "Entretien Terminé"
 msgstr ""
 
 #: recruitment/sidebar.py:27
@@ -25939,7 +25939,7 @@ msgstr "Rechazada"
 #: recruitment/templates/pipeline/kanban_components/candidate_kanban_components.html:176
 #: recruitment/templates/pipeline/pipeline_card.html:236
 #, fuzzy
-#| msgid "Hired Candidates"
+#| msgid "Candidats Recrutés"
 msgid "Edit Rejected Candidate"
 msgstr "Contratado Candidatos"
 
@@ -26030,14 +26030,14 @@ msgstr "Candidatas por etapa"
 #: recruitment/templates/candidate/candidate_list.html:211
 #: recruitment/templates/candidate/group_by.html:172
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:258
-msgid "To Skill zone"
+msgid "Vers la Zone de Compétences"
 msgstr "Ir a Zona de Habilidades"
 
 #: recruitment/templates/candidate/candidate_nav.html:167
 #: recruitment/templates/pipeline/components/stages_tab_content.html:59
 #, fuzzy
 #| msgid "Bulk Payslip"
-msgid "Bulk mail"
+msgid "Envoi de Courriels en Masse"
 msgstr "hoja de pago a granel"
 
 #: recruitment/templates/candidate/candidate_nav.html:180
@@ -26048,7 +26048,7 @@ msgstr "Crear solicitud"
 
 #: recruitment/templates/candidate/candidate_nav.html:188
 #: recruitment/templates/pipeline/pipeline_tabs.html:61
-msgid "Resume Shortlisting"
+msgid "Sélection CV"
 msgstr ""
 
 #: recruitment/templates/candidate/candidate_nav.html:273
@@ -26182,7 +26182,7 @@ msgstr "Entrevista"
 #: recruitment/templates/candidate/filters.html:35
 #, fuzzy
 #| msgid "Conversion Rate"
-msgid "Is Converted"
+msgid "Est Converti"
 msgstr "Tasa de conversión"
 
 #: recruitment/templates/candidate/individual.html:77
@@ -26193,7 +26193,7 @@ msgstr "Candidato"
 
 #: recruitment/templates/candidate/individual.html:91
 #, fuzzy
-#| msgid "Hired Candidates"
+#| msgid "Candidats Recrutés"
 msgid "Previous Candidate"
 msgstr "Contratado Candidatos"
 
@@ -26277,7 +26277,7 @@ msgstr "No hay activos para exportar."
 #: recruitment/templates/dashboard/dashboard.html:40
 #, fuzzy
 #| msgid "Total Candidates"
-msgid "Total Vacancies"
+msgid "Postes Vacants Totaux"
 msgstr "Total de candidatas"
 
 #: recruitment/templates/dashboard/dashboard.html:56
@@ -26293,7 +26293,7 @@ msgid "Offer Acceptance Rate (OAR)"
 msgstr "Tasa de aceptación de oferta (OAR)"
 
 #: recruitment/templates/dashboard/dashboard.html:120
-msgid "Skill Zone Status"
+msgid "Statut des Compétences"
 msgstr "Estado de la zona de habilidades"
 
 #: recruitment/templates/dashboard/dashboard.html:146
@@ -26303,7 +26303,7 @@ msgstr "No hay zona de habilidades disponible."
 #: recruitment/templates/dashboard/dashboard.html:183
 #, fuzzy
 #| msgid "Candidates Per Stage"
-msgid "Candidate Offer Letter Status"
+msgid "Statut des Lettres d'Offre aux Candidats"
 msgstr "Candidatas por etapa"
 
 #: recruitment/templates/dashboard/dashboard.html:199
@@ -26327,7 +26327,7 @@ msgid "Current Hiring Pipeline"
 msgstr "Contratación actual Tubería"
 
 #: recruitment/templates/dashboard/dashboard.html:333
-msgid "No onboarding tasks are currently available."
+msgid "Aucune tâche d'intégration n'est actuellement disponible."
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:349
@@ -26358,7 +26358,7 @@ msgstr "Reanudar"
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:88
 #, fuzzy
 #| msgid "Stage updated."
-msgid "Stage bulk update"
+msgid "Mise à Jour en Masse des Étapes"
 msgstr "Etapa actualizada."
 
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:134
@@ -26600,7 +26600,7 @@ msgstr ""
 #: recruitment/templates/recruitment/open_recruitments.html:84
 #, fuzzy
 #| msgid "Total Candidates"
-msgid "Total vacancies"
+msgid "Postes Vacants Totaux"
 msgstr "Total de candidatas"
 
 #: recruitment/templates/recruitment/recruitment_component.html:75
@@ -26688,7 +26688,7 @@ msgstr ""
 #: recruitment/templates/settings/reject_reasons.html:6
 #, fuzzy
 #| msgid "Rejected Requests"
-msgid "Reject Reasons"
+msgid "Motifs de Rejet"
 msgstr "Rechazadas Solicitude"
 
 #: recruitment/templates/settings/reject_reason_lines.html:35
@@ -26705,7 +26705,7 @@ msgstr "No tienes notificaciones nuevas en este momento."
 
 #: recruitment/templates/settings/skills/skills_list.html:7
 #, fuzzy
-#| msgid "Skill Zone"
+#| msgid "Zone de Compétences"
 msgid "Skill"
 msgstr "Zona de Habilidades"
 

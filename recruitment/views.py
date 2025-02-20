@@ -1079,6 +1079,7 @@ def candidate_view_individual(request, cand_id):
     This method is used to view profile of candidate.
     """
     candidate_obj = Candidate.objects.get(id=cand_id)
+    print(candidate_obj)
     return render(request, "candidate/individual.html", {"candidate": candidate_obj})
 
 

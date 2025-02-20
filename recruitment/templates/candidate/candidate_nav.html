@@ -164,7 +164,7 @@ x-data="{searchShow: false}"
                   hx-get='{% url "send-mail" %}?stage_id={{stage.id}}' hx-target="#objectDetailsModalTarget"
                   data-toggle="oh-modal-toggle" data-target="#objectDetailsModal"
 
-                  >{% trans "Bulk mail" %}</a
+                  >{% trans "Envoi de Courriels en Masse" %}</a
                 >
               </li>
               {% endif %}
@@ -185,7 +185,7 @@ x-data="{searchShow: false}"
                   <a
                     role="button"
                     class="oh-dropdown__link"
-                  >{% trans "Resume Shortlisting" %}</a
+                  >{% trans "Sélection CV" %}</a
                   >
                   <form hx-get = "{% url 'view-bulk-resume' %}"
                   hx-target = "#bulkResumeUploadBody">

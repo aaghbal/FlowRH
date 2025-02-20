@@ -8631,7 +8631,7 @@ msgstr "La date de fin ne doit pas être antérieure à la date de début."
 
 #: base/methods.py:456 employee/views.py:2901 recruitment/models.py:325
 msgid "Homme"
-msgstr "Mâle"
+msgstr "Homme"
 
 #: base/methods.py:457 employee/views.py:2901 recruitment/models.py:325
 msgid "Female"
@@ -11088,7 +11088,7 @@ msgstr "Mise à jour Période"
 #, fuzzy
 #| msgid "History"
 msgid "History Tags"
-msgstr "Histoire"
+msgstr "Historique"
 
 #: base/templates/base/tags/tags.html:49
 #, fuzzy
@@ -11705,7 +11705,7 @@ msgstr "Pas Disponible"
 #: base/templates/shift_request/htmx/requests.html:360
 #: leave/templates/leave/leave_request/one_request_view.html:106
 #, fuzzy
-#| msgid "Not Started"
+#| msgid "Non commencé"
 msgid "Not Marked"
 msgstr "Non commencé"
 
@@ -14137,7 +14137,7 @@ msgstr "Total des congés"
 #: base/views.py:6463 onboarding/templates/onboarding/candidates_view.html:23
 #: recruitment/templates/dashboard/dashboard.html:74
 #: templates/dashboard_tile_container.html:75
-msgid "Hired Candidates"
+msgid "Candidats Recrutés"
 msgstr "Candidats embauchés"
 
 #: base/views.py:6464
@@ -14176,7 +14176,7 @@ msgid "Objective Status"
 msgstr "État des objectifs"
 
 #: base/views.py:6472 templates/dashboard_tile_container.html:263
-msgid "Key Result Status"
+msgid "Performance Management Systems"
 msgstr "État des KPI (Indicateurs clés de performance)"
 
 #: base/views.py:6473 templates/dashboard_tile_container.html:282
@@ -14750,7 +14750,7 @@ msgstr "Jusqu'à date de fin"
 
 #: biometric/templates/biometric/list_employees_cosec_biometric.html:75
 #, fuzzy
-#| msgid "Not Started"
+#| msgid "Non commencé"
 msgid "Not Enrolled"
 msgstr "Non commencé"
 
@@ -15489,8 +15489,8 @@ msgstr "Banque Adresse"
 #: employee/templates/personal-tab.html:16
 #: employee/templates/tabs/personal_tab.html:15 recruitment/models.py:401
 #: recruitment/templates/candidate/individual.html:310
-msgid "Date of Birth"
-msgstr "Date of Birth"
+msgid "Date de Naissance"
+msgstr "Date de Naissance"
 
 #: employee/templates/employee/profile/personal_info.html:88
 #: employee/templates/personal-tab.html:70
@@ -15795,7 +15795,7 @@ msgstr "Mis à jour Compte"
 #: leave/templates/leave/leave_allocation_request/leave_allocation_request_single_view.html:101
 #: recruitment/templates/candidate/individual.html:236
 msgid "History"
-msgstr "Histoire"
+msgstr "Historique"
 
 #: employee/templates/employee/view/individual.html:409
 #: employee/templates/employee/view/individual.html:414
@@ -15914,7 +15914,7 @@ msgstr "Carte"
 #: employee/templates/employee_nav.html:444
 #, fuzzy
 #| msgid "Bulk Payslip"
-msgid "Bulk Mail"
+msgid "Envoi de Courriels en Masse"
 msgstr "Bulletin de paie en vrac"
 
 #: employee/templates/employee_nav.html:453
@@ -18584,7 +18584,7 @@ msgstr "Pièce jointe"
 #: recruitment/templates/skill_zone/skill_zone_nav.html:102
 #, fuzzy
 #| msgid "Rejected"
-msgid "Reject Reason"
+msgid "Motif de Rejet"
 msgstr "Rejeté"
 
 #: leave/models.py:790
@@ -20650,7 +20650,7 @@ msgstr ""
 #, fuzzy
 #| msgid "History"
 msgid "directory"
-msgstr "Histoire"
+msgstr "Historique"
 
 #: myenv/lib/python3.12/site-packages/click/types.py:830
 msgid "path"
@@ -22265,7 +22265,7 @@ msgstr "Description"
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:249
 #, fuzzy
 #| msgid "Send Mail"
-msgid " Send Mail"
+msgid "Envoyer un  Mail"
 msgstr "Envoyer Mail"
 
 #: offboarding/templates/offboarding/resignation/request_cards.html:51
@@ -22635,7 +22635,7 @@ msgstr "Date d'inscription"
 #: recruitment/templates/skill_zone/skill_zone_nav.html:109
 #, fuzzy
 #| msgid "Return Status"
-msgid "Offer Status"
+msgid "Statut de l'Offre"
 msgstr "Statut de Retour"
 
 #: onboarding/templates/onboarding/candidates.html:13
@@ -22729,13 +22729,13 @@ msgstr "Ajouter Candidat"
 #, fuzzy
 #| msgid "Candidates Start Onboarding"
 msgid "Send Portal / Start Onboarding"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/candidates.html:131
 #, fuzzy
 #| msgid "Candidates Start Onboarding"
 msgid "Send Portal / Start onboarding"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/candidates_view.html:158
 msgid "Offer letter status :"
@@ -22793,7 +22793,7 @@ msgstr "Totale Candidats"
 
 #: onboarding/templates/onboarding/dashboard.html:73
 msgid "Candidates Start Onboarding"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/dashboard.html:88
 msgid "Onboarding Stage Chart"
@@ -22801,14 +22801,14 @@ msgstr "Tableau des étapes d'intégration"
 
 #: onboarding/templates/onboarding/dashboard.html:100
 msgid "Candidates on Onboard"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/dashboard.html:133
 #: recruitment/templates/dashboard/dashboard.html:235
 #, fuzzy
 #| msgid "Candidate Started Onboarding"
 msgid "No candidates started onboarding."
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/dashboard/task_report.html:4
 #: recruitment/templates/dashboard/dashboard.html:330
@@ -22938,7 +22938,7 @@ msgstr "Candidats"
 #, fuzzy
 #| msgid "Candidates Start Onboarding"
 msgid "Send Portal  / Start onboarding"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/kanban/kanban.html:71
 #: onboarding/templates/onboarding/onboarding_table.html:79
@@ -23205,7 +23205,7 @@ msgstr "Les détails du candidat ont été mis à jour avec succès."
 #, fuzzy
 #| msgid "Candidate Started Onboarding"
 msgid "No candidates started onboarding...."
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: onboarding/views.py:1541
 #, fuzzy
@@ -24643,7 +24643,7 @@ msgid "No payslips have been generated."
 msgstr "Aucune plaquette de paie n'a été générée."
 
 #: payroll/templates/payroll/payslip/payslips_quick_filter.html:16
-msgid "Mail Not Sent"
+msgid "Mail Non Envoyées"
 msgstr ""
 
 #: payroll/templates/payroll/payslip/test_pdf.html:319
@@ -25229,7 +25229,7 @@ msgstr "À Risque"
 #: pms/models.py:154 pms/models.py:289 pms/models.py:493 pms/models.py:613
 #: pms/templates/feedback/feedback_list.html:35
 #: pms/templates/okr/group_by.html:12 pms/templates/okr/objective_list.html:13
-msgid "Not Started"
+msgid "Non commencé"
 msgstr "Non commencé"
 
 #: pms/models.py:380
@@ -25406,9 +25406,6 @@ msgstr "État des objectifs"
 msgid "No objectives are available."
 msgstr "Objectifs créés"
 
-#: pms/templates/dashboard/pms_dashboard.html:84
-msgid "Key result status"
-msgstr "État des KPI (Indicateurs clés de performance)"
 
 #: pms/templates/dashboard/pms_dashboard.html:94
 #, fuzzy
@@ -26696,12 +26693,6 @@ msgstr "Demande de congé annulée avec succès..."
 msgid "Key result Updated sucessfully."
 msgstr "Demande mise à jour avec succès"
 
-#: pms/views.py:3260
-#, fuzzy
-#| msgid "Key result status"
-msgid "Key result sattus changed to {}."
-msgstr "État des KPI (Indicateurs clés de performance)"
-
 #: pms/views.py:3431
 #, fuzzy
 #| msgid "Note added successfully.."
@@ -26904,7 +26895,7 @@ msgid "Source"
 msgstr ""
 
 #: recruitment/models.py:425
-msgid "Start Onboard"
+msgid "Début de l'Intégration"
 msgstr "commencer à bord"
 
 #: recruitment/models.py:428
@@ -26947,7 +26938,7 @@ msgstr "Séparez les choix par ', '"
 #: recruitment/models.py:865 recruitment/sidebar.py:62
 #: recruitment/templates/candidate/filters.html:130
 #: recruitment/templates/skill_zone/skill_zone_nav.html:5
-msgid "Skill Zone"
+msgid "Zone de Compétences"
 msgstr ""
 
 #: recruitment/models.py:954
@@ -26957,7 +26948,7 @@ msgstr ""
 #: recruitment/templates/candidate/interview_list.html:46
 #, fuzzy
 #| msgid "Interview"
-msgid "Interview Date"
+msgid "Date d'Entretien"
 msgstr "Entretien"
 
 #: recruitment/models.py:955
@@ -26965,11 +26956,11 @@ msgstr "Entretien"
 #: recruitment/templates/candidate/interview_list.html:49
 #, fuzzy
 #| msgid "Interview"
-msgid "Interview Time"
+msgid "Heure de l'Entretien"
 msgstr "Entretien"
 
 #: recruitment/models.py:960
-msgid "Is Interview Completed"
+msgid "Entretien Terminé"
 msgstr ""
 
 #: recruitment/sidebar.py:27
@@ -27059,7 +27050,7 @@ msgstr "Rejeté"
 #: recruitment/templates/pipeline/kanban_components/candidate_kanban_components.html:176
 #: recruitment/templates/pipeline/pipeline_card.html:236
 #, fuzzy
-#| msgid "Hired Candidates"
+#| msgid "Candidats Recrutés"
 msgid "Edit Rejected Candidate"
 msgstr "Candidats embauchés"
 
@@ -27138,7 +27129,7 @@ msgstr "Taux de conversion"
 #, fuzzy
 #| msgid "Candidate on Onboard"
 msgid "Candidate in Onboarding "
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: recruitment/templates/candidate/candidate_list.html:208
 #: recruitment/templates/candidate/candidate_list.html:223
@@ -27152,15 +27143,8 @@ msgstr "Candidats par étape"
 #: recruitment/templates/candidate/candidate_list.html:211
 #: recruitment/templates/candidate/group_by.html:172
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:258
-msgid "To Skill zone"
+msgid "Vers la Zone de Compétences"
 msgstr ""
-
-#: recruitment/templates/candidate/candidate_nav.html:167
-#: recruitment/templates/pipeline/components/stages_tab_content.html:59
-#, fuzzy
-#| msgid "Bulk Payslip"
-msgid "Bulk mail"
-msgstr "Bulletin de paie en vrac"
 
 #: recruitment/templates/candidate/candidate_nav.html:180
 #, fuzzy
@@ -27170,7 +27154,7 @@ msgstr "Créer Demande"
 
 #: recruitment/templates/candidate/candidate_nav.html:188
 #: recruitment/templates/pipeline/pipeline_tabs.html:61
-msgid "Resume Shortlisting"
+msgid "Sélection CV"
 msgstr ""
 
 #: recruitment/templates/candidate/candidate_nav.html:273
@@ -27304,7 +27288,7 @@ msgstr "Entretien"
 #: recruitment/templates/candidate/filters.html:35
 #, fuzzy
 #| msgid "Is Canceled"
-msgid "Is Converted"
+msgid "Est Converti"
 msgstr "Est Annulé"
 
 #: recruitment/templates/candidate/individual.html:77
@@ -27315,7 +27299,7 @@ msgstr "Candidat"
 
 #: recruitment/templates/candidate/individual.html:91
 #, fuzzy
-#| msgid "Hired Candidates"
+#| msgid "Candidats Recrutés"
 msgid "Previous Candidate"
 msgstr "Candidats embauchés"
 
@@ -27330,7 +27314,7 @@ msgstr "Importer Employé"
 #: recruitment/templates/survey/candidate_survey_form.html:19
 #: recruitment/templates/survey/survey_preview.html:18
 msgid "Survey"
-msgstr "Enquête"
+msgstr "Questionnaire d'intégration"
 
 #: recruitment/templates/candidate/individual.html:369
 msgid "Recruitment Information"
@@ -27347,7 +27331,7 @@ msgstr "Ce candidat n'a pas de CV au dossier."
 #: recruitment/templates/candidate/individual.html:583
 #: recruitment/templates/survey/survey_empty_view.html:107
 msgid "No survey templates have been established yet."
-msgstr "Aucun modèle d'enquête n'a encore été établi."
+msgstr "Aucun modèle de questionnaire n'a été configuré"
 
 #: recruitment/templates/candidate/individual_view_note.html:84
 #: recruitment/templates/pipeline/pipeline_components/view_note.html:185
@@ -27401,12 +27385,12 @@ msgstr "Il n'y a aucun actif à exporter."
 #: recruitment/templates/dashboard/dashboard.html:40
 #, fuzzy
 #| msgid "Total Candidates"
-msgid "Total Vacancies"
+msgid "Postes Vacants Totaux"
 msgstr "Totale Candidats"
 
 #: recruitment/templates/dashboard/dashboard.html:56
 msgid "Ongoing Recruitments"
-msgstr "Recrutement en cours"
+msgstr "Recrutements en Cours"
 
 #: recruitment/templates/dashboard/dashboard.html:90
 msgid "Conversion Rate"
@@ -27414,12 +27398,12 @@ msgstr "Taux de conversion"
 
 #: recruitment/templates/dashboard/dashboard.html:104
 msgid "Offer Acceptance Rate (OAR)"
-msgstr "Taux d’acceptation des offres (OAR)"
+msgstr "Taux d'Acceptation des Offres (TAO)"
 
 #: recruitment/templates/dashboard/dashboard.html:120
 #, fuzzy
 #| msgid "Filing Status"
-msgid "Skill Zone Status"
+msgid "Statut des Compétences"
 msgstr "Statut de dépôt"
 
 #: recruitment/templates/dashboard/dashboard.html:146
@@ -27431,7 +27415,7 @@ msgstr "Aucun enregistrement n'est disponible."
 #: recruitment/templates/dashboard/dashboard.html:183
 #, fuzzy
 #| msgid "Candidates Per Stage"
-msgid "Candidate Offer Letter Status"
+msgid "Statut des Lettres d'Offre aux Candidats"
 msgstr "Candidats par étape"
 
 #: recruitment/templates/dashboard/dashboard.html:199
@@ -27442,7 +27426,7 @@ msgstr "Pas de Commentaires sont disponibles."
 
 #: recruitment/templates/dashboard/dashboard.html:208
 msgid "Candidate on Onboard"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: recruitment/templates/dashboard/dashboard.html:253
 msgid "Joinings Per Month"
@@ -27459,7 +27443,7 @@ msgstr "Pipeline d’embauche actuel"
 #: recruitment/templates/dashboard/dashboard.html:333
 #, fuzzy
 #| msgid "No recruitment stages currently available."
-msgid "No onboarding tasks are currently available."
+msgid "Aucune tâche d'intégration n'est actuellement disponible."
 msgstr "Aucune étape de recrutement disponible actuellement."
 
 #: recruitment/templates/dashboard/dashboard.html:349
@@ -27488,7 +27472,7 @@ msgstr ""
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:88
 #, fuzzy
 #| msgid "Stage updated."
-msgid "Stage bulk update"
+msgid "Mise à Jour en Masse des Étapes"
 msgstr "Stage mis à jour."
 
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:134
@@ -27634,7 +27618,7 @@ msgstr "Candidat ajouté."
 
 #: recruitment/templates/pipeline/matching_resumes.html:33
 #, fuzzy
-#| msgid "Hired Candidates"
+#| msgid "Candidats Recrutés"
 msgid "Create Candidate"
 msgstr "Candidats embauchés"
 
@@ -27665,7 +27649,7 @@ msgstr "Ajouter une allocation"
 #, fuzzy
 #| msgid "Ongoing Recruitments"
 msgid "Switch to Ongoing Recruitments"
-msgstr "Recrutement en cours"
+msgstr "Recrutements en Cours"
 
 #: recruitment/templates/pipeline/pipeline_empty.html:16
 #, fuzzy
@@ -27733,12 +27717,6 @@ msgstr "Appliquer"
 msgid "Capacity"
 msgstr ""
 
-#: recruitment/templates/recruitment/open_recruitments.html:84
-#, fuzzy
-#| msgid "Total Candidates"
-msgid "Total vacancies"
-msgstr "Totale Candidats"
-
 #: recruitment/templates/recruitment/recruitment_component.html:75
 #, fuzzy
 #| msgid "Total Days"
@@ -27801,7 +27779,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Candidate Started Onboarding"
 msgid "Candidate Self Tracking"
-msgstr "candidat commencé l'intégration"
+msgstr "Candidats en Intégration"
 
 #: recruitment/templates/recruitment/settings/settings.html:12
 msgid "By enabling the feature candidates can track their recruitment progress"
@@ -27822,7 +27800,7 @@ msgstr ""
 #: recruitment/templates/settings/reject_reasons.html:6
 #, fuzzy
 #| msgid "Rejected"
-msgid "Reject Reasons"
+msgid "Motifs de Rejet"
 msgstr "Rejeté"
 
 #: recruitment/templates/settings/reject_reason_lines.html:35
@@ -27971,7 +27949,7 @@ msgstr "Etes-vous sûr que vous voulez supprimer?"
 #, fuzzy
 #| msgid "No survey templates have been established yet."
 msgid "No questions have been established yet."
-msgstr "Aucun modèle d'enquête n'a encore été établi."
+msgstr "Aucun modèle de questionnaire n'a été configuré"
 
 #: recruitment/templates/survey/survey_empty_view.html:28
 #: recruitment/templates/survey/view_question_templates.html:20
@@ -28008,13 +27986,13 @@ msgstr "Voulez-vous supprimer cet employé ?"
 #, fuzzy
 #| msgid "No survey templates have been established yet."
 msgid "No template groups have been established yet."
-msgstr "Aucun modèle d'enquête n'a encore été établi."
+msgstr "Aucun modèle de questionnaire n'a été configuré"
 
 #: recruitment/templates/survey/templates.html:140
 #, fuzzy
 #| msgid "No survey templates have been established yet."
 msgid "No template have been established yet."
-msgstr "Aucun modèle d'enquête n'a encore été établi."
+msgstr "Aucun modèle de questionnaire n'a été configuré"
 
 #: recruitment/templates/survey/view_question_templates.html:51
 #, fuzzy
@@ -28492,13 +28470,7 @@ msgstr "Cette année"
 #, fuzzy
 #| msgid "Candidate Started Onboarding"
 msgid "Candidats en phase d'intégration"
-msgstr "candidat commencé l'intégration"
-
-#: templates/dashboard_tile_container.html:131
-#, fuzzy
-#| msgid "Daily Attendance Analytic"
-msgid "Suivi des présences"
-msgstr "Analyse des présences quotidiennes"
+msgstr "Candidats en Intégration"
 
 #: templates/dashboard_tile_container.html:304
 #, fuzzy

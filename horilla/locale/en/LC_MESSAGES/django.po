@@ -12256,7 +12256,7 @@ msgstr "Multiple Approval Condition"
 
 #: base/translator.py:287
 msgid "skill-zone-view"
-msgstr "Skill Zone"
+msgstr "Zone de Compétences"
 
 #: base/translator.py:288
 msgid "view-mail-templates"
@@ -13002,7 +13002,7 @@ msgstr ""
 #: base/views.py:6463 onboarding/templates/onboarding/candidates_view.html:23
 #: recruitment/templates/dashboard/dashboard.html:74
 #: templates/dashboard_tile_container.html:75
-msgid "Hired Candidates"
+msgid "Candidats Recrutés"
 msgstr ""
 
 #: base/views.py:6464
@@ -13041,7 +13041,7 @@ msgid "Objective Status"
 msgstr ""
 
 #: base/views.py:6472 templates/dashboard_tile_container.html:263
-msgid "Key Result Status"
+msgid "Performance Management Systems"
 msgstr ""
 
 #: base/views.py:6473 templates/dashboard_tile_container.html:282
@@ -14195,7 +14195,7 @@ msgstr ""
 #: employee/templates/personal-tab.html:16
 #: employee/templates/tabs/personal_tab.html:15 recruitment/models.py:401
 #: recruitment/templates/candidate/individual.html:310
-msgid "Date of Birth"
+msgid "Date de Naissance"
 msgstr ""
 
 #: employee/templates/employee/profile/personal_info.html:88
@@ -14584,7 +14584,7 @@ msgstr ""
 #: employee/templates/employee_nav.html:444
 #, fuzzy
 #| msgid "type-update"
-msgid "Bulk Mail"
+msgid "Envoi de Courriels en Masse"
 msgstr "Update"
 
 #: employee/templates/employee_nav.html:453
@@ -16934,7 +16934,7 @@ msgstr ""
 #: recruitment/templates/candidate/filters.html:31
 #: recruitment/templates/pipeline/filters.html:123
 #: recruitment/templates/skill_zone/skill_zone_nav.html:102
-msgid "Reject Reason"
+msgid "Motif de Rejet"
 msgstr ""
 
 #: leave/models.py:790
@@ -20196,7 +20196,7 @@ msgstr ""
 #: offboarding/templates/offboarding/resignation/request_list.html:118
 #: offboarding/templates/offboarding/resignation/request_single_view.html:28
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:249
-msgid " Send Mail"
+msgid "Envoyer un  Mail"
 msgstr ""
 
 #: offboarding/templates/offboarding/resignation/request_cards.html:51
@@ -20524,7 +20524,7 @@ msgstr ""
 #: recruitment/templates/candidate/filters.html:63
 #: recruitment/templates/pipeline/filters.html:150
 #: recruitment/templates/skill_zone/skill_zone_nav.html:109
-msgid "Offer Status"
+msgid "Statut de l'Offre"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:13
@@ -22304,7 +22304,7 @@ msgid "No payslips have been generated."
 msgstr ""
 
 #: payroll/templates/payroll/payslip/payslips_quick_filter.html:16
-msgid "Mail Not Sent"
+msgid "Mail Non Envoyées"
 msgstr ""
 
 #: payroll/templates/payroll/payslip/test_pdf.html:319
@@ -22796,7 +22796,7 @@ msgstr ""
 #: pms/models.py:154 pms/models.py:289 pms/models.py:493 pms/models.py:613
 #: pms/templates/feedback/feedback_list.html:35
 #: pms/templates/okr/group_by.html:12 pms/templates/okr/objective_list.html:13
-msgid "Not Started"
+msgid "Non commencé"
 msgstr ""
 
 #: pms/models.py:380
@@ -22954,7 +22954,7 @@ msgstr "Candidates"
 #: pms/templates/dashboard/pms_dashboard.html:84
 #, fuzzy
 #| msgid "key-result-creation"
-msgid "Key result status"
+msgid "Performance Management Systems"
 msgstr "Key Result"
 
 #: pms/templates/dashboard/pms_dashboard.html:94
@@ -24270,7 +24270,7 @@ msgid "Source"
 msgstr ""
 
 #: recruitment/models.py:425
-msgid "Start Onboard"
+msgid "Début de l'Intégration"
 msgstr ""
 
 #: recruitment/models.py:428
@@ -24313,7 +24313,7 @@ msgstr ""
 #: recruitment/models.py:865 recruitment/sidebar.py:62
 #: recruitment/templates/candidate/filters.html:130
 #: recruitment/templates/skill_zone/skill_zone_nav.html:5
-msgid "Skill Zone"
+msgid "Zone de Compétences"
 msgstr ""
 
 #: recruitment/models.py:954
@@ -24323,7 +24323,7 @@ msgstr ""
 #: recruitment/templates/candidate/interview_list.html:46
 #, fuzzy
 #| msgid "type-view"
-msgid "Interview Date"
+msgid "Date d'Entretien"
 msgstr "Leave Types"
 
 #: recruitment/models.py:955
@@ -24331,11 +24331,11 @@ msgstr "Leave Types"
 #: recruitment/templates/candidate/interview_list.html:49
 #, fuzzy
 #| msgid "type-view"
-msgid "Interview Time"
+msgid "Heure de l'Entretien"
 msgstr "Leave Types"
 
 #: recruitment/models.py:960
-msgid "Is Interview Completed"
+msgid "Entretien Terminé"
 msgstr ""
 
 #: recruitment/sidebar.py:27
@@ -24506,14 +24506,14 @@ msgstr ""
 #: recruitment/templates/candidate/candidate_list.html:211
 #: recruitment/templates/candidate/group_by.html:172
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:258
-msgid "To Skill zone"
+msgid "Vers la Zone de Compétences"
 msgstr ""
 
 #: recruitment/templates/candidate/candidate_nav.html:167
 #: recruitment/templates/pipeline/components/stages_tab_content.html:59
 #, fuzzy
 #| msgid "type-update"
-msgid "Bulk mail"
+msgid "Envoi de Courriels en Masse"
 msgstr "Update"
 
 #: recruitment/templates/candidate/candidate_nav.html:180
@@ -24524,7 +24524,7 @@ msgstr "Recruitment"
 
 #: recruitment/templates/candidate/candidate_nav.html:188
 #: recruitment/templates/pipeline/pipeline_tabs.html:61
-msgid "Resume Shortlisting"
+msgid "Sélection CV"
 msgstr ""
 
 #: recruitment/templates/candidate/candidate_nav.html:273
@@ -24644,7 +24644,7 @@ msgid "Interview Till"
 msgstr "Leave Types"
 
 #: recruitment/templates/candidate/filters.html:35
-msgid "Is Converted"
+msgid "Est Converti"
 msgstr ""
 
 #: recruitment/templates/candidate/individual.html:77
@@ -24721,7 +24721,7 @@ msgid " There are no ratings to display at the moment."
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:40
-msgid "Total Vacancies"
+msgid "Postes Vacants Totaux"
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:56
@@ -24739,17 +24739,17 @@ msgstr ""
 #: recruitment/templates/dashboard/dashboard.html:120
 #, fuzzy
 #| msgid "create-allowance"
-msgid "Skill Zone Status"
+msgid "Statut des Compétences"
 msgstr "Creation"
 
 #: recruitment/templates/dashboard/dashboard.html:146
 #, fuzzy
 #| msgid "skill-zone-view"
 msgid "No skill zone available."
-msgstr "Skill Zone"
+msgstr "Zone de Compétences"
 
 #: recruitment/templates/dashboard/dashboard.html:183
-msgid "Candidate Offer Letter Status"
+msgid "Statut des Lettres d'Offre aux Candidats"
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:199
@@ -24775,7 +24775,7 @@ msgid "Current Hiring Pipeline"
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:333
-msgid "No onboarding tasks are currently available."
+msgid "Aucune tâche d'intégration n'est actuellement disponible."
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:349
@@ -24802,7 +24802,7 @@ msgstr ""
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:88
 #, fuzzy
 #| msgid "type-update"
-msgid "Stage bulk update"
+msgid "Mise à Jour en Masse des Étapes"
 msgstr "Update"
 
 #: recruitment/templates/pipeline/components/candidate_stage_component.html:134
@@ -25020,7 +25020,7 @@ msgid "Capacity"
 msgstr ""
 
 #: recruitment/templates/recruitment/open_recruitments.html:84
-msgid "Total vacancies"
+msgid "Postes Vacants Totaux"
 msgstr ""
 
 #: recruitment/templates/recruitment/recruitment_component.html:75
@@ -25098,7 +25098,7 @@ msgstr ""
 
 #: recruitment/templates/settings/reject_reason_lines.html:6
 #: recruitment/templates/settings/reject_reasons.html:6
-msgid "Reject Reasons"
+msgid "Motifs de Rejet"
 msgstr ""
 
 #: recruitment/templates/settings/reject_reason_lines.html:35

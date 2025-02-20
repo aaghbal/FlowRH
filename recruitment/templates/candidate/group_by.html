@@ -86,7 +86,7 @@
 									<div class="oh-sticky-table__th">{% trans "Phone" %}</div>
 									<div class="oh-sticky-table__th">{% trans "Recruitment" %}</div>
 									<div class="oh-sticky-table__th">{% trans "Job Position" %}</div>
-									<div class="oh-sticky-table__th">{% trans "Resume" %}</div>
+									<div class="oh-sticky-table__th">{% trans "CV" %}</div>
 									<div class="oh-sticky-table__th" style="width: 230px;">{% trans "Options" %}</div>
             						<div class="oh-sticky-table__th oh-sticky-table__right"  style="width: 190px;">{% trans "Actions" %}</div>
 								</div>
@@ -141,7 +141,7 @@
 										class="oh-sticky-table__td">{{cand.job_position_id}}
 									</a>
 									<a style="color: inherit;text-decoration: none;" class="oh-sticky-table__td" href="{{cand.resume.url}}"
-										target="_blank" rel="noopener noreferrer"><span class="oh-btn oh-btn--info"> {% trans "Resume" %}</span>
+										target="_blank" rel="noopener noreferrer"><span class="oh-btn oh-btn--info"> {% trans "CV" %}</span>
 									</a>
 
 									{% if perms.recruitment.change_candidate or perms.recruitment.add_rejectedcandidate or perms.recruitment.add_skillzonecandidate %}
@@ -150,7 +150,7 @@
 											{% if perms.recruitment.change_candidate %}
 											{% if not cand.email in emp_list and not cand.start_onboard %}
 												<a href="{% url 'candidate-conversion' cand.id %}"
-												onclick="return confirm('{% trans "Are you sure you want to convert this candidate into an employee?" %}')"
+												onclick="return confirm('{% trans "Transformer cette candidature en employé ?" %}')"
 												class="oh-btn oh-btn--light-bkg w-100"
 												title='{% trans "To employee " %}'
 												style="padding:0.8rem 1rem"
@@ -169,7 +169,7 @@
 												<button class="oh-btn oh-btn--light-bkg w-100"  title='{% trans "Candidate is Converted " %}' style="opacity: 30%; padding:0.8rem 1rem">
 												<ion-icon name="heart-circle-outline"></ion-icon></button>
 											{% else %}
-												<button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'To Skill zone' %}"
+												<button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Vers la Zone de Compétences' %}"
 													data-toggle="oh-modal-toggle"
 													data-target="#createModal"
 													hx-get="{% url 'to-skill-zone' cand.id %}"
@@ -208,7 +208,7 @@
 											<button
 												type="button"
 												hx-get='{% url "send-mail" cand.id %}'
-												title="{% trans "Send Mail" %}"
+												title="{% trans "Envoyer un Mail" %}"
 												hx-target="#objectDetailsModalTarget"
 												class="oh-btn oh-btn--light-bkg w-100"
 												data-toggle="oh-modal-toggle"

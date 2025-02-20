@@ -40,13 +40,13 @@
                                 <div data-cell-index="1" data-cell-title='{% trans "Intervieweur" %}'
                                     class="oh-sticky-table__th"
                                 >{% trans "Intervieweur" %}</div>
-                                <div data-cell-index="2" data-cell-title='{% trans "Date de l'entretien" %}'
+                                <div data-cell-index="2" data-cell-title='{% trans "Interview Date" %}'
                                     class="oh-sticky-table__th {% if request.sort_option.order == '-interview_date' %}arrow-up {% elif request.sort_option.order == 'interview_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                     hx-get="{% url 'interview-filter-view' %}?{{pd}}&sortby=interview_date" hx-target="#section"
-                                >{% trans "Date de l'entretien" %}</div>
-                                <div data-cell-index="3" data-cell-title='{% trans "Interview Time" %}'
+                                >{% trans "Interview Date" %}</div>
+                                <div data-cell-index="3" data-cell-title='{% trans "Heure de l'Entretien" %}'
                                     class="oh-sticky-table__th"
-                                >{% trans "Interview Time" %}</div>
+                                >{% trans "Heure de l'Entretien" %}</div>
                                 <div data-cell-index="4" data-cell-title='{% trans "Description" %}'
                                     class="oh-sticky-table__th"
                                 >{% trans "Description" %}</div>

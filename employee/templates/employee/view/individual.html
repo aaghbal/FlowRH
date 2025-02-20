@@ -436,10 +436,10 @@
 							{% endif %}
 
 							{% if perms.employee.view_employee %}
-							<li class="oh-general__tab" data-cell-index="22" data-cell-title="{% trans 'Mail Log' %}">
+							<li class="oh-general__tab" data-cell-index="22" data-cell-title="{% trans 'Historique des emails' %}">
 								<a hx-get="{% url 'employee-get-mail-log' %}?emp_id={{employee.id}}"
 									hx-target="#maillog" class="oh-general__tab-link" data-action="general-tab"
-									data-target="#maillog" role="button">{% trans "Mail Log" %}</a>
+									data-target="#maillog" role="button">{% trans "Historique des emails" %}</a>
 							</li>
 							{% endif %}
 

@@ -9,7 +9,13 @@
     {% if form.verbose_name %}
         <div class="oh-payslip__header">
             <div class="oh-payslip__header-left">
-                <div class="oh-payroll__component-title">{{ form.verbose_name }}</div>
+                <div class="oh-payroll__component-title">
+                    {% if form.verbose_name == "Add Candidate" %}
+                        Ajouter un Candidat
+                    {% else %}
+                        {{ form.verbose_name }}
+                    {% endif %}
+                </div>
             </div>
         </div>
     {% endif %}

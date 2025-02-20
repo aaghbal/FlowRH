@@ -74,7 +74,7 @@
 
       {% if next != None %}
         <a
-          href="{% url 'candidate-view-individual' next %}" title='{% trans "Next Candidate" %}' style="color:hsl(8, 77%, 56%);" class="ms-1 me-3 fw-bold"
+          href="{% url 'candidate-view-individual' next %}" title='{% trans "Candidat(e) suivant(e)" %}' style="color:hsl(8, 77%, 56%);" class="ms-1 me-3 fw-bold"
           >
           <ion-icon name="arrow-forward-circle-outline" style="font-size:35px;"></ion-icon>
         </a>
@@ -88,7 +88,7 @@
 
     {% if previous != None %}
       <a
-        href="{% url 'candidate-view-individual' previous %}" title="{% trans 'Previous Candidate' %}" style="color:hsl(8, 77%, 56%);" class="ms-1 me-2 fw-bold"
+        href="{% url 'candidate-view-individual' previous %}" title="{% trans 'Candidat(e) précédent(e)' %}" style="color:hsl(8, 77%, 56%);" class="ms-1 me-2 fw-bold"
         >
         <ion-icon name="arrow-back-circle-outline" style="font-size:35px;"></ion-icon>
       </a>
@@ -108,10 +108,10 @@
         <div class='d-flex float-end ms-4'>
           {% if not candidate.email in emp_list and not candidate.start_onboard %}
             <form action="{% url 'candidate-conversion' candidate.id %}" style="color: inherit;text-decoration: none;"
-              onsubmit="return confirm('{% trans "Are you sure you want to convert this candidate into an employee?" %}')"
+              onsubmit="return confirm('{% trans "Transformer cette candidature en employé ?" %}')"
               >
               {% csrf_token %}
-              <button type='submit' class="oh-btn oh-btn--success"style="border-radius:18px; "> {% trans "Convert To Employee" %}</button>
+              <button type='submit' class="oh-btn oh-btn--success"style="border-radius:18px; "> {% trans "Convertir en Employé(e)" %}</button>
             </form>
           {% endif %}
         </div>
@@ -204,7 +204,7 @@
               class="oh-general__tab-link"
               data-action="general-tab"
               data-target="#resume"
-              >{% trans "Resume" %}</a
+              >{% trans "CV" %}</a
             >
           </li>
           <li class="oh-general__tab">
@@ -276,7 +276,7 @@
             data-action="general-tab"
             data-target="#maillog"
             style="cursor: pointer;"
-            >{% trans "Mail Log" %}</span
+            >{% trans "Historique des emails" %}</span
             >
           </li>
           <li class="oh-general__tab">
@@ -307,7 +307,7 @@
                     <li class="oh-profile__card-info-item">
                       <span class="oh-profile__info-label mb-1">
                         <ion-icon name="calendar-outline"></ion-icon>
-                        <span>{% trans "Date of Birth" %}</span>
+                        <span>{% trans "Date de Naissance" %}</span>
                       </span>
                       <span class="oh-profile__info-value dateformat_changer"
                         >{{candidate.dob}}</span
@@ -417,9 +417,21 @@
                             ></ion-icon>
                             <span>{% trans "Current Stage" %}</span>
                           </span>
-                          <span class="oh-profile__info-value"
-                            >{{candidate.stage_id}}</span
-                          >
+                          {% with stage_name=candidate.stage_id|stringformat:"s" %}
+                          {% if stage_name == "Applied" %}
+                          Candidature reçue
+                          {% elif stage_name == "Initial" %}
+                              Première évaluation
+                          {% elif stage_name == "Interview" %}
+                              Entretien
+                          {% elif stage_name == "Hired" %}
+                              Embauché(e)
+                          {% elif stage_name == "Cancelled" %}
+                              Annulé(e)
+                          {% else %}
+                              {{candidate.stage_id}}
+                          {% endif %}
+                      {% endwith %}
                         </li>
                         <li class="oh-profile__card-info-item">
                           <span class="oh-profile__info-label mb-1">
