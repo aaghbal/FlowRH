@@ -3831,7 +3831,7 @@ msgstr "هل تريد رفض هذا الطلب؟"
 #: recruitment/views/views.py:3233
 #, fuzzy
 #| msgid "No records were available."
-msgid "No records available at the moment."
+msgid "Aucun enregistrement disponible actuellement."
 msgstr "لم تكن هناك سجلات متاحة."
 
 #: asset/templates/asset_history/asset_history_filter.html:30
@@ -7427,7 +7427,7 @@ msgid "P"
 msgstr "بي"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "Expected Working"
+msgid "En activité prévue"
 msgstr "العمل المتوقع"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -8256,7 +8256,7 @@ msgid "End date should not be earlier than the start date."
 msgstr "يجب ألا يكون تاريخ الانتهاء قبل تاريخ البدء."
 
 #: base/methods.py:456 employee/views.py:2901 recruitment/models.py:325
-msgid "Male"
+msgid "Homme"
 msgstr "ذكر"
 
 #: base/methods.py:457 employee/views.py:2901 recruitment/models.py:325
@@ -9133,11 +9133,11 @@ msgid "Recurring"
 msgstr "يتكرر"
 
 #: base/templates/announcement/announcement_form.html:20
-msgid "Create Announcements."
+msgid "Créer une annonce"
 msgstr "إنشاء الإعلانات."
 
 #: base/templates/announcement/announcement_one.html:11
-msgid "Announcement."
+msgid "Annonce."
 msgstr "إعلان."
 
 #: base/templates/announcement/announcement_one.html:56
@@ -9161,11 +9161,11 @@ msgstr "عرض المرفقات"
 #: base/templates/announcement/announcement_one.html:155
 #: base/templates/announcement/announcements_list.html:12
 #: templates/announcements_list.html:12
-msgid "No Announcements to show."
+msgid "Aucune annonce disponible pour le moment."
 msgstr ""
 
 #: base/templates/announcement/announcement_update_form.html:21
-msgid "Edit Announcement."
+msgid "Edit Annonce."
 msgstr "تحرير إعلان."
 
 #: base/templates/announcement/announcements_list.html:34
@@ -10952,7 +10952,7 @@ msgid "Requested Work Type"
 msgstr "نوع العمل المطلوب"
 
 #: base/templates/request_and_approve/work_type_request.html:10
-msgid "Previous/ Current Work Type"
+msgid "Type de travail précédent / actuel"
 msgstr "نوع العمل السابق / الحالي"
 
 #: base/templates/request_and_approve/work_type_request.html:44
@@ -12980,11 +12980,11 @@ msgid "Onboarding Candidates"
 msgstr "تأهيل المرشحين"
 
 #: base/views.py:6465 templates/dashboard_tile_container.html:112
-msgid "Recruitment Analytics"
+msgid "Analyse du recrutement"
 msgstr "تحليلات التوظيف"
 
 #: base/views.py:6466
-msgid "Attendance analytics"
+msgid "Suivi des présences"
 msgstr "تحليلات الحضور"
 
 #: base/views.py:6468 templates/dashboard_tile_container.html:190
@@ -13688,8 +13688,8 @@ msgstr "اسم العائلة"
 
 #: employee/models.py:230
 #, fuzzy
-#| msgid "Expected Working"
-msgid "Expected working"
+#| msgid "En activité prévue"
+msgid "En activité prévue"
 msgstr "العمل المتوقع"
 
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -13898,7 +13898,7 @@ msgstr "تاريخ الإجراء"
 #: onboarding/templates/onboarding/candidates_view.html:298
 #: payroll/templates/payroll/reimbursement/attachments.html:2
 #: payroll/templates/payroll/reimbursement/reimbursenent_individual.html:85
-msgid "Attachments"
+msgid "Pièces jointes"
 msgstr "المرفقات"
 
 #: employee/templates/disciplinary_actions/disciplinary_records.html:84
@@ -17764,7 +17764,7 @@ msgstr "استبعاد إجازات الشركة"
 #: leave/templates/leave/on_leave.html:36
 #, fuzzy
 #| msgid "Employee doesn't have enough leave days.."
-msgid "No employees have taken leave today."
+msgid "Aucun employé n'a pris de congé aujourd'hui."
 msgstr "الموظف ليس لديه أيام إجازة كافية .."
 
 #: leave/templates/leave/request_view.html:143
@@ -25772,7 +25772,7 @@ msgstr "الإعلانات"
 
 #: templates/dashboard.html:214
 #, fuzzy
-#| msgid "Create Announcements."
+#| msgid "Créer une annonce"
 msgid "Create Announcement"
 msgstr "إنشاء الإعلانات."
 
@@ -25805,11 +25805,11 @@ msgid "This Year"
 msgstr "هذا العام"
 
 #: templates/dashboard_tile_container.html:93
-msgid "Candidates Started Onboarding"
+msgid "Candidats en phase d'intégration"
 msgstr ""
 
 #: templates/dashboard_tile_container.html:132
-msgid "Attendance Analytics"
+msgid "Suivi des présences"
 msgstr "تحليلات الحضور"
 
 #: templates/dashboard_tile_container.html:305

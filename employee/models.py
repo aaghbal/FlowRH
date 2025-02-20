@@ -53,9 +53,9 @@ class Employee(models.Model):
     """
 
     choice_gender = [
-        ("male", trans("Male")),
-        ("female", trans("Female")),
-        ("other", trans("Other")),
+        ("male", trans("Homme")),
+        ("female", trans("Femme")),
+        ("other", trans("Autre")),
     ]
     choice_marital = (
         ("single", trans("Single")),
@@ -227,7 +227,7 @@ class Employee(models.Model):
             if apps.is_installed("leave")
             else QuerySet().none()
         )
-        status = _("Expected working")
+        status = _("En activité prévue")
         if leaves_requests.exists():
             if leaves_requests.filter(status="approved").exists():
                 status = _("On Leave")

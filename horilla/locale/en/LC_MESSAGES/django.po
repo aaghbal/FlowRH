@@ -3840,7 +3840,7 @@ msgstr ""
 #: recruitment/views/views.py:3233
 #, fuzzy
 #| msgid "shift-request-view"
-msgid "No records available at the moment."
+msgid "Aucun enregistrement disponible actuellement."
 msgstr "Shift Requests"
 
 #: asset/templates/asset_history/asset_history_filter.html:30
@@ -7430,7 +7430,7 @@ msgid "P"
 msgstr ""
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "Expected Working"
+msgid "En activité prévue"
 msgstr ""
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -8243,7 +8243,7 @@ msgid "End date should not be earlier than the start date."
 msgstr ""
 
 #: base/methods.py:456 employee/views.py:2901 recruitment/models.py:325
-msgid "Male"
+msgid "Homme"
 msgstr ""
 
 #: base/methods.py:457 employee/views.py:2901 recruitment/models.py:325
@@ -9106,11 +9106,11 @@ msgstr ""
 #: base/templates/announcement/announcement_form.html:20
 #, fuzzy
 #| msgid "recruitment"
-msgid "Create Announcements."
+msgid "Créer une annonce"
 msgstr "Recruitment"
 
 #: base/templates/announcement/announcement_one.html:11
-msgid "Announcement."
+msgid "Annonce."
 msgstr ""
 
 #: base/templates/announcement/announcement_one.html:56
@@ -9138,11 +9138,11 @@ msgstr "Recruitment"
 #: templates/announcements_list.html:12
 #, fuzzy
 #| msgid "recruitment"
-msgid "No Announcements to show."
+msgid "Aucune annonce disponible pour le moment."
 msgstr "Recruitment"
 
 #: base/templates/announcement/announcement_update_form.html:21
-msgid "Edit Announcement."
+msgid "Edit Annonce."
 msgstr ""
 
 #: base/templates/announcement/announcements_list.html:34
@@ -10979,7 +10979,7 @@ msgid "Requested Work Type"
 msgstr ""
 
 #: base/templates/request_and_approve/work_type_request.html:10
-msgid "Previous/ Current Work Type"
+msgid "Type de travail précédent / actuel"
 msgstr ""
 
 #: base/templates/request_and_approve/work_type_request.html:44
@@ -13014,13 +13014,13 @@ msgstr "Onboarding"
 #: base/views.py:6465 templates/dashboard_tile_container.html:111
 #, fuzzy
 #| msgid "recruitment"
-msgid "Recruitment Analytics"
+msgid "Analyse du recrutement"
 msgstr "Recruitment"
 
 #: base/views.py:6466
 #, fuzzy
 #| msgid "attendance-view"
-msgid "Attendance analytics"
+msgid "Suivi des présences"
 msgstr "Attendances"
 
 #: base/views.py:6468 templates/dashboard_tile_container.html:189
@@ -13738,7 +13738,7 @@ msgid "Last Name"
 msgstr ""
 
 #: employee/models.py:230
-msgid "Expected working"
+msgid "En activité prévue"
 msgstr ""
 
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -13955,7 +13955,7 @@ msgstr ""
 #: payroll/templates/payroll/reimbursement/reimbursenent_individual.html:85
 #, fuzzy
 #| msgid "recruitment"
-msgid "Attachments"
+msgid "Pièces jointes"
 msgstr "Recruitment"
 
 #: employee/templates/disciplinary_actions/disciplinary_records.html:84
@@ -17860,7 +17860,7 @@ msgid "Exclude Company Leaves"
 msgstr ""
 
 #: leave/templates/leave/on_leave.html:36
-msgid "No employees have taken leave today."
+msgid "Aucun employé n'a pris de congé aujourd'hui."
 msgstr ""
 
 #: leave/templates/leave/request_view.html:143
@@ -25661,13 +25661,13 @@ msgid "This Year"
 msgstr ""
 
 #: templates/dashboard_tile_container.html:92
-msgid "Candidates Started Onboarding"
+msgid "Candidats en phase d'intégration"
 msgstr ""
 
 #: templates/dashboard_tile_container.html:131
 #, fuzzy
 #| msgid "attendance-view"
-msgid "Attendance Analytics"
+msgid "Suivi des présences"
 msgstr "Attendances"
 
 #: templates/dashboard_tile_container.html:304

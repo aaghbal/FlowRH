@@ -3833,7 +3833,7 @@ msgstr "¿Quieres rechazar esta solicitud?"
 #: recruitment/views/views.py:3233
 #, fuzzy
 #| msgid "No records were available."
-msgid "No records available at the moment."
+msgid "Aucun enregistrement disponible actuellement."
 msgstr "No hubo registros disponibles."
 
 #: asset/templates/asset_history/asset_history_filter.html:30
@@ -7451,7 +7451,7 @@ msgid "P"
 msgstr "P"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "Expected Working"
+msgid "En activité prévue"
 msgstr "Trabajo esperado"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -8290,7 +8290,7 @@ msgid "End date should not be earlier than the start date."
 msgstr "La fecha de finalización no debe ser anterior a la fecha de inicio."
 
 #: base/methods.py:456 employee/views.py:2901 recruitment/models.py:325
-msgid "Male"
+msgid "Homme"
 msgstr "Masculino"
 
 #: base/methods.py:457 employee/views.py:2901 recruitment/models.py:325
@@ -9170,11 +9170,11 @@ msgid "Recurring"
 msgstr "Recurrenten"
 
 #: base/templates/announcement/announcement_form.html:20
-msgid "Create Announcements."
+msgid "Créer une annonce"
 msgstr "Crear anuncios."
 
 #: base/templates/announcement/announcement_one.html:11
-msgid "Announcement."
+msgid "Annonce."
 msgstr "Anuncio."
 
 #: base/templates/announcement/announcement_one.html:56
@@ -9198,11 +9198,11 @@ msgstr "Vea el archivo adjunto"
 #: base/templates/announcement/announcement_one.html:155
 #: base/templates/announcement/announcements_list.html:12
 #: templates/announcements_list.html:12
-msgid "No Announcements to show."
+msgid "Aucune annonce disponible pour le moment."
 msgstr "No hay anuncios para mostrar."
 
 #: base/templates/announcement/announcement_update_form.html:21
-msgid "Edit Announcement."
+msgid "Edit Annonce."
 msgstr "Editar anuncio."
 
 #: base/templates/announcement/announcements_list.html:34
@@ -11023,7 +11023,7 @@ msgid "Requested Work Type"
 msgstr "Tipo de trabajo solicitado"
 
 #: base/templates/request_and_approve/work_type_request.html:10
-msgid "Previous/ Current Work Type"
+msgid "Type de travail précédent / actuel"
 msgstr "Tipo de trabajo anterior/actual"
 
 #: base/templates/request_and_approve/work_type_request.html:44
@@ -13085,13 +13085,13 @@ msgstr "Candidatos Para Incorporar"
 #: base/views.py:6465 templates/dashboard_tile_container.html:112
 #, fuzzy
 #| msgid "Recruitment Analytic"
-msgid "Recruitment Analytics"
+msgid "Analyse du recrutement"
 msgstr "Analítica de Reclutamiento"
 
 #: base/views.py:6466
 #, fuzzy
 #| msgid "Daily Attendance Analytic"
-msgid "Attendance analytics"
+msgid "Suivi des présences"
 msgstr "Analítica de Asistencia Diaria"
 
 #: base/views.py:6468 templates/dashboard_tile_container.html:190
@@ -13917,8 +13917,8 @@ msgstr "Último Nombre"
 
 #: employee/models.py:230
 #, fuzzy
-#| msgid "Expected Working"
-msgid "Expected working"
+#| msgid "En activité prévue"
+msgid "En activité prévue"
 msgstr "Trabajo esperado"
 
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -14162,7 +14162,7 @@ msgstr "Dia de unirse"
 #: payroll/templates/payroll/reimbursement/reimbursenent_individual.html:85
 #, fuzzy
 #| msgid "Attachment"
-msgid "Attachments"
+msgid "Pièces jointes"
 msgstr "Adjunto"
 
 #: employee/templates/disciplinary_actions/disciplinary_records.html:84
@@ -18570,7 +18570,7 @@ msgstr "Excluir Empresa Dejar"
 #: leave/templates/leave/on_leave.html:36
 #, fuzzy
 #| msgid "Employee doesn't have enough leave days.."
-msgid "No employees have taken leave today."
+msgid "Aucun employé n'a pris de congé aujourd'hui."
 msgstr "El empleado no tiene suficientes días de licencia."
 
 #: leave/templates/leave/request_view.html:143
@@ -27286,7 +27286,7 @@ msgstr "Anuncios"
 
 #: templates/dashboard.html:214
 #, fuzzy
-#| msgid "Create Announcements."
+#| msgid "Créer une annonce"
 msgid "Create Announcement"
 msgstr "Crear anuncios."
 
@@ -27323,13 +27323,13 @@ msgstr "Este año"
 #: templates/dashboard_tile_container.html:93
 #, fuzzy
 #| msgid "Candidate Started Onboarding"
-msgid "Candidates Started Onboarding"
+msgid "Candidats en phase d'intégration"
 msgstr "Candidato comenzó a bordo"
 
 #: templates/dashboard_tile_container.html:132
 #, fuzzy
 #| msgid "Daily Attendance Analytic"
-msgid "Attendance Analytics"
+msgid "Suivi des présences"
 msgstr "Analítica de Asistencia Diaria"
 
 #: templates/dashboard_tile_container.html:305

@@ -193,7 +193,7 @@ def dashboard_pipeline(request):
         {
             "dataSet": data_set,
             "labels": labels,
-            "message": _("No records available at the moment."),
+            "message": _("Aucun enregistrement disponible actuellement."),
         }
     )
 

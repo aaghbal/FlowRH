@@ -739,7 +739,7 @@ class OfflineEmployeesListView(APIView):
                 When(
                     employee_attendances__attendance_date=today, then=Value("Working")
                 ),
-                default=Value("Expected working"),  # Default status
+                default=Value("En activité prévue"),  # Default status
                 output_field=CharField(),
             ),
             job_position_id=F("employee_work_info__job_position_id"),

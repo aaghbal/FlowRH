@@ -3802,7 +3802,7 @@ msgstr ""
 #: onboarding/views.py:1443 pms/views.py:2647 pms/views.py:2667
 #: pms/views.py:2688 recruitment/views/dashboard.py:196
 #: recruitment/views/views.py:3233
-msgid "No records available at the moment."
+msgid "Aucun enregistrement disponible actuellement."
 msgstr ""
 
 #: asset/templates/asset_history/asset_history_filter.html:30
@@ -7296,7 +7296,7 @@ msgid "P"
 msgstr ""
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "Expected Working"
+msgid "En activité prévue"
 msgstr ""
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -8065,7 +8065,7 @@ msgid "End date should not be earlier than the start date."
 msgstr ""
 
 #: base/methods.py:456 employee/views.py:2901 recruitment/models.py:325
-msgid "Male"
+msgid "Homme"
 msgstr ""
 
 #: base/methods.py:457 employee/views.py:2901 recruitment/models.py:325
@@ -8918,11 +8918,11 @@ msgid "Recurring"
 msgstr ""
 
 #: base/templates/announcement/announcement_form.html:20
-msgid "Create Announcements."
+msgid "Créer une annonce"
 msgstr ""
 
 #: base/templates/announcement/announcement_one.html:11
-msgid "Announcement."
+msgid "Annonce."
 msgstr ""
 
 #: base/templates/announcement/announcement_one.html:56
@@ -8944,11 +8944,11 @@ msgstr ""
 #: base/templates/announcement/announcement_one.html:155
 #: base/templates/announcement/announcements_list.html:12
 #: templates/announcements_list.html:12
-msgid "No Announcements to show."
+msgid "Aucune annonce disponible pour le moment."
 msgstr ""
 
 #: base/templates/announcement/announcement_update_form.html:21
-msgid "Edit Announcement."
+msgid "Edit Annonce."
 msgstr ""
 
 #: base/templates/announcement/announcements_list.html:34
@@ -10693,7 +10693,7 @@ msgid "Requested Work Type"
 msgstr ""
 
 #: base/templates/request_and_approve/work_type_request.html:10
-msgid "Previous/ Current Work Type"
+msgid "Type de travail précédent / actuel"
 msgstr ""
 
 #: base/templates/request_and_approve/work_type_request.html:44
@@ -12681,11 +12681,11 @@ msgid "Onboarding Candidates"
 msgstr ""
 
 #: base/views.py:6465 templates/dashboard_tile_container.html:111
-msgid "Recruitment Analytics"
+msgid "Analyse du recrutement"
 msgstr ""
 
 #: base/views.py:6466
-msgid "Attendance analytics"
+msgid "Suivi des présences"
 msgstr ""
 
 #: base/views.py:6468 templates/dashboard_tile_container.html:189
@@ -13359,7 +13359,7 @@ msgid "Last Name"
 msgstr ""
 
 #: employee/models.py:230
-msgid "Expected working"
+msgid "En activité prévue"
 msgstr ""
 
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -13558,7 +13558,7 @@ msgstr ""
 #: onboarding/templates/onboarding/candidates_view.html:298
 #: payroll/templates/payroll/reimbursement/attachments.html:2
 #: payroll/templates/payroll/reimbursement/reimbursenent_individual.html:85
-msgid "Attachments"
+msgid "Pièces jointes"
 msgstr ""
 
 #: employee/templates/disciplinary_actions/disciplinary_records.html:84
@@ -17261,7 +17261,7 @@ msgid "Exclude Company Leaves"
 msgstr ""
 
 #: leave/templates/leave/on_leave.html:36
-msgid "No employees have taken leave today."
+msgid "Aucun employé n'a pris de congé aujourd'hui."
 msgstr ""
 
 #: leave/templates/leave/request_view.html:143
@@ -24657,11 +24657,11 @@ msgid "This Year"
 msgstr ""
 
 #: templates/dashboard_tile_container.html:92
-msgid "Candidates Started Onboarding"
+msgid "Candidats en phase d'intégration"
 msgstr ""
 
 #: templates/dashboard_tile_container.html:131
-msgid "Attendance Analytics"
+msgid "Suivi des présences"
 msgstr ""
 
 #: templates/dashboard_tile_container.html:304

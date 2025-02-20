@@ -3230,7 +3230,7 @@ def hired_candidate_chart(request):
             "data": data,
             "background_color": background_color,
             "border_color": border_color,
-            "message": _("No records available at the moment."),
+            "message": _("Aucun enregistrement disponible actuellement."),
         },
         safe=False,
     )

@@ -17,7 +17,7 @@
 {% endif %}
 <div class="oh-modal__dialog-header pb-0">
     <h2 class="oh-modal__dialog-title" id="createModalTitle">
-        {% trans "Create Announcements." %}
+        {% trans "Créer une annonce" %}
     </h2>
     <button class="oh-modal__close" aria-label="Close">
         <ion-icon name="close-outline"></ion-icon>
@@ -27,7 +27,44 @@
     <form hx-post="{% url 'create-announcement' %}" hx-target="#objectCreateModalTarget"
         hx-encoding="multipart/form-data" class="oh-profile-section">
         {% csrf_token %}
-        {{form.as_p}}
+        {% for field in form %}
+        <div class="form-group">
+            {% if field.name == 'title' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Titre:</label>
+            {% elif field.name == 'description' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Description:</label>
+            {% elif field.name == 'attachments' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Pièces jointes:</label>
+            {% elif field.name == 'expire_date' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Date d'expiration:</label>
+            {% elif field.name == 'employees' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Employés concernés:</label>
+            {% elif field.name == 'department' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Département:</label>
+            {% elif field.name == 'job_position' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Poste:</label>
+            {% elif field.name == 'company_id' %}
+                <label for="{{ field.id_for_label }}" style="font-weight: 700;">Identifiant entreprise:</label>
+            {% else %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {% endif %}
+
+            {{ field }}
+
+            {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endfor %}
+
         <div class="d-flex flex-row-reverse">
             <button type="submit" class="oh-btn oh-btn--secondary mt-2 mr-0 oh-btn--w-100-resp">
                 {% trans "Save" %}
