@@ -1,7 +1,7 @@
 {% load static %} {% load i18n %}
 <div class="oh-modal__dialog-header">
   <h2 class="oh-modal__dialog-title" id="candidateExportLavel">
-    {% trans "Export Candidates" %}
+    {% trans "Exporter les candidatures" %}
   </h2>
   <button class="oh-modal__close" aria-label="Close">
     <ion-icon name="close-outline"></ion-icon>
@@ -59,7 +59,7 @@
                   {{export_filter.form.mobile}}
                 </div>
                 <div class="oh-input-group">
-                  <label class="oh-label">{% trans "Interview Date" %}</label>
+                  <label class="oh-label">{% trans "Date d'entretien" %}</label>
                   {{export_filter.form.interview_date}}
                 </div>
                 <div class="oh-input-group">
@@ -127,7 +127,7 @@
                   {{export_filter.form.start_date}}
                 </div>
                 <div class="oh-input-group">
-                  <label class="oh-label">{% trans "Is Closed" %}?</label>
+                  <label class="oh-label">{% trans "Clôturé" %}?</label>
                   {{export_filter.form.recruitment_id__closed}}
                 </div>
 
@@ -176,7 +176,7 @@
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="oh-input-group">
-                  <label class="oh-label">{% trans "Interview From" %}</label>
+                  <label class="oh-label">{% trans "Début entretien" %}</label>
                   {{export_filter.form.scheduled_from}}
                 </div>
                 <div class="oh-input-group">
@@ -186,7 +186,7 @@
               </div>
               <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="oh-input-group">
-                  <label class="oh-label">{% trans "Interview Till" %}</label>
+                  <label class="oh-label">{% trans "Date fin" %}</label>
                   {{export_filter.form.scheduled_till}}
                 </div>
               </div>

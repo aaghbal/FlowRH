@@ -174,12 +174,12 @@
                         {% if compensatory %}
                             <a href="{% url 'type-update' leave_type.id %}?compensatory=True" class="oh-btn oh-btn--info w-100">
                                 <ion-icon class="me-1" name="create-outline"></ion-icon>
-                                {% trans "Edit" %}
+                                {% trans "Modifier" %}
                             </a>
                         {% else %}
                             <a href="{% url 'type-update' leave_type.id %}" class="oh-btn oh-btn--info w-50">
                                 <ion-icon class="me-1" name="create-outline"></ion-icon>
-                                {% trans "Edit" %}
+                                {% trans "Modifier" %}
                             </a>
                         {% if not leave_type.is_compensatory_leave %}
                             <a data-toggle="oh-modal-toggle" data-target="#objectCreateModal"

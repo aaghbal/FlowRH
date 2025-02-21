@@ -732,7 +732,7 @@ class RotatingWorkTypeAssignForm(ModelForm):
     based_on = forms.ChoiceField(
         choices=BASED_ON, initial="daily", label=_trans("Based on")
     )
-    rotate_after_day = forms.IntegerField(initial=5, label=_trans("Rotate after day"))
+    rotate_after_day = forms.IntegerField(initial=5, label=_trans("Fréquence de rotation : journalière"))
     start_date = forms.DateField(
         initial=datetime.date.today, widget=forms.DateInput, label=_trans("Start date")
     )
@@ -923,7 +923,7 @@ class RotatingWorkTypeAssignUpdateForm(forms.ModelForm):
         }
         labels = {
             "start_date": _trans("Start date"),
-            "rotate_after_day": _trans("Rotate after day"),
+            "rotate_after_day": _trans("Fréquence de rotation : journalière"),
             "rotate_every_weekend": _trans("Rotate every weekend"),
             "rotate_every": _trans("Rotate every"),
             "based_on": _trans("Based on"),
@@ -1374,7 +1374,7 @@ class RotatingShiftAssignForm(forms.ModelForm):
     based_on = forms.ChoiceField(
         choices=BASED_ON, initial="daily", label=_trans("Based on")
     )
-    rotate_after_day = forms.IntegerField(initial=5, label=_trans("Rotate after day"))
+    rotate_after_day = forms.IntegerField(initial=5, label=_trans("Fréquence de rotation : journalière"))
     start_date = forms.DateField(
         initial=datetime.date.today, widget=forms.DateInput, label=_trans("Start date")
     )
@@ -1564,7 +1564,7 @@ class RotatingShiftAssignUpdateForm(ModelForm):
         }
         labels = {
             "start_date": _trans("Start date"),
-            "rotate_after_day": _trans("Rotate after day"),
+            "rotate_after_day": _trans("Fréquence de rotation : journalière"),
             "rotate_every_weekend": _trans("Rotate every weekend"),
             "rotate_every": _trans("Rotate every"),
             "based_on": _trans("Based on"),

@@ -122,7 +122,7 @@
                             <div class="oh-sticky-table__td oh-sticky-table__right">
                                 <div class="oh-btn-group">
                                     {% if perms.leave.change_restrictleave %}
-                                        <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}"
+                                        <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}"
                                             data-toggle="oh-modal-toggle" data-target="#objectUpdateModal"
                                             hx-get="{% url 'restrict-update' day.id %}?{{pd}}" hx-target="#objectUpdateModalTarget">
                                             <ion-icon name="create-outline"></ion-icon>
@@ -130,7 +130,7 @@
                                     {% endif %}
                                     {% if perms.leave.add_restrictleave %}
                                         <a hx-get="{% url 'duplicate-restrict-leave' day.id %}" hx-target="#objectCreateModalTarget"
-                                            data-toggle="oh-modal-toggle" data-target="#objectCreateModal" title="{% trans 'Duplicate' %}"
+                                            data-toggle="oh-modal-toggle" data-target="#objectCreateModal" title="{% trans 'Dupliquer' %}"
                                             style="cursor: pointer;" class="oh-btn oh-btn--light-bkg w-100">
                                             <ion-icon name="copy-outline"></ion-icon>
                                         </a>

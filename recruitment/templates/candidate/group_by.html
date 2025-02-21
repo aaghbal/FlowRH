@@ -39,13 +39,13 @@
 
 {% if data %}
 	<div class="oh-checkpoint-badge text-success mb-2" id="selectAllInstances" style="cursor: pointer;">
-		{% trans "Select All Candidates" %}
+		{% trans "Sélectionner tous les candidats" %}
 	</div>
 	<div class="oh-checkpoint-badge text-secondary mb-2" id="unselectAllInstances" style="cursor: pointer;">
-		{% trans "Unselect All Candidates" %}
+		{% trans "Désélectionner tout" %}
 	</div>
 	<div class="oh-checkpoint-badge text-info mb-2" id="exportsection" style="cursor: pointer;">
-		{% trans "Export Candidates" %}
+		{% trans "Exporter les candidatures" %}
 	</div>
 	<div class="oh-checkpoint-badge text-danger mb-2" id="selectedCandidate" >
 	</div>
@@ -197,7 +197,7 @@
 													style="background: #ff4500a3 !important; color: white;"
 													title="{% trans "Added In Rejected Candidates" %}"
 													{% else %}
-													title="{% trans "Add To Rejected Candidates" %}"
+													title="{% trans "Ajouter aux candidats non retenus" %}"
 													{% endif %}>
 												<ion-icon name="thumbs-down-outline"></ion-icon>
 												</button>

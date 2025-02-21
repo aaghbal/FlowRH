@@ -82,7 +82,7 @@
                   <ul class="oh-dropdown__items">
                     {% if perms.employee.change_employee or request.user|check_manager:emp %}
                       <li class="oh-dropdown__item">
-                        <a href="{% url 'employee-view-update' emp.id %}" class="oh-dropdown__link">{% trans "Edit" %}</a>
+                        <a href="{% url 'employee-view-update' emp.id %}" class="oh-dropdown__link">{% trans "Modifier" %}</a>
                       </li>
                     {% endif %}
                     {% if profile_edit_enabled %}
@@ -102,7 +102,7 @@
                       <li class="oh-dropdown__item">
                         {% if emp.is_active %}
                           <a hx-confirm="{% trans 'Do you want to archive this employee?' %}" hx-post="{% url 'employee-archive' emp.id %}?{{pd}}" hx-target="#relatedModel" class="oh-dropdown__link">
-                            {% trans "Archive" %}
+                            {% trans "Archiver" %}
                           </a>
                           {% else %}
                           <a hx-confirm="{% trans 'Do you want to un archive this employee?' %}" hx-post="{% url 'employee-archive' emp.id %}" hx-target="#relatedModel" class="oh-dropdown__link">
@@ -181,7 +181,7 @@
       class="oh-404__image mb-4"
     />
     <h5 class="oh-404__subtitle">
-      {% trans "No search result found!" %}
+      {% trans "Aucun résultat trouvé !" %}
     </h5>
   </div>
   <!-- end of empty page -->

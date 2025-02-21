@@ -69,7 +69,7 @@
           {% for option in search_in %}
           <li>
             <a href="#" onclick="$('[name=search_field]').val('{{option.0}}'); $(this).closest('form').find('#applyFilter').click()">
-              {% trans "Search" %} <b>{{option.1}}</b> {% trans "for:" %}
+              {% trans "Rechercher" %} <b>{{option.1}}</b> {% trans "for:" %}
               <b class="search_text"></b>
             </a>
           </li>

@@ -40,10 +40,10 @@
                                 <div data-cell-index="1" data-cell-title='{% trans "Intervieweur" %}'
                                     class="oh-sticky-table__th"
                                 >{% trans "Intervieweur" %}</div>
-                                <div data-cell-index="2" data-cell-title='{% trans "Interview Date" %}'
+                                <div data-cell-index="2" data-cell-title="{% trans "Date d'entretien" %}"
                                     class="oh-sticky-table__th {% if request.sort_option.order == '-interview_date' %}arrow-up {% elif request.sort_option.order == 'interview_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                     hx-get="{% url 'interview-filter-view' %}?{{pd}}&sortby=interview_date" hx-target="#section"
-                                >{% trans "Interview Date" %}</div>
+                                >{% trans "Date d'entretien" %}</div>
                                 <div data-cell-index="3" data-cell-title='{% trans "Heure de l'Entretien" %}'
                                     class="oh-sticky-table__th"
                                 >{% trans "Heure de l'Entretien" %}</div>
@@ -125,7 +125,7 @@
                                         {% elif interview.interview_date|date:"Y-m-d" < now|date:"Y-m-d" %}
                                             <div class="d-flex" style="color:red;">
                                                 <i id="fabIcon" style="font-size:18px" class="material-icons ms-3 mt-2">dangerous</i>
-                                                <span class="oh-activity-sidebar__q mt-2">{% trans "Expired Interview" %}</span>
+                                                <span class="oh-activity-sidebar__q mt-2">{% trans "Entretien expiré" %}</span>
                                             </div>
                                         {% elif interview.interview_date|date:"Y-m-d" > now|date:"Y-m-d" %}
                                             <div class="d-flex" style="color:orange;">
@@ -144,7 +144,7 @@
 
                                                 {% if perms.recruitment.change_interviewschedule or request.user.employee_get in interview.employee_id.all %}
                                                     <a
-                                                    title="{% trans "Edit" %}" hx-get="{% url 'edit-interview' interview.id %}?view=true"
+                                                    title="{% trans "Modifier" %}" hx-get="{% url 'edit-interview' interview.id %}?view=true"
                                                     data-target="#createModal" hx-swap="innerHTML" hx-target="#createTarget"
                                                     data-toggle="oh-modal-toggle"  class="oh-btn oh-btn--light-bkg w-100"
                                                     ><ion-icon name="create-outline"></ion-icon></a>

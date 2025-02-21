@@ -376,7 +376,7 @@ class RotatingWorkTypeAssign(HorillaModel):
         verbose_name=_("Based On"),
     )
     rotate_after_day = models.IntegerField(
-        default=7, verbose_name=_("Rotate After Day")
+        default=7, verbose_name=_("Fréquence de rotation : journalière")
     )
     rotate_every_weekend = models.CharField(
         max_length=10,
@@ -748,7 +748,7 @@ class RotatingShiftAssign(HorillaModel):
         verbose_name=_("Based On"),
     )
     rotate_after_day = models.IntegerField(
-        null=True, blank=True, default=7, verbose_name=_("Rotate After Day")
+        null=True, blank=True, default=7, verbose_name=_("Fréquence de rotation : journalière")
     )
     rotate_every_weekend = models.CharField(
         max_length=10,
@@ -821,7 +821,7 @@ class WorkTypeRequest(HorillaModel):
         WorkType,
         on_delete=models.PROTECT,
         related_name="requested_work_type",
-        verbose_name=_("Requesting Work Type"),
+        verbose_name=_("Demande de modification du régime de travail"),
     )
     previous_work_type_id = models.ForeignKey(
         WorkType,
@@ -839,7 +839,7 @@ class WorkTypeRequest(HorillaModel):
     )
     description = models.TextField(null=True, verbose_name=_("Description"))
     is_permanent_work_type = models.BooleanField(
-        default=False, verbose_name=_("Permanent Request")
+        default=False, verbose_name=_("Modification permanente du contrat")
     )
     approved = models.BooleanField(default=False, verbose_name=_("Approved"))
     canceled = models.BooleanField(default=False, verbose_name=_("Canceled"))
@@ -977,7 +977,7 @@ class ShiftRequest(HorillaModel):
         EmployeeShift,
         on_delete=models.PROTECT,
         related_name="requested_shift",
-        verbose_name=_("Requesting Shift"),
+        verbose_name=_("Demande de réaffectation horaire"),
     )
     previous_shift_id = models.ForeignKey(
         EmployeeShift,
@@ -1005,7 +1005,7 @@ class ShiftRequest(HorillaModel):
     )
     description = models.TextField(null=True, verbose_name=_("Description"))
     is_permanent_shift = models.BooleanField(
-        default=False, verbose_name=_("Permanent Request")
+        default=False, verbose_name=_("Modification permanente du contrat")
     )
     approved = models.BooleanField(default=False, verbose_name=_("Approved"))
     canceled = models.BooleanField(default=False, verbose_name=_("Canceled"))

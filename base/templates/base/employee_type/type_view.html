@@ -19,7 +19,7 @@
 								{% if perms.base.change_employeetype %}
 									<a data-toggle="oh-modal-toggle" data-target="#employeeTypeModal"
 										hx-get="{% url 'employee-type-update' type.id %}" hx-target="#employeeTypeForm"
-										type="button" class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+										type="button" class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
 										<ion-icon name="create-outline"></ion-icon></a>
 								{% endif %}
 								{% if perms.base.delete_employeetype %}

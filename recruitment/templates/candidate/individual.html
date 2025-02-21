@@ -101,7 +101,7 @@
     {% endif %}
     {% if perms.recruitment.chanage_candidate %}
       <a href="{% url 'rec-candidate-update' candidate.id %}" class="mt-1 mb-1 m-3">
-        <img src="{% static "/images/ui/edit_btn.png" %}" style="width: 25px; height: auto;" title="{% trans 'Edit' %}">
+        <img src="{% static "/images/ui/edit_btn.png" %}" style="width: 25px; height: auto;" title="{% trans 'Modifier' %}">
       </a>
     {% endif %}
       {% if perms.recruitment.change_candidate %}

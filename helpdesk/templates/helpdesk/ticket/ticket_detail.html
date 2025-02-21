@@ -256,7 +256,7 @@
                               {% if request.user.employee_get|is_department_manager:ticket or perms.helpdesk.change_comment or request.user.employee_get == item.comment.employee_id %}
                                 <a
                                   class="oh-btn p-3 edit_comment"
-                                  title="{% trans 'Edit' %}"
+                                  title="{% trans 'Modifier' %}"
 
                                 >
                                     <ion-icon name="pencil-outline"></ion-icon>
@@ -479,7 +479,7 @@
                               data-target ="#addTagModal"
                               hx-target="#addTagTarget"
                               role="button"
-                              title = "{% trans "Edit" %}"
+                              title = "{% trans "Modifier" %}"
                               >
                               <ion-icon name="create-outline"></ion-icon>
                             </button>
@@ -516,7 +516,7 @@
                               hx-get="{% url 'ticket-change-assignees' ticket.id %}"
                               data-target ="#addTagModal"
                               hx-target="#addTagTarget"
-                              title="{% trans 'Edit' %}"
+                              title="{% trans 'Modifier' %}"
 
                             ><ion-icon name="create-outline"></ion-icon>
                           </button>

@@ -70,7 +70,7 @@
                 <ul class="oh-dropdown__items">
                   {% if perms.recruitment.change_stage or request.user|recruitment_manages:rec%}
                   <li class="oh-dropdown__item">
-                    <a hx-get='{% url "stage-update-pipeline" stage.grouper.id %}' hx-target='#objectUpdateModalTarget' class="oh-dropdown__link" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" data-key=".oh-kanban__section">{% trans "Edit" %}</a>
+                    <a hx-get='{% url "stage-update-pipeline" stage.grouper.id %}' hx-target='#objectUpdateModalTarget' class="oh-dropdown__link" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" data-key=".oh-kanban__section">{% trans "Modifier" %}</a>
                   </li>
                   {% endif %}
                   {% if perms.recruitment.delete_stage %}
@@ -227,7 +227,7 @@
                             {% if cand.is_offer_rejected %}
                             title="{% trans "Added In Rejected Candidates" %}"
                             {% else %}
-                            title="{% trans "Add To Rejected Candidates" %}"
+                            title="{% trans "Ajouter aux candidats non retenus" %}"
                             {% endif %}
                           >
                           {% if not cand.is_offer_rejected %}
@@ -259,12 +259,12 @@
                     {% if perms.recruitment.change_candidate or request.user|is_stagemanager %}
                     <li class="oh-dropdown__item">
                       <a style="color: inherit;text-decoration: none;" class="oh-dropdown__link oh-dropdown__link--secondary" href="{% url 'rec-candidate-update' cand.id %}" target="_blank"
-                        >{% trans "Edit" %}</a>
+                        >{% trans "Modifier" %}</a>
                     </li>
                     {% endif %}
                     {% if perms.recruitment.delete_candidate %}
                     <li class="oh-dropdown__item">
-                      <a href="{% url 'rec-candidate-archive' cand.id %}?is_active=False" class="oh-dropdown__link ">{% trans "Archive" %}</a>
+                      <a href="{% url 'rec-candidate-archive' cand.id %}?is_active=False" class="oh-dropdown__link ">{% trans "Archiver" %}</a>
                     </li>
                     {% endif %}
                     {% if perms.recruitment.delete_candidate %}

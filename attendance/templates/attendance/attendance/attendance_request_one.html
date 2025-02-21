@@ -130,7 +130,7 @@
         {% elif request.GET.all_attendance %}
             <a data-toggle="oh-modal-toggle" data-target="#objectUpdateModal"
                 hx-get="{% url 'attendance-change' attendance_request.id %}?all_attendance=true"
-                hx-target="#objectUpdateModalTarget" class="oh-btn oh-btn--info w-100" title="{% trans 'Edit' %}">
+                hx-target="#objectUpdateModalTarget" class="oh-btn oh-btn--info w-100" title="{% trans 'Modifier' %}">
                 <ion-icon name="lock-open-outline" role="img" class="md hydrated" aria-label="create outline">
                 </ion-icon>
             </a>
@@ -143,7 +143,7 @@
                         hx-target="{% if dashboard == 'true' %}#editModalForm {% else %}#updateAttendanceModalBody{% endif %}"
                         hx-swap='innerHTML' data-toggle='oh-modal-toggle'
                         data-target="{% if dashboard == 'true' %}#editModal {% else %}#updateAttendanceModal {% endif %}"
-                        style="width: 50%;" title='{% trans "Edit" %}'>
+                        style="width: 50%;" title='{% trans "Modifier" %}'>
                         <ion-icon name="create-outline" role="img" class="md hydrated" aria-label="create outline">
                         </ion-icon>
                     </a>
@@ -205,7 +205,7 @@
                             hx-target="{% if dashboard == 'true' %}#editModalForm {% else %}#updateAttendanceModalBody{% endif %}"
                             hx-swap='innerHTML' data-toggle='oh-modal-toggle'
                             data-target="{% if dashboard == 'true' %}#editModal {% else %}#updateAttendanceModal {% endif %}"
-                            style="width: 50%;" title='{% trans "Edit" %}'>
+                            style="width: 50%;" title='{% trans "Modifier" %}'>
                             <ion-icon name="create-outline" role="img" class="md hydrated" aria-label="create outline">
                             </ion-icon>
                         </a>
@@ -232,7 +232,7 @@
                     <div class="oh-btn-group">
                         <a class="oh-btn oh-btn--info" hx-get="{% url 'attendance-update' attendance_request.id %}"
                             hx-target='#updateAttendanceModalBody' hx-swap='innerHTML' data-toggle='oh-modal-toggle'
-                            data-target='#updateAttendanceModal' style="width: 50%;" title='{% trans "Edit" %}'>
+                            data-target='#updateAttendanceModal' style="width: 50%;" title='{% trans "Modifier" %}'>
                             <ion-icon name="create-outline" role="img" class="md hydrated" aria-label="create outline">
                             </ion-icon>
                         </a>

@@ -27,7 +27,7 @@
 								{% if perms.employee.change_employeetag %}
 									<a hx-get="{% url 'employee-tag-update' tag.id %}" hx-target="#objectUpdateModalTarget"
 										data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" type="button"
-										class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}">
+										class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}">
 										<ion-icon name="create-outline"></ion-icon>
 									</a>
 								{% endif %}

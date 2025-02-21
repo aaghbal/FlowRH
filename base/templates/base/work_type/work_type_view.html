@@ -19,7 +19,7 @@
 								{% if perms.base.change_worktype %}
 									<a data-toggle="oh-modal-toggle" data-target="#workTypeModal"
 										hx-get="{% url 'work-type-update' type.id %}" hx-target="#workTypeForm" type="button"
-										class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+										class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
 										<ion-icon name="create-outline"></ion-icon></a>
 								{% endif %}
 								{% if perms.base.delete_worktype %}

@@ -38,7 +38,7 @@
                   onclick="event.stopPropagation();"
                   onchange = "bulkStageChange(this);"
                >
-                  <option style="color: #999;">{% trans "Bulk Stage Change" %}</option>
+                  <option style="color: #999;">{% trans "Changement d'étape en masse" %}</option>
                   {% for on_stage in recruitment.onboarding_stage.all %}
                   <option value="{{on_stage.id}}">{{on_stage}}</option>
                   {% endfor %}
@@ -69,7 +69,7 @@
                            data-toggle="oh-modal-toggle"
                            data-target="#editModal3"
                            class="oh-dropdown__link"
-                        >{% trans "Edit" %}</a
+                        >{% trans "Modifier" %}</a
                         >
                      </li>
                      {% endif %}
@@ -116,8 +116,8 @@
                   <div class="oh-sticky-table__th">{% trans "Job Position" %}</div>
                   <div class="oh-sticky-table__th">{% trans "Mobile" %}</div>
                   <div class="oh-sticky-table__th">{% trans "Joining Date" %}</div>
-                  <div class="oh-sticky-table__th">{% trans "Portal Status" %}</div>
-                  <div class="oh-sticky-table__th">{% trans "Task Status" %}</div>
+                  <div class="oh-sticky-table__th">{% trans "Statut du portail" %}</div>
+                  <div class="oh-sticky-table__th">{% trans "Statut des tâches" %}</div>
                   <div class="oh-sticky-table__th">{% trans "Stage" %}</div>
                   <div class="oh-sticky-table__th">{% trans "Options" %}</div>
                   {% for task in stage.grouper.onboarding_task.all %}
@@ -138,7 +138,7 @@
                                     <a class="oh-dropdown__link" data-toggle="oh-modal-toggle"
                                        data-target="#editModal4"
                                        hx-get="{% url 'task-update' task.id %}"
-                                       hx-target="#updateTask">{% trans "Edit" %}
+                                       hx-target="#updateTask">{% trans "Modifier" %}
                                     </a>
                                  </li>
                                  {% endif %}

@@ -142,7 +142,7 @@
                     {% if perms.base.change_rotatingworktypeassign or request.user|is_reportingmanager  %}
                         <a class="oh-btn oh-btn--info" hx-get="{% url "rotating-work-type-assign-update" instance.id %}" hx-target="#objectUpdateModalTarget" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" style="width: 50%;">
                             <ion-icon name="create-outline">
-                            </ion-icon>{% trans "Edit" %}
+                            </ion-icon>{% trans "Modifier" %}
                         </a>
                         <form  class="oh-btn oh-btn--primary" style="width: 50%;" hx-confirm="{% trans 'Do you want to archive this rotating work type assign?' %}" hx-get="{% url 'rotating-work-type-assign-archive' instance.id %}?{{pd}}&instances_ids={{assign_ids}}" hx-target="#objectDetailsModalTarget">
                             <button style="background: none;
@@ -155,7 +155,7 @@
                                 <ion-icon name="archive-outline">
                                 </ion-icon>
                                 {% if instance.is_active %}
-                                    {% trans "Archive" %}
+                                    {% trans "Archiver" %}
                                 {% else %}
                                     {% trans "Un-archive" %}
                                 {% endif %}

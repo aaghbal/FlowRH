@@ -73,7 +73,7 @@
                         <div class="oh-sticky-table__td">
                             <div class="oh-btn-group">
                                 {% if perms.base.change_holidays %}
-                                    <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}"
+                                    <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}"
                                         data-toggle="oh-modal-toggle" data-target="#objectUpdateModal"
                                         hx-get="{% url 'holiday-update' holiday.id %}?{{pd}}" hx-target="#objectUpdateModalTarget">
                                         <ion-icon name="create-outline"></ion-icon>
@@ -83,7 +83,7 @@
                                 {% if perms.leave.add_holidays %}
                                     <a hx-get="{% url 'duplicate-holiday' holiday.id %}" hx-target="#objectCreateModalTarget"
                                         data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
-                                        title="{% trans 'Duplicate' %}" style="cursor: pointer;"
+                                        title="{% trans 'Dupliquer' %}" style="cursor: pointer;"
                                         class="oh-btn oh-btn--light-bkg w-100">
                                         <ion-icon name="copy-outline"></ion-icon>
                                     </a>

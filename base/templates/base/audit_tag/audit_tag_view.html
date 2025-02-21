@@ -21,7 +21,7 @@
 								{% if perms.horilla_audit.change_audittag %}
 									<a hx-get="{% url 'audit-tag-update' tag.id %}" hx-target="#audittagEditForm"
 										data-toggle="oh-modal-toggle" data-target="#audittagEditModal" type="button"
-										class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+										class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
 										<ion-icon name="create-outline"></ion-icon></a>
 								{% endif %}
 								{% if perms.horilla_audit.delete_audittag %}

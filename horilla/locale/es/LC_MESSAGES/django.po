@@ -14137,7 +14137,7 @@ msgid "Work Information"
 msgstr "Trabajar Información"
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:103
-msgid "Take An Action"
+msgid "Prendre une mesure"
 msgstr "Tomar una acción"
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:129
@@ -24781,7 +24781,7 @@ msgstr "Horas extras menores o iguales"
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "MoM"
+msgid "compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -24811,7 +24811,7 @@ msgstr "¿Estás segura de eliminar este grupo de impuestos?"
 #: pms/templates/meetings/meetings_list.html:127
 #, fuzzy
 #| msgid "Add Note"
-msgid "Add MoM"
+msgid "Ajouter ompte-rendu de réunion"
 msgstr "Añadir la nota"
 
 #: pms/templates/meetings/meetings_list.html:167

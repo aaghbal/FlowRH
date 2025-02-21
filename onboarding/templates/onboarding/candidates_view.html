@@ -55,7 +55,7 @@
                             type="text"
                             class="oh-input oh-input__icon"
                             aria-label="Search Input"
-                            placeholder="{% trans 'Search' %}"
+                            placeholder="{% trans 'Rechercher' %}"
                             name="name"
                             onkeyup="$('.filterButton').click()"
                         />
@@ -155,7 +155,7 @@
                                             href="#"
                                             onclick="event.preventDefault(); event.stopPropagation()"
                                             class="oh-dropdown__link"
-                                            >{% trans "Offer letter status :" %}
+                                            >{% trans "Statut de l'offre :" %}
                                         </a>
                                         <select name="status"
                                             onclick="event.preventDefault(); event.stopPropagation()"
@@ -193,7 +193,7 @@
                             data-target="#addAttachments"
                             data-toggle="oh-modal-toggle"
                         >
-                            {% trans "Send Portal" %}
+                            {% trans "Envoyer le portail" %}
                         </button>
                     </div>
                 {% endif %}
@@ -222,7 +222,7 @@
                 class="oh-dot oh-dot--small me-1"
                 style="background-color: yellow"
             ></span>
-            {% trans "Joining Set" %}
+            {% trans "Date d'entrée confirmée" %}
         </span>
         <span
             class="m-1"
@@ -255,7 +255,7 @@
                 class="oh-dot oh-dot--small me-1"
                 style="background-color: yellowgreen"
             ></span>
-            {% trans "Portal Sent" %}
+            {% trans "Portail envoyé" %}
         </span>
     </div>
     <div id="messages" class="oh-alert-container"></div>
@@ -335,7 +335,7 @@
                                     <label
                                         class="oh-input__label mt-0"
                                         for="keyTitle"
-                                        >{% trans "Template as Attachments"%}</label
+                                        >{% trans "Documents types"%}</label
                                     >
                                     <select
                                         name="template_attachment_ids"
@@ -352,7 +352,7 @@
                                 </div>
                                 <div class="oh-input__group">
                                     <label class="oh-input__label" for="keyDesc"
-                                        >{% trans "Other Attachments" %}</label
+                                        >{% trans "Autres documents" %}</label
                                     >
                                     <input
                                         type="file"
@@ -379,7 +379,7 @@
                     id="trigger-onboarding"
                     title="Send portal link / Trigger Onboarding"
                 >
-                    {% trans "Send Portal Link" %}
+                    {% trans "Envoyer l'accès au portail" %}
                 </button>
             </div>
         </form>

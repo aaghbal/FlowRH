@@ -130,7 +130,7 @@
                   {% endif %}
                   {% if perms.pms.delete_feedback or request.user|is_reportingmanager %}
                     <form action="{% url 'feedback-archive' id=feedback.id %}" method="post" onsubmit="return confirm('{% trans "Do you want archive this Feedback ?" %}')" >
-                      <button class="oh-btn  w-100 "  title="{% trans 'Archive' %}" style="background-color: white;!important">
+                      <button class="oh-btn  w-100 "  title="{% trans 'Archiver' %}" style="background-color: white;!important">
                         {% csrf_token %}
                         <ion-icon name="archive-sharp" type="submit"></ion-icon>
                       </button>

@@ -107,7 +107,7 @@
                     {% if perms.payroll.change_deduction %}
                         <a href="{% url 'update-deduction' deduction.id %}" class="oh-btn oh-btn--info" style="width: 100%;">
                             <ion-icon name="create-outline" role="img" class="md hydrated" aria-label="create outline"></ion-icon>
-                            {% trans "Edit" %}
+                            {% trans "Modifier" %}
                         </a>
                     {% endif %}
                     {% if perms.payroll.delete_deduction %}

@@ -88,7 +88,7 @@
                                 <a hx-get="{% url 'update-grace-time' default_grace_time.id %}?default=False"
                                     hx-target="#objectUpdateModalTarget" type="button" data-toggle="oh-modal-toggle"
                                     data-target="#objectUpdateModal" data-toggle="oh-modal-toggle" type="button"
-                                    class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+                                    class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
                                     <ion-icon name="create-outline"></ion-icon></a>
                                 {% endif %}
                                 {% if perms.base.delete_gracetime %}
@@ -224,7 +224,7 @@
                             <a hx-get="{% url 'update-grace-time' grace_time.id %}?default=False"
                                 hx-target="#objectUpdateModalTarget" type="button" data-toggle="oh-modal-toggle"
                                 data-target="#objectUpdateModal" data-toggle="oh-modal-toggle" type="button"
-                                class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+                                class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
                                 <ion-icon name="create-outline"></ion-icon></a>
                             {% endif %}
                             {% if perms.base.delete_gracetime %}

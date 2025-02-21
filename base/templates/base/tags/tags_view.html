@@ -27,7 +27,7 @@
 								{% if perms.base.change_tags %}
 									<a hx-get="{% url 'tag-update' tag.id %}" hx-target="#tagEditForm" data-toggle="oh-modal-toggle"
 										data-target="#tagEditModal" type="button" class="oh-btn oh-btn--light-bkg w-50"
-										title="{% trans 'Edit' %}">
+										title="{% trans 'Modifier' %}">
 										<ion-icon name="create-outline"></ion-icon></a>
 								{% endif %}
 								{% if perms.base.delete_tags %}

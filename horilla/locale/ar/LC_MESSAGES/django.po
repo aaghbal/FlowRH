@@ -13879,7 +13879,7 @@ msgid "Work Information"
 msgstr "معلومات العمل"
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:103
-msgid "Take An Action"
+msgid "Prendre une mesure"
 msgstr "اتخاذ إجراء"
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:129
@@ -23604,7 +23604,7 @@ msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "MoM"
+msgid "compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -23630,7 +23630,7 @@ msgstr ""
 #: pms/templates/meetings/meetings_list.html:127
 #, fuzzy
 #| msgid "Add Note"
-msgid "Add MoM"
+msgid "Ajouter ompte-rendu de réunion"
 msgstr "اضف ملاحظة"
 
 #: pms/templates/meetings/meetings_list.html:167

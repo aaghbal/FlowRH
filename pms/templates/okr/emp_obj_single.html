@@ -123,7 +123,7 @@
                 {% if perms.pms.change_employeeobjective or instance|is_manager:request.user %}
                     <a class="oh-btn oh-btn--info" hx-get='{% url "update-employee-objective" instance.id %}' hx-target="#objectDetailsModalTarget" data-toggle="oh-modal-toggle" data-target="#objectDetailsModal" style="width: 50%;">
                         <ion-icon name="create-outline">
-                        </ion-icon>{% trans "Edit" %}
+                        </ion-icon>{% trans "Modifier" %}
                     </a>
                 {% endif %}
                 {% if perms.pms.delete_employeeobjective or instance|is_manager:request.user %}
@@ -155,7 +155,7 @@
                                 cursor: pointer;
                                 outline: inherit;">
                                 <ion-icon name="archive-outline"></ion-icon>
-                                {% trans "Archive" %}
+                                {% trans "Archiver" %}
                             </button>
                         </form>
                     {% endif %}

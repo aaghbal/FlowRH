@@ -101,7 +101,7 @@
 												<div class="oh-sticky-table__td" onclick="event.stopPropagation();">
 													<div class="oh-btn-group" >
 													{% if shift_request.approved == False and not shift_request.canceled   %}
-														<a hx-get="{% url 'shift-request-update' shift_request.id %}" hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle" data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+														<a hx-get="{% url 'shift-request-update' shift_request.id %}" hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle" data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
 													{% else %}
 														<button class="oh-btn oh-btn--light-bkg w-50" disabled><ion-icon name="create-outline" ></ion-icon></button></td>
 													{% endif %}
@@ -109,7 +109,7 @@
 													data-toggle="oh-modal-toggle"
 													data-target="#objectCreateModal"
 													hx-get="{% url 'shift-request-duplicate' shift_request.id %}?{{pg}}"
-													title="{% trans 'Duplicate' %}"
+													title="{% trans 'Dupliquer' %}"
 													hx-target="#objectCreateModalTarget"
 													style= "cursor: pointer;"
 													>
@@ -427,7 +427,7 @@
 													<div class="oh-sticky-table__td" onclick="event.stopPropagation();">
 														<div class="oh-btn-group" >
 														{% if shift_request.approved == False and not shift_request.canceled   %}
-															<a hx-get="{% url 'shift-allocation-request-update' shift_request.id %}" hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle" data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+															<a hx-get="{% url 'shift-allocation-request-update' shift_request.id %}" hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle" data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
 														{% else %}
 															<button class="oh-btn oh-btn--light-bkg w-50" disabled><ion-icon name="create-outline" ></ion-icon></button></td>
 														{% endif %}
@@ -492,7 +492,7 @@
 														{% if request.user.employee_get == shift_request.employee_id and not request.user|is_reportingmanager %}
 
 															{% if shift_request.approved == False and not shift_request.canceled   %}
-																<a hx-get="{% url 'shift-allocation-request-update' shift_request.id %}" hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle" data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+																<a hx-get="{% url 'shift-allocation-request-update' shift_request.id %}" hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle" data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
 															{% else %}
 																<button class="oh-btn oh-btn--light-bkg w-50" disabled><ion-icon name="create-outline" ></ion-icon></button></td>
 															{% endif %}

@@ -14,7 +14,7 @@
             {{ f.form.mobile }}
           </div>
           <div class="oh-input-group">
-            <label class="oh-label">{% trans 'Interview Date' %}</label>
+            <label class="oh-label">Date d'entretien</label>
             {{ f.form.interview_date }}
           </div>
           <div class="oh-input-group">
@@ -32,7 +32,7 @@
               {{f.form.rejected_candidate__reject_reason_id}}
             </div>
             <div class="oh-input-group">
-              <label class="oh-label">{% trans 'Is Converted' %}?</label>
+              <label class="oh-label">{% trans 'Converti(e) en employé(e) ' %}?</label>
               {{ f.form.converted }}
             </div>
           </div>
@@ -90,7 +90,7 @@
             {{ f.form.start_date }}
           </div>
           <div class="oh-input-group">
-            <label class="oh-label">{% trans 'Is Closed' %}?</label>
+            <label class="oh-label">{% trans 'Clôturé' %}?</label>
             {{ f.form.recruitment_id__closed }}
           </div>
 
@@ -127,7 +127,7 @@
             {{ f.form.end_date }}
           </div>
           <div class="oh-input-group">
-            <label class="oh-label">{% trans 'Skill Zone' %}</label>
+            <label class="oh-label">{% trans 'Zone de compétences' %}</label>
             {{ f.form.skillzonecandidate_set__skill_zone_id }}
           </div>
         </div>
@@ -143,7 +143,7 @@
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-6">
           <div class="oh-input-group">
-            <label class="oh-label">{% trans 'Interview From' %}</label>
+            <label class="oh-label">{% trans 'Début entretien' %}</label>
             {{ f.form.scheduled_from }}
           </div>
           <div class="oh-input-group">
@@ -153,7 +153,7 @@
         </div>
         <div class="col-sm-12 col-md-12 col-lg-6">
           <div class="oh-input-group">
-            <label class="oh-label">{% trans 'Interview Till' %}</label>
+            <label class="oh-label">{% trans 'Date fin' %}</label>
             {{ f.form.scheduled_till }}
           </div>
         </div>

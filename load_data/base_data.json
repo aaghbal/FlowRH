@@ -1594,7 +1594,7 @@
             "created_by": 1,
             "modified_by": 1,
             "is_active": true,
-            "employee_shift": "Regular Shift",
+            "employee_shift": "Horaire standard/régulier",
             "weekly_full_time": "40:00",
             "full_time": "200:00",
             "company_id": []

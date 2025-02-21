@@ -148,7 +148,7 @@
                       {% if perms.leave.change_availableleave or request.user|is_reportingmanager %}
                       <button
                         class="oh-btn oh-btn--light-bkg w-100"
-                        title="{% trans 'Edit' %}"
+                        title="{% trans 'Modifier' %}"
                         data-toggle="oh-modal-toggle"
                         data-target="#objectUpdateModal"
                         hx-get="{% url 'available-leave-update' available_leave.id %}?{{pd}}"

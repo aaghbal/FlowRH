@@ -134,7 +134,7 @@
 												<a hx-get="{% url 'rotating-work-type-assign-duplicate' rwork_type.id %}"
 													hx-target="#objectCreateModalTarget" data-target="#objectCreateModal"
 													data-toggle="oh-modal-toggle" type="button"
-													class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Duplicate' %}">
+													class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Dupliquer' %}">
 													<ion-icon name="copy-outline"></ion-icon>
 												</a>
 											{% endif %}
@@ -145,7 +145,7 @@
 														hx-get="{% url 'rotating-work-type-assign-archive' rwork_type.id %}?{{pd}}"
 														hx-target="#view-container">
 														<button class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-															title="{% trans 'Archive' %}">
+															title="{% trans 'Archiver' %}">
 															<input type="hidden" name="is_active" value="False" id="">
 															<ion-icon name="archive"></ion-icon>
 														</button>

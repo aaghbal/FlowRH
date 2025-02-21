@@ -25,7 +25,7 @@ SUBMENUS = [
         "accessibility": "employee.sidebar.employee_accessibility",
     },
     {
-        "menu": trans("Document Requests"),
+        "menu": trans("Demandes de documents"),
         "redirect": reverse("document-request-view"),
         "accessibility": "employee.sidebar.document_accessibility",
     },
@@ -48,7 +48,7 @@ SUBMENUS = [
         "accessibility": "employee.sidebar.rotating_work_type_accessibility",
     },
     {
-        "menu": trans("Disciplinary Actions"),
+        "menu": trans("Actions disciplinaires"),
         "redirect": reverse("disciplinary-actions"),
     },
     {
@@ -56,7 +56,7 @@ SUBMENUS = [
         "redirect": reverse("view-policies"),
     },
     {
-        "menu": trans("Organization Chart"),
+        "menu": trans("organigramme"),
         "redirect": reverse("organisation-chart"),
     },
 ]

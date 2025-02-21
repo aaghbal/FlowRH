@@ -90,7 +90,7 @@
                                         {% if shift_request.approved %}
                                             {% trans "Approved" %}
                                         {% elif shift_request.canceled %}
-                                            {% trans "Rejected" %}
+                                            {% trans "Refusé(e)" %}
                                         {% else %}
                                             {% trans "Requested" %}
                                         {% endif %}
@@ -119,7 +119,7 @@
                                                         <a hx-get="{% url 'shift-request-update' shift_request.id %}"
                                                             hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle"
                                                             data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50"
-                                                            title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+                                                            title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
                                                     {% else %}
                                                         <button class="oh-btn oh-btn--light-bkg w-50" disabled><ion-icon name="create-outline"></ion-icon></button></td>
                                                     {% endif %}
@@ -128,7 +128,7 @@
                                                     <a class="oh-btn oh-btn--light-bkg w-50" data-toggle="oh-modal-toggle"
                                                         data-target="#objectCreateModal"
                                                         hx-get="{% url 'shift-request-duplicate' shift_request.id %}?{{pg}}"
-                                                        title="{% trans 'Duplicate' %}" hx-target="#objectCreateModalTarget"
+                                                        title="{% trans 'Dupliquer' %}" hx-target="#objectCreateModalTarget"
                                                         style="cursor: pointer;">
                                                         <ion-icon name="copy-outline"></ion-icon>
                                                     </a>
@@ -246,7 +246,7 @@
                 <img style="width: 150px; height: 150px" src="{% static 'images/ui/no-results.png' %}"
                     class="oh-404__image mb-4" />
                 <h5 class="oh-404__subtitle">
-                    {% trans "No search result found!" %}
+                    {% trans "Aucun résultat trouvé !" %}
                 </h5>
             </div>
             <!-- end of empty page -->
@@ -391,7 +391,7 @@
                                     <a hx-get="{% url 'shift-allocation-request-update' shift_request.id %}"
                                         hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle"
                                         data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50"
-                                        title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+                                        title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
                                     {% else %}
                                     <button class="oh-btn oh-btn--light-bkg w-50" disabled><ion-icon
                                             name="create-outline"></ion-icon></button></td>
@@ -476,7 +476,7 @@
                                         <a hx-get="{% url 'shift-allocation-request-update' shift_request.id %}"
                                             hx-target='#shiftRequestModalUpdateBody' data-toggle="oh-modal-toggle"
                                             data-target='#shiftRequestModalUpdate' class="oh-btn oh-btn--light-bkg w-50"
-                                            title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+                                            title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
                                         {% else %}
                                         <button class="oh-btn oh-btn--light-bkg w-50" disabled><ion-icon
                                                 name="create-outline"></ion-icon></button></td>
@@ -567,7 +567,7 @@
             <img style="width: 150px; height: 150px" src="{% static 'images/ui/no-results.png' %}"
                 class="oh-404__image mb-4" />
             <h5 class="oh-404__subtitle">
-                {% trans "No search result found!" %}
+                {% trans "Aucun résultat trouvé !" %}
             </h5>
         </div>
         <!-- end of empty page -->

@@ -30,7 +30,7 @@
                     {% endfor %}
                 </ul>
             </td>
-            <td><a href="{% url 'task-update' onboarding_task.id %}" class="btn btn-primary">{% trans "Edit" %}</a></td>
+            <td><a href="{% url 'task-update' onboarding_task.id %}" class="btn btn-primary">{% trans "Modifier" %}</a></td>
             <td><a href="{% url 'task-delete' onboarding_task.id %}" class="btn  btn-danger">{% trans "Delete" %}</a></td>
         </tr>
         {% endfor %}

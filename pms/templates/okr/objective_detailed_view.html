@@ -14,7 +14,7 @@
         <div class="oh-btn-group">
             <form action="{% url 'objective-archive' id=employee_objective.id %}" onsubmit="return confirmSubmit('{% trans "Do you want archive this Objective ?" %}')" method="post">
                 {% csrf_token %}
-                <button class="oh-btn  w-100 "style="background-color: white;!important" title="{% trans 'Archive' %}" ><ion-icon name="archive-sharp"></ion-icon></button>
+                <button class="oh-btn  w-100 "style="background-color: white;!important" title="{% trans 'Archiver' %}" ><ion-icon name="archive-sharp"></ion-icon></button>
             </form>
             {% if perms.pms.delete_employeeobjective %}
                 <form action="{% url 'objective-delete' obj_id=employee_objective.id %}" onsubmit="return confirmSubmit('{% trans "Do you want Delete this Objective ?" %}')" method="post">
@@ -56,7 +56,7 @@
                                     data-toggle="oh-modal-toggle" data-target="#objectiveModalpopup"
                                     hx-get="{% url 'objective-update' obj_id=employee_objective.id %}"
                                     hx-target="#ObjectiveModalFormTarget">
-                                    <ion-icon name="create-outline" class="me-1" ></ion-icon>{% trans "Edit" %}
+                                    <ion-icon name="create-outline" class="me-1" ></ion-icon>{% trans "Modifier" %}
                                   </button>
                                   {% endif %}
                                 </div>
@@ -147,7 +147,7 @@
                                                     hx-target="#ObjectiveModalFormTarget"
                                                     data-target="#objectiveModalpopup" >
                                                     <ion-icon name="create-outline" class="me-1" ></ion-icon>
-                                                    {% trans "Edit" %}
+                                                    {% trans "Modifier" %}
                                                 </button>
                                                 {% endif %}
                                             </div>

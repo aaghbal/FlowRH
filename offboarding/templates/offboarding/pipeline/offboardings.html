@@ -93,7 +93,7 @@
                   <ul class="oh-dropdown__items">
                     {% if perms.offboarding.change_offboarding or request.user.employee_get|is_offboarding_manager %}
                     <li class="oh-dropdown__item">
-                      <a hx-get="{% url "create-offboarding" %}?instance_id={{offboarding.offboarding.id}}" hx-target="#objectDetailsModalTarget" data-toggle="oh-modal-toggle" data-target="#objectDetailsModal" class="oh-dropdown__link">{% trans "Edit" %}</a>
+                      <a hx-get="{% url "create-offboarding" %}?instance_id={{offboarding.offboarding.id}}" hx-target="#objectDetailsModalTarget" data-toggle="oh-modal-toggle" data-target="#objectDetailsModal" class="oh-dropdown__link">{% trans "Modifier" %}</a>
                     </li>
                     {% endif %}
                     {% if perms.offboarding.delete_offboarding %}
@@ -186,7 +186,7 @@
     {% else %}
       <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
           <img style="display: block; width: 15%; margin: 20px auto; filter: opacity(0.5);" src="{% static 'images/ui/no-results.png' %}" class="" alt="Page not found. 404." />
-          <h5 class="oh-404__subtitle">{% trans "No search result found!" %}</h5>
+          <h5 class="oh-404__subtitle">{% trans "Aucun résultat trouvé !" %}</h5>
       </div>
     {% endif %}
   </div>

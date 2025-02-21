@@ -203,7 +203,7 @@
                         data-toggle="oh-modal-toggle"
                         data-target="#workTypeRequestUpdateModal"
                         class="oh-btn oh-btn--light-bkg w-50"
-                        title="{% trans 'Edit' %}"
+                        title="{% trans 'Modifier' %}"
                         ><ion-icon name="create-outline"></ion-icon
                       ></a>
                       {% else %}
@@ -216,7 +216,7 @@
                         data-toggle="oh-modal-toggle"
                         data-target="#objectCreateModal"
                         hx-get="{% url 'work-type-request-duplicate' work_type_request.id %}?{{pg}}"
-                        title="{% trans 'Duplicate' %}"
+                        title="{% trans 'Dupliquer' %}"
                         hx-target="#objectCreateModalTarget"
                         style="cursor: pointer"
                       >

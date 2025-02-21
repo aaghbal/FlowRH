@@ -87,7 +87,22 @@
                         ></ion-icon>
                       </span>
                     </button>
-                    <span class="oh-permission-table__user">{{stage}}</span>
+                    <span class="oh-permission-table__user">
+                      {% with stage_name=stage|stringformat:"s" %}
+                          {% if stage_name == "Applied" %}
+                              Candidature reçue
+                          {% elif stage_name == "Initial" %}
+                              Première évaluation
+                          {% elif stage_name == "Interview" %}
+                              Entretien
+                          {% elif stage_name == "Hired" %}
+                              Embauché
+                          {% elif stage_name == "Cancelled" %}
+                              Annulé(e)
+                          {% else %}
+                              {{stage}}
+                          {% endif %}
+                      {% endwith %}
                   </div>
                 </div>
                 <div data-cell-index="1" class="oh-sticky-table__td">
@@ -129,8 +144,22 @@
                   </span>
                 </div>
                 <div data-cell-index="2" class="oh-sticky-table__td">
-                  {{stage.get_stage_type_display}}
-                </div>
+                  {% with stage_type=stage.get_stage_type_display|stringformat:"s" %}
+                     {% if stage_type == "Applied" %}
+                  Candidature reçue
+                  {% elif stage_type == "Initial" %}
+                      Première évaluation
+                  {% elif stage_type == "Interview" %}
+                      Entretien
+                  {% elif stage_type == "Hired" %}
+                      Embauché
+                  {% elif stage_type == "Cancelled" %}
+                      Annulé(e)
+                  {% else %}
+                      {{stage.get_stage_type_display}}
+                  {% endif %}
+                      {% endwith %}
+              </div>
                 {% if perms.recruitment.add_stage or perms.recruitment.change_stage or perms.recruitment.delete_stage %}
                   <div class="oh-sticky-table__td oh-sticky-table__right">
                     <div class="oh-btn-group">
@@ -141,7 +170,7 @@
                         data-toggle="oh-modal-toggle"
                         data-target="#objectUpdateModal"
                         class="oh-btn oh-btn--light-bkg w-100"
-                        title="{% trans 'Edit' %}"
+                        title="{% trans 'Modifier' %}"
                       >
                         <ion-icon name="create-outline"></ion-icon>
                       </a>
@@ -152,7 +181,7 @@
                         data-toggle="oh-modal-toggle"
                         data-target="#objectCreateModal"
                         class="oh-btn oh-btn--light-bkg w-100"
-                        title="{% trans 'Duplicate' %}"
+                        title="{% trans 'Dupliquer' %}"
                       >
                         <ion-icon name="copy-outline"></ion-icon>
                       </a>
@@ -261,7 +290,7 @@
     src="{% static 'images/ui/no-results.png' %}"
     class="oh-404__image mb-4"
   />
-  <h5 class="oh-404__subtitle">{% trans "No search result found!" %}</h5>
+  <h5 class="oh-404__subtitle">{% trans "Aucun résultat trouvé !" %}</h5>
 </div>
 <!-- end of empty page -->
 {% endif %}

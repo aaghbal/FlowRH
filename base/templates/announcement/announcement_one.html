@@ -47,7 +47,7 @@
                                 <li class="oh-dropdown__item">
                                     <a hx-get="{% url 'update-announcement' announcement.id %}?instance_ids={{instance_ids}}" hx-target='#objectUpdateModalTarget'
                                         data-toggle='oh-modal-toggle' data-target="#objectUpdateModal"
-                                        class="oh-dropdown__link" style="cursor:pointer;">{% trans "Edit" %}</a>
+                                        class="oh-dropdown__link" style="cursor:pointer;">{% trans "Modifier" %}</a>
                                 </li>
                             {% endif %}
                             {% if perms.base.delete_announcement %}

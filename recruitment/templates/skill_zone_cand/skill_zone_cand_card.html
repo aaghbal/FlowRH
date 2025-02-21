@@ -61,7 +61,7 @@
                             {% if perms.recruitment.delete_candidate %}
                             {% if cand.is_active  %}
                             <li class="oh-dropdown__item">
-                                <a href="{% url 'rec-candidate-archive' cand.id %}" onclick="return confirm('{% trans "Do you want to archive this candidate?" %}')" class="oh-dropdown__link">{% trans "Archive" %}</a>
+                                <a href="{% url 'rec-candidate-archive' cand.id %}" onclick="return confirm('{% trans "Do you want to archive this candidate?" %}')" class="oh-dropdown__link">{% trans "Archiver" %}</a>
                             </li>
                             {% else %}
                             <li class="oh-dropdown__item">

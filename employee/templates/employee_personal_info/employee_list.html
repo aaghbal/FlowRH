@@ -255,14 +255,14 @@
             <a
               href="{% url 'employee-view-update' emp.id %}"
               class="oh-btn oh-btn--light-bkg w-100"
-              title="{% trans 'Edit' %}"
+              title="{% trans 'Modifier' %}"
               ><ion-icon name="create-outline"></ion-icon
             ></a>
             {% endif %}
             {% if perms.employee.delete_employee %}
               {% if emp.is_active %}
                 <button hx-confirm="{% trans 'Do you want to archive this employee?' %}" hx-post="{% url 'employee-archive' emp.id %}?{{pd}}"
-                        hx-target="#relatedModel" class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100" title="{% trans 'Archive' %}">
+                        hx-target="#relatedModel" class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100" title="{% trans 'Archiver' %}">
                   <ion-icon name="archive"></ion-icon>
                 </button>
               {% else %}
@@ -375,7 +375,7 @@
     class="oh-404__image mb-4"
   />
   <h5 class="oh-404__subtitle">
-    {% trans "No search result found!" %}
+    {% trans "Aucun résultat trouvé !" %}
   </h5>
 </div>
 <!-- end of empty page -->

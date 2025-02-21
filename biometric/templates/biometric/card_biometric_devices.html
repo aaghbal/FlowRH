@@ -65,14 +65,14 @@
                                 <li class="oh-dropdown__item">
                                     <a hx-get="{% url 'biometric-device-edit' device.id %}" class="oh-dropdown__link"
                                         data-toggle="oh-modal-toggle" data-target="#BiometricDeviceModal"
-                                        hx-target="#BiometricDeviceFormTarget">{% trans "Edit" %}</a>
+                                        hx-target="#BiometricDeviceFormTarget">{% trans "Modifier" %}</a>
                                 </li>
                                 {% if perms.biometric.change_biometricdevices %}
                                     {% if device.is_active %}
                                         <li class="oh-dropdown__item">
                                             <a hx-confirm="{% trans 'Do you want to archive this device?' %}"
                                                 hx-post="{% url 'biometric-device-archive' device.id %}?{{pd}}&page={{devices.number}}&view=card"
-                                                hx-target="#biometricDeviceList" class="oh-dropdown__link">{% trans "Archive" %}</a>
+                                                hx-target="#biometricDeviceList" class="oh-dropdown__link">{% trans "Archiver" %}</a>
                                         </li>
                                     {% else %}
                                         <li class="oh-dropdown__item">

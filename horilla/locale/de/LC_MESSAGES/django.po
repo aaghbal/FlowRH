@@ -13539,7 +13539,7 @@ msgid "Work Information"
 msgstr ""
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:103
-msgid "Take An Action"
+msgid "Prendre une mesure"
 msgstr ""
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:129
@@ -22568,7 +22568,7 @@ msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "MoM"
+msgid "compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -22588,7 +22588,7 @@ msgid "Are you sure to remove this manager?"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:127
-msgid "Add MoM"
+msgid "Ajouter ompte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:167

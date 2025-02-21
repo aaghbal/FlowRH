@@ -137,14 +137,14 @@
                     {% if leave_allocation_request.status ==  'requested' %}
                         <button
                             class="oh-btn oh-btn--info w-100 "
-                            title="{% trans 'Edit' %}"
+                            title="{% trans 'Modifier' %}"
                             data-toggle="oh-modal-toggle"
                             data-target="#editModal"
                             hx-get="{% url 'leave-allocation-request-update' leave_allocation_request.id %}"
                             hx-target="#editTarget">
                             <ion-icon name="create-outline" role="img"
                             class="md hydrated" aria-label="create outline">
-                            </ion-icon>{% trans "Edit" %}
+                            </ion-icon>{% trans "Modifier" %}
                         </button>
                     {% else %}
                         <button
@@ -202,7 +202,7 @@
                             </a>
                         {% else %}
                             <a href="" class="oh-btn oh-btn--danger oh-btn--disabled w-100"
-                                title="{% trans 'Rejected' %}"
+                                title="{% trans 'Refusé(e)' %}"
                                 onclick="event.preventDefault()">
                                 <ion-icon class="me-1" name="close-circle-outline"></ion-icon>
                                 {% trans "Reject" %}

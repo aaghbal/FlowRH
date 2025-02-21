@@ -15,7 +15,7 @@
 <div class="d-flex flex-row-reverse mb-2">
     <span class="me-3" style="cursor:pointer;" onclick="$('[name=status]').val('rejected');$('[name=status]').first().change();$('.filterButton').click()">
         <span class="oh-dot oh-dot--small me-1" style="background-color:red"></span>
-        {% trans "Rejected" %}
+        {% trans "Refusé(e)" %}
     </span>
     <span class="me-3" style="cursor:pointer;" onclick="$('[name=status]').val('cancelled');$('[name=status]').first().change();$('.filterButton').click()">
         <span class="oh-dot oh-dot--small me-1" style="background-color:gray"></span>
@@ -153,7 +153,7 @@
                     <div class="oh-sticky-table__td {% if leave_request.status == 'rejected' %} diff-cell{% endif %}" onclick="event.stopPropagation()">
                         {% if leave_request.status == 'requested'%}
                             <div class="oh-btn-group" >
-                                <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}" data-toggle="oh-modal-toggle"
+                                <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}" data-toggle="oh-modal-toggle"
                                     data-target="#objectUpdateModal" hx-get="{% url 'user-request-update' leave_request.id %}?{{pd}}"
                                     hx-target="#objectUpdateModalTarget">
                                     <ion-icon name="create-outline"></ion-icon>
@@ -234,7 +234,7 @@
                 class="oh-404__image mb-4"
                 />
                 <h5 class="oh-404__subtitle">
-                {% trans "No search result found!" %}
+                {% trans "Aucun résultat trouvé !" %}
                 </h5>
             </div>
         </div>

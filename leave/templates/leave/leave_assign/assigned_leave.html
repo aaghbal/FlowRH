@@ -77,7 +77,7 @@
             <div class="oh-sticky-table__td">
                 <div class="oh-btn-group" onclick="event.stopPropagation();">
                     {% if request.user|is_reportingmanager or perms.leave.change_availableleave %}
-                        <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}" data-toggle="oh-modal-toggle"
+                        <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}" data-toggle="oh-modal-toggle"
                             data-target="#objectUpdateModal" hx-get="{% url 'available-leave-update' available_leave.id %}?{{pd}}"
                             hx-target="#objectUpdateModalTarget"hx-on:click="$('#objectUpdateModalTarget').css('max-width', '350px');">
                             <ion-icon name="create-outline"></ion-icon>

@@ -17,7 +17,7 @@
                 :class="searchShow ? 'oh-input__search-group--show' : ''">
                 <ion-icon name="search-outline" class="oh-input-group__icon oh-input-group__icon--left"></ion-icon>
                 <input type="text" class="oh-input oh-input__icon" aria-label="Search Input"
-                    placeholder="{% trans 'Search' %}" name="search" hx-get="{% url 'skill-zone-filter' %}"
+                    placeholder="{% trans 'Rechercher' %}" name="search" hx-get="{% url 'skill-zone-filter' %}"
                     onkeyup="$('.filterButton').click()"
                 />
             </div>
@@ -71,28 +71,28 @@
 
                                         <div class="col-sm-12 col-md-12 col-lg-6">
                                             <div class="oh-input-group">
-                                                <label class="oh-label">{% trans "Probation From" %}</label>
+                                                <label class="oh-label">{% trans "Début période d'essai" %}</label>
                                                 {{f.form.probation_end_from}}
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 col-md-12 col-lg-6">
                                             <div class="oh-input-group">
-                                                <label class="oh-label">{% trans "Probation Till" %}</label>
+                                                <label class="oh-label">{% trans "Fin période d'essai" %}</label>
                                                 {{f.form.probation_end_till}}
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 col-md-12 col-lg-6">
                                             <div class="oh-input-group">
-                                                <label class="oh-label">{% trans "Portal Sent" %}</label>
+                                                <label class="oh-label">{% trans "Portail envoyé" %}</label>
                                                 {{f.form.portal_sent}}
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12 col-md-12 col-lg-6">
                                             <div class="oh-input-group">
-                                                <label class="oh-label">{% trans "Joining Set" %}</label>
+                                                <label class="oh-label">{% trans "Date d'entrée confirmée" %}</label>
                                                 {{f.form.joining_set}}
                                             </div>
                                         </div>

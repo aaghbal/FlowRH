@@ -92,7 +92,7 @@
 									<div class="oh-sticky-table__td oh-sticky-table__right" onclick="event.stopPropagation()">
 										<div class="oh-btn-group">
 											{% if perms.attendance.change_attendanceovertime or request.user|is_reportingmanager %}
-												<a hx-get="{% url 'attendance-overtime-update' ot.id %}" hx-target='#objectUpdateModalTarget' data-toggle='oh-modal-toggle' data-target='#objectUpdateModal'  class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}"><ion-icon name="create-outline"></ion-icon></a>
+												<a hx-get="{% url 'attendance-overtime-update' ot.id %}" hx-target='#objectUpdateModalTarget' data-toggle='oh-modal-toggle' data-target='#objectUpdateModal'  class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}"><ion-icon name="create-outline"></ion-icon></a>
 											{% endif %}
 											{% if perms.attendance.delete_attendanceovertime or request.user|is_reportingmanager %}
 												<form hx-confirm="{% trans 'Are you sure want to delete this hour account?' %}"
@@ -158,7 +158,7 @@
 			class="oh-404__image mb-4"
 			/>
 			<h5 class="oh-404__subtitle">
-			{% trans "No search result found!" %}
+			{% trans "Aucun résultat trouvé !" %}
 			</h5>
 		</div>
 		<!-- end of empty page -->

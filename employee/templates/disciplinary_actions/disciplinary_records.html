@@ -39,9 +39,9 @@
                     <div class="oh-sticky-table__th">
                         {% trans "Employé(e)" %}
                     </div>
-                    <div data-cell-index="1" data-cell-title='{% trans "Action Taken" %}' class="oh-sticky-table__th">{% trans "Action Taken" %}</div>
-                    <div data-cell-index="5" data-cell-title='{% trans "Login Block" %}' class="oh-sticky-table__th">{% trans "Login Block" %}</div>
-                    <div data-cell-index="2" data-cell-title='{% trans "Action Date" %}' class="oh-sticky-table__th">{% trans "Action Date" %}</div>
+                    <div data-cell-index="1" data-cell-title='{% trans "Action mise en œuvre" %}' class="oh-sticky-table__th">{% trans "Action mise en œuvre" %}</div>
+                    <div data-cell-index="5" data-cell-title='{% trans "Blocage de l'accès" %}' class="oh-sticky-table__th">{% trans "Blocage de l'accès" %}</div>
+                    <div data-cell-index="2" data-cell-title='{% trans "Date de la mesure" %}' class="oh-sticky-table__th">{% trans "Date de la mesure" %}</div>
                     <div data-cell-index="3" data-cell-title='{% trans "Pièces jointes" %}' class="oh-sticky-table__th">{% trans "Pièces jointes" %}</div>
                     <div data-cell-index="4" data-cell-title='{% trans "Description" %}' class="oh-sticky-table__th">{% trans "Description" %}</div>
                     {% if perms.employee.change_disciplinaryaction or perms.employee.delete_disciplinaryaction or perms.employee.add_disciplinaryaction %}
@@ -138,14 +138,14 @@
                             {% if perms.employee.change_disciplinaryaction %}
                             <a hx-get="{% url 'update-actions' i.id %}" hx-target='#objectUpdateModalTarget'
                                 data-toggle='oh-modal-toggle' data-target="#objectUpdateModal"
-                                class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}">
+                                class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}">
                                 <ion-icon name="create-outline"></ion-icon></a>
                             {% endif %}
                             {% if perms.employee.add_disciplinaryaction %}
                             <a class="oh-btn oh-btn--light-bkg w-100" data-toggle="oh-modal-toggle"
                                 data-target="#objectCreateModal"
                                 hx-get="{% url 'duplicate-disciplinary-actions' i.id %}?{{pg}}"
-                                title="{% trans 'Duplicate' %}" hx-target="#objectCreateModalTarget"
+                                title="{% trans 'Dupliquer' %}" hx-target="#objectCreateModalTarget"
                                 style="cursor: pointer;">
                                 <ion-icon name="copy-outline"></ion-icon>
                             </a>
@@ -213,7 +213,7 @@
 <div class="oh-404">
     <img style="width: 150px; height: 150px" src="{% static 'images/ui/no-results.png' %}" class="oh-404__image mb-4" />
     <h5 class="oh-404__subtitle">
-        {% trans "No search result found!" %}
+        {% trans "Aucun résultat trouvé !" %}
     </h5>
 </div>
 <!-- end of empty page -->

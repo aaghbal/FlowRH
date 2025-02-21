@@ -44,7 +44,7 @@
 									{% if perms.base.change_employeeshift %}
 										<a data-toggle="oh-modal-toggle" data-target="#shiftModal"
 											hx-get="{% url 'employee-shift-update' shift.id %}" hx-target="#shiftForm" type="button"
-											class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+											class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
 											<ion-icon name="create-outline"></ion-icon></a>
 									{% endif %}
 									{% if perms.base.delete_employeeshift %}

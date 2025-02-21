@@ -150,7 +150,7 @@
                             data-toggle="oh-modal-toggle"
                             data-target="#objectCreateModal"
                             hx-get="{% url 'rotating-shift-assign-duplicate' rshift.id %}?{{pg}}"
-                            title="{% trans 'Duplicate' %}"
+                            title="{% trans 'Dupliquer' %}"
                             hx-target="#objectCreateModalTarget"
                             style= "cursor: pointer;"
                           >
@@ -162,7 +162,7 @@
                               <form hx-target="{% trans 'Do you want to archive this rotating shift assign?' %}" hx-get="{% url 'rotating-shift-assign-archive' rshift.id %}?{{pd}}"
                                     hx-target="#view-container" style="width:100%"
                                 >
-                                  <button class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100" title="{% trans 'Archive' %}">
+                                  <button class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100" title="{% trans 'Archiver' %}">
                                   <ion-icon name="archive"></ion-icon>
                                   </button>
                               </form>

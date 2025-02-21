@@ -98,7 +98,7 @@
                                                                     data-target="#objectDetailsModal"
                                                                     hx-get='{% url "update-employee-objective" emp_objective.id %}'
                                                                     hx-target="#objectDetailsModalTarget"
-                                                                    >{% trans "Edit" %}</a>
+                                                                    >{% trans "Modifier" %}</a>
                                                                 </li>
                                                                 {% if emp_objective.archive %}
                                                                     <li class="oh-dropdown__item">
@@ -120,7 +120,7 @@
                                                                         hx-confirm="{% trans 'Do you want to archive this employee objective?' %}"
                                                                         hx-get='{% url "archive-employee-objective" emp_objective.id %}?single_view="False"'
                                                                         hx-target="#objectDetailsModalTarget"
-                                                                        >{% trans "Archive" %}</a>
+                                                                        >{% trans "Archiver" %}</a>
                                                                     </li>
                                                                 {% endif %}
 

@@ -33,7 +33,7 @@
                 role="img"
                 aria-label="add sharp"
             ></ion-icon
-            >{% trans "Reallocate Shift." %}
+            >{% trans "Réaffecter l'horaire" %}
         </button>
     {% endif %}
 
@@ -49,7 +49,7 @@
                         alt=""
                         style="width: 25px; height: 25px; margin-right: 3px"
                     />
-                    {% trans "Work type request" %}
+                    {% trans "Demande de modification du type de travail" %}
                 </div>
                 <button
                     class="oh-btn oh-btn--secondary-outline oh-stop-prop oh-accordion-meta__btn p-2"
@@ -106,7 +106,7 @@
                             opacity: 0.5;
                         "
                     />
-                    {% trans "Shift request" %}
+                    {% trans "Demande de changement d'horaire" %}
                 </div>
                 <button
                     class="oh-btn oh-btn--secondary-outline oh-stop-prop oh-accordion-meta__btn p-2"
@@ -260,7 +260,7 @@
                                                         data-toggle="oh-modal-toggle"
                                                         data-target="#workTypeRequestUpdateModal"
                                                         class="oh-btn oh-btn--light-bkg w-50"
-                                                        title="{% trans 'Edit' %}"
+                                                        title="{% trans 'Modifier' %}"
                                                         ><ion-icon
                                                             name="create-outline"
                                                         ></ion-icon
@@ -277,7 +277,7 @@
                                                 {% endif %}
                                                 <a
                                                     class="oh-btn oh-btn--light-bkg w-50"
-                                                    title="{% trans 'Duplicate' %}"
+                                                    title="{% trans 'Dupliquer' %}"
                                                     style="cursor: pointer"
                                                     data-toggle="oh-modal-toggle"
                                                     data-target="#objectCreateModal"
@@ -533,7 +533,7 @@
                                                         <a
                                                             class="oh-btn oh-btn--light-bkg w-100"
                                                             style="cursor: pointer"
-                                                            title="{% trans 'Duplicate' %}"
+                                                            title="{% trans 'Dupliquer' %}"
                                                             data-toggle="oh-modal-toggle"
                                                             data-target="#objectCreateModal"
                                                             hx-target="#objectCreateModalTarget"
@@ -560,7 +560,7 @@
                                                                 />
                                                                 <button
                                                                     class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-                                                                    title="{% trans 'Archive' %}"
+                                                                    title="{% trans 'Archiver' %}"
                                                                 >
                                                                     <ion-icon
                                                                         name="archive"
@@ -618,7 +618,7 @@
                         style="height: 40vh"
                     >
                         <h5 class="oh-404__subtitle">
-                            {% trans "No rotating shift has been assigned." %}
+                            {% trans "Aucun horaire en rotation n'a été assigné." %}
                         </h5>
                     </div>
                 {% endif %}
@@ -762,7 +762,7 @@
                                                                 data-toggle="oh-modal-toggle"
                                                                 type="button"
                                                                 class="oh-btn oh-btn--light-bkg w-50"
-                                                                title="{% trans 'Duplicate' %}"
+                                                                title="{% trans 'Dupliquer' %}"
                                                             >
                                                                 <ion-icon
                                                                     name="copy-outline"
@@ -779,7 +779,7 @@
                                                                 >
                                                                     <button
                                                                         class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-                                                                        title="{% trans 'Archive' %}"
+                                                                        title="{% trans 'Archiver' %}"
                                                                     >
                                                                         <ion-icon name="archive"></ion-icon>
                                                                     </button>
@@ -833,7 +833,7 @@
                         style="height: 40vh"
                     >
                         <h5 class="oh-404__subtitle">
-                            {% trans "No rotating work type has been assigned." %}
+                            {% trans "Aucune demande de changement d'horaire n'a été créée." %}
                         </h5>
                     </div>
                 {% endif %}
@@ -923,7 +923,7 @@
                                             {% if shift_request.approved %}
                                                 {% trans "Approved" %}
                                             {% elif shift_request.canceled %}
-                                                {% trans "Rejected" %}
+                                                {% trans "Refusé(e)" %}
                                             {% else %}
                                                 {% trans "Requested" %}
                                             {% endif %}
@@ -940,7 +940,7 @@
                                                         data-toggle="oh-modal-toggle"
                                                         data-target="#shiftRequestModalUpdate"
                                                         class="oh-btn oh-btn--light-bkg w-50"
-                                                        title="{% trans 'Edit' %}"
+                                                        title="{% trans 'Modifier' %}"
                                                         ><ion-icon name="create-outline"></ion-icon
                                                     ></a>
                                                 {% else %}
@@ -953,7 +953,7 @@
                                                 {% endif %}
                                                 <a
                                                     class="oh-btn oh-btn--light-bkg w-50"
-                                                    title="{% trans 'Duplicate' %}"
+                                                    title="{% trans 'Dupliquer' %}"
                                                     style="cursor: pointer"
                                                     data-toggle="oh-modal-toggle"
                                                     data-target="#objectCreateModal"
@@ -1050,7 +1050,7 @@
                         style="height: 40vh"
                     >
                         <h5 class="oh-404__subtitle">
-                            {% trans "No Shift request has been created." %}
+                            {% trans "Aucun type de travail en rotation n'a été assigné" %}
                         </h5>
                     </div>
                 {% endif %}
@@ -1082,7 +1082,7 @@
                 class="oh-modal__dialog-title"
                 id="workTypeRequestUpdateModalLabel"
             >
-                {% trans "Work type Request" %}
+                {% trans "Demande de modification du type de travail" %}
             </h5>
             <button
                 class="oh-modal_close--custom"
@@ -1136,7 +1136,7 @@
     <div class="oh-modal__dialog">
         <div class="oh-modal__dialog-header">
             <h5 class="oh-modal__dialog-title" id="shiftRequestModalLabel">
-                {% trans "Shift Request" %}
+                {% trans "Demande de changement d'horaire" %}
             </h5>
             <button class="oh-modal__close" aria-label="Close">
                 <ion-icon name="close-outline"></ion-icon>

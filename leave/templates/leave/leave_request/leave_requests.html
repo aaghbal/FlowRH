@@ -21,7 +21,7 @@
             onclick="$('[name=status]').val('rejected');$('[name=status]').first().change();$('.filterButton').click()"
             style="cursor: pointer">
             <span class="oh-dot oh-dot--small me-1" style="background-color:red"></span>
-            {% trans "Rejected" %}
+            {% trans "Refusé(e)" %}
         </span>
         <span class="me-3 review_ongoing"
             onclick="$('[name=status]').val('cancelled');$('[name=status]').first().change();$('.filterButton').click()"
@@ -198,7 +198,7 @@
                                         {% endif %}
                                         {% if request.user|is_reportingmanager or perms.leave.change_leaverequest or perms.leave.delete_leaverequest or request.user|is_leave_approval_manager%}
                                             {% if request.user|is_reportingmanager or perms.leave.change_leaverequest or request.user|is_leave_approval_manager %}
-                                            <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}"
+                                            <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}"
                                                 data-toggle="oh-modal-toggle" data-target="#objectUpdateModal"
                                                 hx-get="{% url 'request-update' leave_request.id %}"
                                                 hx-target="#objectUpdateModalTarget"><ion-icon name="create-outline"></ion-icon></button>

@@ -5,7 +5,7 @@
   <span class="mb-3" onclick="$('[name=status]').val('rejected').change();  $('.filterButton').click()"
   style="cursor: pointer; margin-right: 15px;">
   <span class="oh-dot oh-dot--small me-1" style="background-color:red"></span>
-  {% trans 'Rejected' %}
+  {% trans 'Refusé(e)' %}
   </span>
   <span class="mb-3" onclick="$('[name=status]').val('requested').change(); $('.filterButton').click()"
     style="cursor: pointer; margin-right: 15px;">
@@ -39,7 +39,7 @@
           </button>
           {% endif %}
           {% if perms.offboarding.change_resignationletter or record.status == "requested" %}
-            <a hx-get="{% url 'create-resignation-request' %}?instance_id={{ record.id }}" title = {% trans "Edit" %}
+            <a hx-get="{% url 'create-resignation-request' %}?instance_id={{ record.id }}" title = {% trans "Modifier" %}
               class="oh-btn oh-btn--light" data-toggle="oh-modal-toggle" hx-target="#resignationModalBody"
               data-target="#resignationModal" style="flex: 1 0 auto; width: 40px; height: 40.68px; padding: 0"><ion-icon
                 class="text-dark md hydrated" name="create-outline" role="img" aria-label="create outline"></ion-icon>
@@ -151,7 +151,7 @@
 <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
   <div class="text-center">
       <img class="oh-404__image mb-3" style="width: 150px; height: 150px;" src="{% static 'images/ui/no-results.png' %}" alt="No documents">
-      <h5 class="oh-404__subtitle">{% trans "No search results found!" %}</h5>
+      <h5 class="oh-404__subtitle">{% trans "Aucun résultat trouvé"%}</h5>
   </div>
 </div>
 {% endif %}

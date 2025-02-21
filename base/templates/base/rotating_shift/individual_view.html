@@ -132,7 +132,7 @@
                             <a class="oh-btn oh-btn--info" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal"
                                 hx-get="{% url 'rotating-shift-assign-update' instance.id %}" hx-target="#objectUpdateModalTarget"
                                 style="width: 50%;">
-                                <ion-icon name="create-outline"> </ion-icon>{% trans "Edit" %}
+                                <ion-icon name="create-outline"> </ion-icon>{% trans "Modifier" %}
                             </a>
                             <form class="oh-btn oh-btn--primary" style="width: 50%;" hx-confirm="{% if instance.is_active %}
                                             {% trans 'Do you want to archive this rotating shift assign?' %}
@@ -152,7 +152,7 @@
                                     ">
                                     <ion-icon name="archive-outline"> </ion-icon>
                                     {% if instance.is_active %}
-                                        {% trans "Archive" %}
+                                        {% trans "Archiver" %}
                                     {% else %}
                                         {% trans "Un-archive" %}
                                     {% endif %}

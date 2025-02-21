@@ -60,7 +60,7 @@
         </div>
         <div class="col-6 col-md-6">
           <div class="oh-label__info" for="notice_period_starts">
-            <label class="oh-label" for="notice_period_starts">Planned to leave on</label>
+            <label class="oh-label" for="notice_period_starts">Date de fin de contrat prévue</label>
           </div>
             <input type="date" onchange="$('#${target.siblings("input[name=notice_period_starts]").first().attr("id")}').val(this.value);" name="notice_period_starts" value="{% now "Y-m-d" %}"  class="oh-input w-100 form-control" required id="notice_period_starts">
         </div>

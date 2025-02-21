@@ -71,7 +71,7 @@
                                                     class="oh-dropdown__link" data-toggle="oh-modal-toggle"
                                                     data-target="#BiometricDeviceModal"
                                                     hx-target="#BiometricDeviceFormTarget">
-                                                    {% trans "Edit" %}
+                                                    {% trans "Modifier" %}
                                                 </a>
                                             </li>
                                             {% endif %}
@@ -80,7 +80,7 @@
                                             <li class="oh-dropdown__item">
                                                 <a href="{% url 'biometric-device-archive' device.id %}"
                                                     onclick="return confirm('{% trans " Do you want to archive this device?"
-                                                    %}')" class="oh-dropdown__link">{% trans "Archive" %}</a>
+                                                    %}')" class="oh-dropdown__link">{% trans "Archiver" %}</a>
                                             </li>
                                             {% else %}
                                             <li class="oh-dropdown__item">

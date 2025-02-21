@@ -40,10 +40,10 @@
                 <div class=" oh-job__page-container">
                     <div class="oh-joblisting__title-container">
                         <h1 class="oh-onboarding-card__title oh-onboarding-card__title--h1 text-center mb-3">
-                            {% trans "Open Job Listings" %}
+                            {% trans "Offres d'emploi en cours" %}
                         </h1>
                         <p class="oh-onboarding__content text-center w-50 m-auto">
-                            {% trans "We're hiring! Join our team and be part of a vibrant workplace where your talents make a difference. Here are the open Recruitments...." %}
+                            {% trans "Nous recrutons ! Rejoignez notre entreprise et participez à une aventure professionnelle enrichissante où vos talents feront la différence. Découvrez nos opportunités de carrière actuelles et contribuez à notre succès collectif." %}
                         </p>
                     </div>
                     <div class="oh-layout--grid-3 oh-jobs__container--list pt-3">
@@ -60,7 +60,7 @@
                                             <span class="oh-job_post--posteddate">{{recruitment.created_at|timesince}}</span>
                                         </div>
                                     </div>
-                                    <div class="oh-recuritment_tag" style="background:hsl(121deg 81.26% 91.23%)"><a class=" text-success text-decoration-none" href="{% url "application-form" %}?recruitmentId={{recruitment.id}}" rel="noopener noreferrer" target="_blank">{% trans "Apply Now" %}</a></div>
+                                    <div class="oh-recuritment_tag" style="background:hsl(121deg 81.26% 91.23%)"><a class=" text-success text-decoration-none" href="{% url "application-form" %}?recruitmentId={{recruitment.id}}" rel="noopener noreferrer" target="_blank">{% trans "Postuler" %}</a></div>
                                 </div>
                                 <div class="d-flex mt-3 flex-wrap">
                                 {% for job_position in recruitment.open_positions.all %}
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                                 <span class="oh-recuritment_application"><span class="oh-recuritment_application-count">{{recruitment.candidate.all|length}}
-                                        {% trans "Appliqué(e)" %}</span> {% trans "of" %} {{recruitment.vacancy}} {% trans "Capacity" %}</span>
+                                        {% trans "Appliqué(e)" %}</span> {% trans "of" %} {{recruitment.vacancy}} {% trans "Postes ouverts" %}</span>
 
                                 {% else %}
                                 <div style="color: gray;">

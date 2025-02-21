@@ -32,7 +32,7 @@
                                 <div data-cell-index="3" data-cell-title="{% trans 'Date' %}" class="oh-sticky-table__th">
                                     {% trans "Date" %}</div>
                                 <div data-cell-index="4" data-cell-title="{% trans 'MoM' %}" class="oh-sticky-table__th">
-                                    {% trans "MoM" %}</div>
+                                    {% trans "compte-rendu de réunion" %}</div>
                                 <div class="oh-sticky-table__th oh-sticky-table__right" align="center"
                                     style="width: 220px;">{% trans "Actions" %}</div>
                             </div>
@@ -158,7 +158,7 @@
                                                     hx-get="{% url 'create-meeting' %}?instance_id={{meeting.id}}"
                                                     hx-target='#objectCreateModalTarget' hx-swap='innerHTML'
                                                     data-toggle='oh-modal-toggle' data-target='#objectCreateModal'
-                                                    class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}">
+                                                    class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}">
                                                     <ion-icon name="create-outline"></ion-icon>
                                                 </a>
                                             {% endif %}
@@ -183,7 +183,7 @@
                                                         style="display: contents;width:100%">
                                                         {% csrf_token %}
                                                         <button onclick="event.stopPropagation()" class="oh-btn oh-btn--light-bkg w-100"
-                                                            title="{% trans 'Archive' %}">
+                                                            title="{% trans 'Archiver' %}">
                                                             <ion-icon name="archive"></ion-icon>
                                                         </button>
                                                     </form>

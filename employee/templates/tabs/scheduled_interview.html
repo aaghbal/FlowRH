@@ -88,7 +88,7 @@
                     {% if perms.recruitment.add_interview or request.user|is_stagemanager %}
                         <span
                             class="float-end"
-                            title="{% trans 'edit' %}"
+                            title="{% trans 'Modifier' %}"
                             hx-get="{% url 'edit-interview' interview.id %}?view=false"
                             data-target="#createModal"
                             hx-swap="innerHTML"
@@ -137,7 +137,7 @@
                             class="d-flex align-items-center mt-2 status-completed text-danger"
                         >
                             <ion-icon name="close-outline"></ion-icon>
-                            {% trans "Expired Interview" %}
+                            {% trans "Entretien expiré" %}
                         </div>
                         {% elif interview.interview_date|date:"Y-m-d" > now %}
                         <div class="d-flex align-items-center mt-2 status-upcoming">
@@ -168,7 +168,7 @@
                         />
                     </div>
                     <h5 class="oh-404__subtitle mt-4 ml-2">
-                        {% trans "No interviews are scheduled for this candidate" %}
+                        {% trans "Aucun entretien programmé pour ce candidat" %}
                     </h5>
                 </div>
             </div>

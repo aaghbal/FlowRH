@@ -3,7 +3,7 @@
     {% if perms.pms.change_employeebonuspoint %}
         <button
         class="oh-btn oh-btn--light-bkg w-100"
-        title="{% trans 'Edit' %}"
+        title="{% trans 'Modifier' %}"
         data-toggle="oh-modal-toggle"
         data-target="#genericModal"
         hx-get="{% url 'update-employee-bonus-point' instance.id %}?{{pd}}"

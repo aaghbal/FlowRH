@@ -55,7 +55,7 @@
                           hx-target="#createTarget"
                           data-toggle="oh-modal-toggle"
                           data-target="#createModal"
-                        >{% trans "Edit" %}</a>
+                        >{% trans "Modifier" %}</a>
                     </li>
                     {% endif %}
                     {% if skill_zone.is_active %}
@@ -63,7 +63,7 @@
                         <a
                         href="{% url 'skill-zone-archive' skill_zone.id %}"
                         onclick = "event.preventDefault();event.stopPropagation(); confirm(`{% trans 'Do you want to Archive this Skill zone?' %}`)"
-                        >{% trans "Archive" %}</a>
+                        >{% trans "Archiver" %}</a>
                       </li>
                     {% else %}
                       <a
@@ -138,7 +138,7 @@
     class="oh-404__image mb-4"
   />
   <h5 class="oh-404__subtitle">
-    {% trans "No search result found!" %}
+    {% trans "Aucun résultat trouvé !" %}
   </h5>
 </div>
 {% endif %}

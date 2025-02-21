@@ -20,7 +20,7 @@
                                     <li class="oh-dropdown__item">
                                         <a hx-get="{% url 'faq-category-update' category.id %}" hx-target="#objectCreateModalTarget"
                                             data-toggle="oh-modal-toggle" data-target="#objectCreateModal" role="button"
-                                            class="oh-dropdown__link">{% trans "Edit" %}</a>
+                                            class="oh-dropdown__link">{% trans "Modifier" %}</a>
                                     </li>
                                 {% endif %}
                                 {% if perms.helpdesk.delete_faqcategory %}

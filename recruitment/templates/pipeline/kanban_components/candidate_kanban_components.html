@@ -134,7 +134,7 @@
                             data-target="#createModal"
                             hx-get="{% url 'to-skill-zone' cand.id %}"
                             hx-target="#createTarget"
-                            >{% trans "Add to Skill Zone" %}</a
+                            >{% trans "Ajouter à la Zone de Compétences" %}</a
                             >
                         </li>
                     {% endif %}
@@ -167,7 +167,7 @@
                                 {% if cand.is_offer_rejected %}
                                 title="{% trans "Added In Rejected Candidates" %}"
                                 {% else %}
-                                title="{% trans "Add To Rejected Candidates" %}"
+                                title="{% trans "Ajouter aux candidats non retenus" %}"
                                 {% endif %}
                             >
                             {% if not cand.is_offer_rejected %}
@@ -199,12 +199,12 @@
                     {% if perms.recruitment.change_candidate or request.user.employee_get in stage.stage_managers.all %}
                         <li class="oh-dropdown__item">
                             <a style="color: inherit;text-decoration: none;" class="oh-dropdown__link oh-dropdown__link--secondary" href="{% url 'rec-candidate-update' cand.id %}" target="_blank"
-                            >{% trans "Edit" %}</a>
+                            >{% trans "Modifier" %}</a>
                         </li>
                     {% endif %}
                     {% if perms.recruitment.delete_candidate %}
                         <li class="oh-dropdown__item">
-                            <a onclick="return confirm('{% trans "Do you want to archive this candidate?" %}')" href="{% url 'rec-candidate-archive' cand.id %}?is_active=False" class="oh-dropdown__link ">{% trans "Archive" %}</a>
+                            <a onclick="return confirm('{% trans "Do you want to archive this candidate?" %}')" href="{% url 'rec-candidate-archive' cand.id %}?is_active=False" class="oh-dropdown__link ">{% trans "Archiver" %}</a>
                         </li>
                     {% endif %}
                     {% if perms.recruitment.delete_candidate %}

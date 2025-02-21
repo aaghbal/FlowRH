@@ -195,7 +195,7 @@
                           <a
                             href="{% url 'employee-view-update' emp.id %}"
                             class="oh-btn oh-btn--light-bkg w-100"
-                            title="{% trans 'Edit' %}"
+                            title="{% trans 'Modifier' %}"
                             ><ion-icon name="create-outline"></ion-icon
                           ></a>
                           {% endif %} {% if perms.employee.delete_employee %} {% if emp.is_active %}
@@ -208,7 +208,7 @@
                               <button
                                 type="submit"
                                 class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-                                title="{% trans 'Archive' %}"
+                                title="{% trans 'Archiver' %}"
                                 >
                                 <ion-icon name="archive"></ion-icon>
                               </button>

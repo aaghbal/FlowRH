@@ -6409,7 +6409,7 @@ msgstr "Rechercher dans: Asset"
 #, fuzzy
 #| msgid "Rotating Work Type"
 msgid "Search in : Work Type"
-msgstr "Type de travail rotatif"
+msgstr "Planning en rotation"
 
 #: attendance/templates/attendance/attendance/attendance_nav.html:145
 #: employee/filters.py:40
@@ -8837,13 +8837,13 @@ msgstr "Travail Type 2"
 #: base/templates/base/rotating_work_type/rotating_work_type_assign_export.html:35
 #: templates/settings.html:270
 msgid "Rotating Work Type"
-msgstr "Type de travail rotatif"
+msgstr "Planning en rotation"
 
 #: base/models.py:273
 #, fuzzy
 #| msgid "Rotating Work Type"
 msgid "Rotating Work Types"
-msgstr "Type de travail rotatif"
+msgstr "Planning en rotation"
 
 #: base/models.py:280 base/models.py:292 base/models.py:298 base/models.py:303
 #, fuzzy
@@ -9030,13 +9030,13 @@ msgstr "Pivoter chaque"
 #: base/templates/base/rotating_work_type/htmx/rotating_work_type_assign_update_form.html:4
 #: base/templates/base/rotating_work_type/rotating_work_type_assign_nav.html:5
 msgid "Rotating Work Type Assign"
-msgstr "Rotation Travail Type Attribuer"
+msgstr "attribution des types de travail rotatifs"
 
 #: base/models.py:414
 #, fuzzy
 #| msgid "Rotating Work Type Assign"
 msgid "Rotating Work Type Assigns"
-msgstr "Rotation Travail Type Attribuer"
+msgstr "attribution des types de travail rotatifs"
 
 #: base/models.py:424 base/models.py:798
 msgid "Only one active record allowed per employee"
@@ -9173,7 +9173,7 @@ msgstr "Choisir des travail par roulement différentes"
 #: employee/templates/tabs/shift-tab.html:19
 #: employee/templates/tabs/shift-tab.html:418
 msgid "Current Shift"
-msgstr "Décalage actuel travail en équi"
+msgstr "Horaire de travail actuel"
 
 #: base/models.py:741 base/templates/base/rotating_shift/filters.html:32
 #: base/templates/base/rotating_shift/htmx/group_by.html:79
@@ -9191,13 +9191,13 @@ msgstr "suivante travail par roulement"
 #: base/templates/base/rotating_shift/htmx/rotating_shift_assign_form.html:4
 #: base/templates/base/rotating_shift/rotating_shift_assign_nav.html:6
 msgid "Rotating Shift Assign"
-msgstr "Rotational Shift Attribuer"
+msgstr "attribution des horaires rotatifs"
 
 #: base/models.py:788
 #, fuzzy
 #| msgid "Rotating Shift Assign"
 msgid "Rotating Shift Assigns"
-msgstr "Rotational Shift Attribuer"
+msgstr "attribution des horaires rotatifs"
 
 #: base/models.py:824
 #, fuzzy
@@ -9301,7 +9301,7 @@ msgstr "Quart Demande"
 #: base/models.py:1027 base/templates/shift_request/shift_request_nav.html:9
 #: base/templates/shift_request/shift_request_view.html:78
 msgid "Shift Requests"
-msgstr "Quart Demandes"
+msgstr "Gestion des horaires"
 
 #: base/models.py:1048 base/views.py:4565 base/views.py:4638
 #, fuzzy
@@ -10189,7 +10189,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Current Shift"
 msgid "Current Time Format"
-msgstr "Décalage actuel travail en équi"
+msgstr "Horaire de travail actuel"
 
 #: base/templates/base/company/payroll_settings.html:6
 #: payroll/templates/payroll/settings/payroll_settings.html:6
@@ -10735,7 +10735,7 @@ msgstr ""
 
 #: base/templates/base/rotating_shift/htmx/rotating_shift_assign_update_form.html:4
 msgid "Rotating Shift Assign Update"
-msgstr "Rotational Shift Attribuer"
+msgstr "attribution des horaires rotatifs"
 
 #: base/templates/base/rotating_shift/htmx/rotating_shift_form.html:5
 #, fuzzy
@@ -10860,7 +10860,7 @@ msgstr "Il y a des candidats à ce stade..."
 #, fuzzy
 #| msgid "Rotating Shift Assign"
 msgid "Export Rotating Shift Assigns"
-msgstr "Rotational Shift Attribuer"
+msgstr "attribution des horaires rotatifs"
 
 #: base/templates/base/rotating_shift/rotating_shift_assign_view.html:154
 #: base/translator.py:184 employee/templates/tabs/shift-tab.html:558
@@ -10929,13 +10929,13 @@ msgstr ""
 #, fuzzy
 #| msgid "Rotating Work Type"
 msgid "Update Rotating Work Type"
-msgstr "Type de travail rotatif"
+msgstr "Planning en rotation"
 
 #: base/templates/base/rotating_work_type/htmx/rotating_work_type_form.html:7
 #, fuzzy
 #| msgid "Rotating Work Type"
 msgid "Create Rotating Work Type"
-msgstr "Type de travail rotatif"
+msgstr "Planning en rotation"
 
 #: base/templates/base/rotating_work_type/individual_view.html:147
 #: base/templates/base/rotating_work_type/rotating_work_type_assign_view.html:151
@@ -10975,7 +10975,7 @@ msgstr "Il y a des candidats à ce stade..."
 #, fuzzy
 #| msgid "Rotating Work Type Assign"
 msgid "Export Rotating Work Type Assigns"
-msgstr "Rotation Travail Type Attribuer"
+msgstr "attribution des types de travail rotatifs"
 
 #: base/templates/base/rotating_work_type/rotating_work_type_assign_view.html:160
 #: employee/templates/tabs/shift-tab.html:789
@@ -11373,7 +11373,7 @@ msgstr "Plus de vacances prévues ce mois-ci."
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Mail Templates"
-msgstr "Modèles d'enquête"
+msgstr "Modèles de questionnaire"
 
 #: base/templates/mail/empty_mail_template.html:32
 #: biometric/templates/biometric/add_biometric_user.html:21
@@ -11417,7 +11417,7 @@ msgstr "Il y a des candidats à ce stade..."
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Add Template"
-msgstr "Modèles d'enquête"
+msgstr "Modèles de questionnaire"
 
 #: base/templates/mail/empty_mail_template.html:75
 #: base/templates/mail/view_templates.html:95
@@ -11451,7 +11451,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "View Template"
-msgstr "Modèles d'enquête"
+msgstr "Modèles de questionnaire"
 
 #: base/templates/multi_approval_condition/add_more_approval_manager.html:25
 #: base/templates/multi_approval_condition/add_more_approval_manager.html:52
@@ -11840,13 +11840,13 @@ msgstr "Demande de mise à jour"
 #, fuzzy
 #| msgid "Current Shift"
 msgid "Is permenent shift"
-msgstr "Décalage actuel travail en équi"
+msgstr "Horaire de travail actuel"
 
 #: base/templates/shift_request/shift_request_export.html:3
 #, fuzzy
 #| msgid "Shift Requests"
 msgid "Export Shift Requests"
-msgstr "Quart Demandes"
+msgstr "Gestion des horaires"
 
 #: base/templates/shift_request/shift_request_export.html:82
 #: base/templates/shift_request/shift_request_nav.html:137
@@ -12420,7 +12420,7 @@ msgstr "inférieur ou égal à"
 #, fuzzy
 #| msgid "Current Shift"
 msgid "Current shift"
-msgstr "Décalage actuel travail en équi"
+msgstr "Horaire de travail actuel"
 
 #: base/translator.py:137
 msgid "Rotating shift"
@@ -13818,7 +13818,7 @@ msgstr "tournant shift mis à jour."
 
 #: base/views.py:2678
 msgid "Rotating shift updated."
-msgstr "Rotational Shift Attribuer"
+msgstr "attribution des horaires rotatifs"
 
 #: base/views.py:2767
 msgid "Rotating shift assigned."
@@ -14957,7 +14957,7 @@ msgstr "Créer Allocation"
 #: onboarding/templates/onboarding/employee_creation.html:61
 #: templates/initialize_database/horilla_user_signup.html:38
 msgid "First Name"
-msgstr "D'abord Nom"
+msgstr "prénom"
 
 #: employee/models.py:78
 #: employee/templates/employee/profile/personal_info.html:42
@@ -14965,7 +14965,7 @@ msgstr "D'abord Nom"
 #: onboarding/templates/onboarding/employee_creation.html:68
 #: templates/initialize_database/horilla_user_signup.html:45
 msgid "Last Name"
-msgstr "Dernier Nom"
+msgstr "nom"
 
 #: employee/models.py:230
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -15191,7 +15191,7 @@ msgstr "Travail Informations"
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:103
 #, fuzzy
 #| msgid "Actions"
-msgid "Take An Action"
+msgid "Prendre une mesure"
 msgstr "Actions"
 
 #: employee/templates/disciplinary_actions/disciplinary_nav.html:129
@@ -15534,7 +15534,7 @@ msgstr "D'urgence Contact Relation"
 #: employee/templates/personal-tab.html:88
 #: employee/templates/tabs/personal_tab.html:80
 msgid "Maritial Status"
-msgstr "Matrimonial État"
+msgstr "Situation matrimoniale"
 
 #: employee/templates/employee/profile/personal_info.html:197
 #: employee/templates/personal-tab.html:97
@@ -15725,7 +15725,7 @@ msgstr "Sujet"
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Template"
-msgstr "Modèles d'enquête"
+msgstr "Modèles de questionnaire"
 
 #: employee/templates/employee/send_mail.html:55
 #: recruitment/templates/pipeline/pipeline_components/send_mail.html:71
@@ -16936,7 +16936,7 @@ msgstr "Demande de type de travail"
 
 #: employee/templates/tabs/shift-tab.html:77
 msgid "Rotating work type"
-msgstr "Type de travail rotatif"
+msgstr "Planning en rotation"
 
 #: employee/templates/tabs/shift-tab.html:109
 #, fuzzy
@@ -18341,7 +18341,7 @@ msgstr "Filtre"
 #, fuzzy
 #| msgid "Survey Filter"
 msgid "Save filter"
-msgstr "Filtre d'enquête"
+msgstr "Filtres de questionnaire"
 
 #: horilla_views/templates/generic/filter_tags.html:83
 #: templates/filter_tags.html:77
@@ -22154,7 +22154,7 @@ msgstr ""
 #: recruitment/templates/stage/stage_component.html:50
 #: recruitment/templates/stage/stage_component.html:128
 msgid "Managers"
-msgstr "Gestionnaires"
+msgstr "Responsables"
 
 #: offboarding/templates/offboarding/pipeline/filter.html:91
 #: offboarding/templates/offboarding/pipeline/individual_view.html:77
@@ -22600,7 +22600,7 @@ msgstr "Profil Image"
 #: onboarding/templates/onboarding/candidate_filter.html:10
 #: recruitment/templates/skill_zone/skill_zone_nav.html:34
 msgid "Candidate Filter"
-msgstr "Candidat Filtre"
+msgstr "Filtres candidats"
 
 #: onboarding/templates/onboarding/candidate_filter.html:27
 #: recruitment/templates/skill_zone/skill_zone_nav.html:60
@@ -22688,7 +22688,7 @@ msgstr "Candidat"
 #: onboarding/templates/onboarding/candidates.html:56
 #: onboarding/templates/onboarding/group_by.html:47
 msgid "Date of joining"
-msgstr "Date d'adhésion"
+msgstr "Date d'entrée"
 
 #: onboarding/templates/onboarding/candidates.html:57
 #: onboarding/templates/onboarding/group_by.html:48
@@ -22983,7 +22983,7 @@ msgstr "Créer Étape"
 #, fuzzy
 #| msgid "Marital Status"
 msgid "Portal Status"
-msgstr "Matrimonial État"
+msgstr "Situation matrimoniale"
 
 #: onboarding/templates/onboarding/onboarding_table.html:149
 msgid "Bulk Change Task"
@@ -23034,7 +23034,7 @@ msgstr "Fermé"
 #: recruitment/templates/recruitment/recruitment_component.html:168
 #: recruitment/templates/recruitment/recruitment_view.html:9
 msgid "Open"
-msgstr "Ouvrir"
+msgstr "Ouvert"
 
 #: onboarding/templates/onboarding/onboardings.html:10
 msgid "Candidate Name"
@@ -23278,7 +23278,7 @@ msgstr "Montant"
 #, fuzzy
 #| msgid "Join Date"
 msgid "Fine Date"
-msgstr "Date d'adhésion"
+msgstr "Date d'entrée"
 
 #: payroll/forms/component_forms.py:945 payroll/forms/component_forms.py:949
 msgid "Value can't be negative."
@@ -23365,7 +23365,7 @@ msgstr "Un projet de contrat existe déjà pour cet employé."
 
 #: payroll/models/models.py:677
 msgid "Marital Status"
-msgstr "Matrimonial État"
+msgstr "Situation matrimoniale"
 
 #: payroll/models/models.py:679
 msgid "Company Experience"
@@ -25292,7 +25292,7 @@ msgstr ""
 #: pms/templates/meetings/meetings_nav.html:4
 #, fuzzy
 #| msgid "Settings"
-msgid "Meetings"
+msgid "gestion des réunions"
 msgstr "Paramètres"
 
 #: pms/models.py:846 pms/templates/feedback/answer/feedback_answer.html:137
@@ -25900,7 +25900,7 @@ msgstr "Au fil du temps inférieur ou égal"
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "MoM"
+msgid "compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -25930,7 +25930,7 @@ msgstr "Etes-vous sûr de supprimer cette tranche d'imposition ?"
 #: pms/templates/meetings/meetings_list.html:127
 #, fuzzy
 #| msgid "Add Note"
-msgid "Add MoM"
+msgid "Ajouter ompte-rendu de réunion"
 msgstr "Ajouter Note"
 
 #: pms/templates/meetings/meetings_list.html:167
@@ -26055,7 +26055,7 @@ msgstr "D'utilisateur Congé"
 #: pms/templates/okr/group_by.html:58 pms/templates/okr/objective_list.html:60
 #: pms/templates/okr/okr_list.html:70
 msgid "Self Objective"
-msgstr "Soi Objectif"
+msgstr "Objectifs personnels"
 
 #: pms/templates/okr/group_by.html:64 pms/templates/okr/objective_list.html:66
 #: pms/templates/okr/okr_list.html:76
@@ -26288,7 +26288,7 @@ msgstr "Mis à jour À"
 #, fuzzy
 #| msgid "Self Objective"
 msgid "Selected Objectives"
-msgstr "Soi Objectif"
+msgstr "Objectifs personnels"
 
 #: pms/templates/okr/objective_update.html:14
 msgid "Update Objectives"
@@ -26298,7 +26298,7 @@ msgstr "Mettre à jour Objectifs"
 #, fuzzy
 #| msgid "Managers"
 msgid "Managers:"
-msgstr "Gestionnaires"
+msgstr "Responsables"
 
 #: pms/templates/okr/okr_detailed_view.html:132
 #, fuzzy
@@ -26751,7 +26751,7 @@ msgstr "Question créée avec succès."
 #: recruitment/templates/recruitment/recruitment_form.html:126
 #: recruitment/templates/recruitment/recruitment_update_form.html:116
 msgid "Vacancy"
-msgstr "poste vacant"
+msgstr "Postes vacants"
 
 #: recruitment/forms.py:279
 #, fuzzy
@@ -26974,7 +26974,7 @@ msgstr "Enquête de recrutement"
 #: recruitment/sidebar.py:52
 #: recruitment/templates/recruitment/recruitment_component.html:69
 msgid "Open Jobs"
-msgstr "Emplois ouverts"
+msgstr "Postes ouverts"
 
 #: recruitment/templates/candidate/application_form.html:73
 #, fuzzy
@@ -27567,7 +27567,7 @@ msgstr "Modifier Recrutement"
 #: recruitment/templates/survey/survey_empty_view.html:69
 #: recruitment/templates/survey/view_question_templates.html:65
 msgid "Survey Templates"
-msgstr "Modèles d'enquête"
+msgstr "Modèles de questionnaire"
 
 #: recruitment/templates/pipeline/form/recruitment_update.html:75
 #: recruitment/templates/recruitment/recruitment_form.html:155
@@ -27725,7 +27725,7 @@ msgstr "Total Jours"
 
 #: recruitment/templates/recruitment/recruitment_component.html:151
 msgid "Jobs"
-msgstr "Emplois"
+msgstr "Postes"
 
 #: recruitment/templates/recruitment/recruitment_component.html:175
 #, fuzzy
@@ -27931,7 +27931,7 @@ msgstr "Ajouter Question"
 
 #: recruitment/templates/survey/filter.html:5
 msgid "Survey Filter"
-msgstr "Filtre d'enquête"
+msgstr "Filtres de questionnaire"
 
 #: recruitment/templates/survey/question_template_organized_form.html:64
 #, fuzzy
@@ -28004,7 +28004,7 @@ msgstr "Créer un modèle d'enquête"
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Templates"
-msgstr "Modèles d'enquête"
+msgstr "Modèles de questionnaire"
 
 #: recruitment/templates/survey/view_question_templates.html:105
 #, fuzzy

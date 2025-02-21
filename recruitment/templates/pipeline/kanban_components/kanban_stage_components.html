@@ -53,7 +53,7 @@
                             {% endif %}
                             {% if perms.recruitment.change_stage or request.user.employee_get in rec.recruitment_managers.all or request.user.employee_get in stage.stage_managers.all %}
                             <li class="oh-dropdown__item">
-                                <a hx-get='{% url "stage-update-pipeline" stage.id %}' hx-target='#objectUpdateModalTarget' class="oh-dropdown__link" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" data-key=".oh-kanban__section">{% trans "Edit" %}</a>
+                                <a hx-get='{% url "stage-update-pipeline" stage.id %}' hx-target='#objectUpdateModalTarget' class="oh-dropdown__link" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" data-key=".oh-kanban__section">{% trans "Modifier" %}</a>
                             </li>
                             {% endif %}
                             {% if perms.recruitment.delete_stage %}

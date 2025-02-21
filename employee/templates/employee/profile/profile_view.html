@@ -97,7 +97,7 @@
 				<img
 				src="{% static "/images/ui/edit_btn.png" %}"
 				style="width: 25px; height: auto"
-				title="{% trans 'Edit' %}"
+				title="{% trans 'Modifier' %}"
 				/>
 			</a>
 		</div>
@@ -211,7 +211,7 @@
 								>
 							</li>
 
-							<li data-cell-index="19" data-cell-title="{% trans 'Work type & Shift' %}" class="oh-general__tab">
+							<li data-cell-index="19" data-cell-title="{% trans 'Type de travail & Horaires' %}" class="oh-general__tab">
 								<a
 								hx-get="{% url 'shift-tab' employee.id %}?profile=true"
 								hx-target="#shift_target"
@@ -219,7 +219,7 @@
 								data-target="#shift_target"
 								class="oh-general__tab-link pointer"
 								role="button"
-								>{% trans "Work Type & Shift" %}</a
+								>{% trans "Type de travail & Horaires" %}</a
 								>
 							</li>
 
@@ -267,7 +267,7 @@
 							{% endif %} {% endcomment %}
 
 							{% if "payroll"|app_installed %}
-								<li data-cell-index="15" data-cell-title="{% trans 'Allowance & Deduction' %}" class="oh-general__tab">
+								<li data-cell-index="15" data-cell-title="{% trans 'Indemnités & Déductions' %}" class="oh-general__tab">
 									<a
 									hx-get="{% url 'allowances-deductions-tab' employee.id %}"
 									hx-target="#allowance_deduction"
@@ -275,7 +275,7 @@
 									data-target="#allowance_deduction"
 									class="oh-general__tab-link"
 									role="button"
-									>{% trans "Allowance & Deduction" %}</a
+									>{% trans "Indemnités & Déductions" %}</a
 									>
 								</li>
 							{% endif %}
@@ -336,7 +336,7 @@
 							</li>
 
 							{% if "payroll"|app_installed %}
-							<li data-cell-index="10" data-cell-title="{% trans 'Bonus Points' %}" class="oh-general__tab">
+							<li data-cell-index="10" data-cell-title="{% trans 'Points Bonus' %}" class="oh-general__tab">
 								<a
 								hx-get="{% url 'bonus-points-tab' employee.id %}"
 								hx-target="#bonus_points_target"
@@ -344,7 +344,7 @@
 								data-target="#bonus_points_target"
 								class="oh-general__tab-link"
 								role="button"
-								>{% trans "Bonus Points" %}</a
+								>{% trans "Points Bonus" %}</a
 								>
 							</li>
 							{% endif %}
@@ -358,13 +358,13 @@
 									hx-target = "#interview"
 									data-action="general-tab"
 									data-target="#interview"
-									>{% trans "Scheduled Interview" %}</a
+									>{% trans "Entretiens planifiés" %}</a
 									>
 								</li>
 							{% endif %}
 
 							{% if "offboarding"|app_installed and enabled_resignation_request %}
-							<li data-cell-index="09" data-cell-title="{% trans 'Resignation' %}" class="oh-general__tab">
+							<li data-cell-index="09" data-cell-title="{% trans 'Démission' %}" class="oh-general__tab">
 								<a
 								hx-get="{% url 'search-resignation-request' %}?employee_id={{employee.id}}"
 								hx-target="#resignation_hx_target"
@@ -372,7 +372,7 @@
 								data-target="#resignation_target"
 								class="oh-general__tab-link"
 								role="button"
-								>{% trans "Resignation" %}</a
+								>{% trans "Démission" %}</a
 								>
 							</li>
 							{% endif %}

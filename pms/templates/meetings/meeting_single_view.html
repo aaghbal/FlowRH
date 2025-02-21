@@ -76,7 +76,7 @@
 
         <div class="oh-timeoff-modal__stats w-100 mt-3">
             <div class="oh-timeoff-modal__stat">
-                <span class="oh-timeoff-modal__stat-count">{% trans "Answerable employees" %}</span>
+                <span class="oh-timeoff-modal__stat-count">{% trans "collaborateurs responsables" %}</span>
                 <span class="oh-timeoff-modal__stat-title ">
                     {% for employee in meeting.answer_employees.all %}
                     {{employee.get_full_name}},

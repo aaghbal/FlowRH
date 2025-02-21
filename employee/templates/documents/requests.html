@@ -82,7 +82,7 @@
 									data-toggle="oh-modal-toggle"
 									data-target="#objectCreateModal"
 									hx-get="{% url 'document-request-update' document_list.list.0.document_request_id.id %}"
-									hx-target="#objectCreateModalTarget">{% trans "Edit" %}</a>
+									hx-target="#objectCreateModalTarget">{% trans "Modifier" %}</a>
 								</li>
 								<li class="oh-dropdown__item">
 
@@ -131,7 +131,7 @@
 										{% elif document.status == 'rejected' %}
 										<span
 											class="oh-badge oh-badge--secondary oh-badge--small oh-badge--round ms-2 mr-2 file-upload"
-											title="{% trans 'Rejected' %}"
+											title="{% trans 'Refusé(e)' %}"
 										>
 											<ion-icon name="alert"></ion-icon>
 										</span>
@@ -389,7 +389,7 @@
       class="oh-404__image mb-4"
     />
     <h5 class="oh-404__subtitle">
-      {% trans "No search result found!" %}
+      {% trans "Aucun résultat trouvé !" %}
     </h5>
   </div>
   <!-- end of empty page -->

@@ -161,7 +161,7 @@
                       {% if feedback.archive == True %}
                         <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Un-archive' %}" >
                       {% else %}
-                        <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Archive' %}" >
+                        <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Archiver' %}" >
                       {% endif %}
                       {% csrf_token %}
                       <ion-icon name="archive-sharp" type="submit"></ion-icon>
@@ -456,7 +456,7 @@
                       {% if feedback.archive == True %}
                         <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Un-archive' %}" >
                       {% else %}
-                        <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Archive' %}" >
+                        <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Archiver' %}" >
                       {% endif %}
                       {% csrf_token %}
                       <ion-icon name="archive-sharp" type="submit"></ion-icon>
@@ -599,14 +599,14 @@
                   {% if perms.pms.change_anonymousfeedback or request.user|is_anonymous_feedback_owner:feedback %}
                   <a class="oh-btn w-100" data-toggle="oh-modal-toggle" data-target="#anonymousFeedbackModal"
                       hx-get="{% url 'edit-anonymous-feedback' feedback.id %}"
-                      title="{% trans 'Edit' %}" hx-target="#anonymousFeedbackFormModal"
+                      title="{% trans 'Modifier' %}" hx-target="#anonymousFeedbackFormModal"
                   ><ion-icon name="create-outline"></ion-icon>
                   </a>
                   <form action="{% url 'archive-anonymous-feedback' obj_id=feedback.id %}" method="post"  style="display: contents">
                     {% if feedback.archive == True %}
                       <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Un-archive' %}" >
                     {% else %}
-                      <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Archive' %}" >
+                      <button class="oh-btn oh-btn--danger-outline  w-100 "  title="{% trans 'Archiver' %}" >
                     {% endif %}
                      {% csrf_token %}
                     <ion-icon name="archive-sharp" type="submit"></ion-icon>

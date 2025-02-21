@@ -2,12 +2,12 @@
 <div class="oh-wrapper d-flex justify-content-between mt-4">
     <div class="oh-faq-card">
         <div class="d-flex justify-content-between align-items-center">
-            <h3 class="oh-faq-card__title">{% trans "Bonus Points" %}</h3>
+            <h3 class="oh-faq-card__title">{% trans "Points Bonus" %}</h3>
             {% if perms.employee.add_bonuspoint or request.user|check_manager:employee %}
             <div class="oh-dropdown">
                 <button
                     class="oh-btn oh-btn--secondary-outline oh-stop-prop oh-accordion-meta__btn p-2"
-                    title="Add points"
+                    title="Ajouter des points"
                     data-toggle="oh-modal-toggle"
                     data-target="#objectDetailsModal"
                     {% if "pms"|app_installed %}
@@ -50,7 +50,7 @@
             data-toggle="oh-modal-toggle"
             data-target="#objectDetailsModalW25"
             class="oh-btn oh-btn--secondary oh-btn--block"
-            >{% trans "Redeem Now" %}</a
+            >{% trans "Échanger maintenant" %}</a
         >
     </div>
     <div class="oh-faq-card" style="width: 60%; max-height:320px; overflow-y:auto">
@@ -58,7 +58,7 @@
             {% for activity in activity_list %}
                 <div class="oh-helpdesk__chat-update pb-0">
                     {% if activity.type == 'Bonus point created' %}
-                        <span> <strong>--></strong> {% trans "Bonus Account created" %} </span>
+                        <span> <strong>--></strong> {% trans "Compte de bonus initialisé"%} </span>
                         <span class="dateformat_changer">{{ activity.date|date:"d N. Y"}}</span>
                     {% elif activity.type == "requested" %}
                     <span
@@ -69,7 +69,7 @@
                     {% else %}
                     <span
                         >{% if activity.reason == 'bonus points has been redeemed.' %} <strong> --> {{activity.points|abs_value}} </strong> {% else %}<strong>--> {{activity.user}}</strong> {% trans "Added " %}
-                        <strong>{{activity.points}} </strong> {% trans "bonus points for " %}{% endif %} <span title="{{activity.reason}}">{{activity.reason|truncatechars:40}}</span> </span
+                        <strong>{{activity.points}} </strong> {% trans "Points Bonus for " %}{% endif %} <span title="{{activity.reason}}">{{activity.reason|truncatechars:40}}</span> </span
                     >
                     <span class="dateformat_changer">{{ activity.date|date:"d N. Y"}}</span>
                     {% endif %}

@@ -19,7 +19,7 @@
 								{% if perms.base.change_department %}
 									<a hx-get="{% url 'department-update' dep.id %}" hx-target="#departmentEditForm"
 										data-toggle="oh-modal-toggle" data-target="#departmentEditModal" type="button"
-										class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+										class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
 										<ion-icon name="create-outline"></ion-icon></a>
 								{% endif %}
 								{% if perms.base.delete_deaprtment %}

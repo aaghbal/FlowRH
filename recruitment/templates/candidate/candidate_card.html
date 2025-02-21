@@ -127,7 +127,7 @@
                                     data-target="#createModal"
                                     hx-get="{% url 'to-skill-zone' cand.id %}"
                                     hx-target="#createTarget"
-                                    >{% trans "Add to Skill Zone" %}</a
+                                    >{% trans "Ajouter à la Zone de Compétences" %}</a
                                 >
                             </li>
                             {% endif %}
@@ -145,7 +145,7 @@
                                         {% if cand.is_offer_rejected %}
                                             title="{% trans "Added In Rejected Candidates" %}"
                                         {% else %}
-                                            title="{% trans "Add To Rejected Candidates" %}"
+                                            title="{% trans "Ajouter aux candidats non retenus" %}"
                                         {% endif %}
                                     >
                                         {% if not cand.is_offer_rejected %}
@@ -200,7 +200,7 @@
                                         href="{% url 'rec-candidate-archive' cand.id %}"
                                         onclick="return confirm('{% trans "Do you want to archive this candidate?" %}')"
                                         class="oh-dropdown__link"
-                                        >{% trans "Archive" %}</a
+                                        >{% trans "Archiver" %}</a
                                     >
                                 </li>
                             {% else %}
@@ -315,7 +315,7 @@
         src="{% static 'images/ui/no-results.png' %}"
         class="oh-404__image mb-4"
     />
-    <h5 class="oh-404__subtitle">{% trans "No search result found!" %}</h5>
+    <h5 class="oh-404__subtitle">{% trans "Aucun résultat trouvé !" %}</h5>
 </div>
 <!-- end of empty page -->
 {% endif %}

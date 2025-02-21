@@ -135,8 +135,8 @@
 							<li class="oh-dropdown__item">
 								<a href="{% url 'employee-view-update' employee.id %}" class="">
 									<img src="{% static 'images/ui/edit_btn.png' %}" style="width: 20px; height: auto"
-										title="{% trans 'Edit' %}" />
-									<button style="border: none; background: transparent;">{% trans "Edit" %}</button>
+										title="{% trans 'Modifier' %}" />
+									<button style="border: none; background: transparent;">{% trans "Modifier" %}</button>
 								</a>
 							</li>
 						{% endif %}
@@ -318,12 +318,12 @@
 							</li>
 
 							{% if request.user == employee.employee_user_id or request.user|check_manager:employee or perms.attendance.view_worktyperequest or perms.attendance.view_shiftrequest %}
-								<li data-cell-index="10" data-cell-title="{% trans 'Work Type & Shift' %}"
+								<li data-cell-index="10" data-cell-title="{% trans 'Type de travail & Horaires' %}"
 									class="oh-general__tab">
 									<a hx-get={% url 'shift-tab' employee.id %} hx-target="#shift_target"
 										data-action="general-tab" data-target="#shift_target"
 										class="oh-general__tab-link pointer" role="button">
-										{% trans "Work Type & Shift"%}
+										{% trans "Type de travail & Horaires"%}
 									</a>
 								</li>
 							{% endif %}
@@ -357,12 +357,12 @@
 								{% endif %}
 
 								{% if perms.payroll.view_payslip or request.user == employee.employee_user_id %}
-									<li data-cell-index="14" data-cell-title="{% trans 'Allowance & Deduction' %}"
+									<li data-cell-index="14" data-cell-title="{% trans 'Indemnités & Déductions' %}"
 										class="oh-general__tab">
 										<a hx-get="{% url 'allowances-deductions-tab' employee.id %}"
 											hx-target="#allowance_deduction" data-action="general-tab"
 											data-target="#allowance_deduction" class="oh-general__tab-link" role="button">
-											{% trans "Allowance & Deduction" %}
+											{% trans "Indemnités & Déductions" %}
 										</a>
 									</li>
 								{% endif %}
@@ -448,7 +448,7 @@
 									<li data-cell-index="21" data-cell-title="{% trans 'Bonus' %}" class="oh-general__tab">
 										<a hx-get={% url 'bonus-points-tab' employee.id %} hx-target="#bonus_points_target"
 											data-action="general-tab" data-target="#bonus_points_target"
-											class="oh-general__tab-link" role="button">{% trans "Bonus Points" %}</a>
+											class="oh-general__tab-link" role="button">{% trans "Points Bonus" %}</a>
 									</li>
 								{% endif %}
 							{% endif %}

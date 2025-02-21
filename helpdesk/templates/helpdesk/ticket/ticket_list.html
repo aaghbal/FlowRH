@@ -142,7 +142,7 @@
 												<div class="oh-btn-group">
 													<button
 														class="oh-btn oh-btn--light-bkg p-3 w-50"
-														title="{% trans 'Edit' %}"
+														title="{% trans 'Modifier' %}"
 														data-toggle="oh-modal-toggle"
 														data-target="#objectCreateModal"
 														hx-get="{% url 'ticket-update' ticket.id %}"
@@ -162,7 +162,7 @@
 															{% csrf_token %}
 															<button
 															class="oh-btn oh-btn--danger-outline p-3 w-50"
-															title="{% trans 'Archive' %}"
+															title="{% trans 'Archiver' %}"
 															>
 															<ion-icon
 																name="archive-sharp"
@@ -311,7 +311,7 @@
 					class="oh-404__image mb-4"
 					/>
 					<h5 class="oh-404__subtitle">
-					{% trans "No search result found!" %}
+					{% trans "Aucun résultat trouvé !" %}
 					</h5>
 				</div>
 				<!-- end of empty page -->
@@ -538,7 +538,7 @@
 														{% if perms.helpdesk.change_ticket or request.user.employee_get|is_department_manager:ticket %}
 															<button
 																class="oh-btn oh-btn--light-bkg p-3 w-50"
-																title="{% trans 'Edit' %}"
+																title="{% trans 'Modifier' %}"
 																data-toggle="oh-modal-toggle"
 																data-target="#objectCreateModal"
 																hx-get="{% url 'ticket-update' ticket.id %}"
@@ -559,7 +559,7 @@
 																	{% csrf_token %}
 																	<button
 																	class="oh-btn oh-btn--danger-outline p-3 w-50"
-																	title="{% trans 'Archive' %}"
+																	title="{% trans 'Archiver' %}"
 																	>
 																	<ion-icon
 																		name="archive-sharp"
@@ -706,7 +706,7 @@
 					class="oh-404__image mb-4"
 					/>
 					<h5 class="oh-404__subtitle">
-					{% trans "No search result found!" %}
+					{% trans "Aucun résultat trouvé !" %}
 					</h5>
 				</div>
 				<!-- end of empty page -->
@@ -900,7 +900,7 @@
 													{% if perms.helpdesk.change_ticket or request.user.employee_get|is_department_manager:ticket %}
 														<button
 															class="oh-btn oh-btn--light-bkg p-3 w-50"
-															title="{% trans 'Edit' %}"
+															title="{% trans 'Modifier' %}"
 															data-toggle="oh-modal-toggle"
 															data-target="#objectCreateModal"
 															hx-get="{% url 'ticket-update' ticket.id %}"
@@ -921,7 +921,7 @@
 																{% csrf_token %}
 																<button
 																class="oh-btn oh-btn--danger-outline p-3 w-50"
-																title="{% trans 'Archive' %}"
+																title="{% trans 'Archiver' %}"
 																>
 																<ion-icon
 																	name="archive-sharp"
@@ -1068,7 +1068,7 @@
 					class="oh-404__image mb-4"
 					/>
 					<h5 class="oh-404__subtitle">
-					{% trans "No search result found!" %}
+					{% trans "Aucun résultat trouvé !" %}
 					</h5>
 				</div>
 				<!-- end of empty page -->

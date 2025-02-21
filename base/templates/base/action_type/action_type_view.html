@@ -5,7 +5,7 @@
 			<div class="oh-sticky-table__tr">
 				<div class="oh-sticky-table__th">{% trans "Title" %}</div>
 				<div class="oh-sticky-table__th">{% trans "Type" %}</div>
-				<div class="oh-sticky-table__th">{% trans "Login block" %}</div>
+				<div class="oh-sticky-table__th">{% trans "Blocage de l'accès" %}</div>
 				{% if perms.employee.change_actiontype or perms.employee.delete_actiontype %}
 					<div class="oh-sticky-table__th">{% trans "Actions" %}</div>
 				{% endif %}
@@ -25,7 +25,7 @@
 							{% if perms.employee.change_actiontype %}
 								<a hx-get="{% url 'action-type-update' act.id %}" hx-target="#objectUpdateModalTarget"
 									data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" type="button"
-									class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}">
+									class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}">
 									<ion-icon name="create-outline"></ion-icon></a>
 							{% endif %}
 							{% if perms.employee.delete_actiontype %}

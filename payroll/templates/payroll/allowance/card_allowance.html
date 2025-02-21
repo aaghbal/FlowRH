@@ -86,7 +86,7 @@
                     <li class="oh-dropdown__item">
                     <a onclick="event.stopPropagation();"
                       href="{% url 'update-allowance' allowance.id %}"
-                    >{% trans "Edit" %}</a>
+                    >{% trans "Modifier" %}</a>
                     </li>
                   {% endif %}
                   {% if perms.payroll.delete_allowance %}
@@ -162,7 +162,7 @@
     class="oh-404__image mb-4"
   />
   <h5 class="oh-404__subtitle">
-    {% trans "No search result found!" %}
+    {% trans "Aucun résultat trouvé !" %}
   </h5>
 </div>
 <!-- end of empty page -->

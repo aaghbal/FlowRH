@@ -41,11 +41,11 @@
           <h3 class="oh-faq-card__title d-flex justify-content-between "><span>{{ template.title }}</span>
             <div>
             <a hx-get="{% url 'duplicate-mail-template' template.id %}" hx-target="#viewTemplateModalBody" data-toggle="oh-modal-toggle"
-              data-target="#viewTemplateModal" title="{% trans 'Duplicate' %}" style= "cursor: pointer;">
+              data-target="#viewTemplateModal" title="{% trans 'Dupliquer' %}" style= "cursor: pointer;">
               <ion-icon name="copy-outline"></ion-icon>
             </a>
             <a href="{% url "delete-mail-template" %}?ids={{template.id}}" class="text-danger" style="cursor: pointer;"
-                onclick="return confirm('Do you want to delete this template?')" title="{% trans 'Edit' %}" >
+                onclick="return confirm('Do you want to delete this template?')" title="{% trans 'Modifier' %}" >
               <ion-icon name="trash-outline"></ion-icon>
             </a>
           </div>
@@ -71,7 +71,7 @@
       </div>
       <div class="oh-modal__dialog-body" id="viewTemplateModalBody"></div>
       <div class="oh-modal__dialog-footer">
-        <button type="submit" onclick="$('#submitFormButton')[0].click()" class="oh-btn oh-btn--secondary oh-btn--shadow">{% trans "Save" %}</button>
+        <button type="submit" onclick="$('#submitFormButton')[0].click()" class="oh-btn oh-btn--secondary oh-btn--shadow">{% trans "Sauvegarder" %}</button>
       </div>
     </div>
   </div>
@@ -85,7 +85,7 @@
         {% include 'mail/htmx/form.html' %}
       </div>
       <div class="oh-modal__dialog-footer">
-        <button type="submit" onclick="$('#submitFormButton')[0].click()" class="oh-btn oh-btn--secondary oh-btn--shadow">{% trans "Save" %}</button>
+        <button type="submit" onclick="$('#submitFormButton')[0].click()" class="oh-btn oh-btn--secondary oh-btn--shadow">{% trans "Sauvegarder" %}</button>
       </div>
     </div>
   </div>

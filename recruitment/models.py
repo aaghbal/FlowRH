@@ -837,7 +837,7 @@ class SkillZone(HorillaModel):
     Model for talent pool
     """
 
-    title = models.CharField(max_length=50, verbose_name="Skill Zone")
+    title = models.CharField(max_length=50, verbose_name="Zone de compétences")
     description = models.TextField(verbose_name=_("Description"), max_length=255)
     company_id = models.ForeignKey(
         Company,
@@ -862,7 +862,7 @@ class SkillZoneCandidate(HorillaModel):
 
     skill_zone_id = models.ForeignKey(
         SkillZone,
-        verbose_name=_("Skill Zone"),
+        verbose_name=_("Zone de compétences"),
         related_name="skillzonecandidate_set",
         on_delete=models.PROTECT,
         null=True,
@@ -882,7 +882,7 @@ class SkillZoneCandidate(HorillaModel):
     #     verbose_name=_("Job Position")
     # )
 
-    reason = models.CharField(max_length=200, verbose_name=_("Reason"))
+    reason = models.CharField(max_length=200, verbose_name=_("Motif"))
     added_on = models.DateField(auto_now_add=True)
     objects = HorillaCompanyManager(
         related_company_field="candidate_id__recruitment_id__company_id"
@@ -951,13 +951,13 @@ class InterviewSchedule(HorillaModel):
         on_delete=models.CASCADE,
     )
     employee_id = models.ManyToManyField(Employee, verbose_name=_("Interviewer"))
-    interview_date = models.DateField(verbose_name=_("Interview Date"))
-    interview_time = models.TimeField(verbose_name=_("Interview Time"))
+    interview_date = models.DateField(verbose_name=_("Date d'entretien"))
+    interview_time = models.TimeField(verbose_name=_("Heure d'entretien"))
     description = models.TextField(
         verbose_name=_("Description"), blank=True, max_length=255
     )
     completed = models.BooleanField(
-        default=False, verbose_name=_("Is Interview Completed")
+        default=False, verbose_name=_("L'entretien est-il terminé")
     )
     objects = HorillaCompanyManager("candidate_id__recruitment_id__company_id")
 

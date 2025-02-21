@@ -59,7 +59,7 @@ SUBMENUS = [
         "accessibility": "recruitment.sidebar.stage_accessibility",
     },
     {
-        "menu": _("Skill Zone"),
+        "menu": _("Zone de compétences"),
         "redirect": reverse("skill-zone-view"),
         "accessibility": "recruitment.sidebar.skill_zone_accessibility",
     },

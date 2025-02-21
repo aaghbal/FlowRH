@@ -128,7 +128,7 @@
                                         <a hx-get="{% url 'work-type-request-update' work_type_request.id %}"
                                             hx-target='#workTypeRequestUpdateModalBody' data-toggle="oh-modal-toggle"
                                             data-target='#workTypeRequestUpdateModal' class="oh-btn oh-btn--light-bkg w-50"
-                                            title="{% trans 'Edit' %}">
+                                            title="{% trans 'Modifier' %}">
                                             <ion-icon name="create-outline"></ion-icon>
                                         </a>
                                     {% else %}
@@ -141,7 +141,7 @@
                                     <a class="oh-btn oh-btn--light-bkg w-50" data-toggle="oh-modal-toggle"
                                         data-target="#objectCreateModal"
                                         hx-get="{% url 'work-type-request-duplicate' work_type_request.id %}?{{pg}}"
-                                        title="{% trans 'Duplicate' %}" hx-target="#objectCreateModalTarget"
+                                        title="{% trans 'Dupliquer' %}" hx-target="#objectCreateModalTarget"
                                         style="cursor: pointer;">
                                         <ion-icon name="copy-outline"></ion-icon>
                                     </a>
@@ -246,7 +246,7 @@
 <div class="oh-404">
     <img style="width: 150px; height: 150px" src="{% static 'images/ui/no-results.png' %}" class="oh-404__image mb-4" />
     <h5 class="oh-404__subtitle">
-        {% trans "No search result found!" %}
+        {% trans "Aucun résultat trouvé !" %}
     </h5>
 </div>
 <!-- end of empty page -->

@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='worktyperequest',
             name='work_type_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='requested_work_type', to='base.worktype', verbose_name='Requesting Work Type'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='requested_work_type', to='base.worktype', verbose_name='Demande de modification du régime de travail'),
         ),
         migrations.AddField(
             model_name='worktype',
@@ -157,7 +157,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='shiftrequest',
             name='shift_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='requested_shift', to='base.employeeshift', verbose_name='Requesting Shift'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='requested_shift', to='base.employeeshift', verbose_name='Demande de réaffectation horaire'),
         ),
         migrations.AddField(
             model_name='rotatingworktypeassign',
@@ -437,7 +437,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='historicalworktyperequest',
             name='work_type_id',
-            field=models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='base.worktype', verbose_name='Requesting Work Type'),
+            field=models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='base.worktype', verbose_name='Demande de modification du régime de travail'),
         ),
         migrations.AddField(
             model_name='historicalshiftrequest',
@@ -482,7 +482,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='historicalshiftrequest',
             name='shift_id',
-            field=models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='base.employeeshift', verbose_name='Requesting Shift'),
+            field=models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to='base.employeeshift', verbose_name='Demande de réaffectation horaire'),
         ),
         migrations.AddField(
             model_name='historicalrotatingworktypeassign',

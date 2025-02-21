@@ -162,7 +162,7 @@ class EmployeeBonusPointNavView(views.HorillaNavView):
                     data-target="#genericModal"
                     """
 
-    nav_title = _trans("Employee Bonus Point ")
+    nav_title = _trans("Points de Bonus des Employés ")
     search_url = reverse_lazy("employee-bonus-point-list-view")
     search_swap_target = "#listContainer"
     group_by_fields = [
@@ -190,7 +190,7 @@ class EmployeeBonusPointFormView(views.HorillaFormView):
 
     form_class = EmployeeBonusPointForm
     model = models.EmployeeBonusPoint
-    new_display_title = _trans("Create Employee Bonus Point ")
+    new_display_title = _trans("Create Points de Bonus des Employés ")
     # template_name = "bonus/bonus_form.html"
 
     def get_context_data(self, **kwargs):

@@ -746,7 +746,7 @@ class Meetings(HorillaModel):
         Employee,
         blank=True,
         related_name="meeting_answer_employees",
-        verbose_name=_("Answerable Employees"),
+        verbose_name=_("collaborateurs responsables"),
         help_text=_(
             "Select the employees who can respond to question template in this meeting's, if any are added."
         ),
@@ -758,7 +758,7 @@ class Meetings(HorillaModel):
     show_response = models.BooleanField(default=False, editable=False)
 
     class Meta:
-        verbose_name = _("Meetings")
+        verbose_name = _("gestion des réunions")
 
     def __str__(self):
         return self.title

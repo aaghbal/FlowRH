@@ -72,7 +72,7 @@
                             hx-get="{% url 'recruitment-search' %}?{{pd}}&orderby=vacancy"
                             hx-target="#recruitment-container"
                           >{% trans "Vacancy" %}</div>
-                          <div data-cell-index="4" data-cell-title='{% trans "Total Hires" %}' class="oh-sticky-table__th" >{% trans "Total Hires" %}</div>
+                          <div data-cell-index="4" data-cell-title='{% trans "Total recrutés" %}' class="oh-sticky-table__th" >{% trans "Total recrutés" %}</div>
                           <div data-cell-index="5" data-cell-title='{% trans "Start Date" %}'
                             class="oh-sticky-table__th {% if request.sort_option.order == '-start_date' %}arrow-up {% elif request.sort_option.order == 'start_date' %}arrow-down {% else %} arrow-up-down {% endif %}"
                             hx-get="{% url 'recruitment-search' %}?{{pd}}&orderby=start_date"
@@ -172,18 +172,18 @@
                           </div>
                           <div class="oh-sticky-table__td oh-sticky-table__right">
                             <div class="oh-btn-group">
-                              <a href="#" class="oh-btn oh-btn--light-bkg w-100" onclick="copyLink(window.location.origin+'/recruitment/application-form?recruitmentId={{rec.id}}')" title="{% trans "Share Link" %}">
+                              <a href="#" class="oh-btn oh-btn--light-bkg w-100" onclick="copyLink(window.location.origin+'/recruitment/application-form?recruitmentId={{rec.id}}')" title="{% trans "Partager le lien" %}">
                                 <ion-icon name="share-social-outline"></ion-icon>
                               </a>
                               {% if perms.recruitment.change_recruitment %}
                                 <a hx-get="{% url 'recruitment-update' rec.id %}" hx-target='#objectUpdateModalTarget' hx-swap='innerHTML' data-toggle='oh-modal-toggle' data-target='#objectUpdateModal'  class="oh-btn oh-btn--light-bkg w-100" title="Edit"><ion-icon name="create-outline"></ion-icon></a>
                               {% endif %}
                               {% if perms.recruitment.add_recruitment %}
-                                <a hx-get="{% url 'recruitment-duplicate' rec.id %}" hx-target='#objectCreateModalTarget' hx-swap='innerHTML' data-toggle='oh-modal-toggle' data-target='#objectCreateModal'  class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Duplicate' %}"><ion-icon name="copy-outline"></ion-icon></a>
+                                <a hx-get="{% url 'recruitment-duplicate' rec.id %}" hx-target='#objectCreateModalTarget' hx-swap='innerHTML' data-toggle='oh-modal-toggle' data-target='#objectCreateModal'  class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Dupliquer' %}"><ion-icon name="copy-outline"></ion-icon></a>
                               {% endif %}
                               {% if perms.recruitment.delete_recruitment %}
                                 {% if rec.is_active %}
-                                  <a href="{% url 'recruitment-archive' rec.id %}" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Archive' %}"><ion-icon name="archive"></ion-icon></a>
+                                  <a href="{% url 'recruitment-archive' rec.id %}" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Archiver' %}"><ion-icon name="archive"></ion-icon></a>
                                   {% else %}
                                   <a href="{% url 'recruitment-archive' rec.id %}" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Unarchive' %}"><ion-icon name="archive"></ion-icon></a>
                                 {% endif %}
@@ -270,7 +270,7 @@
       class="oh-404__image mb-4"
     />
     <h5 class="oh-404__subtitle">
-      {% trans "No search result found!" %}
+      {% trans "Aucun résultat trouvé !" %}
     </h5>
   </div>
   <!-- end of empty page -->

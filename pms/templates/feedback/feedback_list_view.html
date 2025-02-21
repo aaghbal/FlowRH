@@ -30,7 +30,7 @@
         <div class="oh-input-group oh-input__search-group" :class="searchShow ? 'oh-input__search-group--show' : ''">
           <ion-icon name="search-outline" class="oh-input-group__icon oh-input-group__icon--left"></ion-icon>
           <input name="search" onkeyup="$('.filterButton').click()" type="text" class="oh-input oh-input__icon" aria-label="Search Input"
-          placeholder="{% trans 'Search' %}" />
+          placeholder="{% trans 'Rechercher' %}" />
         </div>
         <div class="oh-main__titlebar-button-container">
 
@@ -91,7 +91,7 @@
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="oh-input-group">
-                              <label class="oh-label" for="{{feedback_filter_form.archive.id_for_label}}">{% trans "Archive" %}</label>
+                              <label class="oh-label" for="{{feedback_filter_form.archive.id_for_label}}">{% trans "Archiver" %}</label>
                               {{feedback_filter_form.archive}}
                             </div>
 
@@ -152,7 +152,7 @@
                       <li class="oh-dropdown__item">
                         <a href="#" class="oh-dropdown__link " id="archiveFeedback"
 
-                          >{% trans "Archive" %}</a
+                          >{% trans "Archiver" %}</a
                         >
                       </li>
 

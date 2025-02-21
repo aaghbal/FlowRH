@@ -93,7 +93,7 @@
 					<li class="oh-profile__card-info-item">
 						<span class="oh-profile__info-label mb-1">
 							<ion-icon name="call-outline"></ion-icon>
-							<span>{% trans "Emergency Contact" %}</span>
+							<span>{% trans "Contact en cas d'urgence" %}</span>
 						</span>
 						<span class="oh-profile__info-value">{{employee.emergency_contact|default:_("None")}}</span>
 					</li>
@@ -101,7 +101,7 @@
 					<li class="oh-profile__card-info-item">
 						<span class="oh-profile__info-label mb-1">
 							<ion-icon name="people-circle-outline"></ion-icon>
-							<span>{% trans "Emergency Contact Name" %}</span>
+							<span>{% trans "Nom du contact d'urgence" %}</span>
 						</span>
 						<span
 							class="oh-profile__info-value">{{employee.emergency_contact_name|default:_("None")}}</span>
@@ -110,7 +110,7 @@
 					<li class="oh-profile__card-info-item">
 						<span class="oh-profile__info-label mb-1">
 							<ion-icon name="finger-print-outline"></ion-icon>
-							<span>{% trans "Emergency Contact Relation" %}</span>
+							<span>{% trans "Relation avec la personne à prévenir"%}</span>
 						</span>
 						<span
 							class="oh-profile__info-value">{{employee.emergency_contact_relation|default:_("None")}}</span>

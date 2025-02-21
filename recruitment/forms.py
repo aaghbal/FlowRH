@@ -975,7 +975,7 @@ class CandidateExportForm(forms.Form):
 
 
 class SkillZoneCreateForm(ModelForm):
-    verbose_name = "Skill Zone"
+    verbose_name = "Zone de compétences"
 
     class Meta:
         """
@@ -996,7 +996,7 @@ class SkillZoneCreateForm(ModelForm):
 
 
 class SkillZoneCandidateForm(ModelForm):
-    verbose_name = "Skill Zone Candidate"
+    verbose_name = "Compétences du candidat"
     candidate_id = forms.ModelMultipleChoiceField(
         queryset=Candidate.objects.all(),
         widget=forms.SelectMultiple,

@@ -26,7 +26,7 @@
         {% if leave_requests %}
         <div class="oh-input-group oh-input__search-group" :class="searchShow ? 'oh-input__search-group--show' : ''">
             <ion-icon name="search-outline" class="oh-input-group__icon oh-input-group__icon--left"></ion-icon>
-            <input type="text" class="oh-input oh-input__icon" aria-label="Search Input" placeholder="{% trans 'Search' %}"
+            <input type="text" class="oh-input oh-input__icon" aria-label="Search Input" placeholder="{% trans 'Rechercher' %}"
                 name="employee_id" hx-get="{% url 'request-filter' %}" hx-trigger="keyup" hx-target="#leaveRequest" />
         </div>
         <div class="oh-main__titlebar-button-container">

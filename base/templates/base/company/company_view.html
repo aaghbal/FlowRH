@@ -36,7 +36,7 @@
 							{% if perms.base.change_company %}
 								<button data-toggle="oh-modal-toggle" data-target="#companyEditModal"
 									hx-get="{% url 'company-update' company.id %}" hx-target="#companyEditForm"
-									class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Edit' %}">
+									class="oh-btn oh-btn--light-bkg w-50" title="{% trans 'Modifier' %}">
 									<ion-icon name="create-outline"></ion-icon>
 								</button>
 							{% endif %}

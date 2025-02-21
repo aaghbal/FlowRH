@@ -92,7 +92,7 @@
                                         {% if comp_leave_request.status ==  'requested' %}
                                             <button
                                                 class="oh-btn oh-btn--light-bkg w-50"
-                                               title="{% trans 'Edit' %}"
+                                               title="{% trans 'Modifier' %}"
                                                 data-toggle="oh-modal-toggle"
                                                 data-target="#objectDetailsModal"
                                                 hx-get="{% url 'update-compensatory-leave' comp_leave_request.id %}"
@@ -242,7 +242,7 @@
                                             {% if comp_leave_request.status ==  'requested' %}
                                                 <button
                                                     class="oh-btn oh-btn--light-bkg w-50"
-                                                    title="{% trans 'Edit' %}"
+                                                    title="{% trans 'Modifier' %}"
                                                     data-toggle="oh-modal-toggle"
                                                     data-target="#objectDetailsModal"
                                                     hx-get="{% url 'update-compensatory-leave' comp_leave_request.id %}"

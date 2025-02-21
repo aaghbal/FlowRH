@@ -16,7 +16,7 @@
 						</div>
 						<div class="oh-faq__item-header__right">
 							{% if perms.helpdesk.change_faq %}
-								<button class="oh-btn oh-btn--sq oh-btn--transparent" title="{% trans 'Edit' %}"
+								<button class="oh-btn oh-btn--sq oh-btn--transparent" title="{% trans 'Modifier' %}"
 									data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
 									hx-get="{% url 'faq-update' faq.id %}" hx-target="#objectCreateModalTarget"
 									onclick='event.stopPropagation()'>

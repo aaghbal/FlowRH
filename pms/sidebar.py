@@ -21,11 +21,11 @@ SUBMENUS = [
         "redirect": reverse("objective-list-view"),
     },
     {
-        "menu": trans("Meetings"),
+        "menu": trans("gestion des réunions"),
         "redirect": reverse("view-meetings"),
     },
     {
-        "menu": trans("Employee Bonus Point"),
+        "menu": trans("Points de Bonus des Employés"),
         "redirect": reverse("employee-bonus-point"),
     },
     {

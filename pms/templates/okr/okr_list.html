@@ -278,10 +278,10 @@
                                                                             onclick="event.preventDefault();event.stopPropagation()"
                                                                             data-toggle='oh-modal-toggle' data-target='#objectCreateModal'
                                                                             hx-get="{% url 'objective-update' objective.id %}" hx-target='#objectCreateModalTarget'
-                                                                            class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Edit' %}"
+                                                                            class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Modifier' %}"
                                                                         ><ion-icon name="create-outline"></ion-icon></a>
                                                                     {% endif %}
-                                                                        {% comment %} <a hx-get="" hx-target='#duplicateFormContainer' hx-swap='innerHTML' data-toggle='oh-modal-toggle' data-target='#duplicateRecruitmentModal'  class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Duplicate' %}"><ion-icon name="copy-outline"></ion-icon></a> {% endcomment %}
+                                                                        {% comment %} <a hx-get="" hx-target='#duplicateFormContainer' hx-swap='innerHTML' data-toggle='oh-modal-toggle' data-target='#duplicateRecruitmentModal'  class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Dupliquer' %}"><ion-icon name="copy-outline"></ion-icon></a> {% endcomment %}
                                                                     {% if perms.pms.delete_objective %}
                                                                         {% if objective.archive %}
                                                                                 <form
@@ -301,7 +301,7 @@
                                                                                     method="post"
                                                                                     style="display: contents;width:100%">
                                                                                     {% csrf_token %}
-                                                                                    <button onclick="event.stopPropagation()" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Archive' %}">
+                                                                                    <button onclick="event.stopPropagation()" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Archiver' %}">
                                                                                         <ion-icon name="archive"></ion-icon>
                                                                                     </button>
                                                                                 </form>
@@ -390,7 +390,7 @@
                         class="oh-404__image mb-4"
                         />
                         <h5 class="oh-404__subtitle">
-                        {% trans "No search result found!" %}
+                        {% trans "Aucun résultat trouvé !" %}
                         </h5>
                     </div>
                 </div>
@@ -538,7 +538,7 @@
                                                                                     method="post"
                                                                                     style="display: contents;width:100%">
                                                                                     {% csrf_token %}
-                                                                                    <button onclick="event.stopPropagation()" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Archive' %}">
+                                                                                    <button onclick="event.stopPropagation()" class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Archiver' %}">
                                                                                         <ion-icon name="archive"></ion-icon>
                                                                                     </button>
                                                                                 </form>
@@ -628,7 +628,7 @@
                             class="oh-404__image mb-4"
                             />
                             <h5 class="oh-404__subtitle">
-                            {% trans "No search result found!" %}
+                            {% trans "Aucun résultat trouvé !" %}
                             </h5>
                         </div>
                     </div>

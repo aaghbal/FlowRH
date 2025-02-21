@@ -32,7 +32,7 @@
                 <ion-icon name="search-outline" class="oh-input-group__icon oh-input-group__icon--left"></ion-icon>
                 <input name="search" hx-get="{% url 'asset-batch-number-search' %}" hx-target="#AssetBatchList"
                     hx-trigger="keyup delay:500ms" type="text" class="oh-input oh-input__icon" aria-label="Search Input"
-                    placeholder="{% trans 'Search' %}" />
+                    placeholder="{% trans 'Rechercher' %}" />
             </div>
             <div class="oh-main__titlebar-button-container">
                 {% if perms.asset.add_assetlot %}

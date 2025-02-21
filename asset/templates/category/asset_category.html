@@ -65,7 +65,7 @@
                                                 <a href="#" class="oh-dropdown__link " data-toggle="oh-modal-toggle"
                                                     onclick="event.stopPropagation()" data-target="#objectCreateModal"
                                                     hx-get="{% url 'asset-category-duplicate' obj_id=asset_category.id %}?{{pg}}"
-                                                    hx-target="#objectCreateModalTarget">{% trans "Duplicate" %}</a>
+                                                    hx-target="#objectCreateModalTarget">{% trans "Dupliquer" %}</a>
                                             </li>
                                         {% endif %}
                                         {% if perms.asset.change_assetcategory %}
@@ -73,7 +73,7 @@
                                                 <a href="#" class="oh-dropdown__link " data-toggle="oh-modal-toggle"
                                                     onclick="event.stopPropagation()" data-target="#objectUpdateModal"
                                                     hx-get="{% url 'asset-category-update' cat_id=asset_category.id %}?{{pg}}"
-                                                    hx-target="#objectUpdateModalTarget">{% trans "Edit" %}</a>
+                                                    hx-target="#objectUpdateModalTarget">{% trans "Modifier" %}</a>
                                             </li>
                                         {% endif %}
                                         {% if perms.asset.delete_assetcategory %}

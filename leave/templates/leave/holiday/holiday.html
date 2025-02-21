@@ -100,7 +100,7 @@
             {% if perms.leave.change_holiday %}
             <button
               class="oh-btn oh-btn--light-bkg w-100"
-              title="{% trans 'Edit' %}"
+              title="{% trans 'Modifier' %}"
               data-toggle="oh-modal-toggle"
               data-target="#objectUpdateModal"
               hx-get="{% url 'holiday-update' holiday.id %}?{{pd}}"

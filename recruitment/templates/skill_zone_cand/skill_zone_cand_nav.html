@@ -9,7 +9,7 @@
   <div class="oh-modal__dialog">
     <div class="oh-modal__dialog-header">
       <h2 class="oh-modal__dialog-title" id="candidateExportLavel">
-        {% trans "Export Candidates" %}
+        {% trans "Exporter les candidatures" %}
       </h2>
       <button class="oh-modal__close" aria-label="Close">
         <ion-icon name="close-outline"></ion-icon>
@@ -68,7 +68,7 @@ x-data="{searchShow: false}"
     ></ion-icon>
     <input
       type="text"
-      placeholder="{% trans 'Search' %}"
+      placeholder="{% trans 'Rechercher' %}"
       id="candidate-search"
       name='search'
       onkeyup = "$('.filterButton').click()"
@@ -151,7 +151,7 @@ x-data="{searchShow: false}"
             <li class="oh-dropdown__item">
               <a href="#" class="oh-dropdown__link " id="archiveCandidates"
 
-                >{% trans "Archive" %}</a
+                >{% trans "Archiver" %}</a
               >
             </li>
             {% endif %}

@@ -460,7 +460,7 @@
                                                 >
                                             {% elif document.status == "rejected" %}
                                                 <span class="badge text-danger p-2"
-                                                    >{% trans "Rejected" %}</span
+                                                    >{% trans "Refusé(e)" %}</span
                                                 >
                                             {% else %}
                                                 <span class="badge text-info p-2"
@@ -539,7 +539,7 @@
                                             <i
                                                 class="fas fa-close interview-status-icon"
                                             ></i>
-                                            {% trans "Expired Interview" %}
+                                            {% trans "Entretien expiré" %}
                                         </div>
                                     {% elif interview.interview_date|date:"Y-m-d" > now %}
                                         <div

@@ -90,7 +90,7 @@
                         {% if request.user|is_reportingmanager or perms.leave.change_availableleave %}
                             <a hx-get="{% url 'available-leave-update' available_leave.id %}?{{pd}}"
                                 hx-target='#objectUpdateModalTarget' data-toggle="oh-modal-toggle" data-target='#objectUpdateModal'
-                                class="oh-btn oh-btn--info w-50" title="{% trans 'Edit' %}">
+                                class="oh-btn oh-btn--info w-50" title="{% trans 'Modifier' %}">
                                 <ion-icon name="create-outline"></ion-icon>
                             </a>
                         {% endif %}
