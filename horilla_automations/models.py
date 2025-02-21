@@ -49,7 +49,7 @@ class MailAutomation(HorillaModel):
     also_sent_to = models.ManyToManyField(
         Employee,
         blank=True,
-        verbose_name=_trans("Also Send to"),
+        verbose_name=_trans("Transmettre aussi à"),
     )
     template_attachments = models.ManyToManyField(
         HorillaMailTemplate,

@@ -153,7 +153,7 @@
                             <!-- End of check in/out button in nav bar -->
                         {% endif %}
 
-                        {% if request.user|any_permission:'base' or perms.attendance.view_attendancevalidationcondition %}
+                        {% comment %} {% if request.user|any_permission:'base' or perms.attendance.view_attendancevalidationcondition %}
                             <!-- Start of settings button in nav bar -->
                                 <div class="oh-navbar__action-icons" title="Settings">
                                     <a href="/settings/general-settings" id="settingsMenu" class="oh-navbar__action-icons-link">
@@ -161,7 +161,7 @@
                                     </a>
                                 </div>
                             <!-- End of settings button in nav bar -->
-                        {% endif %}
+                        {% endif %} {% endcomment %}
 
                         <!-- Start of notifications button in nav bar -->
                         {% include 'notification/notification.html' %}

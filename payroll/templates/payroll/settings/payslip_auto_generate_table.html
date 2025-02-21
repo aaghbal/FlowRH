@@ -6,7 +6,7 @@
 				<div class="oh-sticky-table__th">{% trans "Payslip creation date" %}</div>
 				<div class="oh-sticky-table__th">{% trans "Company" %}</div>
                 {% if  perms.payroll.change_PayslipAutoGenerate %}
-                    <div class="oh-sticky-table__th">{% trans "Is active" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Est active" %}</div>
                 {% endif %}
 				{% if perms.payroll.change_PayslipAutoGenerate or perms.payroll.delete_PayslipAutoGenerate %}
 					<div class="oh-sticky-table__th">{% trans "Actions" %}</div>

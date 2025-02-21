@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="oh-accordion">
-    <div class="oh-accordion-header">{% trans "Meeting" %}</div>
+    <div class="oh-accordion-header">{% trans "Réunion" %}</div>
     <div class="oh-accordion-body">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
@@ -24,7 +24,7 @@
                     <label
                         class="oh-label"
                         for="{{filter_form.manager.id_for_label}}"
-                        >{% trans "Is active" %}
+                        >{% trans "Est active" %}
                     </label>
                     {{filter_form.is_active}}
                 </div>
@@ -119,7 +119,7 @@
                     <label
                         class="oh-label"
                         for="{{filter_form.date_gte.id_for_label}}"
-                        >{% trans "Date greater than or equal" %}
+                        >{% trans "Date supérieure ou égale à" %}
                     </label>
                     {{filter_form.date_greater}}
                 </div>
@@ -129,7 +129,7 @@
                     <label
                         class="oh-label"
                         for="{{filter_form.date_lte.id_for_label}}"
-                        >{% trans "Date less than or equal" %}
+                        >{% trans " Date inférieure ou égale à" %}
                     </label>
                     {{filter_form.date_less}}
                 </div>

@@ -168,7 +168,7 @@ function initializeSummernote(candId,searchWords,) {
       </li>
       {% endfor %}
 
-      {% if request.user|config_perms %}
+      {% comment %} {% if request.user|config_perms %} {% endcomment %}
       <li
   class="oh-sidebar__menu-item"
   x-data="{ isOpen: getOpenState('filActualiteNav') }"
@@ -317,7 +317,7 @@ function initializeSummernote(candId,searchWords,) {
           </ul>
         </div>
       </li>
-      {% endif %}
+      {% comment %} {% endif %} {% endcomment %}
     </ul>
   </div>
   

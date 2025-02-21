@@ -24,7 +24,7 @@
     {% endif %}
     <div class="form-group mt-2">
       <label for="employees">
-        <h6>{% trans "Also send to" %}</h6>
+        <h6>{% trans "Transmettre aussi à" %}</h6>
       </label>
       <select class="oh-select oh-select-2" {% if not employee %} required {% endif %} name="employees" id="employees" multiple>
         {% for employee in employees %}
@@ -41,7 +41,7 @@
     </div>
     <div class="form-group mt-2">
       <label for="template">
-        <h6>{% trans "Template" %}</h6>
+        <h6>{% trans "Modèle" %}</h6>
       </label>
       <select name="template" class="w-100 oh-select" id="template">
         <option value="">----</option>
@@ -52,14 +52,14 @@
     </div>
     <div class="form-group mt-2">
       <label for="body">
-        <h6>{% trans "Message Body" %}</h6>
+        <h6>{% trans "Corps du message" %}</h6>
       </label>
       <textarea hidden data-summernote name="body" required class="oh-input w-100" id="body" cols="30"
         rows="2"></textarea>
     </div>
     <div class="form-group mt-2">
       <label for="template_attachments">
-        <h6>{% trans "Template as Attachment" %}</h6>
+        <h6>{% trans "Modèle en pièce jointe" %}</h6>
       </label>
       <select name="template_attachments" class="w-100 oh-select" id="template_attachments" multiple>
         {% for template in templates %}
@@ -75,7 +75,7 @@
     </div>
     <div class="modal-footer d-flex flex-row-reverse mt-3">
       <input type="submit" class="oh-btn oh-btn--secondary submit-send" data-message-id="ack-message-{{employee.id}}"
-        name="submit" id="submit" onclick="sendMail()" value="{% trans 'Send Mail' %}">
+        name="submit" id="submit" onclick="sendMail()" value="{% trans 'Envoyer' %}">
     </div>
 </form>
 
