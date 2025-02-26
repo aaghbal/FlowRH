@@ -552,7 +552,7 @@
               </div>
             </div>
             <div class="oh-sticky-table__th">{% trans "Subject" %}</div>
-            <div class="oh-sticky-table__th">{% trans "Based on" %}</div>
+            <div class="oh-sticky-table__th">{% trans "Basé sur" %}</div>
             <div class="oh-sticky-table__th">{% trans "Create At" %}</div>
             <div class="oh-sticky-table__th">{% trans "Actions" %}</div>
 
@@ -580,7 +580,7 @@
                 {{feedback.feedback_subject}}
               </div>
               <div class="oh-sticky-table__td">
-                {% trans "Based on" %} :
+                {% trans "Basé sur" %} :
                     {% if feedback.based_on == "employee" %}
                       {{feedback.employee_id}}
                     {% elif feedback.based_on == "department" %}

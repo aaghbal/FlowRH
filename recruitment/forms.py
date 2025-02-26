@@ -734,7 +734,7 @@ class QuestionForm(ModelForm):
     QuestionForm
     """
 
-    verbose_name = "Survey Questions"
+    verbose_name = "Grille Questions"
 
     recruitment = forms.ModelMultipleChoiceField(
         queryset=Recruitment.objects.filter(is_active=True),
@@ -1171,7 +1171,7 @@ class ScheduleInterviewForm(ModelForm):
     ScheduleInterviewForm
     """
 
-    verbose_name = "Schedule Interview"
+    verbose_name = "Planifier un entretien"
 
     class Meta:
         model = InterviewSchedule

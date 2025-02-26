@@ -112,7 +112,7 @@
                             {% trans "Time" %}: {{ interview.interview_time }}
                         </div>
                         <div class="interview-interviewer">
-                            {% trans "Intervieweur" %}:
+                            {% trans "Interviewer" %}:
                             <div class="mt-1">
                                 {% for interviewer in interview.employee_id.all %}
                                 <span class="interviewer-chip">
@@ -142,7 +142,7 @@
                         {% elif interview.interview_date|date:"Y-m-d" > now %}
                         <div class="d-flex align-items-center mt-2 status-upcoming">
                             <ion-icon name="time-outline"></ion-icon>
-                            {% trans "Upcoming Interview" %}
+                            {% trans "Entretien planifié" %}
                         </div>
                         {% elif interview.interview_date|date:"Y-m-d" == now and not interview.completed %}
                         <div class="d-flex align-items-center mt-2 status-today">

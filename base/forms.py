@@ -730,7 +730,7 @@ class RotatingWorkTypeAssignForm(ModelForm):
         label=_trans("Employees"),
     )
     based_on = forms.ChoiceField(
-        choices=BASED_ON, initial="daily", label=_trans("Based on")
+        choices=BASED_ON, initial="daily", label=_trans("Basé sur")
     )
     rotate_after_day = forms.IntegerField(initial=5, label=_trans("Fréquence de rotation : journalière"))
     start_date = forms.DateField(
@@ -901,7 +901,7 @@ class RotatingWorkTypeAssignUpdateForm(forms.ModelForm):
     """
 
     based_on = forms.ChoiceField(
-        choices=BASED_ON, initial="daily", label=_trans("Based on")
+        choices=BASED_ON, initial="daily", label=_trans("Basé sur")
     )
 
     class Meta:
@@ -926,7 +926,7 @@ class RotatingWorkTypeAssignUpdateForm(forms.ModelForm):
             "rotate_after_day": _trans("Fréquence de rotation : journalière"),
             "rotate_every_weekend": _trans("Rotate every weekend"),
             "rotate_every": _trans("Rotate every"),
-            "based_on": _trans("Based on"),
+            "based_on": _trans("Basé sur"),
             "is_active": _trans("Is Active"),
         }
 
@@ -1372,7 +1372,7 @@ class RotatingShiftAssignForm(forms.ModelForm):
         label=_trans("Employees"),
     )
     based_on = forms.ChoiceField(
-        choices=BASED_ON, initial="daily", label=_trans("Based on")
+        choices=BASED_ON, initial="daily", label=_trans("Basé sur")
     )
     rotate_after_day = forms.IntegerField(initial=5, label=_trans("Fréquence de rotation : journalière"))
     start_date = forms.DateField(
@@ -1542,7 +1542,7 @@ class RotatingShiftAssignUpdateForm(ModelForm):
     """
 
     based_on = forms.ChoiceField(
-        choices=BASED_ON, initial="daily", label=_trans("Based on")
+        choices=BASED_ON, initial="daily", label=_trans("Basé sur")
     )
 
     class Meta:
@@ -1567,7 +1567,7 @@ class RotatingShiftAssignUpdateForm(ModelForm):
             "rotate_after_day": _trans("Fréquence de rotation : journalière"),
             "rotate_every_weekend": _trans("Rotate every weekend"),
             "rotate_every": _trans("Rotate every"),
-            "based_on": _trans("Based on"),
+            "based_on": _trans("Basé sur"),
             "is_active": _trans("Is Active"),
         }
 

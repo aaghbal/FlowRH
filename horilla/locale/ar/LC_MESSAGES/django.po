@@ -7427,7 +7427,7 @@ msgid "P"
 msgstr "بي"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "En activité prévue"
+msgid "En activité"
 msgstr "العمل المتوقع"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -13688,8 +13688,8 @@ msgstr "اسم العائلة"
 
 #: employee/models.py:230
 #, fuzzy
-#| msgid "En activité prévue"
-msgid "En activité prévue"
+#| msgid "En activité"
+msgid "En activité"
 msgstr "العمل المتوقع"
 
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -14809,12 +14809,12 @@ msgstr "المعلومات المصرفية"
 
 #: employee/templates/policies/form.html:13
 #, fuzzy
-#| msgid "Policies"
+#| msgid "Règles internes"
 msgid "Policy"
 msgstr "سياسات"
 
 #: employee/templates/policies/nav.html:4
-msgid "Policies"
+msgid "Règles internes"
 msgstr "سياسات"
 
 #: employee/templates/policies/records.html:27
@@ -20695,7 +20695,7 @@ msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:60
 #: onboarding/templates/onboarding/group_by.html:51
-msgid "Offer letter"
+msgid "lettre d'embauche"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:122
@@ -20728,7 +20728,7 @@ msgid "Send Portal / Start onboarding"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates_view.html:158
-msgid "Offer letter status :"
+msgid "lettre d'embauche status :"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates_view.html:196
@@ -23604,7 +23604,7 @@ msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "compte-rendu de réunion"
+msgid "Compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -24911,7 +24911,7 @@ msgid "Offer Acceptance Rate (OAR)"
 msgstr "معدل قبول العرض"
 
 #: recruitment/templates/dashboard/dashboard.html:120
-msgid "Statut des Compétences"
+msgid "Zone de compétences"
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:146
@@ -24919,7 +24919,7 @@ msgid "No skill zone available."
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:183
-msgid "Statut des Lettres d'Offre aux Candidats"
+msgid "Suivi des offres candidats"
 msgstr ""
 
 #: recruitment/templates/dashboard/dashboard.html:199

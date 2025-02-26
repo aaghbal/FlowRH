@@ -52,11 +52,11 @@ SUBMENUS = [
         "redirect": reverse("disciplinary-actions"),
     },
     {
-        "menu": trans("Policies"),
+        "menu": trans("Règles internes"),
         "redirect": reverse("view-policies"),
     },
     {
-        "menu": trans("organigramme"),
+        "menu": trans("Organigramme"),
         "redirect": reverse("organisation-chart"),
     },
 ]

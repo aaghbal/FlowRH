@@ -90,7 +90,7 @@
                     <span class="oh-permission-table__user">
                       {% with stage_name=stage|stringformat:"s" %}
                           {% if stage_name == "Applied" %}
-                              Candidature reçue
+                              Candidatures
                           {% elif stage_name == "Initial" %}
                               Première évaluation
                           {% elif stage_name == "Interview" %}
@@ -146,7 +146,7 @@
                 <div data-cell-index="2" class="oh-sticky-table__td">
                   {% with stage_type=stage.get_stage_type_display|stringformat:"s" %}
                      {% if stage_type == "Applied" %}
-                  Candidature reçue
+                  Candidatures
                   {% elif stage_type == "Initial" %}
                       Première évaluation
                   {% elif stage_type == "Interview" %}

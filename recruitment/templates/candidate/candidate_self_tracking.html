@@ -508,7 +508,7 @@
                                     </div>
                                     <div class="interview-time">{% trans "Time" %}: {{ interview.interview_time }}</div>
                                     <div class="interview-interviewer">
-                                        {% trans "Intervieweur" %}:
+                                        {% trans "Interviewer" %}:
                                         <div class="mt-1">
                                             {% for interviewer in  interview.employee_id.all %}
                                                 <span class="interviewer-chip">
@@ -548,7 +548,7 @@
                                             <i
                                                 class="fas fa-clock interview-status-icon"
                                             ></i>
-                                            {% trans "Upcoming Interview" %}
+                                            {% trans "Entretien planifié" %}
                                         </div>
                                     {% elif interview.interview_date|date:"Y-m-d" == now and not interview.completed %}
                                         <div

@@ -373,7 +373,7 @@ class RotatingWorkTypeAssign(HorillaModel):
         choices=BASED_ON,
         null=False,
         blank=False,
-        verbose_name=_("Based On"),
+        verbose_name=_("Basé sur"),
     )
     rotate_after_day = models.IntegerField(
         default=7, verbose_name=_("Fréquence de rotation : journalière")
@@ -745,7 +745,7 @@ class RotatingShiftAssign(HorillaModel):
         choices=BASED_ON,
         null=False,
         blank=False,
-        verbose_name=_("Based On"),
+        verbose_name=_("Basé sur"),
     )
     rotate_after_day = models.IntegerField(
         null=True, blank=True, default=7, verbose_name=_("Fréquence de rotation : journalière")

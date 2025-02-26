@@ -758,7 +758,7 @@ class Meetings(HorillaModel):
     show_response = models.BooleanField(default=False, editable=False)
 
     class Meta:
-        verbose_name = _("gestion des réunions")
+        verbose_name = _("Gestion des réunions")
 
     def __str__(self):
         return self.title

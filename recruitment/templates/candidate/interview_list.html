@@ -37,9 +37,9 @@
                         <div class="oh-sticky-table__thead">
                             <div class="oh-sticky-table__tr">
                                 <div class="oh-sticky-table__th">{% trans "Candidate" %}</div>
-                                <div data-cell-index="1" data-cell-title='{% trans "Intervieweur" %}'
+                                <div data-cell-index="1" data-cell-title='{% trans "Interviewer" %}'
                                     class="oh-sticky-table__th"
-                                >{% trans "Intervieweur" %}</div>
+                                >{% trans "Interviewer" %}</div>
                                 <div data-cell-index="2" data-cell-title="{% trans "Date d'entretien" %}"
                                     class="oh-sticky-table__th {% if request.sort_option.order == '-interview_date' %}arrow-up {% elif request.sort_option.order == 'interview_date' %}arrow-down {% else %}arrow-up-down {% endif %}"
                                     hx-get="{% url 'interview-filter-view' %}?{{pd}}&sortby=interview_date" hx-target="#section"
@@ -130,7 +130,7 @@
                                         {% elif interview.interview_date|date:"Y-m-d" > now|date:"Y-m-d" %}
                                             <div class="d-flex" style="color:orange;">
                                                 <i id="fabIcon" title="{{interview.interview_date|timeuntil}}" style="font-size:18px;" class="material-icons ms-3 mt-2">schedule</i>
-                                                <span class="oh-activity-sidebar__q mt-2">{% trans "Upcoming Interview" %}</span>
+                                                <span class="oh-activity-sidebar__q mt-2">{% trans "Entretien planifié" %}</span>
                                             </div>
                                         {% elif interview.interview_date|date:"Y-m-d" == now|date:"Y-m-d" and not interview.completed %}
                                             <div class="d-flex" style="color:blue;">

@@ -199,7 +199,7 @@ msgstr "Vous n'avez pas accès"
 #: pms/templates/okr/objective_list_view.html:84 recruitment/models.py:367
 #: templates/settings.html:249 templates/work_info_complete.html:9
 msgid "Employee"
-msgstr "Employé"
+msgstr "Employés"
 
 #: accessibility/filters.py:47 payroll/models/models.py:760
 #: payroll/models/models.py:1100
@@ -1120,7 +1120,7 @@ msgstr "Actifs"
 #: asset/sidebar.py:13 attendance/sidebar.py:19 recruitment/sidebar.py:23
 #: templates/sidebar.html:123
 msgid "Dashboard"
-msgstr "Tableaubord"
+msgstr "Tableau de bord"
 
 #: asset/sidebar.py:18
 #, fuzzy
@@ -1587,7 +1587,7 @@ msgstr "Faites glisser et déposez les fichiers ici"
 #, fuzzy
 #| msgid "Question Template"
 msgid "Download Template"
-msgstr "Modèle de questions"
+msgstr "Questionnaire d'évaluation"
 
 #: asset/templates/asset/asset_import.html:29
 #: asset/templates/category/asset_empty.html:65
@@ -4592,7 +4592,7 @@ msgstr "Retour"
 #, fuzzy
 #| msgid "Requested Date"
 msgid "Requested to return"
-msgstr "Demandée Date"
+msgstr "Date demande"
 
 #: asset/templates/request_allocation/asset_request_allocation_list.html:78
 #: asset/templates/request_allocation/individual_own.html:101
@@ -4889,7 +4889,7 @@ msgstr "Approuver"
 #: employee/templates/tabs/shift-tab.html:176
 #: employee/templates/tabs/shift-tab.html:860
 msgid "Requested Date"
-msgstr "Demandée Date"
+msgstr "Date demande"
 
 #: asset/templates/request_allocation/group_by.html:235
 #: asset/templates/request_allocation/group_by.html:433
@@ -7696,7 +7696,7 @@ msgid "P"
 msgstr "P"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "En activité prévue"
+msgid "En activité"
 msgstr ""
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -7894,7 +7894,7 @@ msgstr "Actuelle Valeur"
 
 #: attendance/templates/requests/attendance/individual_view.html:37
 msgid "Requested Value"
-msgstr "Demandée Date"
+msgstr "Date demande"
 
 #: attendance/templates/requests/attendance/nav.html:19
 #: attendance/templates/requests/attendance/nav.html:35
@@ -9030,13 +9030,13 @@ msgstr "Pivoter chaque"
 #: base/templates/base/rotating_work_type/htmx/rotating_work_type_assign_update_form.html:4
 #: base/templates/base/rotating_work_type/rotating_work_type_assign_nav.html:5
 msgid "Rotating Work Type Assign"
-msgstr "attribution des types de travail rotatifs"
+msgstr "Attribution des types de travail rotatifs"
 
 #: base/models.py:414
 #, fuzzy
 #| msgid "Rotating Work Type Assign"
 msgid "Rotating Work Type Assigns"
-msgstr "attribution des types de travail rotatifs"
+msgstr "Attribution des types de travail rotatifs"
 
 #: base/models.py:424 base/models.py:798
 msgid "Only one active record allowed per employee"
@@ -9191,13 +9191,13 @@ msgstr "suivante travail par roulement"
 #: base/templates/base/rotating_shift/htmx/rotating_shift_assign_form.html:4
 #: base/templates/base/rotating_shift/rotating_shift_assign_nav.html:6
 msgid "Rotating Shift Assign"
-msgstr "attribution des horaires rotatifs"
+msgstr "Attribution des horaires rotatifs"
 
 #: base/models.py:788
 #, fuzzy
 #| msgid "Rotating Shift Assign"
 msgid "Rotating Shift Assigns"
-msgstr "attribution des horaires rotatifs"
+msgstr "Attribution des horaires rotatifs"
 
 #: base/models.py:824
 #, fuzzy
@@ -9276,7 +9276,7 @@ msgstr "Ce champ est obligatoire."
 #, fuzzy
 #| msgid "Requested Shift"
 msgid "Requesting Shift"
-msgstr "Demandé Quart"
+msgstr "Demande de Shift"
 
 #: base/models.py:988
 #: base/templates/shift_request/shift_request_export.html:115
@@ -10735,7 +10735,7 @@ msgstr ""
 
 #: base/templates/base/rotating_shift/htmx/rotating_shift_assign_update_form.html:4
 msgid "Rotating Shift Assign Update"
-msgstr "attribution des horaires rotatifs"
+msgstr "Attribution des horaires rotatifs"
 
 #: base/templates/base/rotating_shift/htmx/rotating_shift_form.html:5
 #, fuzzy
@@ -10846,7 +10846,7 @@ msgstr "Il n'y a aucun actif à exporter."
 #, fuzzy
 #| msgid "Requested Shift"
 msgid "Selected Shifts"
-msgstr "Demandé Quart"
+msgstr "Demande de Shift"
 
 #: base/templates/base/rotating_shift/rotating_shift_assign_empty.html:12
 #, fuzzy
@@ -10860,7 +10860,7 @@ msgstr "Il y a des candidats à ce stade..."
 #, fuzzy
 #| msgid "Rotating Shift Assign"
 msgid "Export Rotating Shift Assigns"
-msgstr "attribution des horaires rotatifs"
+msgstr "Attribution des horaires rotatifs"
 
 #: base/templates/base/rotating_shift/rotating_shift_assign_view.html:154
 #: base/translator.py:184 employee/templates/tabs/shift-tab.html:558
@@ -10975,7 +10975,7 @@ msgstr "Il y a des candidats à ce stade..."
 #, fuzzy
 #| msgid "Rotating Work Type Assign"
 msgid "Export Rotating Work Type Assigns"
-msgstr "attribution des types de travail rotatifs"
+msgstr "Attribution des types de travail rotatifs"
 
 #: base/templates/base/rotating_work_type/rotating_work_type_assign_view.html:160
 #: employee/templates/tabs/shift-tab.html:789
@@ -11373,7 +11373,7 @@ msgstr "Plus de vacances prévues ce mois-ci."
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Mail Templates"
-msgstr "Modèles de questionnaire"
+msgstr "Grilles d'entretien"
 
 #: base/templates/mail/empty_mail_template.html:32
 #: biometric/templates/biometric/add_biometric_user.html:21
@@ -11417,7 +11417,7 @@ msgstr "Il y a des candidats à ce stade..."
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Add Template"
-msgstr "Modèles de questionnaire"
+msgstr "Grilles d'entretien"
 
 #: base/templates/mail/empty_mail_template.html:75
 #: base/templates/mail/view_templates.html:95
@@ -11451,7 +11451,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "View Template"
-msgstr "Modèles de questionnaire"
+msgstr "Grilles d'entretien"
 
 #: base/templates/multi_approval_condition/add_more_approval_manager.html:25
 #: base/templates/multi_approval_condition/add_more_approval_manager.html:52
@@ -11625,13 +11625,13 @@ msgstr "Voulez-vous approuver cette demande?"
 #: base/templates/shift_request/shift_request_nav.html:173
 #: employee/templates/tabs/shift-tab.html:854
 msgid "Requested Shift"
-msgstr "Demandé Quart"
+msgstr "Demande de Shift"
 
 #: base/templates/request_and_approve/shift_request.html:10
 #, fuzzy
 #| msgid "Previous/Current Shift"
 msgid "Previous/ Current Shift"
-msgstr "Précédent/Actuel Quart"
+msgstr "Précédent/Actuel Shift"
 
 #: base/templates/request_and_approve/shift_request.html:46
 #, fuzzy
@@ -11714,7 +11714,7 @@ msgstr "Non commencé"
 #, fuzzy
 #| msgid "Requested Shift"
 msgid "Requested shift"
-msgstr "Demandé Quart"
+msgstr "Demande de Shift"
 
 #: base/templates/shift_request/htmx/allocation_details.html:98
 #: base/templates/shift_request/htmx/shift_request_detail.html:68
@@ -11731,7 +11731,7 @@ msgstr "Précédent Quart"
 #, fuzzy
 #| msgid "Requested Date"
 msgid "Requested date"
-msgstr "Demandée Date"
+msgstr "Date demande"
 
 #: base/templates/shift_request/htmx/allocation_details.html:108
 #: base/templates/shift_request/htmx/shift_request_detail.html:78
@@ -11778,7 +11778,7 @@ msgstr "Demandé Employé"
 #: base/templates/shift_request/htmx/requests.html:301
 #: employee/templates/tabs/shift-tab.html:857
 msgid "Previous/Current Shift"
-msgstr "Précédent/Actuel Quart"
+msgstr "Précédent/Actuel Shift"
 
 #: base/templates/shift_request/htmx/empty_request.html:12
 #, fuzzy
@@ -11882,7 +11882,7 @@ msgstr "Date demandée du"
 #: base/templates/work_type_request/work_type_request_export.html:133
 #: base/templates/work_type_request/work_type_request_nav.html:154
 msgid "Requested Date Till"
-msgstr "Demandée Date Jusqu'à"
+msgstr "Date demande Jusqu'à"
 
 #: base/templates/shift_request/shift_request_nav.html:301
 #: base/templates/work_type_request/work_type_request_nav.html:233
@@ -12025,7 +12025,7 @@ msgstr "-SUREMBARQUEMENT"
 
 #: base/translator.py:19
 msgid "EMPLOYEE"
-msgstr "EMPLOYÉE"
+msgstr "EMPLOYÉS"
 
 #: base/translator.py:20
 msgid "PAYROLL"
@@ -12747,7 +12747,7 @@ msgstr "Paiement"
 #, fuzzy
 #| msgid "Dashboard"
 msgid "dashboard"
-msgstr "Tableaubord"
+msgstr "Tableau de bord"
 
 #: base/translator.py:195
 msgid "pipeline"
@@ -12899,7 +12899,7 @@ msgstr "Ma Fréquentation"
 #, fuzzy
 #| msgid "Dashboard"
 msgid "leave-dashboard"
-msgstr "Tableaubord"
+msgstr "Tableau de bord"
 
 #: base/translator.py:222
 msgid "leave-employee-dashboard"
@@ -12949,7 +12949,7 @@ msgstr "Congé D'entreprise"
 #, fuzzy
 #| msgid "Dashboard View"
 msgid "dashboard-view"
-msgstr "Tableaubord Voir"
+msgstr "Tableau de bord Voir"
 
 #: base/translator.py:231
 #, fuzzy
@@ -12973,7 +12973,7 @@ msgstr "Période"
 #, fuzzy
 #| msgid "Question Template"
 msgid "question-template-view"
-msgstr "Modèle de questions"
+msgstr "Questionnaire d'évaluation"
 
 #: base/translator.py:235
 #, fuzzy
@@ -13065,13 +13065,13 @@ msgstr "Paie"
 #, fuzzy
 #| msgid "Employee"
 msgid "employee"
-msgstr "Employé"
+msgstr "Employés"
 
 #: base/translator.py:254
 #, fuzzy
 #| msgid "Onboarding"
 msgid "onboarding"
-msgstr "Intégration"
+msgstr "Onboarding"
 
 #: base/translator.py:256
 #, fuzzy
@@ -13333,7 +13333,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Onboarding"
 msgid "offboarding"
-msgstr "Intégration"
+msgstr "Onboarding"
 
 #: base/translator.py:302
 #, fuzzy
@@ -13818,7 +13818,7 @@ msgstr "tournant shift mis à jour."
 
 #: base/views.py:2678
 msgid "Rotating shift updated."
-msgstr "attribution des horaires rotatifs"
+msgstr "Attribution des horaires rotatifs"
 
 #: base/views.py:2767
 msgid "Rotating shift assigned."
@@ -14138,7 +14138,7 @@ msgstr "Total des congés"
 #: recruitment/templates/dashboard/dashboard.html:74
 #: templates/dashboard_tile_container.html:75
 msgid "Candidats Recrutés"
-msgstr "Candidats embauchés"
+msgstr "Candidats"
 
 #: base/views.py:6464
 #, fuzzy
@@ -14728,7 +14728,7 @@ msgstr "Congé compter"
 #, fuzzy
 #| msgid "Question Template"
 msgid "Biometric Template"
-msgstr "Modèle de questions"
+msgstr "Questionnaire d'évaluation"
 
 #: biometric/templates/biometric/list_employees_cosec_biometric.html:32
 #, fuzzy
@@ -14971,7 +14971,7 @@ msgstr "nom"
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
 #: templates/dashboard.html:231
 msgid "On Leave"
-msgstr "en congé"
+msgstr "En congé"
 
 #: employee/models.py:235
 #, fuzzy
@@ -15675,7 +15675,7 @@ msgstr ""
 #: recruitment/templates/candidate/interview_nav.html:48
 #: recruitment/templates/dashboard/dashboard.html:285
 msgid "Interview"
-msgstr "Entretien"
+msgstr "Entretiens"
 
 #: employee/templates/employee/profile/profile_view.html:361
 #, fuzzy
@@ -15725,7 +15725,7 @@ msgstr "Sujet"
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Template"
-msgstr "Modèles de questionnaire"
+msgstr "Grilles d'entretien"
 
 #: employee/templates/employee/send_mail.html:55
 #: recruitment/templates/pipeline/pipeline_components/send_mail.html:71
@@ -15858,7 +15858,7 @@ msgstr "Rejoindre jusqu'à"
 #, fuzzy
 #| msgid "Onboarding"
 msgid "Is From Onboarding"
-msgstr "Intégration"
+msgstr "Onboarding"
 
 #: employee/templates/employee_nav.html:44
 msgid "Import Employee"
@@ -16192,7 +16192,7 @@ msgstr "Affichage de la réponse"
 #: employee/templates/tabs/personal_tab.html:7
 #: recruitment/templates/candidate/individual.html:302
 msgid "Personal Information"
-msgstr "Information personnelles"
+msgstr "Informations"
 
 #: employee/templates/personal-tab.html:115
 #: employee/templates/tabs/personal_tab.html:104 onboarding/forms.py:420
@@ -16215,7 +16215,7 @@ msgid "Policy"
 msgstr ""
 
 #: employee/templates/policies/nav.html:4
-msgid "Policies"
+msgid "Règles internes"
 msgstr ""
 
 #: employee/templates/policies/records.html:27
@@ -16926,7 +16926,7 @@ msgstr "Vous ne pouvez pas supprimer ce candidat"
 #, fuzzy
 #| msgid "Requested Shift"
 msgid "Reallocate Shift."
-msgstr "Demandé Quart"
+msgstr "Demande de Shift"
 
 #: employee/templates/tabs/shift-tab.html:52
 #, fuzzy
@@ -17893,7 +17893,7 @@ msgstr "Dés-Archiver"
 #, fuzzy
 #| msgid "Requested Shift"
 msgid "Selected Tickets"
-msgstr "Demandé Quart"
+msgstr "Demande de Shift"
 
 #: helpdesk/templates/helpdesk/ticket/ticket_view.html:63
 msgid "Resolved"
@@ -18793,7 +18793,7 @@ msgstr "Fréquentation Date"
 #, fuzzy
 #| msgid "Personal Information"
 msgid "Reason for Rejection"
-msgstr "Information personnelles"
+msgstr "Informations"
 
 #: leave/templates/leave/dashboard.html:41
 #, fuzzy
@@ -18890,7 +18890,7 @@ msgstr "Toutes Congé Demandes"
 #, fuzzy
 #| msgid "Dashboard"
 msgid "View Admin Dashboard"
-msgstr "Tableaubord"
+msgstr "Tableau de bord"
 
 #: leave/templates/leave/holiday/holiday.html:115
 #: leave/templates/leave/leave_assign/assign_view.html:237
@@ -19258,7 +19258,7 @@ msgstr "Objectif Description"
 #, fuzzy
 #| msgid "Personal Information"
 msgid "Reason for Cancellation"
-msgstr "Information personnelles"
+msgstr "Informations"
 
 #: leave/templates/leave/leave_request/penalty/form.html:73
 msgid ""
@@ -21138,7 +21138,7 @@ msgstr ""
 #, fuzzy
 #| msgid "All Objective"
 msgid "A JSON object"
-msgstr "Tous Objectif"
+msgstr "Objectifs du groupe"
 
 #: myenv/lib/python3.12/site-packages/django/db/models/fields/json.py:28
 #, fuzzy
@@ -22103,7 +22103,7 @@ msgstr "Bloqué"
 #, fuzzy
 #| msgid "Onboarding"
 msgid "Offboarding"
-msgstr "Intégration"
+msgstr "Onboarding"
 
 #: offboarding/sidebar.py:21
 #, fuzzy
@@ -22121,7 +22121,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Stage"
 msgid "stage"
-msgstr "Étape"
+msgstr "Parcours de recrutement"
 
 #: offboarding/templates/offboarding/pipeline/filter.html:19
 msgid "Notice Period Starts"
@@ -22181,7 +22181,7 @@ msgstr "Responsables"
 #: recruitment/templates/stage/stage_form.html:21
 #: recruitment/templates/stage/stage_update_form.html:28
 msgid "Stage"
-msgstr "Étape"
+msgstr "Parcours de recrutement"
 
 #: offboarding/templates/offboarding/pipeline/individual_view.html:61
 #: onboarding/templates/onboarding/single_view.html:53
@@ -22697,7 +22697,7 @@ msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:60
 #: onboarding/templates/onboarding/group_by.html:51
-msgid "Offer letter"
+msgid "lettre d'embauche"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:122
@@ -22738,7 +22738,7 @@ msgid "Send Portal / Start onboarding"
 msgstr "Candidats en Intégration"
 
 #: onboarding/templates/onboarding/candidates_view.html:158
-msgid "Offer letter status :"
+msgid "lettre d'embauche status :"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates_view.html:196
@@ -22785,7 +22785,7 @@ msgstr "Envoyer un lien"
 #: onboarding/templates/onboarding/onboarding_view_nav.html:4
 #: recruitment/templates/candidate/individual.html:266
 msgid "Onboarding"
-msgstr "Intégration"
+msgstr "Onboarding"
 
 #: onboarding/templates/onboarding/dashboard.html:59
 msgid "Total Candidates"
@@ -22815,7 +22815,7 @@ msgstr "Candidats en Intégration"
 #, fuzzy
 #| msgid "Onboarding"
 msgid "My Onboarding Tasks"
-msgstr "Intégration"
+msgstr "Onboarding"
 
 #: onboarding/templates/onboarding/dashboard/task_report.html:13
 #: onboarding/templates/onboarding/onboarding_table.html:182
@@ -23057,7 +23057,7 @@ msgstr "Portail"
 #: onboarding/templates/onboarding/tabs.html:11 recruitment/sidebar.py:57
 #: recruitment/templates/pipeline/pipeline_tabs.html:14
 msgid "Stages"
-msgstr "Étapes"
+msgstr "Parcours de recrutement"
 
 #: onboarding/templates/onboarding/task_form.html:20
 #: onboarding/templates/onboarding/task_update.html:19
@@ -24249,7 +24249,7 @@ msgstr "Date de début de contrat"
 #, fuzzy
 #| msgid "Total Strength"
 msgid "Total Installments"
-msgstr "effectif total"
+msgstr "Effectif total"
 
 #: payroll/templates/payroll/loan/view_loan.html:26
 #, fuzzy
@@ -25292,7 +25292,7 @@ msgstr ""
 #: pms/templates/meetings/meetings_nav.html:4
 #, fuzzy
 #| msgid "Settings"
-msgid "gestion des réunions"
+msgid "Gestion des réunions"
 msgstr "Paramètres"
 
 #: pms/models.py:846 pms/templates/feedback/answer/feedback_answer.html:137
@@ -25579,7 +25579,7 @@ msgstr "Collègue"
 #: pms/templates/meetings/meeting_single_view.html:53
 #: pms/templates/meetings/meetings_filter.html:45
 msgid "Question Template"
-msgstr "Modèle de questions"
+msgstr "Questionnaire d'évaluation"
 
 #: pms/templates/feedback/feedback_creation.html:139
 #: pms/templates/feedback/feedback_update.html:106
@@ -25900,7 +25900,7 @@ msgstr "Au fil du temps inférieur ou égal"
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "compte-rendu de réunion"
+msgid "Compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -26060,7 +26060,7 @@ msgstr "Objectifs personnels"
 #: pms/templates/okr/group_by.html:64 pms/templates/okr/objective_list.html:66
 #: pms/templates/okr/okr_list.html:76
 msgid "All Objective"
-msgstr "Tous Objectif"
+msgstr "Objectifs du groupe"
 
 #: pms/templates/okr/group_by.html:175 pms/templates/okr/group_by.html:497
 #: pms/templates/okr/objective_list.html:155
@@ -26969,7 +26969,7 @@ msgstr "Recrutement Pipeline "
 
 #: recruitment/sidebar.py:32
 msgid "Recruitment Survey"
-msgstr "Enquête de recrutement"
+msgstr "Grilles de recrutement"
 
 #: recruitment/sidebar.py:52
 #: recruitment/templates/recruitment/recruitment_component.html:69
@@ -27052,7 +27052,7 @@ msgstr "Rejeté"
 #, fuzzy
 #| msgid "Candidats Recrutés"
 msgid "Edit Rejected Candidate"
-msgstr "Candidats embauchés"
+msgstr "Candidats"
 
 #: recruitment/templates/candidate/candidate_card.html:167
 #, fuzzy
@@ -27138,7 +27138,7 @@ msgstr "Candidats en Intégration"
 #, fuzzy
 #| msgid "Candidates Per Stage"
 msgid "Candidate is Converted "
-msgstr "Candidats par étape"
+msgstr "Suivi des campagnes de recrutement"
 
 #: recruitment/templates/candidate/candidate_list.html:211
 #: recruitment/templates/candidate/group_by.html:172
@@ -27301,7 +27301,7 @@ msgstr "Candidat"
 #, fuzzy
 #| msgid "Candidats Recrutés"
 msgid "Previous Candidate"
-msgstr "Candidats embauchés"
+msgstr "Candidats"
 
 #: recruitment/templates/candidate/individual.html:114
 #, fuzzy
@@ -27403,7 +27403,7 @@ msgstr "Taux d'Acceptation des Offres (TAO)"
 #: recruitment/templates/dashboard/dashboard.html:120
 #, fuzzy
 #| msgid "Filing Status"
-msgid "Statut des Compétences"
+msgid "Zone de compétences"
 msgstr "Statut de dépôt"
 
 #: recruitment/templates/dashboard/dashboard.html:146
@@ -27415,8 +27415,8 @@ msgstr "Aucun enregistrement n'est disponible."
 #: recruitment/templates/dashboard/dashboard.html:183
 #, fuzzy
 #| msgid "Candidates Per Stage"
-msgid "Statut des Lettres d'Offre aux Candidats"
-msgstr "Candidats par étape"
+msgid "Suivi des offres candidats"
+msgstr "Suivi des campagnes de recrutement"
 
 #: recruitment/templates/dashboard/dashboard.html:199
 #, fuzzy
@@ -27448,7 +27448,7 @@ msgstr "Aucune étape de recrutement disponible actuellement."
 
 #: recruitment/templates/dashboard/dashboard.html:349
 msgid "Candidates Per Stage"
-msgstr "Candidats par étape"
+msgstr "Suivi des campagnes de recrutement"
 
 #: recruitment/templates/dashboard/dashboard.html:359
 #: recruitment/templates/stage/stage_empty.html:42
@@ -27567,7 +27567,7 @@ msgstr "Modifier Recrutement"
 #: recruitment/templates/survey/survey_empty_view.html:69
 #: recruitment/templates/survey/view_question_templates.html:65
 msgid "Survey Templates"
-msgstr "Modèles de questionnaire"
+msgstr "Grilles d'entretien"
 
 #: recruitment/templates/pipeline/form/recruitment_update.html:75
 #: recruitment/templates/recruitment/recruitment_form.html:155
@@ -27620,7 +27620,7 @@ msgstr "Candidat ajouté."
 #, fuzzy
 #| msgid "Candidats Recrutés"
 msgid "Create Candidate"
-msgstr "Candidats embauchés"
+msgstr "Candidats"
 
 #: recruitment/templates/pipeline/nav.html:102
 #: recruitment/templates/pipeline/pipeline_empty.html:11
@@ -28004,7 +28004,7 @@ msgstr "Créer un modèle d'enquête"
 #, fuzzy
 #| msgid "Survey Templates"
 msgid "Templates"
-msgstr "Modèles de questionnaire"
+msgstr "Grilles d'entretien"
 
 #: recruitment/templates/survey/view_question_templates.html:105
 #, fuzzy
@@ -28412,15 +28412,15 @@ msgstr ""
 
 #: templates/dashboard.html:146
 msgid "New Joining Today"
-msgstr "nouveaux employés aujourd'hui"
+msgstr "Onboarding Aujourdh'ui"
 
 #: templates/dashboard.html:163
 msgid "New Joining This Week"
-msgstr "nouveaux employés cette semaine"
+msgstr "Onboarding cette semaine"
 
 #: templates/dashboard.html:180
 msgid "Total Strength"
-msgstr "effectif total"
+msgstr "Effectif total"
 
 #: templates/dashboard.html:202
 msgid "Announcements"
@@ -28916,7 +28916,7 @@ msgstr ""
 #, fuzzy
 #~| msgid "Personal Information"
 #~ msgid "Reason for rejection"
-#~ msgstr "Information personnelles"
+#~ msgstr "Informations"
 
 #, fuzzy
 #~| msgid "Amount"
@@ -29224,4 +29224,4 @@ msgstr ""
 #~ msgstr "Grouper Code"
 
 #~ msgid "Date requested until"
-#~ msgstr "Demandée Date Jusqu'au"
+#~ msgstr "Date demande Jusqu'au"

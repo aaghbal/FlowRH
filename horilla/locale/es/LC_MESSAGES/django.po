@@ -7451,7 +7451,7 @@ msgid "P"
 msgstr "P"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:46
-msgid "En activité prévue"
+msgid "En activité"
 msgstr "Trabajo esperado"
 
 #: attendance/templates/attendance/work_record/work_record_list.html:54
@@ -13917,8 +13917,8 @@ msgstr "Último Nombre"
 
 #: employee/models.py:230
 #, fuzzy
-#| msgid "En activité prévue"
-msgid "En activité prévue"
+#| msgid "En activité"
+msgid "En activité"
 msgstr "Trabajo esperado"
 
 #: employee/models.py:233 leave/templates/leave/dashboard.html:101
@@ -15156,12 +15156,12 @@ msgstr "Banco Información"
 
 #: employee/templates/policies/form.html:13
 #, fuzzy
-#| msgid "Policies"
+#| msgid "Règles internes"
 msgid "Policy"
 msgstr "Políticas"
 
 #: employee/templates/policies/nav.html:4
-msgid "Policies"
+msgid "Règles internes"
 msgstr "Políticas"
 
 #: employee/templates/policies/records.html:27
@@ -21591,7 +21591,7 @@ msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:60
 #: onboarding/templates/onboarding/group_by.html:51
-msgid "Offer letter"
+msgid "lettre d'embauche"
 msgstr ""
 
 #: onboarding/templates/onboarding/candidates.html:122
@@ -21630,7 +21630,7 @@ msgstr "Enviar portal / Iniciar incorporación"
 #: onboarding/templates/onboarding/candidates_view.html:158
 #, fuzzy
 #| msgid "Candidates Per Stage"
-msgid "Offer letter status :"
+msgid "lettre d'embauche status :"
 msgstr "Candidatas por etapa"
 
 #: onboarding/templates/onboarding/candidates_view.html:196
@@ -24781,7 +24781,7 @@ msgstr "Horas extras menores o iguales"
 
 #: pms/templates/meetings/meetings_list.html:34
 #: pms/templates/meetings/meetings_list.html:35
-msgid "compte-rendu de réunion"
+msgid "Compte-rendu de réunion"
 msgstr ""
 
 #: pms/templates/meetings/meetings_list.html:50
@@ -26293,7 +26293,7 @@ msgid "Offer Acceptance Rate (OAR)"
 msgstr "Tasa de aceptación de oferta (OAR)"
 
 #: recruitment/templates/dashboard/dashboard.html:120
-msgid "Statut des Compétences"
+msgid "Zone de compétences"
 msgstr "Estado de la zona de habilidades"
 
 #: recruitment/templates/dashboard/dashboard.html:146
@@ -26303,7 +26303,7 @@ msgstr "No hay zona de habilidades disponible."
 #: recruitment/templates/dashboard/dashboard.html:183
 #, fuzzy
 #| msgid "Candidates Per Stage"
-msgid "Statut des Lettres d'Offre aux Candidats"
+msgid "Suivi des offres candidats"
 msgstr "Candidatas por etapa"
 
 #: recruitment/templates/dashboard/dashboard.html:199

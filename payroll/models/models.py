@@ -96,7 +96,7 @@ class FilingStatus(HorillaModel):
         null=False,
         blank=False,
         default="taxable_gross_pay",
-        verbose_name=_("Based on"),
+        verbose_name=_("Basé sur"),
     )
     use_py = models.BooleanField(verbose_name="Python Code", default=False)
     python_code = models.TextField(null=True)

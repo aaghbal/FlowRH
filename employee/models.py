@@ -227,7 +227,7 @@ class Employee(models.Model):
             if apps.is_installed("leave")
             else QuerySet().none()
         )
-        status = _("En activité prévue")
+        status = _("En activité")
         if leaves_requests.exists():
             if leaves_requests.filter(status="approved").exists():
                 status = _("On Leave")

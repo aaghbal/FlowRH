@@ -248,9 +248,9 @@ class EmployeeBonusPointListView(views.HorillaListView):
     ]
 
     columns = [
-        ("Employee", "employee_id"),
+        ("Employé", "employee_id"),
         ("Bonus Point", "bonus_point"),
-        ("Based On", "based_on"),
+        ("Basé sur", "based_on"),
     ]
 
     def get_queryset(self):

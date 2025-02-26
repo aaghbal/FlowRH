@@ -226,7 +226,7 @@
                             {% with stage_name=sg|stringformat:"s" %}
                                 <option value="{{sg.id}}" {% if sg == cand.stage_id %} selected{% endif %}>
                                     {% if stage_name == "Applied" %}
-                                        Candidature reçue
+                                        Candidatures
                                     {% elif stage_name == "Initial" %}
                                         Première évaluation
                                     {% elif stage_name == "Interview" %}

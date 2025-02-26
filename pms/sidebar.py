@@ -21,7 +21,7 @@ SUBMENUS = [
         "redirect": reverse("objective-list-view"),
     },
     {
-        "menu": trans("gestion des réunions"),
+        "menu": trans("Enquête de performance"),
         "redirect": reverse("view-meetings"),
     },
     {

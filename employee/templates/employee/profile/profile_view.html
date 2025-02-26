@@ -266,7 +266,7 @@
 								</li>
 							{% endif %} {% endcomment %}
 
-							{% if "payroll"|app_installed %}
+							{% comment %} {% if "payroll"|app_installed %}
 								<li data-cell-index="15" data-cell-title="{% trans 'Indemnités & Déductions' %}" class="oh-general__tab">
 									<a
 									hx-get="{% url 'allowances-deductions-tab' employee.id %}"
@@ -278,7 +278,7 @@
 									>{% trans "Indemnités & Déductions" %}</a
 									>
 								</li>
-							{% endif %}
+							{% endif %} {% endcomment %}
 
 							{% comment %} {% if "attendance"|app_installed %}
 							<li data-cell-index="14" data-cell-title="{% trans "Penalty Account" %}" class="oh-general__tab">

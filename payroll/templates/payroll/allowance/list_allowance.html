@@ -54,8 +54,8 @@
                         class="oh-sticky-table__th {% if request.sort_option.order == '-amount' %}arrow-up {% elif request.sort_option.order == 'amount' %}arrow-down {% else %}arrow-up-down {% endif %}"
                         hx-get="{% url 'filter-allowance' %}?{{pd}}&sortby=amount"
                         hx-target="#payroll-allowance-container">{% trans "Amount" %}</div>
-                    <div data-cell-index="8" data-cell-title="{% trans 'Based On' %}"
-                        class="oh-sticky-table__th">{% trans "Based On" %}</div>
+                    <div data-cell-index="8" data-cell-title="{% trans 'Basé sur' %}"
+                        class="oh-sticky-table__th">{% trans "Basé sur" %}</div>
                     <div data-cell-index="9" data-cell-title="{% trans 'Rate' %}"
                         class="oh-sticky-table__th">{% trans "Rate" %}</div>
                     {% if perms.payroll.change_allowance or perms.payroll.delete_allowance %}

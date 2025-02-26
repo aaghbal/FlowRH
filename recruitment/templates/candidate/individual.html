@@ -263,7 +263,7 @@
             class="oh-general__tab-link"
             data-action="general-tab"
             data-target="#onboarding"
-            >{% trans "Intégration" %}</a
+            >{% trans "Onboarding" %}</a
             >
           </li>
           {% endif %}
@@ -419,7 +419,7 @@
                           </span>
                           {% with stage_name=candidate.stage_id|stringformat:"s" %}
                           {% if stage_name == "Applied" %}
-                          Candidature reçue
+                          Candidatures
                           {% elif stage_name == "Initial" %}
                               Première évaluation
                           {% elif stage_name == "Interview" %}
