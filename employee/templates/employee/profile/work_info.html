@@ -60,7 +60,7 @@
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label">{% trans "Work Location" %}</label>
+                <label class="oh-label">{% trans "Site" %}</label>
                 {{work_form.location}}
             </div>
             </div>
@@ -74,10 +74,11 @@
         <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label" for="startDate">{% trans "Joining Date" %}</label>
+                <label class="oh-label" for="startDate">{% trans "Début de contrat" %}</label>
                 {{work_form.date_joining}}
             </div>
             </div>
+
             <div class="col-12 col-sm-12 col-md-12 col-lg-6">
             <div class="oh-input-group">
                 <label class="oh-label" for="endDate">{% trans "Contract End Date" %}</label>
@@ -104,3 +105,4 @@
         </form>
     </div>
     </div>
+

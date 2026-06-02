@@ -329,7 +329,7 @@ function checkSequence(element) {
     ) {
         Swal.fire({
             title: "Confirm",
-            text: `Are you sure to change the candidate from ${preStage.stage} stage to ${stage.stage} stage`,
+            text: `Êtes-vous sûr de vouloir changer le candidat de ${preStage.stage} vers ${stage.stage}`,
             icon: "info",
             showCancelButton: true,
             confirmButtonColor: "#008000",

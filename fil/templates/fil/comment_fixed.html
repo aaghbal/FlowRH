@@ -1,0 +1,431 @@
+<!-- templates/fil/comment.html -->
+<div class="comment" id="comment-{{ comment.id }}">
+    <div data-user-name="{{ comment.author.get_full_name }}" 
+         data-user-firstname="{{ comment.author.employee_first_name }}" 
+         data-user-lastname="{{ comment.author.employee_last_name }}" 
+         data-user-avatar="{{ comment.author.get_avatar }}" 
+         data-avatar-size="small" 
+         class="comment-profile-pic"></div>
+    <div class="comment-bubble">
+        <div class="comment-header">
+            <span class="comment-author">{{ comment.author.get_full_name }}</span>
+            <span class="comment-date">{{ comment.created_at|timesince }} ago</span>
+        </div>
+        <div class="comment-content">{{ comment.content }}</div>
+        <div class="edit-form" id="edit-form-{{ comment.id }}" style="display: none;">
+            <textarea class="edit-textarea">{{ comment.content }}</textarea>
+            <div class="edit-actions">
+                <button class="save-edit" data-comment-id="{{ comment.id }}" data-action="save">Save</button>
+                <button class="cancel-edit" data-comment-id="{{ comment.id }}" data-action="cancel">Cancel</button>
+            </div>
+        </div>
+        <div class="comment-actions">
+            <button class="action-button like-btn {% if comment.id in liked_comment_ids %}liked{% endif %}" data-comment-id="{{ comment.id }}">
+                <i class="{% if comment.id in liked_comment_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+                <span class="like-count">{{ comment.get_likes_count }}</span>
+            </button>
+            <button class="action-button reply-btn" data-comment-id="{{ comment.id }}" data-action="reply">
+                Répondre
+            </button>
+            <!-- Always show edit/delete buttons for debugging -->
+            <button class="action-button edit-btn" data-comment-id="{{ comment.id }}" data-action="edit">
+                <i class="fas fa-edit"></i>
+                Modifier
+            </button>
+            <button class="action-button delete-btn" data-comment-id="{{ comment.id }}" data-action="delete">
+                <i class="fas fa-trash"></i>
+                Supprimer
+            </button>
+            <!-- Debug info -->
+            <small style="color: #999; font-size: 10px;">
+                Author: {{ comment.author.id }} | User: {{ request.user.employee_get.id|default:"None" }}
+            </small>
+        </div>
+        <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: none;">
+            <textarea placeholder="Write your reply..."></textarea>
+            <button class="submit-reply" data-comment-id="{{ comment.id }}" data-action="submit-reply">Post</button>
+        </div>
+        <!-- Replies -->
+        <div class="replies">
+            {% if comment.replies.all %}
+                {% with total_replies=comment.replies.all|length %}
+                    <!-- Show first 2 replies -->
+                    {% for reply in comment.replies.all|slice:":2" %}
+                        <div class="reply visible-reply">
+                            <div class="comment" id="comment-{{ reply.id }}">
+                                <div data-user-name="{{ reply.author.get_full_name }}" 
+                                     data-user-firstname="{{ reply.author.employee_first_name }}" 
+                                     data-user-lastname="{{ reply.author.employee_last_name }}" 
+                                     data-user-avatar="{{ reply.author.get_avatar }}" 
+                                     data-avatar-size="small" 
+                                     class="comment-profile-pic"></div>
+                                <div class="comment-bubble">
+                                    <div class="comment-header">
+                                        <span class="comment-author">{{ reply.author.get_full_name }}</span>
+                                        <span class="comment-date">{{ reply.created_at|timesince }} ago</span>
+                                    </div>
+                                    <div class="comment-content">{{ reply.content }}</div>
+                                    <div class="edit-form" id="edit-form-{{ reply.id }}" style="display: none;">
+                                        <textarea class="edit-textarea">{{ reply.content }}</textarea>
+                                        <div class="edit-actions">
+                                            <button class="save-edit" data-comment-id="{{ reply.id }}" data-action="save">Save</button>
+                                            <button class="cancel-edit" data-comment-id="{{ reply.id }}" data-action="cancel">Cancel</button>
+                                        </div>
+                                    </div>
+                                    <div class="comment-actions">
+                                        <button class="action-button like-btn {% if reply.id in liked_comment_ids %}liked{% endif %}" data-comment-id="{{ reply.id }}">
+                                            <i class="{% if reply.id in liked_comment_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+                                            <span class="like-count">{{ reply.get_likes_count }}</span>
+                                        </button>
+                                        <!-- Only show reply button if this is a direct reply, not a reply to a reply -->
+                                        {% if reply.parent_comment and not reply.parent_comment.parent_comment %}
+                                            <button class="action-button reply-btn" data-comment-id="{{ reply.id }}" data-action="reply">
+                                                Répondre
+                                            </button>
+                                        {% endif %}
+                                        <!-- Always show edit/delete buttons for debugging -->
+                                        <button class="action-button edit-btn" data-comment-id="{{ reply.id }}" data-action="edit">
+                                            <i class="fas fa-edit"></i>
+                                            Modifier
+                                        </button>
+                                        <button class="action-button delete-btn" data-comment-id="{{ reply.id }}" data-action="delete">
+                                            <i class="fas fa-trash"></i>
+                                            Supprimer
+                                        </button>
+                                    </div>
+                                    {% if reply.parent_comment and not reply.parent_comment.parent_comment %}
+                                        <div class="reply-form" id="reply-form-{{ reply.id }}" style="display: none;">
+                                            <textarea placeholder="Write your reply..."></textarea>
+                                            <button class="submit-reply" data-comment-id="{{ reply.id }}" data-action="submit-reply">Post</button>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <!-- Sub-replies (replies to replies) -->
+                                    {% if reply.replies.all %}
+                                        <div class="sub-replies">
+                                            {% for sub_reply in reply.replies.all %}
+                                                <div class="sub-reply">
+                                                    <div class="comment" id="comment-{{ sub_reply.id }}">
+                                                        <div data-user-name="{{ sub_reply.author.get_full_name }}" 
+                                                             data-user-firstname="{{ sub_reply.author.employee_first_name }}" 
+                                                             data-user-lastname="{{ sub_reply.author.employee_last_name }}" 
+                                                             data-user-avatar="{{ sub_reply.author.get_avatar }}" 
+                                                             data-avatar-size="small" 
+                                                             class="comment-profile-pic"></div>
+                                                        <div class="comment-bubble">
+                                                            <div class="comment-header">
+                                                                <span class="comment-author">{{ sub_reply.author.get_full_name }}</span>
+                                                                <span class="comment-date">{{ sub_reply.created_at|timesince }} ago</span>
+                                                            </div>
+                                                            <div class="comment-content">{{ sub_reply.content }}</div>
+                                                            <div class="edit-form" id="edit-form-{{ sub_reply.id }}" style="display: none;">
+                                                                <textarea class="edit-textarea">{{ sub_reply.content }}</textarea>
+                                                                <div class="edit-actions">
+                                                                    <button class="save-edit" data-comment-id="{{ sub_reply.id }}" data-action="save">Save</button>
+                                                                    <button class="cancel-edit" data-comment-id="{{ sub_reply.id }}" data-action="cancel">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="comment-actions">
+                                                                <button class="action-button like-btn {% if sub_reply.id in liked_comment_ids %}liked{% endif %}" data-comment-id="{{ sub_reply.id }}">
+                                                                    <i class="{% if sub_reply.id in liked_comment_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+                                                                    <span class="like-count">{{ sub_reply.get_likes_count }}</span>
+                                                                </button>
+                                                                <!-- No reply button for sub-replies to prevent deep nesting -->
+                                                                <!-- Always show edit/delete buttons for debugging -->
+                                                                <button class="action-button edit-btn" data-comment-id="{{ sub_reply.id }}" data-action="edit">
+                                                                    <i class="fas fa-edit"></i>
+                                                                    Modifier
+                                                                </button>
+                                                                <button class="action-button delete-btn" data-comment-id="{{ sub_reply.id }}" data-action="delete">
+                                                                    <i class="fas fa-trash"></i>
+                                                                    Supprimer
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    <!-- Show more replies button if there are more than 2 replies -->
+                    {% if total_replies > 2 %}
+                        <div class="show-more-replies" data-comment-id="{{ comment.id }}" data-total-replies="{{ total_replies }}" data-action="toggle-replies">
+                            <i class="fas fa-reply"></i>
+                            <span class="show-more-text">Show {{ total_replies|add:"-2" }} more repl{{ total_replies|add:"-2"|pluralize:"y,ies" }}</span>
+                            <span class="show-less-text" style="display: none;">Show less</span>
+                        </div>
+                        
+                        <!-- Hidden replies (shown when "show more" is clicked) -->
+                        <div class="hidden-replies" id="hidden-replies-{{ comment.id }}" style="display: none;">
+                            {% for reply in comment.replies.all|slice:"2:" %}
+                                <div class="reply hidden-reply">
+                                    <div class="comment" id="comment-{{ reply.id }}">
+                                        <div data-user-name="{{ reply.author.get_full_name }}" 
+                                             data-user-firstname="{{ reply.author.employee_first_name }}" 
+                                             data-user-lastname="{{ reply.author.employee_last_name }}" 
+                                             data-user-avatar="{{ reply.author.get_avatar }}" 
+                                             data-avatar-size="small" 
+                                             class="comment-profile-pic"></div>
+                                        <div class="comment-bubble">
+                                            <div class="comment-header">
+                                                <span class="comment-author">{{ reply.author.get_full_name }}</span>
+                                                <span class="comment-date">{{ reply.created_at|timesince }} ago</span>
+                                            </div>
+                                            <div class="comment-content">{{ reply.content }}</div>
+                                            <div class="edit-form" id="edit-form-{{ reply.id }}" style="display: none;">
+                                                <textarea class="edit-textarea">{{ reply.content }}</textarea>
+                                                <div class="edit-actions">
+                                                    <button class="save-edit" data-comment-id="{{ reply.id }}" data-action="save">Save</button>
+                                                    <button class="cancel-edit" data-comment-id="{{ reply.id }}" data-action="cancel">Cancel</button>
+                                                </div>
+                                            </div>
+                                            <div class="comment-actions">
+                                                <button class="action-button like-btn {% if reply.id in liked_comment_ids %}liked{% endif %}" data-comment-id="{{ reply.id }}">
+                                                    <i class="{% if reply.id in liked_comment_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+                                                    <span class="like-count">{{ reply.get_likes_count }}</span>
+                                                </button>
+                                                {% if reply.parent_comment and not reply.parent_comment.parent_comment %}
+                                                    <button class="action-button reply-btn" data-comment-id="{{ reply.id }}" data-action="reply">
+                                                        Répondre
+                                                    </button>
+                                                {% endif %}
+                                                <!-- Always show edit/delete buttons for debugging -->
+                                                <button class="action-button edit-btn" data-comment-id="{{ reply.id }}" data-action="edit">
+                                                    <i class="fas fa-edit"></i>
+                                                    Modifier
+                                                </button>
+                                                <button class="action-button delete-btn" data-comment-id="{{ reply.id }}" data-action="delete">
+                                                    <i class="fas fa-trash"></i>
+                                                    Supprimer
+                                                </button>
+                                            </div>
+                                            {% if reply.parent_comment and not reply.parent_comment.parent_comment %}
+                                                <div class="reply-form" id="reply-form-{{ reply.id }}" style="display: none;">
+                                                    <textarea placeholder="Write your reply..."></textarea>
+                                                    <button class="submit-reply" data-comment-id="{{ reply.id }}" data-action="submit-reply">Post</button>
+                                                </div>
+                                            {% endif %}
+                                            
+                                            <!-- Sub-replies for hidden replies -->
+                                            {% if reply.replies.all %}
+                                                <div class="sub-replies">
+                                                    {% for sub_reply in reply.replies.all %}
+                                                        <div class="sub-reply">
+                                                            <div class="comment" id="comment-{{ sub_reply.id }}">
+                                                                <div data-user-name="{{ sub_reply.author.get_full_name }}" 
+                                                                     data-user-firstname="{{ sub_reply.author.employee_first_name }}" 
+                                                                     data-user-lastname="{{ sub_reply.author.employee_last_name }}" 
+                                                                     data-user-avatar="{{ sub_reply.author.get_avatar }}" 
+                                                                     data-avatar-size="small" 
+                                                                     class="comment-profile-pic"></div>
+                                                                <div class="comment-bubble">
+                                                                    <div class="comment-header">
+                                                                        <span class="comment-author">{{ sub_reply.author.get_full_name }}</span>
+                                                                        <span class="comment-date">{{ sub_reply.created_at|timesince }} ago</span>
+                                                                    </div>
+                                                                    <div class="comment-content">{{ sub_reply.content }}</div>
+                                                                    <div class="edit-form" id="edit-form-{{ sub_reply.id }}" style="display: none;">
+                                                                        <textarea class="edit-textarea">{{ sub_reply.content }}</textarea>
+                                                                        <div class="edit-actions">
+                                                                            <button class="save-edit" data-comment-id="{{ sub_reply.id }}" data-action="save">Save</button>
+                                                                            <button class="cancel-edit" data-comment-id="{{ sub_reply.id }}" data-action="cancel">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="comment-actions">
+                                                                        <button class="action-button like-btn {% if sub_reply.id in liked_comment_ids %}liked{% endif %}" data-comment-id="{{ sub_reply.id }}">
+                                                                            <i class="{% if sub_reply.id in liked_comment_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+                                                                            <span class="like-count">{{ sub_reply.get_likes_count }}</span>
+                                                                        </button>
+                                                                        <!-- Always show edit/delete buttons for debugging -->
+                                                                        <button class="action-button edit-btn" data-comment-id="{{ sub_reply.id }}" data-action="edit">
+                                                                            <i class="fas fa-edit"></i>
+                                                                            Modifier
+                                                                        </button>
+                                                                        <button class="action-button delete-btn" data-comment-id="{{ sub_reply.id }}" data-action="delete">
+                                                                            <i class="fas fa-trash"></i>
+                                                                            Supprimer
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<style>
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    max-width: 70%;
+    min-width: 32px;
+    word-break: break-word;
+    flex-shrink: 1;
+}
+.comment-profile-pic {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 8px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    font-size: 11px;
+    line-height: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.comment-profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Avatar colors for comments */
+.comment-profile-pic.color-1 { background: #6b46c1; } /* Purple */
+.comment-profile-pic.color-2 { background: #dc2626; } /* Red */
+.comment-profile-pic.color-3 { background: #2563eb; } /* Blue */
+.comment-profile-pic.color-4 { background: #059669; } /* Green */
+.comment-profile-pic.color-5 { background: #d97706; } /* Orange */
+.comment-profile-pic.color-6 { background: #7c2d12; } /* Brown */
+.comment-profile-pic.color-7 { background: #be185d; } /* Pink */
+.comment-profile-pic.color-8 { background: #1f2937; } /* Gray */
+.comment-profile-pic.color-9 { background: #0891b2; } /* Cyan */
+.comment-profile-pic.color-10 { background: #7c3aed; } /* Violet */
+
+.comment-bubble {
+    background: #f0f2f5;
+    border-radius: 18px;
+    padding: 8px 14px 8px 12px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+}
+.comment-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+.comment-author {
+    font-weight: 600;
+    font-size: 13px;
+    color: #050505;
+}
+.comment-date {
+    font-size: 11px;
+    color: #65676b;
+    font-weight: 400;
+}
+.comment-content {
+    font-size: 13px;
+    color: #050505;
+    margin: 0 0 2px 0;
+    word-break: break-word;
+}
+.comment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+.action-button {
+    background: none;
+    border: none;
+    color: #65676b;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.2s;
+}
+.action-button:hover {
+    color: #1877f2;
+}
+.action-button.liked {
+    color: #e91e63;
+}
+.action-button.liked i {
+    color: #e91e63;
+}
+.action-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.action-button.delete-btn {
+    color: #dc3545;
+}
+.action-button.delete-btn:hover {
+    color: #c82333;
+}
+.reply-form {
+    margin-top: 4px;
+}
+.reply-form textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #ccd0d5;
+    padding: 4px 8px;
+    font-size: 12px;
+    resize: vertical;
+}
+.submit-reply {
+    margin-top: 2px;
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.replies {
+    margin-left: 34px;
+    margin-top: 2px;
+}
+.reply {
+    margin-top: 2px;
+}
+.sub-replies {
+    margin-left: 20px;
+    margin-top: 4px;
+}
+.sub-reply {
+    margin-top: 2px;
+}
+.sub-reply .comment-bubble {
+    background: #f8f9fa;
+}
+.reply .comment {
+    max-width: 100%;
+}
+.sub-reply .comment {
+    max-width: 100%;
+}
+</style>

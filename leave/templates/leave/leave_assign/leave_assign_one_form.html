@@ -25,8 +25,31 @@
 </div>
 <div class="oh-modal__dialog-body">
     <form hx-post="{% url 'assign-one' id %}" hx-target="#objectCreateModalTarget" class="oh-profile-section pt-1">
-        <label class="oh-label d-block">{% trans "Employees" %}</label>
-        {{form.employee_id}} {{form.employee_id.errors}}
+        
+        <!-- Assign to All Employees Checkbox -->
+        <div class="oh-input-group mb-3">
+            <div class="oh-checkbox-container" style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; background-color: #f8f9fa; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    {{form.assign_to_all}}
+                    <label for="{{form.assign_to_all.id_for_label}}" class="oh-label-checkbox" style="margin: 0; font-weight: 600; color: #2c3e50; cursor: pointer;">
+                        {{form.assign_to_all.label}}
+                    </label>
+                </div>
+                {{form.assign_to_all.errors}}
+                {% if form.assign_to_all.help_text %}
+                    <small class="form-text text-muted" style="margin-top: 8px; display: block; font-size: 0.875em; color: #6c757d;">
+                        {{form.assign_to_all.help_text}}
+                    </small>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Individual Employee Selection -->
+        <div id="employee-selection-container" style="transition: opacity 0.3s ease;">
+            <label class="oh-label d-block">{% trans "Employees" %}</label>
+            {{form.employee_id}} {{form.employee_id.errors}}
+        </div>
+        
         <div class="oh-modal__dialog-footer p-0">
             <button type="submit" class="oh-btn oh-btn--secondary w-100">
                 {% trans "Apply" %}
@@ -34,3 +57,40 @@
         </div>
     </form>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const assignToAllCheckbox = document.getElementById('{{form.assign_to_all.id_for_label}}');
+    const employeeSelectionContainer = document.getElementById('employee-selection-container');
+    
+    function toggleEmployeeSelection() {
+        if (assignToAllCheckbox && assignToAllCheckbox.checked) {
+            employeeSelectionContainer.style.opacity = '0.3';
+            employeeSelectionContainer.style.pointerEvents = 'none';
+            
+            // Add visual indication that it's disabled
+            const label = employeeSelectionContainer.querySelector('label');
+            if (label) {
+                label.style.color = '#999';
+            }
+        } else {
+            employeeSelectionContainer.style.opacity = '1';
+            employeeSelectionContainer.style.pointerEvents = 'auto';
+            
+            // Restore normal appearance
+            const label = employeeSelectionContainer.querySelector('label');
+            if (label) {
+                label.style.color = '';
+            }
+        }
+    }
+    
+    // Initial state
+    toggleEmployeeSelection();
+    
+    // Listen for changes
+    if (assignToAllCheckbox) {
+        assignToAllCheckbox.addEventListener('change', toggleEmployeeSelection);
+    }
+});
+</script>

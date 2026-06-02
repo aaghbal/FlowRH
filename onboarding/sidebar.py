@@ -9,13 +9,13 @@ from django.urls import reverse
 
 from onboarding.templatetags.onboardingfilters import is_taskmanager
 
-MENU = "Onboarding"
+MENU = "Intégration"
 ACCESSIBILITY = "onboarding.sidebar.menu_accessibilty"
 IMG_SRC = "images/ui/rocket.svg"
 
 SUBMENUS = [
     {
-        "menu": "Suivi Onboarding",
+        "menu": "Suivi d'intégration",
         "redirect": reverse("onboarding-view") + "?closed=false",
         "accessibility": "onboarding.sidebar.onboarding_view_accessibility",
     },

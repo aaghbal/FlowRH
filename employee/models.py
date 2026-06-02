@@ -55,7 +55,7 @@ class Employee(models.Model):
     choice_gender = [
         ("male", trans("Homme")),
         ("female", trans("Femme")),
-        ("other", trans("Autre")),
+        # ("other", trans("Autre")),
     ]
     choice_marital = (
         ("single", trans("Single")),
@@ -89,11 +89,11 @@ class Employee(models.Model):
     state = models.CharField(max_length=30, null=True, blank=True)
     city = models.CharField(max_length=30, null=True, blank=True)
     zip = models.CharField(max_length=20, null=True, blank=True)
-    dob = models.DateField(null=True, blank=True)
+    dob = models.DateField(null=True, blank=True, verbose_name=_("Date de naissance"))
     gender = models.CharField(
         max_length=10, null=True, choices=choice_gender, default="male"
     )
-    qualification = models.CharField(max_length=50, blank=True, null=True)
+    qualification = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("CIN"))
     experience = models.IntegerField(null=True, blank=True)
     marital_status = models.CharField(
         max_length=50, blank=True, null=True, choices=choice_marital, default="single"
@@ -498,30 +498,28 @@ class Employee(models.Model):
 
         if employee.employee_user_id is None:
             # Create user if no corresponding user exists
-            username = self.email
-            password = self.phone
+            # Generate a default username if both email and phone are empty
+            username = self.email or self.phone or f"emp_{self.badge_id}"
+            password = self.phone or self.email or username
 
-            is_new_employee_flag = (
-                not employee.employee_user_id.is_new_employee
-                if employee.employee_user_id
-                else True
-            )
-            user = User.objects.create_user(
-                username=username,
-                email=username,
-                password=password,
-                is_new_employee=is_new_employee_flag,
-            )
-            if not user:
+            is_new_employee_flag = True
+            try:
                 user = User.objects.create_user(
-                    username=username, email=username, password=password
+                    username=username,
+                    email=username,
+                    password=password,
+                    is_new_employee=is_new_employee_flag,
                 )
-            self.employee_user_id = user
-            # default permissions
-            change_ownprofile = Permission.objects.get(codename="change_ownprofile")
-            view_ownprofile = Permission.objects.get(codename="view_ownprofile")
-            user.user_permissions.add(view_ownprofile)
-            user.user_permissions.add(change_ownprofile)
+                self.employee_user_id = user
+                # default permissions
+                change_ownprofile = Permission.objects.get(codename="change_ownprofile")
+                view_ownprofile = Permission.objects.get(codename="view_ownprofile")
+                user.user_permissions.add(view_ownprofile)
+                user.user_permissions.add(change_ownprofile)
+                super().save(*args, **kwargs)
+            except Exception as e:
+                # Handle any user creation errors
+                logger.error(f"Error creating user for employee: {e}")
 
         if not hasattr(self, "employee_work_info"):
             EmployeeWorkInformation.objects.get_or_create(employee_id=self)
@@ -609,15 +607,40 @@ class EmployeeWorkInformation(models.Model):
         EmployeeTag, blank=True, verbose_name=_("Employee tag")
     )
     location = models.CharField(
-        max_length=50, null=True, blank=True, verbose_name=_("Work Location")
+        max_length=50, null=True, blank=True, verbose_name=_("Site")
     )
-    email = models.EmailField(
-        max_length=254, blank=True, null=True, verbose_name=_("Email")
+    email = models.CharField(
+        max_length=254, blank=True, null=True, verbose_name=_("Numéro de CNSS")
     )
     mobile = models.CharField(
         max_length=254,
         blank=True,
         null=True,
+        verbose_name=_("Affiliation CIMR")
+    )
+    numero_cimr = models.CharField(
+        max_length=254,
+        blank=True,
+        null=True,
+        verbose_name=_("Numéro CIMR")
+    )
+    societe = models.CharField(
+        max_length=254,
+        blank=True,
+        null=True,
+        verbose_name=_("Société")
+    )
+    affiliation_cnss = models.CharField(
+        max_length=254,
+        blank=True,
+        null=True,
+        verbose_name=_("Affiliation CNSS")
+    )
+    affiliation_mut = models.CharField(
+        max_length=254,
+        blank=True,
+        null=True,
+        verbose_name=_("Affiliation MUT")
     )
     shift_id = models.ForeignKey(
         EmployeeShift,
@@ -627,7 +650,7 @@ class EmployeeWorkInformation(models.Model):
         verbose_name=_("Shift"),
     )
     date_joining = models.DateField(
-        null=True, blank=True, verbose_name=_("Joining Date")
+        null=True, blank=True, verbose_name=_("Début de contrat")
     )
     contract_end_date = models.DateField(blank=True, null=True)
     basic_salary = models.IntegerField(
@@ -697,19 +720,19 @@ class EmployeeBankDetails(HorillaModel):
         related_name="employee_bank_details",
         verbose_name=_("Employee"),
     )
-    bank_name = models.CharField(max_length=50)
+    bank_name = models.CharField(max_length=50, null=True, blank=True)
     account_number = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         default="",
     )
-    branch = models.CharField(max_length=50)
-    address = models.TextField(max_length=255)
+    branch = models.CharField(max_length=50, null=True, blank=True)
+    address = models.TextField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=50, blank=True, null=True)
-    state = models.CharField(max_length=50, blank=True)
-    city = models.CharField(max_length=50, blank=True)
-    any_other_code1 = models.CharField(max_length=50, verbose_name="Bank Code #1")
+    state = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    any_other_code1 = models.CharField(max_length=50, verbose_name="Bank Code #1", null=True, blank=True)
     any_other_code2 = models.CharField(
         max_length=50, null=True, blank=True, verbose_name="Bank Code #2"
     )
@@ -719,10 +742,10 @@ class EmployeeBankDetails(HorillaModel):
     )
 
     def __str__(self) -> str:
-        return f"{self.employee_id}-{self.bank_name}"
+        return f"{self.employee_id}-{self.bank_name if self.bank_name else ''}"
 
     def clean(self):
-        if self.account_number is not None:
+        if self.account_number:
             bank_details = EmployeeBankDetails.objects.exclude(
                 employee_id=self.employee_id
             ).filter(account_number=self.account_number)

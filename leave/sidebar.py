@@ -38,7 +38,7 @@ SUBMENUS = [
         "accessibility": "leave.sidebar.assign_accessibility",
     },
     {
-        "menu": trans("Leave Allocation Request"),
+        "menu": trans("Demande d'attribution de congés"),
         "redirect": reverse("leave-allocation-request-view"),
     },
     {

@@ -74,7 +74,7 @@
                       </div>
                       <div class="oh-sticky-table__th">{% trans "Email" %}</div>
                       <div class="oh-sticky-table__th">{% trans "Phone" %}</div>
-                      <div class="oh-sticky-table__th" hx-target="#view-container" hx-get="{% url 'employee-filter-view' %}?{{pd}}&orderby=badge_id">{% trans "Badge Id" %}</div>
+                      <div class="oh-sticky-table__th" hx-target="#view-container" hx-get="{% url 'employee-filter-view' %}?{{pd}}&orderby=badge_id">{% trans "Matricule" %}</div>
                       <div class="oh-sticky-table__th">{% trans "Job Position" %}</div>
                       <div class="oh-sticky-table__th">{% trans "Department" %}</div>
                       <div class="oh-sticky-table__th">{% trans "Shift" %}</div>
@@ -82,7 +82,7 @@
                       <div class="oh-sticky-table__th">{% trans "Job Role" %}</div>
                       <div class="oh-sticky-table__th" hx-target="#view-container" hx-get="{% url 'employee-filter-view' %}?{{pd}}&orderby=employee_work_info__reporting_manager_id">{% trans "Reporting Manager" %}</div>
                       <div class="oh-sticky-table__th">{% trans "Company" %}</div>
-                      <div class="oh-sticky-table__th">{% trans "Work Email" %}</div>
+                      <!-- <div class="oh-sticky-table__th">{% trans "Work Email" %}</div> -->
                       <div class="oh-sticky-table__th" hx-target="#view-container" hx-get="{% url 'employee-filter-view' %}?{{pd}}&orderby=date_joining">{% trans "Date of Joining" %}</div>
                       <div class="oh-sticky-table__th oh-sticky-table__right" style="width:190px">{% trans "Actions" %}</div>
                     </div>

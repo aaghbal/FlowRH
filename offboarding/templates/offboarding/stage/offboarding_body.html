@@ -67,7 +67,7 @@
                 <div class="oh-sticky-table__th">{% trans "Start Date" %}</div>
                 <div class="oh-sticky-table__th">{% trans "End Date" %}</div>
                 {% if request.user.employee_get|is_any_stage_manager or perms.offboarding.change_offboarding or perms.offboarding.change_offboardingemployee %}
-                <div class="oh-sticky-table__th">{% trans "Stage" %}</div>
+                <div class="oh-sticky-table__th">{% trans "Étape du recrutement" %}</div>
                 {% endif %}
                 <div class="oh-sticky-table__th text-center">{% trans "Statut des tâches" %}</div>
                 <div class="oh-sticky-table__th text-center" style="width: 250px;">{% trans "Actions" %}</div>

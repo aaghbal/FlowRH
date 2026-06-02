@@ -210,7 +210,7 @@ class Recruitment(HorillaModel):
             if self.vacancy <= 0:
                 raise ValidationError(
                     _(
-                        "Vacancy must be greater than zero if the recruitment is publishing."
+                        "Le nombre de postes à pourvoir doit être supérieur à zéro pour publier le recrutement."
                     )
                 )
 
@@ -274,11 +274,10 @@ class Stage(HorillaModel):
 
     stage_types = [
         ("initial", _("Initial")),
-        ("applied", _("Applied")),
-        ("test", _("Test")),
-        ("interview", _("Interview")),
-        ("cancelled", _("Cancelled")),
-        ("hired", _("Hired")),
+        ("applied", _("Postulé")),
+        ("interview", _("Entretien")),
+        ("cancelled", _("Annulé")),
+        ("hired", _("Embauché")),
     ]
     recruitment_id = models.ForeignKey(
         Recruitment,
@@ -322,21 +321,21 @@ class Candidate(HorillaModel):
     Candidate model
     """
 
-    choices = [("male", _("Male")), ("female", _("Female")), ("other", _("Other"))]
+    choices = [("male", _("Masculin")), ("female", _("Féminin"))]
     offer_letter_statuses = [
-        ("not_sent", "Not Sent"),
-        ("sent", "Sent"),
-        ("accepted", "Accepted"),
-        ("rejected", "Rejected"),
-        ("joined", "Joined"),
+        ("not_sent", "non envoyé(e)"),
+        ("sent", "envoyé(e)"),
+        ("accepted", "accepté(e)"),
+        ("rejected", "refusé(e)"),
+        ("joined", "rejoint(e)"),
     ]
     source_choices = [
-        ("application", _("Application Form")),
-        ("software", _("Inside software")),
-        ("other", _("Other")),
+        ("application", _("Formulaire d'application")),
+        ("software", _("Dans le logiciel")),
+        ("other", _("Autre")),
     ]
     name = models.CharField(max_length=100, null=True, verbose_name=_("Name"))
-    profile = models.ImageField(upload_to=candidate_photo_upload_path, null=True)
+    profile = models.ImageField(upload_to=candidate_photo_upload_path, null=True, blank=True)
     portfolio = models.URLField(max_length=200, blank=True)
     recruitment_id = models.ForeignKey(
         Recruitment,
@@ -398,7 +397,7 @@ class Candidate(HorillaModel):
     country = models.CharField(
         max_length=30, null=True, blank=True, verbose_name=_("Country")
     )
-    dob = models.DateField(null=True, blank=True, verbose_name=_("Date of Birth"))
+    dob = models.DateField(null=True, blank=True, verbose_name=_("Date de naissance"))
     state = models.CharField(
         max_length=30, null=True, blank=True, verbose_name=_("State")
     )
@@ -427,7 +426,7 @@ class Candidate(HorillaModel):
     canceled = models.BooleanField(default=False, verbose_name=_("Canceled"))
     converted = models.BooleanField(default=False, verbose_name=_("Converted"))
     joining_date = models.DateField(
-        blank=True, null=True, verbose_name=_("Joining Date")
+        blank=True, null=True, verbose_name=_("Début de contrat")
     )
     history = HorillaAuditLog(
         related_name="history_set",

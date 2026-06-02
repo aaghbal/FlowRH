@@ -1,6 +1,8 @@
 {% load static basefilters horillafilters employee_filter i18n %} {% load tz %} {% now "Y-m-d" as current_date %}
 {% load accessibility_filters %}
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <div id="mainNav"></div>
 <!-- End of Navigation -->
@@ -129,7 +131,7 @@
                 {% comment %} {% if perms.employee.view_employeeworkinformation or request.user|is_reportingmanager %}
                     <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                         <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                            <span class="oh-card-dashboard__title">{% trans "Employee Work Information" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Employee Contract details" %}</span>
                         </div>
                         <!-- Search bar -->
                         <div class="oh-search-bar mb-3">

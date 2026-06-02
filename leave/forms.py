@@ -607,6 +607,7 @@ class LeaveOneAssignForm(HorillaModelForm):
 
     Attributes:
         - employee_id: A HorillaMultiSelectField representing the employee to assign leave to.
+        - assign_to_all: A boolean field to assign to all employees in the company.
     """
 
     employee_id = HorillaMultiSelectField(
@@ -616,9 +617,16 @@ class LeaveOneAssignForm(HorillaModelForm):
             filter_class=EmployeeFilter,
             filter_instance_contex_name="f",
             filter_template_path="employee_filters.html",
-            required=True,
+            required=False,  # Make it not required since we can select all
         ),
         label="Employee",
+        required=False,
+    )
+    
+    assign_to_all = forms.BooleanField(
+        required=False,
+        label=_("Attribuer à tous les employés de l'entreprise"),
+        help_text=_("Cochez cette case pour attribuer ce congé à tous les employés actifs de l'entreprise")
     )
 
     class Meta:
@@ -627,11 +635,25 @@ class LeaveOneAssignForm(HorillaModelForm):
         """
 
         model = AvailableLeave
-        fields = ["employee_id", "is_active"]
+        fields = ["employee_id", "assign_to_all", "is_active"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         reload_queryset(self.fields)
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        employee_id = cleaned_data.get('employee_id')
+        assign_to_all = cleaned_data.get('assign_to_all')
+        
+        # Clear employee_id errors if assign_to_all is checked
+        if assign_to_all and "employee_id" in self.errors:
+            del self.errors["employee_id"]
+        
+        if not assign_to_all and not employee_id:
+            raise forms.ValidationError(_("Veuillez sélectionner des employés ou cocher 'Attribuer à tous les employés'."))
+        
+        return cleaned_data
 
 
 class AvailableLeaveUpdateForm(ModelForm):
@@ -1073,14 +1095,13 @@ class AssignLeaveForm(HorillaForm):
     Form for Payslip
     """
 
-    leave_type_id = forms.ModelChoiceField(
+    leave_type_id = forms.ModelMultipleChoiceField(
         queryset=LeaveType.objects.all(),
         widget=forms.SelectMultiple(
             attrs={"class": "oh-select oh-select-2 mb-2", "required": True}
         ),
-        empty_label=None,
         label="Leave Type",
-        required=False,
+        required=True,
     )
     employee_id = HorillaMultiSelectField(
         queryset=Employee.objects.all(),
@@ -1089,29 +1110,68 @@ class AssignLeaveForm(HorillaForm):
             filter_class=EmployeeFilter,
             filter_instance_contex_name="f",
             filter_template_path="employee_filters.html",
-            required=True,
+            required=False,  # Make it not required since we can select all
         ),
         label="Employee",
+        required=False,
+    )
+    
+    assign_to_all = forms.BooleanField(
+        required=False,
+        label=_("Attribuer à tous les employés de l'entreprise"),
+        help_text=_("Cochez cette case pour attribuer ces congés à tous les employés actifs de l'entreprise")
     )
 
     def clean(self):
         cleaned_data = super().clean()
         employee_id = cleaned_data.get("employee_id")
         leave_type_id = cleaned_data.get("leave_type_id")
+        assign_to_all = cleaned_data.get("assign_to_all")
 
-        if not employee_id:
-            raise forms.ValidationError({"employee_id": "This field is required"})
-        if not leave_type_id:
-            raise forms.ValidationError({"leave_type_id": "This field is required"})
+        # Clear any existing field errors for employee_id if assign_to_all is checked
+        if assign_to_all:
+            if "employee_id" in self.errors:
+                del self.errors["employee_id"]
+            # Remove employee_id from cleaned_data if assign_to_all is checked
+            cleaned_data["employee_id"] = []
+        
+        # Validation logic
+        if not assign_to_all and not employee_id:
+            raise forms.ValidationError({"employee_id": _("Veuillez sélectionner des employés ou cocher 'Attribuer à tous les employés'.")})
+        if not leave_type_id or len(leave_type_id) == 0:
+            raise forms.ValidationError({"leave_type_id": _("Ce champ est requis.")})
         return cleaned_data
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         reload_queryset(self.fields)
         self.fields["employee_id"].widget.attrs.update(
-            {"required": True, "id": uuid.uuid4()}
-        ),
+            {"required": False, "id": uuid.uuid4()}
+        )
         self.fields["leave_type_id"].label = "Leave Type"
+        
+    def full_clean(self):
+        """
+        Override full_clean to handle assign_to_all logic before validation
+        """
+        # Get the raw data first
+        assign_to_all = self.data.get("assign_to_all") == "on" if hasattr(self, 'data') else False
+        
+        # If assign_to_all is checked, temporarily modify the field to not be required
+        if assign_to_all and hasattr(self, 'data'):
+            # Create a mutable copy of the data
+            data = self.data.copy()
+            # Clear any employee_id values since we're assigning to all
+            if 'employee_id' in data:
+                del data['employee_id']
+            self.data = data
+            
+        # Call the parent full_clean
+        super().full_clean()
+        
+        # Additional cleanup for assign_to_all case
+        if assign_to_all and "employee_id" in self.errors:
+            del self.errors["employee_id"]
 
 
 class LeaverequestcommentForm(ModelForm):

@@ -229,13 +229,6 @@ class RecruitmentCreationForm(ModelForm):
     Form for Recruitment model
     """
 
-    # survey_templates = forms.ModelMultipleChoiceField(
-    #     queryset=SurveyTemplate.objects.all(),
-    #     widget=forms.SelectMultiple(),
-    #     label=_("Survey Templates"),
-    #     required=False,
-    # )
-
     class Meta:
         """
         Meta class to add the additional info
@@ -245,11 +238,32 @@ class RecruitmentCreationForm(ModelForm):
         fields = "__all__"
         exclude = ["is_active"]
         widgets = {
-            "start_date": forms.DateInput(attrs={"type": "date"}),
-            "end_date": forms.DateInput(attrs={"type": "date"}),
+            "start_date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "oh-input w-100",
+                    "placeholder": _("Start Date"),
+                },
+                format="%Y-%m-%d"
+            ),
+            "end_date": forms.DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "oh-input w-100",
+                    "placeholder": _("End Date"),
+                },
+                format="%Y-%m-%d"
+            ),
             "description": forms.Textarea(attrs={"data-summernote": ""}),
         }
         labels = {"description": _("Description"), "vacancy": _("Vacancy")}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.start_date:
+            self.initial['start_date'] = self.instance.start_date.strftime('%Y-%m-%d')
+        if self.instance and self.instance.end_date:
+            self.initial['end_date'] = self.instance.end_date.strftime('%Y-%m-%d')
 
     def as_p(self, *args, **kwargs):
         """
@@ -359,14 +373,51 @@ class CandidateCreationForm(ModelForm):
         self.fields["profile"].required = False
         self.fields["resume"].widget.attrs["accept"] = ".pdf"
         self.fields["resume"].required = False
+        
+        # Initialize job_position_id field if recruitment_id exists
         if self.instance.recruitment_id is not None:
             if self.instance is not None:
                 self.fields["job_position_id"] = forms.ModelChoiceField(
                     queryset=self.instance.recruitment_id.open_positions.all(),
-                    label="Job Position",
+                    label=_("Job Position"),
+                    empty_label=_("---Select Job Position---"),
                 )
-        self.fields["recruitment_id"].widget.attrs = {"data-widget": "ajax-widget"}
-        self.fields["job_position_id"].widget.attrs = {"data-widget": "ajax-widget"}
+        
+        # Apply consistent styling to all fields including recruitment and job position
+        for field_name, field in self.fields.items():
+            if field_name in ["recruitment_id", "job_position_id"]:
+                field.empty_label = _("---Select {label}---").format(
+                    label=_(field.label)
+                )
+                field.widget.attrs.update({
+                    "class": "oh-select oh-select-2 w-100",
+                    "style": "height:50px;width:100%;",
+                    "data-widget": "ajax-widget"
+                })
+            elif isinstance(field.widget, (forms.Select, forms.SelectMultiple)):
+                field.empty_label = _("---Select {label}---").format(
+                    label=_(field.label)
+                )
+                field.widget.attrs.update({
+                    "class": "oh-select oh-select-2 w-100",
+                    "style": "height:50px;width:100%;"
+                })
+            elif isinstance(field.widget, (forms.DateInput)):
+                field.widget.attrs.update({
+                    "class": "oh-input w-100",
+                    "type": "date"
+                })
+            elif isinstance(field.widget, (forms.NumberInput, forms.EmailInput, forms.TextInput, forms.URLInput)):
+                field.widget.attrs.update({
+                    "class": "oh-input w-100",
+                    "placeholder": _(field.label)
+                })
+            elif isinstance(field.widget, forms.Textarea):
+                field.widget.attrs.update({
+                    "class": "oh-input w-100",
+                    "rows": 2,
+                    "placeholder": _(field.label)
+                })
 
     class Meta:
         """
@@ -405,24 +456,31 @@ class CandidateCreationForm(ModelForm):
             "mobile": _("Mobile"),
             "address": _("Address"),
             "zip": _("Zip"),
+            "resume": _("CV *"),
+            "job_position_id": _("Poste *"),
         }
 
-    def save(self, commit: bool = ...):
+    def save(self, commit: bool = True):
         candidate = self.instance
         recruitment = candidate.recruitment_id
         stage = candidate.stage_id
+        
+        # Set default values
         candidate.hired = False
         candidate.start_onboard = False
-        if stage is not None:
-            if stage.stage_type == "hired" and candidate.canceled is False:
-                candidate.hired = True
-                candidate.start_onboard = True
-        candidate.recruitment_id = recruitment
-        candidate.stage_id = stage
-        job_id = self.data.get("job_position_id")
-        if job_id:
-            job_position = JobPosition.objects.get(id=job_id)
-            self.instance.job_position_id = job_position
+        
+        # Set stage if not provided
+        if stage is None and recruitment:
+            candidate.stage_id = recruitment.stage_set.filter(
+                stage_type="initial"
+            ).first()
+            
+        # Set hired status if in hired stage
+        if stage and stage.stage_type == "hired" and not candidate.canceled:
+            candidate.hired = True
+            candidate.start_onboard = True
+            
+        # Job position is already set in clean()
         return super().save(commit)
 
     def as_p(self, *args, **kwargs):
@@ -436,28 +494,39 @@ class CandidateCreationForm(ModelForm):
         return table_html
 
     def clean(self):
+        cleaned_data = super().clean()
         errors = {}
-        profile = self.cleaned_data["profile"]
-        resume = self.cleaned_data["resume"]
-        recruitment: Recruitment = self.cleaned_data["recruitment_id"]
+        profile = cleaned_data.get("profile")
+        resume = cleaned_data.get("resume")
+        recruitment = cleaned_data.get("recruitment_id")
+        
+        # Check if recruitment is selected
+        if not recruitment:
+            errors["recruitment_id"] = _("This field is required")
+            raise ValidationError(errors)
+            
+        # Check resume requirements
         if not resume and not recruitment.optional_resume:
             errors["resume"] = _("This field is required")
-        if not profile and not recruitment.optional_profile_image:
-            errors["profile"] = _("This field is required")
-        if self.instance.name is not None:
-            self.errors.pop("job_position_id", None)
-            if (
-                self.instance.job_position_id is None
-                or self.data.get("job_position_id") == ""
-            ):
-                errors["job_position_id"] = _("This field is required")
-            if (
-                self.instance.job_position_id
-                not in self.instance.recruitment_id.open_positions.all()
-            ):
-                errors["job_position_id"] = _("Choose valid choice")
+            
+        # Job position validation
+        job_position_id = self.data.get("job_position_id")
+        if not job_position_id:
+            errors["job_position_id"] = _("This field is required")
+        else:
+            try:
+                job_position = JobPosition.objects.get(id=job_position_id)
+                if not recruitment.open_positions.filter(id=job_position_id).exists():
+                    errors["job_position_id"] = _("Choose a valid choice")
+                else:
+                    self.instance.job_position_id = job_position
+            except (ValueError, JobPosition.DoesNotExist):
+                errors["job_position_id"] = _("Choose a valid choice")
+                
         if errors:
             raise ValidationError(errors)
+            
+        return cleaned_data
         return super().clean()
 
 
@@ -605,8 +674,7 @@ class AddCandidateForm(ModelForm):
             self.fields["job_position_id"].queryset = recruitment.open_positions
         self.fields["profile"].widget.attrs["accept"] = ".jpg, .jpeg, .png"
         self.fields["resume"].widget.attrs["accept"] = ".pdf"
-        if recruitment.optional_profile_image:
-            self.fields["profile"].required = False
+        self.fields["profile"].required = False
         if recruitment.optional_resume:
             self.fields["resume"].required = False
         self.fields["gender"].empty_label = None
@@ -1181,19 +1249,36 @@ class ScheduleInterviewForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["interview_date"].widget = forms.DateInput(
-            attrs={"type": "date", "class": "oh-input w-100"}
+            attrs={
+                "type": "date",
+                "class": "oh-input w-100",
+                "placeholder": _("Date d'entretien")
+            },
+            format="%Y-%m-%d"
         )
         self.fields["interview_time"].widget = forms.TimeInput(
-            attrs={"type": "time", "class": "oh-input w-100"}
+            attrs={
+                "type": "time",
+                "class": "oh-input w-100",
+                "placeholder": _("Heure d'entretien")
+            },
+            format="%H:%M"
         )
+        
+        # Set initial values for date and time if instance exists
+        if self.instance and self.instance.pk:
+            if self.instance.interview_date:
+                self.initial['interview_date'] = self.instance.interview_date.strftime('%Y-%m-%d')
+            if self.instance.interview_time:
+                self.initial['interview_time'] = self.instance.interview_time.strftime('%H:%M')
 
     def clean(self):
-
         instance = self.instance
         cleaned_data = super().clean()
         interview_date = cleaned_data.get("interview_date")
         interview_time = cleaned_data.get("interview_time")
-        managers = cleaned_data["employee_id"]
+        managers = cleaned_data.get("employee_id")
+        
         if not instance.pk and interview_date and interview_date < date.today():
             self.add_error("interview_date", _("Interview date cannot be in the past."))
 
@@ -1222,11 +1307,6 @@ class ScheduleInterviewForm(ModelForm):
             for leave in leave_employees
             if interview_date in leave.requested_dates()
         ]
-
-        if employees:
-            self.add_error(
-                "employee_id", _(f"{employees} have approved leave on this date")
-            )
 
         return cleaned_data
 

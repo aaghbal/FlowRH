@@ -74,7 +74,7 @@
                     </span>
                 </div>
                 <div class="oh-timeoff-modal__stat">
-                    <span class="oh-timeoff-modal__stat-title">{% trans "Stage" %}</span>
+                    <span class="oh-timeoff-modal__stat-title">{% trans "Étape du recrutement" %}</span>
                     <span class="oh-timeoff-modal__stat-count">
                         {% if perms.offboarding.change_offboardingstage or request.user.employee_get|any_manager %}
                             <form id="stage_change" hx-get="{% url "offboarding-change-stage" %}?employee_ids={{employee.id}}"

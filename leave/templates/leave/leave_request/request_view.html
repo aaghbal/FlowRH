@@ -197,7 +197,7 @@
                 <img style="display: block; width: 150px; height: 150px; margin: 10px auto"
                     src="{% static 'images/ui/attendance.png' %}" class="mb-4" alt="" />
                 <h3 style="font-size: 20px" class="oh-404__subtitle">
-                    {% trans "There are no leave requests at the moment." %}
+                    {% trans "Aucune demande de congé en ce moment." %}
                 </h3>
             </div>
         </div>
@@ -269,7 +269,7 @@
 <div class="oh-modal" id="clashViewModal" role="dialog" aria-hidden="true" style="z-index:99;">
     <div class="oh-modal__dialog" style="max-width: 900px;">
         <div class="oh-modal__dialog-header">
-            <h3 class="oh-main__titlebar-title fw-bold ">{% trans "Clashed Leave Requests" %}</h3>
+            <h3 class="oh-main__titlebar-title fw-bold ">{% trans "Demandes simultanées" %}</h3>
             <button class="oh-modal__close--custom"
                 onclick="$(this).closest('.oh-modal--show').removeClass('oh-modal--show');">
                 <ion-icon name="close-outline" role="img" class="md hydrated" aria-label="close outline"></ion-icon>

@@ -11,9 +11,11 @@ This module is part of the recruitment project and is intended to
 provide the main entry points for interacting with the application's functionality.
 """
 
+import base64
 import contextlib
 import json
 import logging
+import os
 import random
 import secrets
 from urllib.parse import parse_qs
@@ -24,7 +26,8 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage, send_mail
 from django.core.paginator import Paginator
-from django.db.models import ProtectedError
+from django.db import IntegrityError
+from django.db.models import ProtectedError, Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -654,7 +657,7 @@ def email_send(request):
     template_attachment_ids = request.POST.getlist("template_attachment_ids")
     email_backend = ConfiguredEmailBackend()
     if not candidates:
-        messages.info(request, "Please choose candidates")
+        messages.info(request, "Veuillez sélectionner des candidats")
         return HttpResponse("<script>window.location.reload()</script>")
 
     bodys = list(
@@ -700,6 +703,14 @@ def email_send(request):
             new_portal.save()
         else:
             OnboardingPortal(candidate_id=candidate, token=token).save()
+        def _img_b64(rel_path):
+            abs_path = os.path.join(settings.BASE_DIR, "static", rel_path)
+            try:
+                with open(abs_path, "rb") as f:
+                    return "data:image/png;base64," + base64.b64encode(f.read()).decode()
+            except Exception:
+                return ""
+
         html_message = render_to_string(
             "onboarding/mail_templates/default.html",
             {
@@ -707,11 +718,13 @@ def email_send(request):
                 "instance": candidate,
                 "host": host,
                 "protocol": protocol,
+                "logo_b64": _img_b64("images/ui/flowrhlogo.png"),
+                "commitment_b64": _img_b64("images/ui/commitment.png"),
             },
             request=request,
         )
         email = EmailMessage(
-            subject=f"Hello {candidate.name}, Congratulations on your selection!",
+            subject=f"Bonjour {candidate.name}, Félicitations pour votre sélection !",
             body=html_message,
             to=[candidate.email],
         )
@@ -720,7 +733,7 @@ def email_send(request):
         try:
             email.send()
             # to check ajax or not
-            messages.success(request, "Portal link sent to the candidate")
+            messages.success(request, "Lien du portail envoyé au candidat")
         except Exception as e:
             logger.error(e)
             messages.error(request, f"Mail not send to {candidate.name}")
@@ -974,6 +987,7 @@ def user_save(form, onboarding_portal, request, token):
     """
     user = form.save(commit=False)
     user.username = onboarding_portal.candidate_id.email
+    user.save()  # Actually save the user to the database
     session_key = request.session.session_key
     portal_user[session_key] = user
     onboarding_portal.count = 1
@@ -1039,38 +1053,124 @@ def employee_creation(request, token):
         "phone": candidate.mobile,
         "address": candidate.address,
         "dob": candidate.dob,
+        "email": candidate.email,
     }
-    session_key = request.session.session_key
-    user = portal_user[session_key]
-    if Employee.objects.filter(email=user).exists():
-        messages.success(request, _("Employee with email id already exists."))
+    
+    # Simple user lookup by email - no complex session management
+    user = User.objects.filter(username=candidate.email).first()
+    if not user:
+        messages.error(request, _("User not found. Please complete the user creation step first."))
+        return redirect("user-creation", token=token)
+    
+    # Check if employee already exists for this user (including inactive ones)
+    existing_employee = Employee.objects.get_all().filter(employee_user_id=user).first()
+    
+    # If no employee for this user, check if one exists with the same email
+    if not existing_employee:
+        existing_employee = Employee.objects.get_all().filter(email=candidate.email).first()
+        # If we found an employee by email but it doesn't have this user, link them
+        if existing_employee and not existing_employee.employee_user_id:
+            existing_employee.employee_user_id = user
+            existing_employee.save()
+    
+    # If employee exists and has bank details, they can proceed to login
+    if existing_employee and EmployeeBankDetails.objects.filter(employee_id=existing_employee).exists():
+        messages.success(request, _("Employee profile is complete. You can now login."))
         return redirect("login")
-    if Employee.objects.filter(employee_user_id=user).first() is not None:
-        employee = Employee.objects.filter(employee_user_id=user).first()
-        if employee.employee_bank_details:
-            messages.success(request, _("Employee already exists.."))
-            return redirect("login")
-        initial = Employee.objects.filter(employee_user_id=user).first().__dict__
 
     form = EmployeeCreationForm(
         initial=initial,
+        instance=existing_employee,
     )
     # form.errors.clear()
     if request.method == "POST":
-        instance = Employee.objects.filter(employee_user_id=user).first()
+        # Get existing employee for this user
+        existing_employee_post = Employee.objects.filter(employee_user_id=user).first()
+        
+        # If no employee for this user, check if one exists with the same email
+        if not existing_employee_post:
+            existing_employee_by_email = Employee.objects.filter(email=candidate.email).first()
+            if existing_employee_by_email and not existing_employee_by_email.employee_user_id:
+                # Link existing employee to this user
+                existing_employee_by_email.employee_user_id = user
+                existing_employee_by_email.save()
+                existing_employee_post = existing_employee_by_email
+        
         form = EmployeeCreationForm(
             request.POST,
-            instance=instance,
+            instance=existing_employee_post,
         )
         if form.is_valid():
+            print("✅ Form is valid, proceeding...")
             user.save()
             login(request, user)
+            
+            # Save the form - it will either update existing or create new based on instance
             employee_personal_info = form.save(commit=False)
             employee_personal_info.employee_user_id = user
             employee_personal_info.email = candidate.email
             employee_personal_info.employee_profile = onboarding_portal.profile
             employee_personal_info.is_from_onboarding = True
-            employee_personal_info.save()
+            employee_personal_info.is_active = True
+            
+            # Force update if we have an instance (existing employee)
+            if form.instance and form.instance.pk:
+                print("� Updating existing employee...")
+                employee_personal_info.save()
+            else:
+                print("➕ Creating new employee...")
+                try:
+                    employee_personal_info.save()
+                except IntegrityError as e:
+                    print(f"IntegrityError: {str(e)}")
+                    print(f"Looking for employees with user_id={user.id} or email={candidate.email}")
+                    
+                    # Let's also check what's actually in the database using raw SQL to bypass any model managers
+                    from django.db import connection
+                    with connection.cursor() as cursor:
+                        cursor.execute("SELECT id, email, employee_user_id_id, is_active FROM employee_employee WHERE employee_user_id_id = %s", [user.id])
+                        raw_results = cursor.fetchall()
+                        print(f"Raw DB query for user_id={user.id}: {raw_results}")
+                    
+                    # Check ALL employees with this user_id (including inactive ones)
+                    # Use get_all() to bypass the company manager filtering
+                    all_user_employees = Employee.objects.get_all().filter(employee_user_id=user)
+                    print(f"Found {all_user_employees.count()} employees with user_id={user.id} (including inactive):")
+                    for emp in all_user_employees:
+                        print(f"  - Employee ID: {emp.id}, Email: {emp.email}, User ID: {emp.employee_user_id_id}, Active: {emp.is_active}")
+                    
+                    # Check ALL employees with this email (including inactive ones)
+                    all_email_employees = Employee.objects.get_all().filter(email=candidate.email)
+                    print(f"Found {all_email_employees.count()} employees with email={candidate.email} (including inactive):")
+                    for emp in all_email_employees:
+                        print(f"  - Employee ID: {emp.id}, Email: {emp.email}, User ID: {emp.employee_user_id_id}, Active: {emp.is_active}")
+                    
+                    # Use the first employee we find (prefer by user_id), even if inactive
+                    existing_emp = all_user_employees.first() or all_email_employees.first()
+                    if existing_emp:
+                        print("🔄 Found existing employee, updating...")
+                        # Update all the fields
+                        for field_name in ['employee_first_name', 'employee_last_name', 'phone', 'dob', 'gender', 'qualification']:
+                            if field_name in form.cleaned_data:
+                                setattr(existing_emp, field_name, form.cleaned_data[field_name])
+                        
+                        existing_emp.employee_user_id = user
+                        existing_emp.email = candidate.email
+                        existing_emp.employee_profile = onboarding_portal.profile
+                        existing_emp.is_from_onboarding = True
+                        existing_emp.is_active = True
+                        existing_emp.save()
+                        employee_personal_info = existing_emp
+                        print("✅ Existing employee updated successfully")
+                    else:
+                        print(f"No existing employee found to update for user_id={user.id} or email={candidate.email}")
+                        messages.error(request, _("Database error occurred. Please try again."))
+                        return render(
+                            request,
+                            "onboarding/employee_creation.html",
+                            {"form": form, "employee": candidate.recruitment_id.company_id},
+                        )
+            
             job_position = onboarding_portal.candidate_id.job_position_id
             existing_work_info = EmployeeWorkInformation.objects.filter(
                 employee_id=employee_personal_info,
@@ -1082,13 +1182,37 @@ def employee_creation(request, token):
             work_info.job_position_id = job_position
             work_info.date_joining = candidate.joining_date
             work_info.email = candidate.email
-            work_info.save()
+            work_info.company_id = candidate.recruitment_id.company_id  # Add company assignment
+            
+            try:
+                work_info.save()
+                print("Work info saved successfully")
+            except IntegrityError as e:
+                print(f"Work info IntegrityError: {str(e)}")
+                # If there's still a constraint error, find and update the existing record
+                existing_work_info = EmployeeWorkInformation.objects.filter(
+                    employee_id=employee_personal_info
+                ).first()
+                if existing_work_info:
+                    print("Found existing work info, updating it...")
+                    existing_work_info.job_position_id = job_position
+                    existing_work_info.date_joining = candidate.joining_date
+                    existing_work_info.email = candidate.email
+                    existing_work_info.company_id = candidate.recruitment_id.company_id
+                    existing_work_info.save()
+                    print("Existing work info updated successfully")
             onboarding_portal.count = 3
             onboarding_portal.save()
             messages.success(
                 request, _("Employee personal details created successfully..")
             )
             return redirect("employee-bank-details", token)
+        else:
+            # Add error message if form is not valid
+            print("❌ Form is NOT valid:")
+            print("Form errors:", form.errors)
+            print("Non-field errors:", form.non_field_errors())
+            messages.error(request, _("Please correct the errors below."))
     return render(
         request,
         "onboarding/employee_creation.html",
@@ -1108,9 +1232,21 @@ def employee_bank_details(request, token):
     GET : return bank details creation template
     POST : return employee_bank_details_save function
     """
-    onboarding_portal = OnboardingPortal.objects.get(token=token)
+    onboarding_portal = OnboardingPortal.objects.filter(token=token).first()
+    if onboarding_portal is None:
+        return render(request, "404.html")
+        
     user = User.objects.filter(username=onboarding_portal.candidate_id.email).first()
-    employee = Employee.objects.filter(employee_user_id=user).first()
+    if not user:
+        messages.error(request, _("User not found. Please complete the previous steps first."))
+        return redirect("employee-creation", token)
+        
+    # Use get_all() to bypass company manager filtering
+    employee = Employee.objects.get_all().filter(employee_user_id=user).first()
+    if not employee:
+        messages.error(request, _("Employee not found. Please complete the personal details step first."))
+        return redirect("employee-creation", token)
+        
     bank_info = EmployeeBankDetails.objects.filter(employee_id=employee).first()
     form = BankDetailsCreationForm(instance=bank_info)
     if request.method == "POST":
@@ -1144,7 +1280,14 @@ def employee_bank_details_save(form, request, onboarding_portal):
     GET : return welcome onboard view
     """
     employee_bank_detail = form.save(commit=False)
-    employee = Employee.objects.get(employee_user_id=request.user)
+    # Get the user from the onboarding portal instead of request.user
+    user = User.objects.filter(username=onboarding_portal.candidate_id.email).first()
+    employee = Employee.objects.filter(employee_user_id=user).first()
+    
+    if not employee:
+        messages.error(request, _("Employee not found. Please complete the personal details step first."))
+        return redirect("employee-creation", onboarding_portal.token)
+    
     employee_bank_detail.employee_id = employee
     candidate = onboarding_portal.candidate_id
     candidate.converted_employee_id = employee
@@ -1368,10 +1511,10 @@ def candidate_stage_bulk_update(request):
         onboarding_stage_id=stage
     )
     type = "info"
-    message = "No candidates selected"
+    message = "Aucun candidat sélectionné"
     if candidate_id_list:
         type = "success"
-        message = "Candidate stage updated successfully"
+        message = "Étape du candidat mise à jour avec succès"
     groups = onboarding_query_grouper(request, recruitments)
     for item in groups:
         setattr(item["recruitment"], "stages", item["stages"])

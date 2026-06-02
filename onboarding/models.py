@@ -136,11 +136,11 @@ class CandidateTask(HorillaModel):
     """
 
     choice = (
-        ("todo", _("Todo")),
-        ("scheduled", _("Scheduled")),
-        ("ongoing", _("Ongoing")),
-        ("stuck", _("Stuck")),
-        ("done", _("Done")),
+        ("todo", _("À faire")),
+        ("scheduled", _("Planifié")),
+        ("ongoing", _("En cours")),
+        ("stuck", _("Bloqué")),
+        ("done", _("Terminé")),
     )
     candidate_id = models.ForeignKey(
         Candidate, on_delete=models.PROTECT, related_name="candidate_task"

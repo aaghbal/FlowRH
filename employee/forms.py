@@ -165,6 +165,17 @@ class EmployeeForm(ModelForm):
             "is_from_onboarding",
             "is_directly_converted",
             "is_active",
+            "zip",
+            "country",
+            "state",
+            "city",
+            "address",
+            "experience",
+            "marital_status",
+            "children",
+            "emergency_contact",
+            "emergency_contact_name",
+            "emergency_contact_relation",
         )
         widgets = {
             "dob": TextInput(attrs={"type": "date", "id": "dob"}),
@@ -173,8 +184,10 @@ class EmployeeForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].widget.attrs["autocomplete"] = "email"
+        self.fields["email"].required = False
         self.fields["phone"].widget.attrs["autocomplete"] = "phone"
-        self.fields["address"].widget.attrs["autocomplete"] = "address"
+        self.fields["phone"].required = False
+        # self.fields["address"].widget.attrs["autocomplete"] = "address"
         if instance := kwargs.get("instance"):
             # ----
             # django forms not showing value inside the date, time html element.
@@ -186,6 +199,12 @@ class EmployeeForm(ModelForm):
             kwargs["initial"] = initial
         else:
             self.initial = {"badge_id": self.get_next_badge_id()}
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+        return instance
 
     def as_p(self, *args, **kwargs):
         context = {"form": self}
@@ -246,12 +265,13 @@ class EmployeeForm(ModelForm):
         """
         This method is used to clean the badge id
         """
-        badge_id = self.cleaned_data["badge_id"]
+        badge_id = self.cleaned_data.get("badge_id")
         if badge_id:
-            all_employees = Employee.objects.get_all()
-            queryset = all_employees.filter(badge_id=badge_id).exclude(
-                pk=self.instance.pk if self.instance else None
-            )
+            # Check if there's another employee with the same badge_id
+            queryset = Employee.objects.filter(badge_id=badge_id)
+            if self.instance and self.instance.pk:
+                queryset = queryset.exclude(pk=self.instance.pk)
+            
             if queryset.exists():
                 raise forms.ValidationError(trans("Badge ID must be unique."))
             if not re.search(r"\d", badge_id):
@@ -265,41 +285,83 @@ class EmployeeWorkInformationForm(ModelForm):
     """
     Form for EmployeeWorkInformation model
     """
+    # Define site choices
+    SITE_CHOICES = [
+        ("", _("---Select Site---")),
+        ("BANDEONG", "BANDEONG"),
+        ("VITA", "VITA"),
+        ("LISSASFA", "LISSASFA"),
+        ("SIDI OTHMANE", "SIDI OTHMANE"),
+        ("DIRECTION POLE", "DIRECTION POLE"),
+        ("ZENATA", "ZENATA"),
+        ("Temara", "Temara"),
+        ("FINANCE", "FINANCE"),
+        ("Errahma", "Errahma"),
+        ("VOVITA", "VOVITA"),
+        ("CASA ANFA", "CASA ANFA"),
+        ("VOLISSASFA", "VOLISSASFA"),
+    ]
+
+    # Override the location field to use ChoiceField
+    location = forms.ChoiceField(
+        choices=SITE_CHOICES,
+        required=False,
+        label=_("Site"),
+        widget=forms.Select(attrs={"class": "oh-select oh-select-2 w-100"})
+    )
 
     class Meta:
         """
         Meta class to add the additional info
         """
-
         model = EmployeeWorkInformation
         fields = (
             "department_id",
             "job_position_id",
-            "job_role_id",
-            "shift_id",
-            "work_type_id",
-            "employee_type_id",
+            # "job_role_id",
+            # "shift_id",
+            # "work_type_id",
+            # "employee_type_id",
             "reporting_manager_id",
             "company_id",
             "location",
             "email",
             "mobile",
+            "numero_cimr",
+            "societe",
+            "affiliation_cnss",
+            "affiliation_mut",
             "date_joining",
-            "contract_end_date",
-            "tags",
-            "basic_salary",
-            "salary_hour",
+            # "contract_end_date",
+            # "tags",
+            # "basic_salary",
+            # "salary_hour",
         )
         exclude = ("employee_id",)
 
         widgets = {
             "date_joining": DateInput(attrs={"type": "date"}),
             "contract_end_date": DateInput(attrs={"type": "date"}),
+            "email": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Numéro de CNSS"}),
+            "mobile": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Affiliation CIMR"}),
+            "numero_cimr": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Numéro CIMR"}),
+            "societe": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Société"}),
+            "affiliation_cnss": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Affiliation CNSS"}),
+            "affiliation_mut": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Affiliation MUT"}),
+        }
+        labels = {
+            "email": trans("Numéro de CNSS"),
+            "mobile": trans("Affiliation CIMR"),
+            "numero_cimr": trans("Numéro CIMR"),
+            "societe": trans("Société"),
+            "affiliation_cnss": trans("Affiliation CNSS"),
+            "affiliation_mut": trans("Affiliation MUT"),
+            "reporting_manager_id": trans("Responsable"),
         }
 
     def __init__(self, *args, disable=False, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["email"].widget.attrs["autocomplete"] = "email"
+        self.fields["email"].required = False
 
         self.fields["job_position_id"].widget.attrs.update(
             {
@@ -369,12 +431,35 @@ class EmployeeWorkInformationUpdateForm(ModelForm):
     """
     Form for EmployeeWorkInformation model
     """
+    # Use the same site choices as in EmployeeWorkInformationForm
+    SITE_CHOICES = [
+        ("", _("---Select Site---")),
+        ("BANDEONG", "BANDEONG"),
+        ("VITA", "VITA"),
+        ("LISSASFA", "LISSASFA"),
+        ("SIDI OTHMANE", "SIDI OTHMANE"),
+        ("DIRECTION POLE", "DIRECTION POLE"),
+        ("ZENATA", "ZENATA"),
+        ("Temara", "Temara"),
+        ("FINANCE", "FINANCE"),
+        ("Errahma", "Errahma"),
+        ("VOVITA", "VOVITA"),
+        ("CASA ANFA", "CASA ANFA"),
+        ("VOLISSASFA", "VOLISSASFA"),
+    ]
+
+    # Override the location field to use ChoiceField
+    location = forms.ChoiceField(
+        choices=SITE_CHOICES,
+        required=False,
+        label=_("Site"),
+        widget=forms.Select(attrs={"class": "oh-select oh-select-2 w-100"})
+    )
 
     class Meta:
         """
         Meta class to add the additional info
         """
-
         model = EmployeeWorkInformation
         fields = "__all__"
         exclude = ("employee_id",)
@@ -382,6 +467,10 @@ class EmployeeWorkInformationUpdateForm(ModelForm):
         widgets = {
             "date_joining": DateInput(attrs={"type": "date"}),
             "contract_end_date": DateInput(attrs={"type": "date"}),
+            "contract_start_date": DateInput(attrs={"type": "date"}),
+            "societe": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Société"}),
+            "affiliation_cnss": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Affiliation CNSS"}),
+            "affiliation_mut": forms.TextInput(attrs={"class": "oh-input w-100", "placeholder": "Affiliation MUT"}),
         }
 
     def as_p(self, *args, **kwargs):
@@ -394,8 +483,6 @@ class EmployeeBankDetailsForm(ModelForm):
     Form for EmployeeBankDetails model
     """
 
-    address = forms.CharField(widget=forms.Textarea(attrs={"rows": 2, "cols": 40}))
-
     class Meta:
         """
         Meta class to add the additional info
@@ -406,20 +493,28 @@ class EmployeeBankDetailsForm(ModelForm):
             "bank_name",
             "account_number",
             "branch",
+        )
+        exclude = [
+            "employee_id", 
+            "is_active", 
+            "additional_info",
             "any_other_code1",
             "address",
             "country",
             "state",
             "city",
             "any_other_code2",
-        )
-        exclude = ["employee_id", "is_active", "additional_info"]
+        ]
+        widgets = {
+            'bank_name': forms.TextInput(attrs={'class': 'oh-input w-100', 'required': False}),
+            'account_number': forms.TextInput(attrs={'class': 'oh-input w-100', 'required': False}),
+            'branch': forms.TextInput(attrs={'class': 'oh-input w-100', 'required': False}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["address"].widget.attrs["autocomplete"] = "address"
-        for visible in self.visible_fields():
-            visible.field.widget.attrs["class"] = "oh-input w-100"
+        for field_name in ['bank_name', 'account_number', 'branch']:
+            self.fields[field_name].required = False
 
     def as_p(self, *args, **kwargs):
         context = {"form": self}
@@ -437,15 +532,33 @@ class EmployeeBankDetailsUpdateForm(ModelForm):
         """
 
         model = EmployeeBankDetails
-        fields = "__all__"
-        exclude = ["employee_id", "is_active", "additional_info"]
+        fields = (
+            "bank_name",
+            "account_number",
+            "branch",
+        )
+        exclude = [
+            "employee_id", 
+            "is_active", 
+            "additional_info",
+            "any_other_code1",
+            "address",
+            "country",
+            "state",
+            "city",
+            "any_other_code2",
+        ]
+        widgets = {
+            'bank_name': forms.TextInput(attrs={'class': 'oh-input w-100', 'required': False}),
+            'account_number': forms.TextInput(attrs={'class': 'oh-input w-100', 'required': False}),
+            'branch': forms.TextInput(attrs={'class': 'oh-input w-100', 'required': False}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs["class"] = "oh-input w-100"
-        for field in self.fields:
-            self.fields[field].widget.attrs["placeholder"] = self.fields[field].label
+        for field_name in ['bank_name', 'account_number', 'branch']:
+            self.fields[field_name].required = False
+            self.fields[field_name].widget.attrs["placeholder"] = self.fields[field_name].label
 
     def as_p(self, *args, **kwargs):
         context = {"form": self}
@@ -460,12 +573,13 @@ excel_columns = [
     ("phone", trans("Phone")),
     ("experience", trans("Experience")),
     ("gender", trans("Gender")),
-    ("dob", trans("Date de Naissance")),
+    ("dob", trans("Date de naissance")),
     ("country", trans("Country")),
     ("state", trans("State")),
     ("city", trans("City")),
     ("address", trans("Address")),
     ("zip", trans("Zip Code")),
+    ("qualification", trans("CIN")),
     ("marital_status", trans("Marital Status")),
     ("children", trans("Children")),
     ("is_active", trans("Is active")),
@@ -474,6 +588,10 @@ excel_columns = [
     ("emergency_contact_relation", trans("Emergency Contact Relation")),
     ("employee_work_info__email", trans("Work Email")),
     ("employee_work_info__mobile", trans("Work Phone")),
+    ("employee_work_info__numero_cimr", trans("Numéro CIMR")),
+    ("employee_work_info__societe", trans("Société")),
+    ("employee_work_info__affiliation_cnss", trans("Affiliation CNSS")),
+    ("employee_work_info__affiliation_mut", trans("Affiliation MUT")),
     ("employee_work_info__department_id", trans("Department")),
     ("employee_work_info__job_position_id", trans("Job Position")),
     ("employee_work_info__job_role_id", trans("Job Role")),
@@ -481,7 +599,7 @@ excel_columns = [
     ("employee_work_info__work_type_id", trans("Work Type")),
     ("employee_work_info__reporting_manager_id", trans("Reporting Manager")),
     ("employee_work_info__employee_type_id", trans("Employee Type")),
-    ("employee_work_info__location", trans("Work Location")),
+    ("employee_work_info__location", trans("Site")),
     ("employee_work_info__date_joining", trans("Date Joining")),
     ("employee_work_info__company_id", trans("Company")),
     ("employee_bank_details__bank_name", trans("Bank Name")),

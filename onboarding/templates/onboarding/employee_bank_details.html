@@ -68,73 +68,20 @@
                 <form method="Post">
                     {% csrf_token %}
                     <div class="oh-onboarding-card__address-group">
-                        <h2 class="oh-onboarding-card__section-title">{% trans "Bank Details" %}</h2>
+                        <h2 class="oh-onboarding-card__section-title">{% trans "Banque Détails" %}</h2>
                         <div class="row">
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "Bank Name" %}</label>
+                                    <label for="" class="oh-label">{{form.bank_name.label}}</label>
                                     {{form.bank_name}}
                                     {{form.bank_name.errors}}
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "Account number" %}</label>
+                                    <label for="" class="oh-label">{{form.account_number.label}}</label>
                                     {{form.account_number}}
                                     {{form.account_number.errors}}
-                                </div>
-                            </div>
-                             <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "Branch" %}</label>
-                                    {{form.branch}}
-                                    {{form.branch.errors}}
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "Address" %}</label>
-                                    {{form.address}}
-                                    {{form.address.errors}}
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-12 col-lg-12 ">
-                                <div class="oh-input-group">
-                                  <label for="" class="oh-label">{% trans "Country *" %}</label>
-                                  <select name="country" id="id_country" class="oh-select oh-select-2">
-
-                                  </select>
-                                  {{form.country.errors}}
-                                </div>
-                              </div>
-                              <div class="col-sm-12 col-md-12 col-lg-12 ">
-                                <div class="oh-input-group">
-                                  <label for="" class="oh-label">{% trans "State *" %}</label>
-                                  <select name="state" id="id_state" class="oh-select oh-select-2">
-
-                                  </select>
-                                  {{form.state.errors}}
-                                </div>
-                              </div>
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "City" %}</label>
-                                    {{form.city}}
-                                    {{form.city.errors}}
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "Bank Code" %} #1</label>
-                                    {{form.any_other_code1}}
-                                    {{form.any_other_code1.errors}}
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="oh-input-group">
-                                    <label for="" class="oh-label">{% trans "Bank Code" %} #2</label>
-                                    {{form.any_other_code2}}
-                                    {{form.any_other_code2.errors}}
                                 </div>
                             </div>
                         </div>

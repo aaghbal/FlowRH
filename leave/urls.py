@@ -50,6 +50,26 @@ urlpatterns = [
         name="request-approve",
     ),
     path(
+        "request-manager-approve/<int:id>", 
+        views.leave_request_manager_approve, 
+        name="request-manager-approve"
+    ),
+    path(
+        "request-manager-approve/<int:id>/<int:emp_id>",
+        views.leave_request_manager_approve,
+        name="request-manager-approve",
+    ),
+    path(
+        "request-manager-reject/<int:id>", 
+        views.leave_request_manager_reject, 
+        name="request-manager-reject"
+    ),
+    path(
+        "request-manager-reject/<int:id>/<int:emp_id>",
+        views.leave_request_manager_reject,
+        name="request-manager-reject",
+    ),
+    path(
         "leave-requests-bulk-approve",
         views.leave_request_bulk_approve,
         name="leave-requests-bulk-approve",

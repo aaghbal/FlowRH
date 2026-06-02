@@ -1,0 +1,234 @@
+<!-- templates/fil/single_comment.html - For rendering individual comments without nested replies -->
+<style>
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    max-width: 70%;
+    min-width: 32px;
+    word-break: break-word;
+    flex-shrink: 1;
+}
+
+.comment-profile-pic {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    margin-right: 8px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    font-size: 11px;
+    line-height: 1;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.comment-profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Avatar colors for comments */
+.comment-profile-pic.color-1 { background: #6b46c1; }
+.comment-profile-pic.color-2 { background: #dc2626; }
+.comment-profile-pic.color-3 { background: #2563eb; }
+.comment-profile-pic.color-4 { background: #059669; }
+.comment-profile-pic.color-5 { background: #d97706; }
+.comment-profile-pic.color-6 { background: #7c2d12; }
+.comment-profile-pic.color-7 { background: #be185d; }
+.comment-profile-pic.color-8 { background: #1f2937; }
+.comment-profile-pic.color-9 { background: #0891b2; }
+.comment-profile-pic.color-10 { background: #7c3aed; }
+
+.comment-bubble {
+    background: #f0f2f5;
+    border-radius: 18px;
+    padding: 8px 14px 8px 12px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.comment-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 13px;
+    color: #050505;
+}
+
+.comment-date {
+    font-size: 11px;
+    color: #65676b;
+    font-weight: 400;
+}
+
+.comment-content {
+    font-size: 13px;
+    color: #050505;
+    margin: 0 0 2px 0;
+    word-break: break-word;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    color: #65676b;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0 2px;
+    transition: color 0.2s;
+}
+
+.action-button:hover {
+    color: #1877f2;
+}
+
+.action-button.liked {
+    color: #e91e63;
+}
+
+.action-button.liked i {
+    color: #e91e63;
+}
+
+.action-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.action-button.delete-btn {
+    color: #dc3545;
+}
+
+.action-button.delete-btn:hover {
+    color: #c82333;
+}
+
+.reply-form {
+    margin-top: 4px;
+}
+
+.reply-form textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #ccd0d5;
+    padding: 4px 8px;
+    font-size: 12px;
+    resize: vertical;
+}
+
+.submit-reply {
+    margin-top: 2px;
+    background: #1877f2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.replies {
+    margin-left: 34px;
+    margin-top: 2px;
+}
+
+.reply {
+    margin-top: 2px;
+}
+
+.sub-replies {
+    margin-left: 20px;
+    margin-top: 4px;
+}
+
+.sub-reply {
+    margin-top: 2px;
+}
+
+.sub-reply .comment-bubble {
+    background: #f8f9fa;
+}
+
+.reply .comment {
+    max-width: 100%;
+}
+
+.sub-reply .comment {
+    max-width: 100%;
+}
+</style>
+<div class="comment" id="comment-{{ comment.id }}">
+    <div data-user-name="{{ comment.author.get_full_name }}" 
+         data-user-firstname="{{ comment.author.employee_first_name }}" 
+         data-user-lastname="{{ comment.author.employee_last_name }}" 
+         data-user-avatar="{{ comment.author.get_avatar }}" 
+         data-avatar-size="small" 
+         class="comment-profile-pic"></div>
+    <div class="comment-bubble">
+        <div class="comment-header">
+            <span class="comment-author">{{ comment.author.get_full_name }}</span>
+            <span class="comment-date">{{ comment.created_at|timesince }} ago</span>
+        </div>
+        <div class="comment-content">{{ comment.content }}</div>
+        <div class="comment-actions">
+            <button class="action-button like-btn {% if comment.id in liked_comment_ids %}liked{% endif %}" data-comment-id="{{ comment.id }}">
+                <i class="{% if comment.id in liked_comment_ids %}fas{% else %}far{% endif %} fa-heart"></i>
+                <span class="like-count">{{ comment.get_likes_count }}</span>
+            </button>
+            <!-- Only show reply button if this is not a sub-reply (reply to a reply) -->
+            {% if not comment.parent_comment %}
+                <button class="action-button reply-btn" onclick="showReplyForm('{{ comment.id }}')">
+                    Répondre
+                </button>
+            {% elif comment.parent_comment and not comment.parent_comment.parent_comment %}
+                <button class="action-button reply-btn" onclick="showReplyForm('{{ comment.id }}')">
+                    Répondre
+                </button>
+            {% endif %}
+            {% if comment.author == request.user.employee_get %}
+                <button class="action-button delete-btn" onclick="deleteComment('{{ comment.id }}')">
+                    <i class="fas fa-trash"></i>
+                    Supprimer
+                </button>
+            {% endif %}
+        </div>
+        <!-- Only show reply form if this is not a sub-reply -->
+        {% if not comment.parent_comment %}
+            <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: none;">
+                <textarea placeholder="Write your reply..."></textarea>
+                <button class="submit-reply" onclick="submitReply('{{ comment.id }}')">Post</button>
+            </div>
+        {% elif comment.parent_comment and not comment.parent_comment.parent_comment %}
+            <div class="reply-form" id="reply-form-{{ comment.id }}" style="display: none;">
+                <textarea placeholder="Write your reply..."></textarea>
+                <button class="submit-reply" onclick="submitReply('{{ comment.id }}')">Post</button>
+            </div>
+        {% endif %}
+    </div>
+</div>

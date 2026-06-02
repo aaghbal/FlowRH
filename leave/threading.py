@@ -33,6 +33,7 @@ class LeaveMailSendThread(Thread):
 
         host = self.host
         protocol = self.protocol
+        link = "#"
         if leave_request_id != "#":
             link = int(leave_request_id)
         for recipient in recipients:
@@ -71,8 +72,8 @@ class LeaveMailSendThread(Thread):
             owner = self.leave_request.employee_id
             reporting_manager = self.leave_request.employee_id.get_reporting_manager()
 
-            content_manager = f"This is to inform you that a leave request has been requested by {owner}. Take the necessary actions for the leave request. Should you have any additional information or updates, please feel free to communicate directly with the {owner}."
-            subject_manager = f"Leave request has been requested by {owner}"
+            content_manager = f"Nous vous informons qu'une demande de congé a été déposée par {owner}. Veuillez prendre les mesures nécessaires concernant cette demande. Si vous avez des informations complémentaires ou des mises à jour, n’hésitez pas à les transmettre directement à {owner}."
+            subject_manager = f"La demande de congé a été déposée par {owner}"
 
             self.send_email(
                 subject_manager,
@@ -81,8 +82,8 @@ class LeaveMailSendThread(Thread):
                 self.leave_request.id,
             )
 
-            content_owner = f"This is to inform you that the leave request you created has been successfully logged into our system. The manager will now take the necessary actions to address leave request. Should you have any additional information or updates, please feel free to communicate directly with the {reporting_manager}."
-            subject_owner = "Leave request created successfully"
+            content_owner = f"Nous vous informons que la demande de congé que vous avez créée a bien été enregistrée dans notre système."
+            subject_owner = "Demande de congé créée avec succès"
 
             self.send_email(
                 subject_owner, content_owner, [owner], self.leave_request.id
@@ -92,8 +93,8 @@ class LeaveMailSendThread(Thread):
             owner = self.leave_request.employee_id
             reporting_manager = self.leave_request.employee_id.get_reporting_manager()
 
-            subject = "The Leave request has been successfully approved"
-            content = f"This is to inform you that the leave request has been approved. If you have any questions or require further information, feel free to reach out to the {reporting_manager}."
+            subject = "Votre demande de congé a été approuvée."
+            content = f"Nous vous informons que votre demande de congé a été approuvée."
 
             self.send_email(subject, content, [owner], self.leave_request.id)
 
@@ -101,8 +102,8 @@ class LeaveMailSendThread(Thread):
             owner = self.leave_request.employee_id
             reporting_manager = self.leave_request.employee_id.get_reporting_manager()
 
-            subject = "The Leave request has been rejected"
-            content = f"This is to inform you that the leave request has been rejected. If you have any questions or require further information, feel free to reach out to the {reporting_manager}."
+            subject = "Votre demande de congé a été rejetée."
+            content = f"Nous vous informons que votre demande de congé a été rejetée."
 
             self.send_email(subject, content, [owner], self.leave_request.id)
 
@@ -110,8 +111,8 @@ class LeaveMailSendThread(Thread):
             owner = self.leave_request.employee_id
             reporting_manager = self.leave_request.employee_id.get_reporting_manager()
 
-            content_manager = f"This is to inform you that a leave request has been requested to cancel by {owner}. Take the necessary actions for the leave request. Should you have any additional information or updates, please feel free to communicate directly with the {owner}."
-            subject_manager = f"Leave request cancellation"
+            content_manager = f"Nous vous informons qu'une demande de congé a été demandée pour annuler par {owner}. Veuillez prendre les mesures nécessaires concernant cette demande. Si vous avez des informations complémentaires ou des mises à jour, n’hésitez pas à les transmettre directement à {owner}."
+            subject_manager = f"La demande de congé a été annulée"
 
             self.send_email(
                 subject_manager,
@@ -120,8 +121,8 @@ class LeaveMailSendThread(Thread):
                 self.leave_request.id,
             )
 
-            content_owner = f"This is to inform you that a cancellation request created for your leave request has been successfully logged into our system. The manager will now take the necessary actions to address the leave request. Should you have any additional information or updates, please feel free to communicate directly with the {reporting_manager}."
-            subject_owner = "Leave request cancellation requested"
+            content_owner = f"Nous vous informons que la demande d'annulation de congé que vous avez créée a bien été enregistrée dans notre système. Le manager va maintenant prendre les mesures nécessaires pour traiter la demande de congé. Si vous avez des informations complémentaires ou des mises à jour, n'hésitez pas à les transmettre directement à {reporting_manager}."
+            subject_owner = "Demande d'annulation de congé effectuée"
 
             self.send_email(
                 subject_owner, content_owner, [owner], self.leave_request.id

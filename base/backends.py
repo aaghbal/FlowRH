@@ -222,9 +222,14 @@ def new_init(
 
     if request:
         try:
-            display_email_name = f"{request.user.employee_get.get_full_name()} <{request.user.employee_get.email}>"
-            from_email = from_email or display_email_name
-            reply_to = [display_email_name] if not reply_to else reply_to
+            config = DefaultHorillaMailBackend.get_dynamic_email_config()
+            if config and config.display_name:
+                system_from = f"{config.display_name} <{config.from_email or config.username}>"
+                from_email = from_email or system_from
+            else:
+                display_email_name = f"{request.user.employee_get.get_full_name()} <{request.user.employee_get.email}>"
+                from_email = from_email or display_email_name
+                reply_to = [display_email_name] if not reply_to else reply_to
 
         except Exception as e:
             logger.error(e)

@@ -1,0 +1,85 @@
+┌─────────────────────────────┐
+│           USERS             │
+├─────────────────────────────┤
+│ + id: INT (PK)              │
+│ + username: VARCHAR(100)    │
+│ + email: VARCHAR(255)       │
+│ + profile_picture: VARCHAR  │
+│ + created_at: TIMESTAMP     │
+│ + updated_at: TIMESTAMP     │
+└─────────────────────────────┘
+              │
+              │ 1:N
+              ▼
+┌─────────────────────────────┐
+│           POSTS             │
+├─────────────────────────────┤
+│ + id: INT (PK)              │
+│ + user_id: INT (FK)         │
+│ + content: TEXT             │
+│ + post_type: ENUM           │
+│   ('text', 'poll', 'image') │
+│ + created_at: TIMESTAMP     │
+│ + updated_at: TIMESTAMP     │
+└─────────────────────────────┘
+              │
+              │ 1:N
+              ├─────────────────────────────┐
+              ▼                             ▼
+┌─────────────────────────────┐    ┌─────────────────────────────┐
+│        POST_MEDIA           │    │         POLLS               │
+├─────────────────────────────┤    ├─────────────────────────────┤
+│ + id: INT (PK)              │    │ + id: INT (PK)              │
+│ + post_id: INT (FK)         │    │ + post_id: INT (FK)         │
+│ + media_type: ENUM          │    │ + question: TEXT            │
+│   ('photo', 'document')     │    │ + created_at: TIMESTAMP     │
+│ + file_path: VARCHAR        │    └─────────────────────────────┘
+│ + file_name: VARCHAR        │                   │
+│ + created_at: TIMESTAMP     │                   │ 1:N
+└─────────────────────────────┘                   ▼
+              │                    ┌─────────────────────────────┐
+              │                    │       POLL_OPTIONS          │
+              │                    ├─────────────────────────────┤
+              │                    │ + id: INT (PK)              │
+              │                    │ + poll_id: INT (FK)         │
+              │                    │ + option_text: VARCHAR      │
+              │                    │ + vote_count: INT           │
+              │                    │ + created_at: TIMESTAMP     │
+              │                    └─────────────────────────────┘
+              │                                   │
+              │                                   │ 1:N
+              │                                   ▼
+              │                    ┌─────────────────────────────┐
+              │                    │       POLL_VOTES            │
+              │                    ├─────────────────────────────┤
+              │                    │ + id: INT (PK)              │
+              │                    │ + poll_option_id: INT (FK)  │
+              │                    │ + user_id: INT (FK)         │
+              │                    │ + created_at: TIMESTAMP     │
+              │                    └─────────────────────────────┘
+              │
+              │ 1:N
+              ▼
+┌─────────────────────────────┐
+│         COMMENTS            │
+├─────────────────────────────┤
+│ + id: INT (PK)              │
+│ + post_id: INT (FK)         │
+│ + user_id: INT (FK)         │
+│ + parent_comment_id: INT(FK)│
+│ + content: TEXT             │
+│ + created_at: TIMESTAMP     │
+│ + updated_at: TIMESTAMP     │
+└─────────────────────────────┘
+              │
+              │ M:N
+              ▼
+┌─────────────────────────────┐
+│           LIKES             │
+├─────────────────────────────┤
+│ + id: INT (PK)              │
+│ + user_id: INT (FK)         │
+│ + post_id: INT (FK)         │
+│ + comment_id: INT (FK)      │
+│ + created_at: TIMESTAMP     │
+└─────────────────────────────┘

@@ -405,15 +405,16 @@ class CandidateReGroup:
         ("", "select"),
         ("recruitment_id", "Recruitment"),
         ("job_position_id", "Job Position"),
-        ("hired", "Hired"),
+        ("hired", "Recruté"),
         ("country", "Country"),
         ("stage_id", "Stage"),
-        ("joining_date", "Date Joining"),
-        ("probation_end", "Probation End"),
-        ("offer_letter_status", "Offer Letter Status"),
-        ("rejected_candidate__reject_reason_id", "Reject Reason"),
-        ("skillzonecandidate_set__skill_zone_id", "Skill Zone"),
+        ("joining_date", "Date de début"),
+        ("probation_end", "Date de fin de période d'essai"),
+        ("offer_letter_status", "Statut de la lettre d'offre"),
+        ("rejected_candidate__reject_reason_id", "Motif de refus"),
+        ("skillzonecandidate_set__skill_zone_id", "Zone de compétence"),
     ]
+
 
 
 class SkillZoneFilter(FilterSet):

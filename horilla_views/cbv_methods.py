@@ -166,8 +166,8 @@ def login_required(view_func):
             func = view_func(self, request, *args, **kwargs)
         except Exception as e:
             logger.exception(e)
-            if not settings.DEBUG:
-                return render(request, "went_wrong.html")
+            # if not settings.DEBUG:
+            #     return render(request, "went_wrong.html")
             return view_func(self, *args, **kwargs)
         return func
 

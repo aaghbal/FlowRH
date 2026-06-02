@@ -61,7 +61,7 @@
                 </div>
                 {% endif %}
                 {% if request.user.employee_get in stage.stage_managers.all or perms.recruitment.change_candidate or request.user.employee_get in rec.recruitment_managers.all %}
-                    <div class="oh-sticky-table__th oh-table-config__th">{% trans "Stage" %}</div>
+                    <div class="oh-sticky-table__th oh-table-config__th">{% trans "Étape de recrutement" %}</div>
                     <div class="oh-sticky-table__th oh-table-config__th" style="width: 225px;">
                         <select name="bulk_stage"
                         onchange="

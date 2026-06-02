@@ -73,7 +73,7 @@ class Document(HorillaModel):
     document = models.FileField(upload_to="employee/documents", null=True)
     status = models.CharField(choices=STATUS, max_length=10, default="requested")
     reject_reason = models.TextField(blank=True, null=True, max_length=255)
-    issue_date = models.DateField(null=True, blank=True, verbose_name=_("Issue Date"))
+    issue_date = models.DateField(null=True, blank=True, verbose_name=_("Date de délivrance"))
     expiry_date = models.DateField(null=True, blank=True, verbose_name=_("Expiry Date"))
     notify_before = models.IntegerField(
         default=1, null=True, verbose_name=_("Notify Before")

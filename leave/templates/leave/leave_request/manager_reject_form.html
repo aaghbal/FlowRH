@@ -1,0 +1,13 @@
+{% load i18n %}
+{% load static %}
+<form id="managerRejectForm" hx-post="{% url 'request-manager-reject' id %}" hx-target="#rejectForm">
+    {% csrf_token %}
+    <div class="oh-form-group">
+        <label for="{{form.reason.id_for_label}}" class="oh-form__label">Raison du rejet</label>
+        {{form.reason}}
+    </div>
+    <div class="oh-form-group">
+        <button type="submit" class="oh-btn oh-btn--danger">Rejeter la demande</button>
+        <button type="button" class="oh-btn oh-btn--light oh-modal-close-btn" data-dismiss="oh-modal">Annuler</button>
+    </div>
+</form>

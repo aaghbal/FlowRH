@@ -106,18 +106,18 @@
                 >{{user_leave.leave_type_id}}</span
               >
               <span class="oh-kanban-card__subtitle"
-                >{% trans "Available Leave Days" %} :
+                >{% trans "Disponibles Congé Jours" %} :
                 {% if user_leave.leave_type_id.limit_leave %}{{user_leave.available_days}}{% else %}{% trans "No Limit" %}{% endif %}</span
               ><br />
               <span class="oh-kanban-card__subtitle"
-                >{% trans "Carryforward Leave Days" %} :
+                >{% trans "Jours de congé reportés" %} :
                 {{user_leave.carryforward_days}}</span
               ><br />
               <span class="oh-kanban-card__subtitle"
-                >{% trans "Total Leave Days" %} :
+                >{% trans "Total Congé Jours" %} :
                 {% if user_leave.leave_type_id.limit_leave %}{{user_leave.total_leave_days}}{% else %}{% trans "No Limit" %}{% endif %}</span
               ><br />
-              <span class="oh-kanban-card__subtitle">{% trans "Total Leave taken" %} :{{user_leave.leave_taken}}</span>
+              <span class="oh-kanban-card__subtitle">{% trans "Congé pris" %} :{{user_leave.leave_taken}}</span>
             </div>
           </div>
         {% endif %}

@@ -29,7 +29,7 @@
         <main class="oh-auth">
             <div class="oh-auth-card mb-4">
                 <h1 class="oh-onboarding-card__title oh-onboarding-card__title--h2 text-center my-3">
-                    {% trans "Sign In" %}
+                    {% trans "Connexion" %}
                 </h1>
                 <p class="text-muted text-center">
                     {% trans "Please login to access the dashboard." %}
@@ -39,13 +39,13 @@
                     <div class="oh-input-group">
                         <label class="oh-label" for="username">{% trans "Username" %}</label>
                         <input type="text" id="username" name="username" class="oh-input w-100"
-                            placeholder="e.g. adam.luis@horilla.com" />
+                            placeholder="Nom d'utilisateur" />
                     </div>
                     <div class="oh-input-group">
                         <label class="oh-label" for="password">{% trans "Password" %}</label>
                         <div class="oh-password-input-container">
                             <input type="password" id="password" name="password"
-                                class="oh-input oh-input--password w-100" placeholder="Use alphanumeric characters" />
+                                class="oh-input oh-input--password w-100" placeholder="Mot de passe" />
                             <button type="button" class="oh-btn oh-btn--transparent oh-password-input--toggle">
                                 <ion-icon class="oh-passowrd-input__show-icon" title="{% trans 'Show Password' %}"
                                     name="eye-outline"></ion-icon>
@@ -78,16 +78,16 @@
                                 background-color: #928C6F;
                                 color: #0a0a0a;
                                 ">
-                                {% trans "Initialize Database" %}
+                                {% trans "Commencer" %}
                                 <ion-icon class="ms-2" name="arrow-forward-outline"></ion-icon>
                             </a>
-                            <a
+                            <!-- <a
                                 onclick="$('#dataLoadAuthentication').toggleClass('oh-modal--show');"
                                 class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-4"
                                 style="background-color: #CBC8BA; color: #0a0a0a" role="button">
                                 {% trans "Load Demo Data" %}
                                 <ion-icon class="ms-2" name="arrow-forward-outline"></ion-icon>
-                            </a>
+                            </a> -->
                         </div>
                     </div>
                     <div class="oh-modal" id="dataLoadAuthentication" role="dialog" aria-labelledby="dataLoadAuthenticationLabel" aria-hidden="true" style="backdrop-filter: blur(8px);">

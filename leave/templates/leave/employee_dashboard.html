@@ -73,7 +73,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-2">
                     <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                         <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                            <span class="oh-card-dashboard__title">{% trans "Available Leaves" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Congés disponibles" %}</span>
                         </div>
                         <div class="oh-card-dashboard__body" id="availableLeaveContainer">
                             <canvas id="availableLeave"></canvas>
@@ -83,7 +83,7 @@
                 <div class="col-12 col-sm-12 col-md-12 col-lg-8 mt-2">
                     <div class="oh-card-dashboard oh-card-dashboard--no-scale oh-card-dashboard--transparent">
                         <div class="oh-card-dashboard__header oh-card-dashboard__header--divider">
-                            <span class="oh-card-dashboard__title">{% trans "Total Leave Requests" %}</span>
+                            <span class="oh-card-dashboard__title">{% trans "Total des demandes de congé" %}</span>
                             <input type="month" hx-trigger="change delay:100ms" class="float-end month"
                                 hx-get="{% url 'dashboard-leave-requests' %}" hx-target="#leaveRequest">
                         </div>
@@ -102,7 +102,7 @@
                     {% if perms.leave.view_leaverequest %}
                     <div class="w-100 mb-1" id="back_button">
                         <a href="{% url 'leave-dashboard' %}" class="oh-btn oh-btn--secondary oh-btn--shadow">
-                            {% trans "View Admin Dashboard" %}
+                            {% trans "Afficher le tableau de bord admin" %}
                             <ion-icon class="me-2 md hydrated" name="arrow-forward-outline" role="img"
                                 aria-label="arrow-back-outline"></ion-icon></a>
                     </div>
@@ -112,7 +112,7 @@
                             <img src="{% static '/images/ui/sunbed.png' %}" class="oh-dashboard__event-userphoto" />
                         </div>
                         <div class="oh-dasboard__event-details">
-                            <span class="oh-dashboard__event-title">{% trans "Next Holiday" %}</span>
+                            <span class="oh-dashboard__event-title">{% trans "Prochain férié" %}</span>
                             <span class="oh-dashboard__event-main">{{next_holiday.name}}</span>
                             <span class="oh-dashboard__event-date dateformat_changer">{{next_holiday.start_date}}</span>
                         </div>

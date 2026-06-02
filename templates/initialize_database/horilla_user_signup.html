@@ -8,42 +8,42 @@
         </li>
         <li class="oh-onboarding-card__step oh-onboarding-card__step--active">
             <div class="oh-onboarding-card__count">2</div>
-            <span class="oh-onboarding-card__text">Sign Up</span>
+            <span class="oh-onboarding-card__text">S'inscrire</span>
         </li>
         <li class="oh-onboarding-card__step">
             <div class="oh-onboarding-card__count">3</div>
-            <span class="oh-onboarding-card__text">Company</span>
+            <span class="oh-onboarding-card__text">Entreprise</span>
         </li>
         <li class="oh-onboarding-card__step">
             <div class="oh-onboarding-card__count">4</div>
-            <span class="oh-onboarding-card__text">Department</span>
+            <span class="oh-onboarding-card__text">Departement</span>
         </li>
         <li class="oh-onboarding-card__step oh-onboarding-card__step">
             <div class="oh-onboarding-card__count">5</div>
-            <span class="oh-onboarding-card__text">Job Position</span>
+            <span class="oh-onboarding-card__text">Poste</span>
         </li>
     </ul>
 </div>
 <h1 class="oh-onboarding-card__title oh-onboarding-card__title--h2 text-center my-3">
-    {% trans "Sign Up" %}
+    {% trans "S'inscrire" %}
 </h1>
 <p class="text-muted text-center">
-    {% trans "Please sign up to access the FlowRH HRMS." %}
+    {% trans "Veuillez vous inscrire pour accéder au FlowRH." %}
 </p>
 <form hx-post="{% url 'initialize-database-user' %}" hx-target="#ohAuthCard" class="oh-form-group">
     {% csrf_token %}
     <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label" for="firstname">{% trans "First Name" %}</label>
-                <input type="text" id="firstname" name="firstname" class="oh-input w-100" placeholder="e.g. Adam"
+                <label class="oh-label" for="firstname">{% trans "Nom" %}</label>
+                <input type="text" id="firstname" name="firstname" class="oh-input w-100" placeholder="Nom"
                     required />
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label" for="lastname">{% trans "Last Name" %}</label>
-                <input type="text" id="lastname" name="lastname" class="oh-input w-100" placeholder="e.g. Luis"
+                <label class="oh-label" for="lastname">{% trans "Prenom" %}</label>
+                <input type="text" id="lastname" name="lastname" class="oh-input w-100" placeholder="Prenom"
                     required />
             </div>
         </div>
@@ -52,14 +52,14 @@
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
                 <label class="oh-label" for="email">{% trans "Email" %}</label>
-                <input type="text" id="email" name="email" class="oh-input w-100" placeholder="e.g. adam.luis@horilla.com"
+                <input type="text" id="email" name="email" class="oh-input w-100" placeholder="Email"
                     required />
             </div>
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
                 <label class="oh-label" for="phone">{% trans "Phone" %}</label>
-                <input type="text" id="phone" name="phone" class="oh-input w-100" placeholder="e.g. 9865324512"
+                <input type="text" id="phone" name="phone" class="oh-input w-100" placeholder="0601020304"
                     required />
             </div>
         </div>
@@ -67,8 +67,8 @@
     <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label" for="badge_id">{% trans "Badge ID" %}</label>
-                <input type="text" id="badge_id" name="badge_id" class="oh-input w-100" placeholder="e.g. PEP001"
+                <label class="oh-label" for="badge_id">{% trans "Matricule" %}</label>
+                <input type="text" id="badge_id" name="badge_id" class="oh-input w-100" placeholder="Matricule"
                     required />
             </div>
         </div>
@@ -76,7 +76,7 @@
             <div class="oh-input-group">
                 <label class="oh-label" for="username">{% trans "Username" %}</label>
                 <input type="text" id="username" name="username" class="oh-input w-100"
-                    placeholder="e.g. adam.luis@horilla.com" required />
+                    placeholder="Username" required />
             </div>
         </div>
     </div>
@@ -84,10 +84,10 @@
     <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label" for="adminPassword">{% trans "Password" %}</label>
+                <label class="oh-label" for="adminPassword">{% trans "Mot de passe" %}</label>
                 <div class="oh-password-input-container">
                     <input type="password" name="password" id="adminPassword" class="oh-input oh-input--password w-100"
-                        placeholder="Use alphanumeric characters" required />
+                        placeholder="Mot de passe" required />
                     <button type="button" class="oh-btn oh-btn--transparent oh-password-input--toggle">
                         <ion-icon class="oh-passowrd-input__show-icon" title="Show Password"
                             name="eye-outline"></ion-icon>
@@ -99,10 +99,10 @@
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <div class="oh-input-group">
-                <label class="oh-label" for="confirmPassword">{% trans "Confirm Password" %}</label>
+                <label class="oh-label" for="confirmPassword">{% trans "Confirmer le mot de passe" %}</label>
                 <div class="oh-password-input-container">
                     <input type="password" id="confirmPassword" name="confirm_password" class="oh-input oh-input--password w-100"
-                        placeholder="Use alphanumeric characters" required />
+                        placeholder="Confirmer le mot de passe" required />
                     <button type="button" class="oh-btn oh-btn--transparent oh-password-input--toggle">
                         <ion-icon class="oh-passowrd-input__show-icon" title="Show Password"
                             name="eye-outline"></ion-icon>
@@ -115,7 +115,7 @@
     </div>
     <button type="submit" class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-4" id="formButton">
         <ion-icon class="me-2" name="lock-closed-outline"></ion-icon>
-        {% trans "Secure Sign-up" %}
+        {% trans "Inscription sécurisée" %}
     </button>
 </form>
 <script>

@@ -111,7 +111,7 @@ def recruitment_delete_pipeline(request, rec_id):
         models_verbose_name_str = (",").join(models_verbose_name_sets)
         messages.error(
             request,
-            _("Recruitment already in use for {}.".format(models_verbose_name_str)),
+            _("Recrutement déjà utilisé pour {}.".format(models_verbose_name_str)),
         )
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
@@ -230,7 +230,7 @@ def candidate_delete(request, cand_id):
             messages.error(
                 request,
                 _(
-                    "You cannot delete this candidate because the candidate is in {}.".format(
+                    "Vous ne pouvez pas supprimer ce candidat car le candidat est en {}.".format(
                         models_verbose_name_str
                     )
                 ),

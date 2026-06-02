@@ -404,8 +404,8 @@ class LeaveAssignReGroup:
         ("employee_id", _("Employee")),
         ("leave_type_id", _("Leave Type")),
         ("available_days", _("Available Days")),
-        ("carryforward_days", _("Carry Forward Days")),
-        ("total_leave_days", _("Total Leave Days Days")),
+        ("carryforward_days", _("Jours reportés")),
+        ("total_leave_days", _("Total des jours de congé")),
         ("assigned_date", _("Assigned Date")),
         (
             "employee_id__employee_work_info__reporting_manager_id",

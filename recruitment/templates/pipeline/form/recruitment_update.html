@@ -47,12 +47,26 @@
 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                     <label class="oh-label" for="{{form.start_date.id_for_label}}">{% trans "Start Date" %}</label>
-                    {{form.start_date}} {{form.start_date.errors}}
+                    <div class="oh-input__container">
+                        {{form.start_date}}
+                        <script>
+                            document.getElementById('{{form.start_date.id_for_label}}').value = '{{form.instance.start_date|date:"Y-m-d"}}';
+                        </script>
+                    </div>
+                    {{form.start_date.errors}}
                 </div>
 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                     <label class="oh-label" for="{{form.end_date.id_for_label}}">{% trans "End Date" %}</label>
-                    {{form.end_date}} {{form.end_date.errors}}
+                    <div class="oh-input__container">
+                        {{form.end_date}}
+                        {% if form.instance.end_date %}
+                        <script>
+                            document.getElementById('{{form.end_date.id_for_label}}').value = '{{form.instance.end_date|date:"Y-m-d"}}';
+                        </script>
+                        {% endif %}
+                    </div>
+                    {{form.end_date.errors}}
                 </div>
 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-6">
@@ -104,5 +118,26 @@
     </form>
     <script>
         $("[hx-target='#recruitmentUpdate'] [name=description]").hide();
+        
+        // Initialize date fields
+        $(document).ready(function() {
+            // Format date to YYYY-MM-DD for input[type="date"]
+            function formatDateForInput(dateStr) {
+                if (!dateStr) return '';
+                const date = new Date(dateStr);
+                return date.toISOString().split('T')[0];
+            }
+            
+            // Set initial values for date fields if they exist
+            const startDate = $('#id_start_date').val();
+            const endDate = $('#id_end_date').val();
+            
+            if (startDate) {
+                $('#id_start_date').val(formatDateForInput(startDate));
+            }
+            if (endDate) {
+                $('#id_end_date').val(formatDateForInput(endDate));
+            }
+        });
     </script>
 </div>

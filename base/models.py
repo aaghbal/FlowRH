@@ -117,24 +117,28 @@ class Department(HorillaModel):
         verbose_name_plural = _("Departments")
 
     def clean(self, *args, **kwargs):
-        super().clean(*args, **kwargs)
+        # Only pass through the arguments that the parent's clean() method expects
+        super().clean()
+        
+        # Only perform validation if this is a web request (has request.POST)
         request = getattr(_thread_locals, "request", None)
-        if request and request.POST:
+        if request and hasattr(request, 'POST') and request.method == 'POST':
             company = request.POST.getlist("company_id", None)
             department = request.POST.get("department", None)
-            if (
-                Department.objects.filter(
-                    company_id__id__in=company, department=department
-                )
-                .exclude(id=self.id)
-                .exists()
-            ):
-                raise ValidationError("This department already exists in this company")
-        return
+            if company and department:
+                if (
+                    Department.objects.filter(
+                        company_id__id__in=company, department=department
+                    )
+                    .exclude(id=self.id)
+                    .exists()
+                ):
+                    raise ValidationError("This department already exists in this company")
 
     def save(self, *args, **kwargs):
+        # Call clean before saving to validate
+        self.clean()
         super().save(*args, **kwargs)
-        self.clean(*args, **kwargs)
         return self
 
     def __str__(self):

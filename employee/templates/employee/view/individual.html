@@ -246,13 +246,13 @@
 
 			<div class="col-12 col-sm-12 col-md-12 col-lg-8 d-flex align-items-center">
 				<ul class="oh-profile__info-list">
-					<li class="oh-profile__info-list-item">
+					<!-- <li class="oh-profile__info-list-item">
 						<span class="oh-profile__info-label">
 							<ion-icon name="mail-outline"></ion-icon>
 							<span>{% trans "Work Email" %}:</span>
 						</span>
 						<span class="oh-profile__info-value">{{employee.employee_work_info.email}}</span>
-					</li>
+					</li> -->
 
 					<li class="oh-profile__info-list-item">
 						<span class="oh-profile__info-label">
@@ -268,13 +268,13 @@
 						</span>
 					</li>
 
-					<li class="oh-profile__info-list-item">
+					<!-- <li class="oh-profile__info-list-item">
 						<span class="oh-profile__info-label">
 							<ion-icon name="call-outline"></ion-icon>
 							<span>{% trans "Work Phone" %}:</span>
 						</span>
 						<span class="oh-profile__info-value">{{employee.employee_work_info.mobile}}</span>
-					</li>
+					</li> -->
 
 					<li class="oh-profile__info-list-item">
 						<span class="oh-profile__info-label">
@@ -343,7 +343,7 @@
 									<li data-cell-index="12" data-cell-title="{% trans 'Leave' %}" class="oh-general__tab">
 										<a hx-get="{% url 'leave-tab' employee.id %}" hx-target="#leave"
 											class="oh-general__tab-link" data-action="general-tab" data-target="#leave"
-											role="button">{% trans "Partir" %}</a>
+											role="button">{% trans "Congés" %}</a>
 									</li>
 								{% endif %}
 							{% endif %} {% endcomment %}

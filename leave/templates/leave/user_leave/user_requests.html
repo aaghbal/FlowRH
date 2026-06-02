@@ -23,11 +23,11 @@
     </span>
     <span class="me-3" style="cursor:pointer;" onclick="$('[name=status]').val('approved');$('[name=status]').first().change();$('.filterButton').click()">
         <span class="oh-dot oh-dot--small me-1" style="background-color:yellowgreen"></span>
-        {% trans "Approved" %}
+        Approuvé
     </span>
     <span class="me-3" style="cursor:pointer;" onclick="$('[name=status]').val('requested');$('[name=status]').first().change();$('.filterButton').click()">
         <span class="oh-dot oh-dot--small me-1" style="background-color:orange;"></span>
-        {% trans "Requested" %}
+        Demandé
     </span>
 </div>
 <!-- start of selection buttons -->
@@ -36,14 +36,14 @@
     id="selectAllUserrequests"
     style="cursor: pointer"
     >
-    {% trans "Select All Requests" %}
+    {% trans "Selectionner Tous" %}
 </div>
 <div
     class="oh-checkpoint-badge text-secondary mb-2"
     id="unselectAllUserrequests"
     style="cursor: pointer;display: none;"
     >
-    {% trans "Unselect All Requests" %}
+    {% trans "Désélectionner Tous" %}
 </div>
 <div class="oh-checkpoint-badge text-danger mb-2" id="selectedShowUserrequests" style="display: none"></div>
 <!-- end of selection buttons -->
@@ -69,7 +69,7 @@
                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-requested_days' %}arrow-up {% elif request.sort_option.order == 'requested_days' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'user-request-filter' %}?{{pd}}&sortby=requested_days" hx-target="#userRequest">{% trans "Requested Days" %}</div>
                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-status' %}arrow-up {% elif request.sort_option.order == 'status' %}arrow-down {% else %}arrow-up-down {% endif %}" hx-get="{% url 'user-request-filter' %}?{{pd}}&sortby=status" hx-target="#userRequest">{% trans "Status" %}</div>
                     <div class="oh-sticky-table__th" style="width:115px;">{% trans "Comment" %}</div>
-                    <div class="oh-sticky-table__th">{% trans 'Confirmation' %}</div>
+                    <div class="oh-sticky-table__th">Confirmation</div>
                     <div class="oh-sticky-table__th">{% trans "Actions" %}</div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                     <div class="oh-sticky-table__td {% if leave_request.status == 'rejected' %} diff-cell{% endif %}">
                         {% if leave_request.multiple_approvals and leave_request.status == "requested" %}
                             <div class="oh-checkpoint-badge oh-checkpoint-badge--secondary" title="{% for manager in leave_request.multiple_approvals.managers %}{{ manager }}{% if not forloop.last %} , {% endif %}{% endfor %}">
-                            {{leave_request.multiple_approvals.approved|length}} / {{leave_request.multiple_approvals.managers|length}} {% trans "Approved" %}
+                            {{leave_request.multiple_approvals.approved|length}} / {{leave_request.multiple_approvals.managers|length}} Approuvé
                             </div>
                         {% else %}
                             {{leave_request.get_status_display}}
@@ -160,7 +160,7 @@
                                 </button>
                                 <a class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
                                     title="{% trans 'Delete' %}" id="delete-link"
-                                    hx-confirm="{% trans 'Are you sure you want to delete this leave request?' %}"
+                                    hx-confirm="Êtes-vous sûr de vouloir supprimer cette demande de congé ?"
                                     hx-post="{% url 'user-request-delete' leave_request.id %}?{{pd}}"
                                     hx-target="#userRequest"
                                     >

@@ -54,13 +54,13 @@
             <span class="oh-timeoff-modal__stat-count">{{candidate.mobile}}</span>
         </div>
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title">{% trans "Joining Date" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{% trans "Début de contrat" %}</span>
             <span class="oh-timeoff-modal__stat-count dateformat_changer">{{candidate.joining_date}}</span>
         </div>
     </div>
     <div class="oh-timeoff-modal__stats-container mt-3">
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title">{% trans "Onboarding portal stage" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{% trans "Étape du portail d'intégration" %}</span>
             <span class="oh-timeoff-modal__stat-count">
                 <div class="oh-checkpoint-badge oh-checkpoint-badge--secondary" >
                 {{candidate.onboarding_portal.count}} / 4
@@ -68,7 +68,7 @@
             </span>
         </div>
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title">{% trans "Stage" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{% trans "Étape d'intégration" %}</span>
             <span class="oh-timeoff-modal__stat-count">
                     {% if request.user|stage_manages:candidate.onboarding_stage.onboarding_stage_id or perms.onboarding.change_candidatestage %}
                     <select id="" class="w-100" style="

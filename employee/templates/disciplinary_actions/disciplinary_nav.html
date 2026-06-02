@@ -4,7 +4,7 @@
 {% load i18n %}
 <section class="oh-wrapper oh-main__topbar" style="padding-bottom: 1rem;">
     <div class="oh-main__titlebar oh-main__titlebar--left oh-d-flex-column--resp oh-mb-3--small">
-        <h1 class="oh-main__titlebar-title fw-bold">{% trans 'Disciplinary Actions' %}</h1>
+        <h1 class="oh-main__titlebar-title fw-bold">{% trans 'Actions disciplinaires' %}</h1>
     </div>
     <form hx-get="{% url 'disciplinary-filter-view' %}" hx-target="#actionContainer" id="filterForm" class="d-flex"
         onsubmit="event.preventDefault()">
@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
                                 <div class="oh-accordion">
-                                    <div class="oh-accordion-header">{% trans "Work Information" %}</div>
+                                    <div class="oh-accordion-header">{% trans "Contract details" %}</div>
                                     <div class="oh-accordion-body">
                                         <div class="row">
                                             <div class="col-sm-12 col-md-12 col-lg-6">
@@ -100,7 +100,7 @@
                             <a hx-get="{% url 'create-actions' %}" hx-target="#objectCreateModalTarget"
                                 data-toggle="oh-modal-toggle" data-target="#objectCreateModal" class="oh-btn oh-btn--secondary">
                                 <ion-icon name="add-outline"></ion-icon>
-                                {% trans 'Take An Action' %}
+                                {% trans 'Effectuer une action' %}
                             </a>
                         </div>
                     {% endif %}
@@ -126,7 +126,7 @@
             <div class="oh-404">
                 <img style="    width: 150px;height: 150px;" src="{% static 'images/ui/legal.png' %}"
                     class="oh-404__image mb-4" alt="Page not found. 404." />
-                <h5 class="oh-404__subtitle">{% trans "There are currently no disciplinary actions to consider." %}</h5>
+                <h5 class="oh-404__subtitle">{% trans "Aucune action disciplinaire n'est actuellement à prendre en compte." %}</h5>
             </div>
         </div>
     </main>

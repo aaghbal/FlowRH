@@ -5598,7 +5598,7 @@ msgstr "Fréquentation Date"
 #, fuzzy
 #| msgid "Check-in date"
 msgid "Check-In Date"
-msgstr "Vérifier-Dans Date"
+msgstr "Date de pointage"
 
 #: attendance/models.py:161
 #: attendance/templates/attendance/attendance/attendance_on_time.html:27
@@ -5628,19 +5628,19 @@ msgstr "Vérifier-Dans Date"
 #: employee/templates/tabs/attendance-tab.html:241
 #: employee/templates/tabs/profile-attendance-tab.html:21
 msgid "Check-In"
-msgstr "Vérifier-dans"
+msgstr "Pointer (entrer)"
 
 #: attendance/models.py:161
 #, fuzzy
 #| msgid "First Check-in Time"
 msgid "First Check-In Time"
-msgstr "Premier Vérifier-Dans Temps"
+msgstr "Premier pointage (entrer)"
 
 #: attendance/models.py:164
 #, fuzzy
 #| msgid "Check-out date"
 msgid "Check-Out Date"
-msgstr "Vérifier-Dehors Date"
+msgstr "Date de pointage (sortie)"
 
 #: attendance/models.py:167
 #: attendance/templates/attendance/attendance/attendance_on_time.html:29
@@ -5670,13 +5670,13 @@ msgstr "Vérifier-Dehors Date"
 #: employee/templates/tabs/attendance-tab.html:243
 #: employee/templates/tabs/profile-attendance-tab.html:23
 msgid "Check-Out"
-msgstr "Vérifier-Dehors"
+msgstr "Pointer (sortir)"
 
 #: attendance/models.py:167
 #, fuzzy
 #| msgid "Last Check-out Time"
 msgid "Last Check-Out Time"
-msgstr "Dernier Vérifier-Dehors Temps"
+msgstr "Dernier pointage"
 
 #: attendance/models.py:180
 msgid "Minimum hour"
@@ -6723,7 +6723,7 @@ msgstr "Supprimer"
 #, fuzzy
 #| msgid "Check-in date"
 msgid "Check In Date"
-msgstr "Vérifier-Dans Date"
+msgstr "Date de pointage (entrée)"
 
 #: attendance/templates/attendance/attendance/attendance_request_one.html:81
 #: attendance/templates/attendance/attendance_activity/single_attendance_activity.html:84
@@ -6731,7 +6731,7 @@ msgstr "Vérifier-Dans Date"
 #, fuzzy
 #| msgid "Check-out date"
 msgid "Check Out Date"
-msgstr "Vérifier-Dehors Date"
+msgstr "Date de pointage (sortie)"
 
 #: attendance/templates/attendance/attendance/attendance_request_one.html:122
 #, fuzzy
@@ -8474,7 +8474,7 @@ msgstr "---Choisissez {label}---"
 
 #: base/forms.py:1401
 msgid "Start date"
-msgstr "Début de date"
+msgstr "Date de début"
 
 #: base/forms.py:1824
 msgid "Old password"
@@ -8681,7 +8681,7 @@ msgstr "Quotidien"
 
 #: base/methods.py:470 leave/models.py:54
 msgid "Full Day"
-msgstr "Complet Journée"
+msgstr "Journée complète"
 
 #: base/methods.py:471 leave/models.py:55
 msgid "First Half"
@@ -9110,7 +9110,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Last Check-out Time"
 msgid "Automatic Check Out Time"
-msgstr "Dernier Vérifier-Dehors Temps"
+msgstr "Automatique pointage (sortie)"
 
 #: base/models.py:601
 msgid ""
@@ -9377,7 +9377,7 @@ msgstr "Configuration des e-mails"
 #, fuzzy
 #| msgid "Requested Days"
 msgid "Leave Requested Days"
-msgstr "Demandes (jours)"
+msgstr "Nombre de jours"
 
 #: base/models.py:1266
 #: base/templates/multi_approval_condition/condition_create_form.html:76
@@ -11579,7 +11579,7 @@ msgstr "Réponse"
 #: leave/templates/leave/user_leave/group_by.html:75
 #: leave/templates/leave/user_leave/user_requests.html:69
 msgid "Requested Days"
-msgstr "Demandes (jours)"
+msgstr "Nombre de jours"
 
 #: base/templates/request_and_approve/leave_allocation_approve.html:37
 #, fuzzy
@@ -12037,7 +12037,7 @@ msgstr "FRÉQUENTATION"
 
 #: base/translator.py:22
 msgid "LEAVE"
-msgstr "PARTIR"
+msgstr "Congés"
 
 #: base/translator.py:23 base/translator.py:92
 msgid "ASSET"
@@ -12508,7 +12508,7 @@ msgstr "Hour Compte"
 #, fuzzy
 #| msgid "Check-out date"
 msgid "Clock out date"
-msgstr "Vérifier-Dehors Date"
+msgstr "Date de sortie"
 
 #: base/translator.py:152
 #, fuzzy
@@ -13047,7 +13047,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Leave"
 msgid "leave"
-msgstr "Partir"
+msgstr "Congés"
 
 #: base/translator.py:251
 #, fuzzy
@@ -14977,7 +14977,7 @@ msgstr "En congé"
 #, fuzzy
 #| msgid "Require Approval"
 msgid "Waiting Approval"
-msgstr "Approbation Exiger"
+msgstr "Exiger approbation"
 
 #: employee/models.py:237
 #, fuzzy
@@ -15066,7 +15066,7 @@ msgstr "Email"
 #: onboarding/templates/onboarding/single_view.html:57
 #: onboarding/templates/onboarding/table.html:12 recruitment/models.py:430
 msgid "Joining Date"
-msgstr "Date d'inscription"
+msgstr "Début de contrat"
 
 #: employee/models.py:634 employee/templates/employee/profile/work_info.html:91
 #: employee/templates/tabs/contract-tab.html:18 payroll/models/models.py:184
@@ -15437,7 +15437,7 @@ msgstr "Exporter"
 #, fuzzy
 #| msgid "Leave Types"
 msgid "Leave Records"
-msgstr "Congé Types"
+msgstr "Types de congé"
 
 #: employee/templates/employee/export_data_employee.html:134
 #, fuzzy
@@ -15616,7 +15616,7 @@ msgstr "Type de travail"
 #: employee/templates/employee/view/individual.html:346
 #: templates/settings.html:426
 msgid "Leave"
-msgstr "Partir"
+msgstr "Congés"
 
 #: employee/templates/employee/profile/profile_view.html:258
 #: employee/templates/employee/profile/profile_view.html:264
@@ -16039,7 +16039,7 @@ msgstr "Disponibles Congé Jours"
 #: leave/templates/leave/user_leave/user-leave.html:21
 #: leave/templates/leave/user_leave/user_leave.html:37
 msgid "Carryforward Leave Days"
-msgstr "Carryforward Congé Jours"
+msgstr "Jours de congé reportés"
 
 #: employee/templates/leave-tab.html:107 employee/templates/leave-tab.html:160
 #: employee/templates/tabs/leave-tab.html:117
@@ -16060,7 +16060,7 @@ msgstr "Total Congé  Jours"
 #: employee/templates/tabs/leave-tab.html:204
 #: leave/templates/leave/leave_allocation_request/leave_allocation_request_single_view.html:104
 msgid "Requested days"
-msgstr "Demandes (jours)"
+msgstr "Nombre de jours"
 
 #: employee/templates/leave-tab.html:269
 #: leave/templates/leave/leave_request/filter_leave_requests.html:8
@@ -16720,7 +16720,7 @@ msgstr "Votre demande de congé a été annulée"
 #, fuzzy
 #| msgid "Leave Requests"
 msgid "Approve cancellation request"
-msgstr "Congé Demandes"
+msgstr "Demandes de congé"
 
 #: employee/templates/tabs/leave-tab.html:317
 #, fuzzy
@@ -18595,7 +18595,7 @@ msgstr ""
 #, fuzzy
 #| msgid "The leave allocation request can't be rejected"
 msgid "The {} leave request cannot be deleted !"
-msgstr "La demande d'attribution de congés ne peut être rejetée"
+msgstr "La Demande d'attribution de congé ne peut être rejetée"
 
 #: leave/models.py:1098
 msgid ""
@@ -18700,7 +18700,7 @@ msgstr "Créer Demande"
 #, fuzzy
 #| msgid "My Leave Requests"
 msgid "My Compensatory Leave Requests"
-msgstr "Mes Congé Demandes"
+msgstr "Mes demandes de congé"
 
 #: leave/templates/leave/compensatory_leave/compensatory_leave_req_list.html:22
 #: leave/templates/leave/compensatory_leave/compensatory_leave_view.html:22
@@ -18765,14 +18765,14 @@ msgstr "Créer Demande"
 #, fuzzy
 #| msgid "Requested days"
 msgid "Requested days Up To"
-msgstr "Demandes (jours)"
+msgstr "Nombre de jours"
 
 #: leave/templates/leave/compensatory_leave/compensatory_leave_view.html:118
 #: leave/templates/leave/leave_allocation_request/leave_allocation_request_view.html:132
 #, fuzzy
 #| msgid "Requested days"
 msgid "Requested days More Than "
-msgstr "Demandes (jours)"
+msgstr "Nombre de jours"
 
 #: leave/templates/leave/compensatory_leave/compensatory_leave_view.html:278
 #, fuzzy
@@ -18884,7 +18884,7 @@ msgstr "Disponibles Congé Jours"
 #, fuzzy
 #| msgid "All Leave Requests"
 msgid "Total Leave Requests"
-msgstr "Toutes Congé Demandes"
+msgstr "Toutes Demandes de congé"
 
 #: leave/templates/leave/employee_dashboard.html:105
 #, fuzzy
@@ -18945,7 +18945,7 @@ msgstr "Vous n'avez aucune nouvelle notification pour le moment."
 #, fuzzy
 #| msgid "Leave Requests"
 msgid "Leave Allocation Requests"
-msgstr "Congé Demandes"
+msgstr "Demandes de congé"
 
 #: leave/templates/leave/leave_allocation_request/leave_allocation_request_view.html:99
 #, fuzzy
@@ -18963,7 +18963,7 @@ msgstr "Ma Demande Congé"
 #, fuzzy
 #| msgid "Leave Requests"
 msgid "Leave allocation requests"
-msgstr "Congé Demandes"
+msgstr "Demandes de congé"
 
 #: leave/templates/leave/leave_assign.html:3
 msgid "View Leave Available Leave"
@@ -19025,7 +19025,7 @@ msgstr "Assignés Congés"
 #: leave/templates/leave/leave_assign/assigned_leaves_export_form.html:45
 #: leave/templates/leave/leave_assign/assigned_leaves_filter.html:10
 msgid "Assigned Leave"
-msgstr "Attribué Congés "
+msgstr "Congés attribués"
 
 #: leave/templates/leave/leave_assign/assigned_leaves_export_form.html:98
 #: leave/templates/leave/leave_assign/assigned_leaves_filter.html:63
@@ -19094,7 +19094,7 @@ msgstr "Etes-vous sûr de vouloir supprimer ce planning ?"
 #, fuzzy
 #| msgid "Assigned Leave"
 msgid "Assigned Leave type not found."
-msgstr "Attribué Congés "
+msgstr "Congés attribués"
 
 #: leave/templates/leave/leave_assign_form.html:17
 msgid "Leave types"
@@ -19119,7 +19119,7 @@ msgstr "Total de jours"
 #, fuzzy
 #| msgid "My Leave Requests"
 msgid "My Leave Request"
-msgstr "Mes Congé Demandes"
+msgstr "Mes demandes de congé"
 
 #: leave/templates/leave/leave_my_request_view.html:3
 #: leave/templates/leave/leave_my_requests_view.html:3
@@ -19232,7 +19232,7 @@ msgstr "Etes-vous sûr que vous voulez supprimer?"
 #, fuzzy
 #| msgid "Leave Requests"
 msgid "Export Leave Requests"
-msgstr "Congé Demandes"
+msgstr "Demandes de congé"
 
 #: leave/templates/leave/leave_request/leave_requests_export_filter.html:138
 #, fuzzy
@@ -19245,7 +19245,7 @@ msgstr "Partir de Date"
 #, fuzzy
 #| msgid "Require Approval"
 msgid "Multiple Approvals"
-msgstr "Approbation Exiger"
+msgstr "Exiger approbation"
 
 #: leave/templates/leave/leave_request/one_request_view.html:117
 #, fuzzy
@@ -19269,7 +19269,7 @@ msgstr ""
 #: leave/templates/leave/leave_request/request_view.html:61
 #: leave/templates/leave/request_view.html:19
 msgid "Leave Requests"
-msgstr "Congé Demandes"
+msgstr "Demandes de congé"
 
 #: leave/templates/leave/leave_request/request_view.html:182
 #: leave/templates/leave/user_leave/user_request_view.html:275
@@ -19313,7 +19313,7 @@ msgstr "Raison d'annulation"
 #, fuzzy
 #| msgid "Leave Requests"
 msgid "All Leave Requests"
-msgstr "Congé Demandes"
+msgstr "Demandes de congé"
 
 #: leave/templates/leave/leave_request_view_one.html:3
 msgid "Back to Leave Request"
@@ -19470,7 +19470,7 @@ msgstr ""
 #: leave/templates/leave/leave_type_creation.html:153
 #: leave/templates/leave/leave_type_update.html:155
 msgid "Require Approval"
-msgstr "Approbation Exiger"
+msgstr "Exiger approbation"
 
 #: leave/templates/leave/leave_type/leave_type_creation.html:186
 #: leave/templates/leave/leave_type/leave_type_update.html:186
@@ -19539,7 +19539,7 @@ msgstr "L'employé n'a pas de type de congé."
 #: leave/templates/leave/user_eave_type_empty_view.html:20
 #: leave/templates/leave/user_leave_type_empty_view.html:20
 msgid "Leave Types"
-msgstr "Congé Types"
+msgstr "Types de congé"
 
 #: leave/templates/leave/leave_type/leave_type_empty_view.html:48
 #: leave/templates/leave/user_eave_type_empty_view.html:49
@@ -19763,7 +19763,7 @@ msgstr "Mise à jour Période"
 #, fuzzy
 #| msgid "Requested Days"
 msgid "Restricted Days"
-msgstr "Demandes (jours)"
+msgstr "Nombre de jours"
 
 #: leave/templates/leave/settings/past_leave_restrict_view.html:8
 msgid "Restrict Past Leave"
@@ -19831,7 +19831,7 @@ msgstr "Congé Demande"
 #: leave/templates/leave/user_leave/user_request_view.html:42
 #: leave/templates/leave/user_request_view.html:19
 msgid "My Leave Requests"
-msgstr "Mes Congé Demandes"
+msgstr "Mes demandes de congé"
 
 #: leave/templates/leave/user_leave/user_requests.html:110
 #, fuzzy
@@ -19991,7 +19991,7 @@ msgstr "Congé attribué a été supprimé avec succès"
 #, fuzzy
 #| msgid "Assigned Leave"
 msgid "Assigned leave not found."
-msgstr "Attribué Congés "
+msgstr "Congés attribués"
 
 #: leave/views.py:1582
 #, fuzzy
@@ -20101,7 +20101,7 @@ msgstr "Total net à payer"
 
 #: leave/views.py:2767
 msgid "Oops!! No leaves available for you this month..."
-msgstr "Oups !!Aucun congé disponible ce mois-ci..."
+msgstr "Aucun congé disponible pour ce mois"
 
 #: leave/views.py:2837
 #, fuzzy
@@ -20123,7 +20123,7 @@ msgstr "Aucune demande de congé pour aucun type de congé ce mois-ci."
 #, fuzzy
 #| msgid "Leave Types"
 msgid "Leave Trends"
-msgstr "Congé Types"
+msgstr "Types de congé"
 
 #: leave/views.py:3236
 #, fuzzy
@@ -20163,7 +20163,7 @@ msgstr "Demande de congé créée avec succès...."
 
 #: leave/views.py:3533 leave/views.py:4784
 msgid "The leave allocation request can't be rejected"
-msgstr "La demande d'attribution de congés ne peut être rejetée"
+msgstr "La Demande d'attribution de congé ne peut être rejetée"
 
 #: leave/views.py:3558
 #, fuzzy
@@ -22121,7 +22121,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Stage"
 msgid "stage"
-msgstr "Parcours de recrutement"
+msgstr "Étape de recrutement"
 
 #: offboarding/templates/offboarding/pipeline/filter.html:19
 msgid "Notice Period Starts"
@@ -22181,7 +22181,7 @@ msgstr "Responsables"
 #: recruitment/templates/stage/stage_form.html:21
 #: recruitment/templates/stage/stage_update_form.html:28
 msgid "Stage"
-msgstr "Parcours de recrutement"
+msgstr "Étape de recrutement"
 
 #: offboarding/templates/offboarding/pipeline/individual_view.html:61
 #: onboarding/templates/onboarding/single_view.html:53
@@ -22233,7 +22233,7 @@ msgstr "Poste"
 #, fuzzy
 #| msgid "Assigned Leave"
 msgid "Planned To Leave"
-msgstr "Attribué Congés "
+msgstr "Congés attribués"
 
 #: offboarding/templates/offboarding/resignation/group_by.html:127
 #: offboarding/templates/offboarding/resignation/request_cards.html:79
@@ -22626,7 +22626,7 @@ msgstr "Étape du portail"
 #, fuzzy
 #| msgid "Joining Date"
 msgid "Joining Set"
-msgstr "Date d'inscription"
+msgstr "Début de contrat"
 
 #: onboarding/templates/onboarding/candidate_filter.html:69
 #: recruitment/templates/candidate/export_filter.html:102
@@ -22751,7 +22751,7 @@ msgstr "Portail"
 #, fuzzy
 #| msgid "Joining Date"
 msgid "Joining Not-Set"
-msgstr "Date d'inscription"
+msgstr "Début de contrat"
 
 #: onboarding/templates/onboarding/candidates_view.html:247
 #, fuzzy
@@ -23057,7 +23057,7 @@ msgstr "Portail"
 #: onboarding/templates/onboarding/tabs.html:11 recruitment/sidebar.py:57
 #: recruitment/templates/pipeline/pipeline_tabs.html:14
 msgid "Stages"
-msgstr "Parcours de recrutement"
+msgstr "Étape de recrutement"
 
 #: onboarding/templates/onboarding/task_form.html:20
 #: onboarding/templates/onboarding/task_update.html:19
@@ -24683,7 +24683,7 @@ msgstr "Congé Demande"
 #, fuzzy
 #| msgid "Leave Types"
 msgid "Leave Encashments"
-msgstr "Congé Types"
+msgstr "Types de congé"
 
 #: payroll/templates/payroll/reimbursement/reimbursement_list.html:50
 #: payroll/templates/payroll/reimbursement/request_cards.html:50
@@ -26887,7 +26887,7 @@ msgstr ""
 #: recruitment/models.py:393
 #: recruitment/templates/candidate/individual.html:436
 msgid "Referral"
-msgstr "Référence"
+msgstr " Parrainage"
 
 #: recruitment/models.py:423
 #: recruitment/templates/candidate/individual.html:400
@@ -26969,7 +26969,7 @@ msgstr "Recrutement Pipeline "
 
 #: recruitment/sidebar.py:32
 msgid "Recruitment Survey"
-msgstr "Grilles de recrutement"
+msgstr "Grilles d'entretien"
 
 #: recruitment/sidebar.py:52
 #: recruitment/templates/recruitment/recruitment_component.html:69
@@ -28250,7 +28250,7 @@ msgstr "{candidate} est {message}"
 #: recruitment/views/dashboard.py:242
 #, python-format
 msgid "Employees joined in %(year)s"
-msgstr "Employés rejoints en %(year)s"
+msgstr "Employés embauchés en %(year)s"
 
 #: recruitment/views/dashboard.py:261
 msgid "Openings"
@@ -28817,17 +28817,17 @@ msgstr ""
 #, fuzzy
 #~| msgid "Check-in date"
 #~ msgid "Check_In Date"
-#~ msgstr "Vérifier-Dans Date"
+#~ msgstr "Date de pointage"
 
 #, fuzzy
 #~| msgid "Check Out"
 #~ msgid "Check_Out"
-#~ msgstr "Vérifier Dehors"
+#~ msgstr "Pointer (sortie)"
 
 #, fuzzy
 #~| msgid "Check-out date"
 #~ msgid "Check_Out Date"
-#~ msgstr "Vérifier-Dehors Date"
+#~ msgstr "Date de pointage (Sortie)"
 
 #~ msgid "Validate Attendances"
 #~ msgstr "Valider Fréquentation"
@@ -28926,7 +28926,7 @@ msgstr ""
 #, fuzzy
 #~| msgid "Leave Types"
 #~ msgid "Leave Type Details"
-#~ msgstr "Congé Types"
+#~ msgstr "Types de congé"
 
 #, fuzzy
 #~| msgid "{employee} assign deleted."
@@ -29050,10 +29050,10 @@ msgstr ""
 #~ msgstr "360 Commentaires"
 
 #~ msgid "Check-in"
-#~ msgstr "Vérifier-dans"
+#~ msgstr "Pointer (entrer)"
 
 #~ msgid "Check-out"
-#~ msgstr "Vérifier-Dehors"
+#~ msgstr "Pointer (sortir)"
 
 #~ msgid "Hour Account Less Than or Equal"
 #~ msgstr "Compte d'heures inférieur ou égal"

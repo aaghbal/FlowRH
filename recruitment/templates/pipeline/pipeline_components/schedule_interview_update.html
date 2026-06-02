@@ -14,35 +14,43 @@
         var candidate_id = $('[name=candidate_id]').val();
         var selectedmanagers = $('[name=employee_id]').val();
 
+        // Set initial values for date and time fields
+        var interviewDate = '{{form.instance.interview_date|date:"Y-m-d"}}';
+        var interviewTime = '{{form.instance.interview_time|time:"H:i"}}';
+        
+        if (interviewDate) {
+            document.getElementById('id_interview_date').value = interviewDate;
+        }
+        if (interviewTime) {
+            document.getElementById('id_interview_time').value = interviewTime;
+        }
+
         // Make AJAX request to fetch available Managers for the selected Candidate
         $.ajax({
             url: '{% url "get_managers" %}',
             method: 'GET',
             data: {
-            'cand_id': candidate_id
+                'cand_id': candidate_id
             },
             success: function(data) {
-            // Clear existing options in the Managers dropdown
-            $('[name=employee_id]').empty();
+                // Clear existing options in the Managers dropdown
+                $('[name=employee_id]').empty();
 
-            // Append new options based on the response
-            $.each(data.employees, function(key, value) {
+                // Append new options based on the response
+                $.each(data.employees, function(key, value) {
+                    $('[name=employee_id]').append($('<option>', {
+                        value: key,
+                        text: value
+                    }));
+                });
 
-                $('[name=employee_id]').append($('<option>', {
-                value: key,
-                text: value
-                }));
-
-            });
-
-            // Set the selected Managers back to the dropdown
-            if (selectedmanagers) {
-                $('[name=employee_id]').val(selectedmanagers);
-            }
+                // Set the selected Managers back to the dropdown
+                if (selectedmanagers) {
+                    $('[name=employee_id]').val(selectedmanagers);
+                }
             }
         });
-
-    })
+    });
 
     $('[name=candidate_id]').change(function(){
         var candidate_id = $('[name=candidate_id]').val();
@@ -53,28 +61,25 @@
             url: '{% url "get_managers" %}',
             method: 'GET',
             data: {
-            'cand_id': candidate_id
+                'cand_id': candidate_id
             },
             success: function(data) {
-            // Clear existing options in the Managers dropdown
-            $('[name=employee_id]').empty();
+                // Clear existing options in the Managers dropdown
+                $('[name=employee_id]').empty();
 
-            // Append new options based on the response
-            $.each(data.employees, function(key, value) {
+                // Append new options based on the response
+                $.each(data.employees, function(key, value) {
+                    $('[name=employee_id]').append($('<option>', {
+                        value: key,
+                        text: value
+                    }));
+                });
 
-                $('[name=employee_id]').append($('<option>', {
-                value: key,
-                text: value
-                }));
-
-            });
-
-            // Set the selected Managers back to the dropdown
-            if (selectedmanagers) {
-                $('[name=employee_id]').val(selectedmanagers);
-            }
+                // Set the selected Managers back to the dropdown
+                if (selectedmanagers) {
+                    $('[name=employee_id]').val(selectedmanagers);
+                }
             }
         });
     });
-
 </script>

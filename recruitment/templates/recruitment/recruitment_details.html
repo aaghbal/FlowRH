@@ -1,7 +1,7 @@
 {% load i18n %}
 <h5 class="oh-job__post">{{recruitment.title}}</h5>
 <p class="oh-onboarding__content oh-job__post_description">{{recruitment.description|safe}}</p>
-<span class = "fw-bold d-block"> {% trans "Job positions :" %}</span>
+<span class = "fw-bold d-block"> {% trans "Poste :" %}</span>
 <ul class="oh-job__description-list mt-3">
     {% for job in recruitment.open_positions.all %}
         <li class="oh-job__description-list_item">{{job}}</li>

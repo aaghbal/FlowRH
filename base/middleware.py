@@ -53,40 +53,34 @@ class CompanyMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # Get the current user's company_id from the request
+        company_id = None
+        # Always use company ID 1 (automotiv) for all users
         if getattr(request, "user", False) and not request.user.is_anonymous:
-            company_id = None
-            try:
-
-                company_id = getattr(
-                    request.user.employee_get.employee_work_info, "company_id", None
-                )
-            except:
-                pass
-            if (
-                request.session.get("selected_company")
-                and request.session.get("selected_company") != "all"
-            ):
-                company_id = Company.objects.filter(
-                    id=request.session.get("selected_company")
-                ).first()
-            elif company_id and request.session.get("selected_company") != "all":
-                request.session["selected_company"] = company_id.id
+            # Get company ID 1 (automotiv)
+            company = Company.objects.filter(id=1).first()
+            
+            # Always set the selected company to ID 1
+            if company:
+                request.session["selected_company"] = company.id
                 request.session["selected_company_instance"] = {
-                    "company": company_id.company,
-                    "icon": company_id.icon.url,
-                    "text": "My company",
-                    "id": company_id.id,
+                    "company": company.company,
+                    "icon": company.icon.url if company.icon else "",
+                    "text": company.company,
+                    "id": company.id,
                 }
-            elif not company_id:
-                request.session["selected_company"] = "all"
-                all_company = AllCompany()
-                request.session["selected_company_instance"] = {
-                    "company": all_company.company,
-                    "icon": all_company.icon.url,
-                    "text": all_company.text,
-                    "id": all_company.id,
-                }
+                company_id = company
+            else:
+                # Fallback in case company ID 1 doesn't exist (shouldn't happen)
+                company = Company.objects.first()
+                if company:
+                    request.session["selected_company"] = company.id
+                    request.session["selected_company_instance"] = {
+                        "company": company.company,
+                        "icon": company.icon.url if company.icon else "",
+                        "text": company.company,
+                        "id": company.id,
+                    }
+                    company_id = company
 
             # for testing here only get recruitment models
             app_labels = [

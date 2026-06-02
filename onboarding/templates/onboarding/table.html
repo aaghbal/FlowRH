@@ -9,9 +9,9 @@
                 <tr>
                     <th scope="col">{% trans "Name" %}</th>
                     <th scope="col">{% trans "Email" %}</th>
-                    <th scope="col">{% trans "Joining Date" %}</th>
+                    <th scope="col">{% trans "Début de contrat" %}</th>
                     <th scope="col">{% trans "Portal" %}</th>
-                    <th scope="col">{% trans "Stage" %}</th>
+                    <th scope="col">{% trans "Étape d'intégration" %}</th>
                     {% for task in recruitment.onboarding_task.all %}
                     <th scope="col">{{task}}</th>
                     {% endfor %}

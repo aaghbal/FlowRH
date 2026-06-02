@@ -24,7 +24,7 @@
         <div style="max-height: 350px;overflow: hidden;min-height:100px; overflow-y:auto;" class="truncated-text">{{ policy.body|safe }}</div>
       </div>
 
-      <a hx-get="{% url 'view-policy' %}?instance_id={{ policy.id }}" hx-target="#objectDetailsModalTarget" data-toggle="oh-modal-toggle" data-target="#objectDetailsModal" class="oh-btn oh-btn--secondary oh-btn--block">{% trans 'View policy' %}</a>
+      <a hx-get="{% url 'view-policy' %}?instance_id={{ policy.id }}" hx-target="#objectDetailsModalTarget" data-toggle="oh-modal-toggle" data-target="#objectDetailsModal" class="oh-btn oh-btn--secondary oh-btn--block">{% trans 'Voir policies' %}</a>
 
     </div>
   {% endfor %}

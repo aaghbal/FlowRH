@@ -244,8 +244,8 @@ def login_required(view_func):
                     f"<script>window.location.href ='{str(referer)}'</script>"
                 )
 
-            if not settings.DEBUG:
-                return render(request, "went_wrong.html")
+            # if not settings.DEBUG:
+            #     return render(request, "went_wrong.html")
             return view_func(request, *args, **kwargs)
         return func
 

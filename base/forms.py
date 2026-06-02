@@ -1821,12 +1821,12 @@ class WorkTypeRequestForm(ModelForm):
 
 class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(
-        label=_("Old password"),
+        label=_("Ancien mot de passe"),
         strip=False,
         widget=forms.PasswordInput(
             attrs={
                 "autocomplete": "new-password",
-                "placeholder": _("Enter Old Password"),
+                "placeholder": _("Ecrire l'ancien mot de passe"),
                 "class": "oh-input oh-input--password w-100 mb-2",
             }
         ),
@@ -1838,7 +1838,7 @@ class ChangePasswordForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 "autocomplete": "new-password",
-                "placeholder": _("Enter New Password"),
+                "placeholder": _("Ecrire le nouveau mot de passe"),
                 "class": "oh-input oh-input--password w-100 mb-2",
             }
         ),
@@ -1849,7 +1849,7 @@ class ChangePasswordForm(forms.Form):
         widget=forms.PasswordInput(
             attrs={
                 "autocomplete": "new-password",
-                "placeholder": _("Re-Enter Password"),
+                "placeholder": _("Confirmer le nouveau mot de passe"),
                 "class": "oh-input oh-input--password w-100 mb-2",
             }
         ),
@@ -1959,7 +1959,7 @@ class ResetPasswordForm(SetPasswordForm):
         widget=forms.PasswordInput(
             attrs={
                 "autocomplete": "new-password",
-                "placeholder": _("Re-Enter Password"),
+                "placeholder": _("Confirmer le nouveau mot de passe"),
                 "class": "oh-input oh-input--password w-100 mb-2",
             }
         ),
@@ -2302,6 +2302,34 @@ class AnnouncementForm(ModelForm):
     """
     Announcement Form
     """
+    
+    # Define site choices
+    SITE_CHOICES = [
+        ("BANDEONG", "BANDEONG"),
+        ("VITA", "VITA"),
+        ("LISSASFA", "LISSASFA"),
+        ("SIDI OTHMANE", "SIDI OTHMANE"),
+        ("DIRECTION POLE", "DIRECTION POLE"),
+        ("ZENATA", "ZENATA"),
+        ("Temara", "Temara"),
+        ("FINANCE", "FINANCE"),
+        ("Errahma", "Errahma"),
+        ("VOVITA", "VOVITA"),
+        ("CASA ANFA", "CASA ANFA"),
+        ("VOLISSASFA", "VOLISSASFA"),
+    ]
+
+    # Add site field for filtering announcements by employee location - multiple selection
+    site = forms.MultipleChoiceField(
+        choices=SITE_CHOICES,
+        required=False,
+        label=_("Site"),
+        widget=forms.SelectMultiple(attrs={
+            "class": "oh-select oh-select-2 w-100",
+            "multiple": "multiple"
+        }),
+        help_text=_("Sélectionnez un ou plusieurs sites pour cette annonce. Laissez vide pour envoyer à tous les employés.")
+    )
 
     class Meta:
         """
@@ -2310,7 +2338,7 @@ class AnnouncementForm(ModelForm):
 
         model = Announcement
         fields = "__all__"
-        exclude = ["is_active"]
+        exclude = ["is_active", "employees", "department", "job_position", "company_id", "attachments"]
         widgets = {
             "description": forms.Textarea(attrs={"data-summernote": ""}),
             "expire_date": DateInput(attrs={"type": "date"}),
@@ -2320,25 +2348,99 @@ class AnnouncementForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["attachments"] = MultipleFileField(label="Attachments ")
         self.fields["attachments"].required = False
+        
+        # If this is an update form (instance exists), try to set the initial site values
+        if self.instance and self.instance.pk:
+            # Get all unique sites from the announcement's employees
+            employee_sites = set()
+            for employee in self.instance.employees.all():
+                if hasattr(employee, 'employee_work_info') and employee.employee_work_info.location:
+                    employee_sites.add(employee.employee_work_info.location)
+            
+            if employee_sites:
+                self.fields['site'].initial = list(employee_sites)
 
-    def save(self, commit: bool = ...) -> Any:
-        attachement = []
+    def save(self, commit: bool = True) -> Any:
+        from employee.models import Employee
+        import time
+        import logging
+        
+        # Performance monitoring
+        start_time = time.time()
+        logger = logging.getLogger(__name__)
+        
+        # Handle attachment files first - optimized batch processing
         multiple_attachment_ids = []
-        attachements = None
         if self.files.getlist("attachments"):
-            attachements = self.files.getlist("attachments")
-            self.instance.attachement = attachements[0]
-            multiple_attachment_ids = []
-
-            for attachement in attachements:
-                file_instance = Attachment()
-                file_instance.file = attachement
-                file_instance.save()
-                multiple_attachment_ids.append(file_instance.pk)
-        instance = super().save(commit)
+            attachments = self.files.getlist("attachments")
+            attachment_start = time.time()
+            
+            # Create attachment instances in bulk for better performance
+            attachment_instances = []
+            for attachment in attachments:
+                file_instance = Attachment(file=attachment)
+                attachment_instances.append(file_instance)
+            
+            # Bulk create attachments
+            if attachment_instances:
+                created_attachments = Attachment.objects.bulk_create(attachment_instances)
+                multiple_attachment_ids = [att.pk for att in created_attachments]
+            
+            attachment_time = time.time() - attachment_start
+            logger.info(f"Attachment processing took {attachment_time:.2f}s for {len(attachments)} files")
+        
+        # Save the main instance without ManyToMany fields first
+        instance = super().save(commit=False)
+        
+        # Save the instance to the database so we can add M2M relationships
         if commit:
-            instance.attachements.add(*multiple_attachment_ids)
-        return instance, multiple_attachment_ids
+            instance.save()
+            
+            # Handle employee assignment based on site selection - optimized query
+            selected_sites = self.cleaned_data.get('site')
+            employee_start = time.time()
+            
+            if selected_sites:
+                # Optimized query with select_related to reduce database hits
+                site_employees = Employee.objects.select_related('employee_work_info').filter(
+                    employee_work_info__location__in=selected_sites
+                )
+                # Use bulk assignment for better performance
+                instance.employees.set(site_employees)
+                employee_count = site_employees.count()
+            else:
+                # If no sites are selected, leave employees empty (null) to show to ALL employees
+                # This works with the announcement filter logic: Q(employees__isnull=True)
+                instance.employees.clear()
+                employee_count = 0
+            
+            employee_time = time.time() - employee_start
+            logger.info(f"Employee assignment took {employee_time:.2f}s for {employee_count} employees")
+            
+            # Add attachments if any - batch operation
+            if multiple_attachment_ids:
+                instance.attachments.add(*multiple_attachment_ids)
+                
+            # Save form's M2M fields that aren't excluded
+            self.save_m2m()
+        
+        total_time = time.time() - start_time
+        logger.info(f"Total announcement save time: {total_time:.2f}s")
+        
+        return instance
+
+    def clean_expire_date(self):
+        """
+        Validate that the expiration date is not earlier than the current date
+        """
+        expire_date = self.cleaned_data.get('expire_date')
+        
+        if expire_date and expire_date < date.today():
+            raise ValidationError(
+                _("La date d'expiration ne peut pas être antérieure à la date actuelle.")
+            )
+        
+        return expire_date
 
 
 class AnnouncementCommentForm(ModelForm):

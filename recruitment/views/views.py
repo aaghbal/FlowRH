@@ -516,9 +516,19 @@ def stage_component(request, view: str = "list"):
     recruitment_id = request.GET["rec_id"]
     recruitment = Recruitment.objects.get(id=recruitment_id)
     
-    ordered_stages = CACHE.get(request.session.session_key + "pipeline")["stages"].filter(
-        recruitment_id__id=recruitment_id
-    )
+    # Try to get stages from cache first
+    pipeline_cache = CACHE.get(request.session.session_key + "pipeline")
+    if pipeline_cache:
+        ordered_stages = pipeline_cache["stages"].filter(
+            recruitment_id__id=recruitment_id
+        )
+        filter_dict = pipeline_cache["filter_dict"]
+    else:
+        # If cache is not set, fall back to direct database query
+        ordered_stages = Stage.objects.filter(
+            recruitment_id__id=recruitment_id
+        ).order_by('sequence')
+        filter_dict = {}
 
     # Add French translations to each stage
     for stage in ordered_stages:
@@ -535,9 +545,10 @@ def stage_component(request, view: str = "list"):
         {
             "rec": recruitment,
             "ordered_stages": ordered_stages,
-            "filter_dict": CACHE.get(request.session.session_key + "pipeline")["filter_dict"],
+            "filter_dict": filter_dict,
         },
     )
+
 
 
 @login_required
@@ -602,24 +613,19 @@ def limited_paginator_qry(queryset, page):
 @manager_can_enter(perm="recruitment.view_recruitment")
 def candidate_component(request):
     """
-    Candidate component
+    Candidate component - Direct Database Fetch
     """
     
     stage_id = request.GET.get("stage_id")
-    stage = (
-        CACHE.get(request.session.session_key + "pipeline")["stages"]
-        .filter(id=stage_id)
-        .first()
-    )
-    candidates = CACHE.get(request.session.session_key + "pipeline")[
-        "candidates"
-    ].filter(stage_id=stage)
-
+    
+    # Fetch stage directly from database
+    stage = Stage.objects.filter(id=stage_id).first()
+    
+    # Fetch candidates directly from database
+    candidates = Candidate.objects.select_related('recruitment_id').filter(stage_id=stage)
+    
     template = "pipeline/components/candidate_stage_component.html"
-    if (
-        CACHE.get(request.session.session_key + "pipeline")["filter_query"].get("view")
-        == "card"
-    ):
+    if request.GET.get("view") == "card":
         template = "pipeline/kanban_components/candidate_kanban_components.html"
 
     now = timezone.now()
@@ -809,12 +815,20 @@ def recruitment_update_pipeline(request, rec_id):
                 )
 
             response = render(
-                request, "pipeline/form/recruitment_update.html", {"form": form}
+                request, "pipeline/form/recruitment_update.html", {
+                    "form": form,
+                    "start_date": recruitment_obj.start_date.strftime('%Y-%m-%d') if recruitment_obj.start_date else '',
+                    "end_date": recruitment_obj.end_date.strftime('%Y-%m-%d') if recruitment_obj.end_date else ''
+                }
             )
             return HttpResponse(
                 response.content.decode("utf-8") + "<script>location.reload();</script>"
             )
-    return render(request, "pipeline/form/recruitment_update.html", {"form": form})
+    return render(request, "pipeline/form/recruitment_update.html", {
+        "form": form,
+        "start_date": recruitment_obj.start_date.strftime('%Y-%m-%d') if recruitment_obj.start_date else '',
+        "end_date": recruitment_obj.end_date.strftime('%Y-%m-%d') if recruitment_obj.end_date else ''
+    })
 
 
 @login_required

@@ -77,9 +77,11 @@
                             <tr>
                                 <td style="width: 50%">
                                     <img
-                                        src="{{protocol}}://{{host}}/{{instance.get_company.icon}}"
+                                        src="{{protocol}}://{{host}}/static/images/ui/flowrhlogo.png"
                                         height="30"
                                         width="110.4"
+                                        alt="FlowRH Logo"
+                                        style="display: block;"
                                     />
                                 </td>
                                 <td style="width: 50%; text-align: right">
@@ -97,7 +99,7 @@
                         style="padding-top: 20px; padding-bottom: 20px"
                     >
                         <img
-                            src="{{protocol}}://{{host}}{% static '/images/ui/leave.svg' %}"
+                            src="{{protocol}}://{{host}}/static/images/ui/sunbed.png"
                             style="
                                 display: block;
                                 height: auto;
@@ -105,6 +107,7 @@
                                 width: 20%;
                             "
                             width="272"
+                            alt="Leave Request"
                         />
                     </td>
                 </tr>
@@ -114,7 +117,7 @@
                         align="center"
                     >
                         <strong
-                            >Hello {{ instance.get_full_name }},
+                            >Bonjour {{ instance.get_full_name }},
                             {{subject}}!</strong
                         >
                     </td>
@@ -125,7 +128,7 @@
                     </td>
                 </tr>
                 {% if link != "#" %}
-                <tr>
+                <!-- <tr>
                     <td style="padding: 15px" align="center">
                         <a
                             href="{{protocol}}://{{host}}/leave/request-view/?id={{link}}"
@@ -141,7 +144,7 @@
                             >View Leave Request</a
                         >
                     </td>
-                </tr>
+                </tr> -->
                 {% endif %}
 
                 <tr>
@@ -156,10 +159,9 @@
                             font-size: 12px;
                         "
                     >
-                        This mail was sent you because your email has been
-                        enrolled as an employee at {{instance.recruitment_id.company_id.company }}.<br />
-                        Don't want to receive mails like these anymore?
-                        <a href="#" style="color: #5c5c5c">Unsubscribe here</a>.
+                        Cette mail vous a été envoyé car votre adresse e-mail a été enregistrée en tant qu'employé chez {{instance.recruitment_id.company_id.company }}.<br />
+                        Vous ne souhaitez plus recevoir de mails comme celui-ci ?
+                        <a href="#" style="color: #5c5c5c">Désabonnez-vous ici</a>.
                     </td>
                 </tr>
                 <tr>

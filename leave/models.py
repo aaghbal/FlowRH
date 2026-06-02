@@ -771,7 +771,27 @@ class LeaveRequest(HorillaModel):
                     sequence=sequence,
                     leave_request_id=self,
                     manager_id=manager,
+                    approval_type="admin",
                 )
+        
+        # Always create manager approval for direct manager
+        if self.status == "requested":
+            work_info = EmployeeWorkInformation.objects.filter(employee_id=self.employee_id)
+            if work_info.exists() and self.employee_id.employee_work_info.reporting_manager_id:
+                # Check if manager approval doesn't already exist
+                manager_approval_exists = LeaveRequestConditionApproval.objects.filter(
+                    leave_request_id=self,
+                    manager_id=self.employee_id.employee_work_info.reporting_manager_id,
+                    approval_type="manager"
+                ).exists()
+                
+                if not manager_approval_exists:
+                    LeaveRequestConditionApproval.objects.create(
+                        sequence=0,  # Manager approval comes first
+                        leave_request_id=self,
+                        manager_id=self.employee_id.employee_work_info.reporting_manager_id,
+                        approval_type="manager",
+                    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -894,17 +914,30 @@ class LeaveRequest(HorillaModel):
 
     def multiple_approvals(self, *args, **kwargs):
         approvals = LeaveRequestConditionApproval.objects.filter(leave_request_id=self)
-        requested_query = approvals.filter(is_approved=False).order_by("sequence")
-        approved_query = approvals.filter(is_approved=True).order_by("sequence")
+        requested_query = approvals.filter(is_approved=False, is_rejected=False).order_by("approval_type", "sequence")
+        approved_query = approvals.filter(is_approved=True).order_by("approval_type", "sequence")
+        rejected_query = approvals.filter(is_rejected=True).order_by("approval_type", "sequence")
+        
+        manager_approvals = approvals.filter(approval_type="manager")
+        admin_approvals = approvals.filter(approval_type="admin")
+        
         managers = []
         for manager in approvals:
             managers.append(manager.manager_id)
+            
         if approvals.exists():
             result = {
                 "managers": managers,
                 "approved": approved_query,
                 "requested": requested_query,
+                "rejected": rejected_query,
                 "approvals": approvals,
+                "manager_approvals": manager_approvals,
+                "admin_approvals": admin_approvals,
+                "manager_approved": manager_approvals.filter(is_approved=True).exists(),
+                "admin_approved": admin_approvals.filter(is_approved=True).exists(),
+                "manager_rejected": manager_approvals.filter(is_rejected=True).exists(),
+                "admin_rejected": admin_approvals.filter(is_rejected=True).exists(),
             }
         else:
             result = False
@@ -914,6 +947,9 @@ class LeaveRequest(HorillaModel):
         request = getattr(horilla_middlewares._thread_locals, "request", None)
         if request:
             employee = Employee.objects.filter(employee_user_id=request.user).first()
+            if not employee:
+                # superuser or admin without employee profile → always allow approval
+                return True
             condition_approval = LeaveRequestConditionApproval.objects.filter(
                 leave_request_id=self, manager_id=employee.id
             ).first()
@@ -1081,6 +1117,13 @@ class LeaveRequestConditionApproval(models.Model):
     is_rejected = models.BooleanField(default=False)
     leave_request_id = models.ForeignKey(LeaveRequest, on_delete=models.CASCADE)
     manager_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    approval_type = models.CharField(
+        max_length=20, 
+        choices=[("manager", "Manager"), ("admin", "Admin")], 
+        default="admin"
+    )
+    approved_date = models.DateTimeField(null=True, blank=True)
+    rejected_date = models.DateTimeField(null=True, blank=True)
 
 
 class RestrictLeave(HorillaModel):

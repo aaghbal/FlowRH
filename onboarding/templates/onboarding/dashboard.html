@@ -41,7 +41,7 @@
                         <div class="oh-card-dashboard oh-card-dashboard oh-card-dashboard--success" >
                             <a href={% url "onboarding-view" %} class="text-decoration-none recruitment">
                                 <div class="oh-card-dashboard__header">
-                                    <span class="oh-card-dashboard__title">{% trans "Onboarding" %}</span>
+                                    <span class="oh-card-dashboard__title">{% trans "Intégration" %}</span>
                                 </div>
                                 <div class="oh-card-dashboard__body">
                                     <span class="oh-card-dashboard__count">{{recruitment|length}}</span>
@@ -130,7 +130,7 @@
                             <div style="display:flex;align-items: center;justify-content: center;" class="">
                               <div style="" class="p-5">
                                   <img style="display: block;width: 80px;margin: 20px auto ;" src="{% static 'images/ui/no_vacancy.png' %}" class=""/>
-                                  <h3 style="font-size:16px" class="oh-404__subtitle">{% trans "No candidates started onboarding." %}</h3>
+                                  <h3 style="font-size:16px" class="oh-404__subtitle">{% trans "Aucun candidat n'a commencé l'intégration." %}</h3>
                               </div>
                             </div>
                         {% endif %}

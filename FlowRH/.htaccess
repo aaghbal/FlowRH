@@ -1,0 +1,41 @@
+PassengerEnabled on
+PassengerAppRoot /home/conexusa/public_html/FlowRH
+PassengerPython /home/conexusa/public_html/FlowRH/venv/bin/python
+
+# Serve static files directly
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/static/
+RewriteCond %{REQUEST_URI} !^/media/
+RewriteRule ^(.*)$ passenger_wsgi.py/$1 [L]
+
+# Static files configuration
+Alias /static /home/conexusa/public_html/FlowRH/staticfiles
+Alias /media /home/conexusa/public_html/FlowRH/media
+
+<Directory /home/conexusa/public_html/FlowRH/staticfiles>
+    Require all granted
+</Directory>
+
+<Directory /home/conexusa/public_html/FlowRH/media>
+    Require all granted
+</Directory>PassengerEnabled on
+PassengerAppRoot /home/conexusa/public_html/FlowRH
+PassengerPython /home/conexusa/public_html/FlowRH/venv/bin/python
+
+# Serve static files directly
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/static/
+RewriteCond %{REQUEST_URI} !^/media/
+RewriteRule ^(.*)$ passenger_wsgi.py/$1 [L]
+
+# Static files configuration
+Alias /static /home/conexusa/public_html/FlowRH/staticfiles
+Alias /media /home/conexusa/public_html/FlowRH/media
+
+<Directory /home/conexusa/public_html/FlowRH/staticfiles>
+    Require all granted
+</Directory>
+
+<Directory /home/conexusa/public_html/FlowRH/media>
+    Require all granted
+</Directory>

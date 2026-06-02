@@ -37,6 +37,7 @@ urlpatterns = [
     path("", include("horilla_automations.urls")),
     path("", include("horilla_views.urls")),
     path("", include("fil.urls")),
+    path("", include("offboarding.urls")),
     path("employee/", include("employee.urls")),
     path("horilla-widget/", include("horilla_widgets.urls")),
     re_path(
@@ -48,3 +49,14 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+else:
+    # In production, media files should be served by the web server (e.g., Nginx, Apache)
+    # This is a fallback for development/testing purposes only
+    from django.views.static import serve
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]
+
