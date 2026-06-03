@@ -5,6 +5,8 @@ import operator
 import threading
 from datetime import date, datetime, timedelta
 
+
+
 from dateutil.relativedelta import relativedelta
 from django.apps import apps
 from django.conf import settings
@@ -926,6 +928,11 @@ class LeaveRequest(HorillaModel):
             managers.append(manager.manager_id)
             
         if approvals.exists():
+            has_manager_stage = manager_approvals.exists()
+            stage_total = 2 if has_manager_stage else 1
+            manager_done = manager_approvals.filter(is_approved=True).exists()
+            admin_done = admin_approvals.filter(is_approved=True).exists()
+            stage_approved = (1 if manager_done else 0) + (1 if admin_done else 0)
             result = {
                 "managers": managers,
                 "approved": approved_query,
@@ -934,10 +941,12 @@ class LeaveRequest(HorillaModel):
                 "approvals": approvals,
                 "manager_approvals": manager_approvals,
                 "admin_approvals": admin_approvals,
-                "manager_approved": manager_approvals.filter(is_approved=True).exists(),
-                "admin_approved": admin_approvals.filter(is_approved=True).exists(),
+                "manager_approved": manager_done,
+                "admin_approved": admin_done,
                 "manager_rejected": manager_approvals.filter(is_rejected=True).exists(),
                 "admin_rejected": admin_approvals.filter(is_rejected=True).exists(),
+                "stage_total": stage_total,
+                "stage_approved": stage_approved,
             }
         else:
             result = False

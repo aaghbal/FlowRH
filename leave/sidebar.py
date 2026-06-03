@@ -86,21 +86,15 @@ def assign_accessibility(request, submenu, user_perm, *args, **kwargs):
 
 
 def holiday_accessibility(request, submenu, user_perms, *args, **kwargs):
-    return not request.user.is_superuser and not request.user.has_perm(
-        "base.view_holidays"
-    )
+    return request.user.is_superuser or request.user.has_perm("base.view_holidays")
 
 
 def company_leave_accessibility(request, submenu, user_perms, *args, **kwargs):
-    return not request.user.is_superuser and not request.user.has_perm(
-        "base.view_companyleaves"
-    )
+    return request.user.is_superuser or request.user.has_perm("base.view_companyleaves")
 
 
 def restrict_leave_accessibility(request, submenu, user_perms, *args, **kwargs):
-    return not request.user.is_superuser and not request.user.has_perm(
-        "leave.view_restrictleave"
-    )
+    return request.user.is_superuser or request.user.has_perm("leave.view_restrictleave")
 
 
 if apps.is_installed("attendance"):

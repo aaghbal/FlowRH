@@ -2,6 +2,7 @@
 views.py
 """
 
+
 import ast
 import contextlib
 import json
@@ -883,8 +884,8 @@ def leave_request_approve(request, id, emp_id=None):
         leave_request_id=leave_request,
         approval_type="manager"
     ).first()
-    
-    # If there's a manager approval required, check if it's been approved
+
+    # Block admin approval until manager has approved (if a manager exists)
     if manager_approval and not manager_approval.is_approved:
         messages.warning(request, _("Manager approval is required before admin approval."))
         if emp_id is not None:
@@ -918,31 +919,31 @@ def leave_request_approve(request, id, emp_id=None):
                 super(AvailableLeave, available_leave).save()
                 leave_request.save()
             else:
-                conditional_requests = leave_request.multiple_approvals()
-                
                 # Find admin approval record for current user
                 admin_approval = LeaveRequestConditionApproval.objects.filter(
-                    manager_id=current_user_employee, 
+                    manager_id=current_user_employee,
                     leave_request_id=leave_request,
                     approval_type="admin"
                 ).first()
-                
+
                 if admin_approval:
                     admin_approval.is_approved = True
                     admin_approval.approved_date = timezone.now()
                     admin_approval.save()
-                    
-                    # Check if both manager and admin have approved
+
                     updated_approvals = leave_request.multiple_approvals()
-                    if (updated_approvals.get("manager_approved") and 
-                        updated_approvals.get("admin_approved")):
+                    has_manager = updated_approvals.get("manager_approvals").exists()
+                    manager_ok = not has_manager or updated_approvals.get("manager_approved")
+                    admin_ok = updated_approvals.get("admin_approved")
+
+                    if manager_ok and admin_ok:
                         super(AvailableLeave, available_leave).save()
                         leave_request.save()
                         messages.success(request, _("Leave request fully approved!"))
                     else:
                         messages.success(request, _("Admin approval recorded. Waiting for manager approval."))
                 else:
-                    # Legacy approval or direct admin approval
+                    # No admin approval record — direct approval
                     super(AvailableLeave, available_leave).save()
                     leave_request.save()
                     messages.success(request, _("Leave request approved successfully.."))

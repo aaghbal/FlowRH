@@ -126,7 +126,7 @@
                                     <div class="oh-sticky-table__td {% if leave_request.status == 'cancelled' %} diff-cell{% endif %}">
                                         {% if leave_request.multiple_approvals and leave_request.status == "requested" %}
                                         <div class="oh-checkpoint-badge oh-checkpoint-badge--secondary" title="{% for manager in leave_request.multiple_approvals.managers %}{{ manager }}{% if not forloop.last %} , {% endif %}{% endfor %}">
-                                          {{leave_request.multiple_approvals.approved|length}} / {{leave_request.multiple_approvals.managers|length}} {% trans "Approved" %}
+                                          {{leave_request.multiple_approvals.stage_approved}} / {{leave_request.multiple_approvals.stage_total}} {% trans "Approved" %}
                                         </div>
                                       {% else %}
                                         {{leave_request.get_status_display}}

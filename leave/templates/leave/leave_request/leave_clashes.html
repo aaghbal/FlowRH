@@ -43,7 +43,7 @@
           <div class="oh-sticky-table__td">
             {% if leave.multiple_approvals and leave.status == "requested" %}
               <div class="oh-checkpoint-badge oh-checkpoint-badge--secondary" title="{% for manager in leave.multiple_approvals.managers %}{{ manager }}{% if not forloop.last %} , {% endif %}{% endfor %}">
-                {{leave.multiple_approvals.approved|length}} / {{leave.multiple_approvals.managers|length}} {% trans "Approved" %}
+                {{leave.multiple_approvals.stage_approved}} / {{leave.multiple_approvals.stage_total}} {% trans "Approved" %}
               </div>
             {% else %}
               {{leave.get_status_display}}
