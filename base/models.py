@@ -150,7 +150,7 @@ class JobPosition(HorillaModel):
     JobPosition model
     """
 
-    job_position = models.CharField(max_length=50, blank=False, null=False)
+    job_position = models.CharField(max_length=200, blank=False, null=False)
     department_id = models.ForeignKey(
         Department,
         on_delete=models.PROTECT,
