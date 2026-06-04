@@ -966,22 +966,34 @@ def employee_view(request):
     page_number = request.GET.get("page")
     selected_company = request.session.get("selected_company")
     error_message = request.session.pop("error_message", None)
+    base_qs = Employee.objects.select_related(
+        "employee_work_info",
+        "employee_work_info__job_position_id",
+        "employee_work_info__department_id",
+        "employee_work_info__shift_id",
+        "employee_work_info__work_type_id",
+        "employee_work_info__job_role_id",
+        "employee_work_info__reporting_manager_id",
+        "employee_work_info__company_id",
+    )
     queryset = (
-        Employee.objects.filter(
+        base_qs.filter(
             is_active=True, employee_work_info__company_id=selected_company
         )
         if selected_company != "all"
-        else Employee.objects.filter(is_active=True)
+        else base_qs.filter(is_active=True)
     )
 
     filter_obj = EmployeeFilter(request.GET, queryset=queryset)
     update_fields = BulkUpdateFieldForm()
     data_dict = parse_qs(previous_data)
     get_key_instances(Employee, data_dict)
-    emp = Employee.objects.filter()
+    emp = Employee.objects.only("id")
 
-    # Store the employees in the session
-    request.session["filtered_employees"] = [employee.id for employee in queryset]
+    # Use values_list to avoid loading full employee objects just to get IDs
+    request.session["filtered_employees"] = list(
+        queryset.values_list("id", flat=True)
+    )
 
     return render(
         request,
@@ -1733,8 +1745,13 @@ def employee_card(request):
     search = request.GET.get("search")
     if isinstance(search, type(None)):
         search = ""
+    base_qs = Employee.objects.select_related(
+        "employee_work_info",
+        "employee_work_info__job_position_id",
+        "employee_work_info__reporting_manager_id",
+    )
     employees = filtersubordinatesemployeemodel(
-        request, Employee.objects.all(), "employee.view_employee"
+        request, base_qs, "employee.view_employee"
     )
     if request.GET.get("is_active") is None:
         filter_obj = EmployeeFilter(
@@ -1772,17 +1789,27 @@ def employee_list(request):
     search = request.GET.get("search")
     if isinstance(search, type(None)):
         search = ""
+    work_info_qs = Employee.objects.select_related(
+        "employee_work_info",
+        "employee_work_info__job_position_id",
+        "employee_work_info__department_id",
+        "employee_work_info__shift_id",
+        "employee_work_info__work_type_id",
+        "employee_work_info__job_role_id",
+        "employee_work_info__reporting_manager_id",
+        "employee_work_info__company_id",
+    )
     if request.GET.get("is_active") is None:
         filter_obj = EmployeeFilter(
             request.GET,
-            queryset=Employee.objects.filter(
+            queryset=work_info_qs.filter(
                 employee_first_name__icontains=search, is_active=True
             ),
         )
     else:
         filter_obj = EmployeeFilter(
             request.GET,
-            queryset=Employee.objects.filter(employee_first_name__icontains=search),
+            queryset=work_info_qs.filter(employee_first_name__icontains=search),
         )
     employees = filtersubordinatesemployeemodel(
         request, filter_obj.qs, "employee.view_employee"
