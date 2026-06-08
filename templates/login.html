@@ -15,6 +15,7 @@
         href="{% if white_label_company.icon %}{{white_label_company.icon.url}} {% else %}{% static 'favicons/logoorh.png' %}{% endif %}">
     <link rel="stylesheet" href="{% static '/build/css/style.min.css' %}" />
     <link rel="manifest" href="{% static 'build/manifest.json' %}" />
+    <link rel="stylesheet" href="{% static 'css/brand.css' %}" />
 </head>
 
 <body>
@@ -56,10 +57,9 @@
                     </div>
                     <button type="submit"
                         class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-4"
-                        style="background-color: #c1ff72;"
                         role="button">
-                        <ion-icon class="me-2" name="lock-closed-outline" style="color: #0a0a0a;"></ion-icon>
-                        <span style="color: #0a0a0a;">{% trans "Secure Sign-in" %}</span>
+                        <ion-icon class="me-2" name="lock-closed-outline"></ion-icon>
+                        <span>{% trans "Secure Sign-in" %}</span>
                     </button>
                     {% if not initialize_database %}
                         <small class="text-center">

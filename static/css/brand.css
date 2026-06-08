@@ -1,0 +1,112 @@
+/* M·AUTOMOTIV Brand Colors Override
+   Primary:   #2a1653 (deep purple)
+   Accent:    #ff5c35 (orange)
+   Mid:       #b6507b (mauve gradient)
+*/
+
+/* ── Sidebar ── */
+.oh-sidebar {
+  background-color: #2a1653 !important;
+}
+.oh-sidebar__submenu {
+  background-color: #2a1653 !important;
+}
+.oh-sidebar__menu-link--active {
+  background-color: #3d2070 !important;
+}
+.oh-sidebar__company-profile {
+  background-color: #ff5c35 !important;
+}
+
+/* ── Buttons ── */
+.oh-btn--primary {
+  background-color: #2a1653 !important;
+  color: #fff !important;
+}
+.oh-btn--primary:hover,
+.oh-btn--primary:focus {
+  background-color: #3d2070 !important;
+  color: #fff !important;
+}
+.oh-btn--secondary {
+  background-color: #ff5c35 !important;
+  color: #fff !important;
+}
+.oh-btn--secondary:hover,
+.oh-btn--secondary:focus {
+  background-color: #e04520 !important;
+  color: #fff !important;
+}
+.oh-btn--secondary-ouline {
+  border-color: #ff5c35 !important;
+  color: #ff5c35 !important;
+}
+.oh-btn--secondary-ouline:hover {
+  background-color: #ff5c35 !important;
+  color: #fff !important;
+}
+.oh-btn:focus,
+.oh-btn:focus-visible {
+  outline-color: #2a1653 !important;
+}
+
+/* ── Header / Topbar accents ── */
+.oh-topbar__notification-badge,
+.oh-topbar__avatar-badge {
+  background-color: #ff5c35 !important;
+}
+
+/* ── Links & general accents ── */
+a.oh-link,
+.oh-link {
+  color: #ff5c35 !important;
+}
+a.oh-link:hover,
+.oh-link:hover {
+  color: #e04520 !important;
+}
+
+/* ── Badges ── */
+.oh-badge--secondary,
+.badge-secondary {
+  background-color: #ff5c35 !important;
+  color: #fff !important;
+}
+
+/* ── Active / selected states ── */
+.oh-tabs__tab--active,
+.oh-tabs__tab:hover {
+  color: #ff5c35 !important;
+  border-color: #ff5c35 !important;
+}
+
+/* ── Progress bars ── */
+.oh-progress__bar {
+  background-color: #ff5c35 !important;
+}
+
+/* ── Kanban header ── */
+.oh-kanban__header {
+  background-color: #2a1653 !important;
+  color: #fff !important;
+}
+
+/* ── Pagination ── */
+.oh-pagination__item--active {
+  background-color: #2a1653 !important;
+  color: #fff !important;
+}
+
+/* ── Input focus ── */
+.oh-input:focus,
+.oh-input:focus-visible,
+select:focus {
+  border-color: #ff5c35 !important;
+  outline-color: #ff5c35 !important;
+}
+
+/* ── Login page accent ── */
+.oh-login__aside,
+.oh-auth__aside {
+  background: linear-gradient(135deg, #ff5c35 0%, #b6507b 50%, #2a1653 100%) !important;
+}
