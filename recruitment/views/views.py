@@ -465,6 +465,9 @@ def filter_pipeline(request):
     )
 
     previous_data = request.GET.urlencode()
+    # prefetch stage_set before paginating so template's rec.stage_set.all hits no extra queries
+    if hasattr(recruitments, "prefetch_related"):
+        recruitments = recruitments.prefetch_related("stage_set")
     paginator = Paginator(recruitments, 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -506,6 +509,12 @@ def stage_component(request, view: str = "list"):
     This method will stage tab contents with French translations
     """
     FRENCH_STAGES = {
+        'Sourcing': 'Sourcing',
+        'Présélection': 'Présélection',
+        'Sélection': 'Sélection',
+        'Entretien métier': 'Entretien métier',
+        'Entretien RH': 'Entretien RH',
+        'Validation finale': 'Validation finale',
         'Applied': 'Candidatures',
         'Initial': 'Première évaluation',
         'Interview': 'Entretien',
@@ -514,8 +523,8 @@ def stage_component(request, view: str = "list"):
     }
 
     recruitment_id = request.GET["rec_id"]
-    recruitment = Recruitment.objects.get(id=recruitment_id)
-    
+    recruitment = Recruitment.objects.select_related("job_position_id").get(id=recruitment_id)
+
     # Try to get stages from cache first
     pipeline_cache = CACHE.get(request.session.session_key + "pipeline")
     if pipeline_cache:
@@ -617,27 +626,27 @@ def candidate_component(request):
     """
     
     stage_id = request.GET.get("stage_id")
-    
-    # Fetch stage directly from database
+
     stage = Stage.objects.filter(id=stage_id).first()
-    
-    # Fetch candidates directly from database
-    candidates = Candidate.objects.select_related('recruitment_id').filter(stage_id=stage)
-    
+
+    candidates = Candidate.objects.select_related(
+        "recruitment_id", "stage_id", "job_position_id"
+    ).filter(stage_id=stage, is_active=True)
+
     template = "pipeline/components/candidate_stage_component.html"
     if request.GET.get("view") == "card":
         template = "pipeline/kanban_components/candidate_kanban_components.html"
 
     now = timezone.now()
+    paginated = limited_paginator_qry(candidates, request.GET.get("candidate_page"))
+    first_candidate = paginated.object_list[0] if paginated.object_list else None
     return render(
         request,
         template,
         {
-            "candidates": limited_paginator_qry(
-                candidates, request.GET.get("candidate_page")
-            ),
+            "candidates": paginated,
             "stage": stage,
-            "rec": getattr(candidates.first(), "recruitment_id", {}),
+            "rec": first_candidate.recruitment_id if first_candidate else {},
             "now": now,
         },
     )
@@ -711,9 +720,9 @@ def recruitment_pipeline_card(request):
     """
     search = request.GET.get("search")
     search = search if search is not None else ""
-    recruitment_obj = Recruitment.objects.all()
+    recruitment_obj = Recruitment.objects.filter(is_active=True).prefetch_related("stage_set")
     candidates = Candidate.objects.filter(name__icontains=search, is_active=True)
-    stages = Stage.objects.all()
+    stages = Stage.objects.select_related("recruitment_id")
     return render(
         request,
         "pipeline/pipeline_components/pipeline_card_view.html",
