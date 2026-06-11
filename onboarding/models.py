@@ -54,11 +54,69 @@ def create_initial_stage(sender, instance, created, **kwargs):
     This is post save method, used to create initial stage for the recruitment
     """
     if created or not instance.onboarding_stage.first():
-        initial_stage = OnboardingStage()
-        initial_stage.sequence = 0
-        initial_stage.stage_title = "Initial"
-        initial_stage.recruitment_id = instance
-        initial_stage.save()
+        default_stages = [
+            (
+                "Lettre d'engagement",
+                "Remettre la lettre signée, obtenir l'accusé de réception et communiquer les pièces à fournir.",
+                False,
+            ),
+            (
+                "Planning d'intégration",
+                "Établir le planning et le faire valider par le responsable hiérarchique (J-10 minimum).",
+                False,
+            ),
+            (
+                "Préparation administrative",
+                "Préparer le contrat (AGIRH), planifier la visite médicale et procéder à l'adhésion assurance.",
+                False,
+            ),
+            (
+                "Récupération contrat DG & VS",
+                "Récupérer le contrat signé auprès de la Direction Générale et Vice-Secrétaire, et vérifier sa conformité.",
+                False,
+            ),
+            (
+                "Préparation SI & matériel",
+                "Créer les accès (email, session, CRM, badge) et préparer PC, téléphone, SIM et matériel.",
+                False,
+            ),
+            (
+                "Annonce de l'arrivée",
+                "Informer le manager puis annoncer l'arrivée au CODIR / CODIR élargi (J-2).",
+                False,
+            ),
+            (
+                "Welcome Day",
+                "Accueillir, remettre le kit, le contrat et le matériel (bon de remise signé), puis présenter l'entreprise, la Vision DG, la culture ONE-M et le Code de conduite.",
+                False,
+            ),
+            (
+                "Intégration métier",
+                "Présenter le périmètre, les missions, les interlocuteurs et les outils, et assurer la formation métier.",
+                False,
+            ),
+            (
+                "Suivi période d'essai",
+                "Transmettre la fiche de titularisation (J-15) et réaliser les points de suivi formalisés.",
+                False,
+            ),
+            (
+                "Validation finale",
+                "Feedback RH, survey expérience collaborateur et confirmation / renouvellement / non-validation.",
+                True,
+            ),
+        ]
+        for seq, (title, task_title, is_final) in enumerate(default_stages):
+            stage = OnboardingStage.objects.create(
+                recruitment_id=instance,
+                stage_title=title,
+                sequence=seq,
+                is_final_stage=is_final,
+            )
+            OnboardingTask.objects.create(
+                stage_id=stage,
+                task_title=task_title,
+            )
 
 
 class OnboardingTask(HorillaModel):
