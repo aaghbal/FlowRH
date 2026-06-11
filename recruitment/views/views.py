@@ -509,6 +509,12 @@ def stage_component(request, view: str = "list"):
     This method will stage tab contents with French translations
     """
     FRENCH_STAGES = {
+        'Sourcing': 'Sourcing',
+        'Présélection': 'Présélection',
+        'Sélection': 'Sélection',
+        'Entretien métier': 'Entretien métier',
+        'Entretien RH': 'Entretien RH',
+        'Validation finale': 'Validation finale',
         'Applied': 'Candidatures',
         'Initial': 'Première évaluation',
         'Interview': 'Entretien',
