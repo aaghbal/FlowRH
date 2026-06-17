@@ -766,12 +766,24 @@ def onboarding_query_grouper(request, queryset):
         data = {"recruitment": rec, "stages": []}
         for stage in stages:
             all_stages_grouper.append({"grouper": stage, "list": []})
-            stage_candidates = OnboardingCandidateFilter(
-                request.GET,
-                stage.candidate.filter(
-                    candidate_id__is_active=True,
-                ),
-            ).qs.order_by("sequence")
+            stage_candidates = (
+                OnboardingCandidateFilter(
+                    request.GET,
+                    stage.candidate.filter(
+                        candidate_id__is_active=True,
+                    ),
+                )
+                .qs.order_by("sequence")
+                .select_related(
+                    "candidate_id",
+                    "candidate_id__job_position_id",
+                    "candidate_id__recruitment_id",
+                    "candidate_id__onboarding_portal",
+                )
+                .prefetch_related(
+                    "candidate_id__candidate_task",
+                )
+            )
 
             page_name = "page" + stage.stage_title + str(rec.id)
             grouper = group_by_queryset(
@@ -781,9 +793,9 @@ def onboarding_query_grouper(request, queryset):
                 page_name,
             ).object_list
             data["stages"] = data["stages"] + grouper
-            employees = employees + [
-                employee.candidate_id.id for employee in stage.candidate.all()
-            ]
+            employees = employees + list(
+                stage.candidate.values_list("candidate_id", flat=True)
+            )
         ordered_data = []
         # combining un used groups in to the grouper
         groupers = data["stages"]
@@ -840,6 +852,12 @@ def onboarding_view(request):
     onboarding_stages = OnboardingStage.objects.all()
     choices = CandidateTask.choice
     previous_data = request.GET.urlencode()
+    recruitments = recruitments.prefetch_related(
+        "onboarding_stage",
+        "onboarding_stage__employee_id",
+        "onboarding_stage__onboarding_task",
+        "onboarding_stage__onboarding_task__candidates",
+    )
     paginator = Paginator(recruitments.order_by("id"), 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -900,6 +918,12 @@ def kanban_view(request):
     previous_data = request.GET.urlencode()
 
     filter_obj = RecruitmentFilter(request.GET, queryset=recruitments)
+    recruitments = recruitments.prefetch_related(
+        "onboarding_stage",
+        "onboarding_stage__employee_id",
+        "onboarding_stage__onboarding_task",
+        "onboarding_stage__onboarding_task__candidates",
+    )
     paginator = Paginator(recruitments, 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

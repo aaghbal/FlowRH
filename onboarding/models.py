@@ -175,9 +175,9 @@ class CandidateStage(HorillaModel):
         """
         function that used for getting the numbers between task completed v/s tasks assigned
         """
-        cans_tasks = self.candidate_id.candidate_task
-        completed_tasks = cans_tasks.filter(status="done")
-        return f"{completed_tasks.count()}/{cans_tasks.count()}"
+        cans_tasks = self.candidate_id.candidate_task.all()
+        completed_tasks = sum(1 for task in cans_tasks if task.status == "done")
+        return f"{completed_tasks}/{len(cans_tasks)}"
 
     class Meta:
         """

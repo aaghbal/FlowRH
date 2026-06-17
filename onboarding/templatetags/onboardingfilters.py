@@ -85,6 +85,28 @@ def stage_manages(user, stage):
         return False
 
 
+@register.filter(name="task_status")
+def task_status(candidate, task):
+    """
+    Returns the status of the candidate's onboarding task for the given task,
+    reading from the prefetched ``candidate_task`` set so no extra query is made.
+
+    Args:
+        candidate (obj): CandidateStage instance
+        task (obj): OnboardingTask instance
+
+    Returns:
+        str | None: the CandidateTask status, or None if not assigned
+    """
+    try:
+        for cand_task in candidate.candidate_id.candidate_task.all():
+            if cand_task.onboarding_task_id_id == task.id:
+                return cand_task.status
+    except Exception:
+        return None
+    return None
+
+
 @register.filter(name="task_manager")
 def task_manager(user, task):
     """
