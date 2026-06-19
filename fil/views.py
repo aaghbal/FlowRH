@@ -50,9 +50,9 @@ def fil_actualite_view(request):
     from employee.models import EmployeeWorkInformation
     available_sites = list(EmployeeWorkInformation.objects.exclude(
         location__isnull=True
-    ).exclude(
-        location__exact=''
-    ).values_list('location', flat=True).distinct().order_by('location'))
+    ).values_list(
+        'location__site_name', flat=True
+    ).distinct().order_by('location__site_name'))
     
     return render(request, "fil/fil_actualite.html", {
         "posts": user_visible_posts, 

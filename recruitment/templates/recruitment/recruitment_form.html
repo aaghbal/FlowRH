@@ -133,6 +133,12 @@
                     {{form.company_id}} {{form.company_id.errors}}
                 </div>
                 <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <label class="oh-label" for="{{form.site.id_for_label}}"
+                        >{% trans "Site" %}</label
+                    >
+                    {{form.site}} {{form.site.errors}}
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                     <label
                         class="oh-label"
                         for="{{form.survey_templates.id_for_lable}}"

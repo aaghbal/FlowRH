@@ -32,6 +32,7 @@ from base.models import (
     RotatingWorkType,
     RotatingWorkTypeAssign,
     ShiftRequest,
+    Site,
     ShiftRequestComment,
     Tags,
     WorkType,
@@ -42,6 +43,7 @@ from base.models import (
 # Register your models here.
 
 admin.site.register(Company)
+admin.site.register(Site)
 admin.site.register(Department, SimpleHistoryAdmin)
 admin.site.register(JobPosition)
 admin.site.register(JobRole)

@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction, OperationalError
 from django.db.utils import DatabaseError
 from django.db import connection
+from base.models import Site
 from employee.models import Employee, EmployeeWorkInformation, EmployeeBankDetails
 from base.models import Company, Department, JobPosition, JobRole, EmployeeType, WorkType
 
@@ -108,13 +109,19 @@ class Command(BaseCommand):
                             )))
                             success = True  # Mark as successful if we get here
                             
+                            # Resolve the site (free text in the source file -> Site row)
+                            site_name = emp_data.get('Sites', '').strip()
+                            site_obj = None
+                            if site_name:
+                                site_obj, _ = Site.objects.get_or_create(site_name=site_name)
+
                             # Prepare work info data
                             work_info_data = {
                                 'employee_id': employee,
                                 'company_id': company,
                                 'department_id': department,
                                 'job_position_id': job_position,
-                                'location': emp_data.get('Sites', '').strip(),
+                                'location': site_obj,
                                 'email': str(emp_data.get('NO CNSS', '')),  # Storing CNSS number in email field
                                 'mobile': emp_data.get('AFFIL CIMR', '').strip(),
                                 'numero_cimr': str(emp_data.get('NO CIMR', '')),

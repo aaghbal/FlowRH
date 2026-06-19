@@ -109,7 +109,7 @@ def create_announcement(request):
                     if selected_sites:
                         # Optimized query with select_related for better performance
                         site_users = User.objects.select_related('employee_get').filter(
-                            employee_get__employee_work_info__location__in=selected_sites
+                            employee_get__employee_work_info__location__site_name__in=selected_sites
                         )
                         
                         # Send notification to employees at the selected sites
@@ -215,7 +215,7 @@ def update_announcement(request, id):
                     if selected_sites:
                         # Optimized query with select_related for better performance
                         site_users = User.objects.select_related('employee_get').filter(
-                            employee_get__employee_work_info__location__in=selected_sites
+                            employee_get__employee_work_info__location__site_name__in=selected_sites
                         )
                         
                         # Send notification to employees at the selected sites

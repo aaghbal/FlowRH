@@ -61,6 +61,7 @@ from base.models import (
     RotatingWorkTypeAssign,
     ShiftRequest,
     ShiftRequestComment,
+    Site,
     Tags,
     TrackLateComeEarlyOut,
     WorkType,
@@ -2303,25 +2304,10 @@ class AnnouncementForm(ModelForm):
     Announcement Form
     """
     
-    # Define site choices
-    SITE_CHOICES = [
-        ("BANDEONG", "BANDEONG"),
-        ("VITA", "VITA"),
-        ("LISSASFA", "LISSASFA"),
-        ("SIDI OTHMANE", "SIDI OTHMANE"),
-        ("DIRECTION POLE", "DIRECTION POLE"),
-        ("ZENATA", "ZENATA"),
-        ("Temara", "Temara"),
-        ("FINANCE", "FINANCE"),
-        ("Errahma", "Errahma"),
-        ("VOVITA", "VOVITA"),
-        ("CASA ANFA", "CASA ANFA"),
-        ("VOLISSASFA", "VOLISSASFA"),
-    ]
-
     # Add site field for filtering announcements by employee location - multiple selection
+    # Choices are populated from the Site table in __init__.
     site = forms.MultipleChoiceField(
-        choices=SITE_CHOICES,
+        choices=[],
         required=False,
         label=_("Site"),
         widget=forms.SelectMultiple(attrs={
@@ -2348,15 +2334,19 @@ class AnnouncementForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["attachments"] = MultipleFileField(label="Attachments ")
         self.fields["attachments"].required = False
-        
+
+        # Populate site choices from the Site table.
+        site_names = list(Site.objects.values_list("site_name", flat=True))
+        self.fields["site"].choices = [(name, name) for name in site_names]
+
         # If this is an update form (instance exists), try to set the initial site values
         if self.instance and self.instance.pk:
             # Get all unique sites from the announcement's employees
             employee_sites = set()
             for employee in self.instance.employees.all():
                 if hasattr(employee, 'employee_work_info') and employee.employee_work_info.location:
-                    employee_sites.add(employee.employee_work_info.location)
-            
+                    employee_sites.add(employee.employee_work_info.location.site_name)
+
             if employee_sites:
                 self.fields['site'].initial = list(employee_sites)
 
@@ -2403,7 +2393,7 @@ class AnnouncementForm(ModelForm):
             if selected_sites:
                 # Optimized query with select_related to reduce database hits
                 site_employees = Employee.objects.select_related('employee_work_info').filter(
-                    employee_work_info__location__in=selected_sites
+                    employee_work_info__location__site_name__in=selected_sites
                 )
                 # Use bulk assignment for better performance
                 instance.employees.set(site_employees)

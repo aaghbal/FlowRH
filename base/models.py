@@ -102,6 +102,38 @@ class Company(HorillaModel):
         return str(self.company)
 
 
+class Site(HorillaModel):
+    """
+    Site model
+
+    Represents a physical work site / location. Used as a shared, controlled
+    list across recruitment, onboarding and employee work information instead
+    of free-text site names.
+    """
+
+    site_name = models.CharField(max_length=50, verbose_name=_("Site"))
+    company_id = models.ForeignKey(
+        Company,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name=_("Company"),
+    )
+    objects = HorillaCompanyManager()
+
+    class Meta:
+        """
+        Meta class to add additional options
+        """
+
+        verbose_name = _("Site")
+        verbose_name_plural = _("Sites")
+        ordering = ["site_name"]
+
+    def __str__(self):
+        return str(self.site_name)
+
+
 class Department(HorillaModel):
     """
     Department model

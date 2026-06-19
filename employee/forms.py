@@ -35,6 +35,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy as trans
 
 from base.methods import eval_validate, reload_queryset
+from base.models import Site
 from employee.models import (
     Actiontype,
     BonusPoint,
@@ -285,28 +286,12 @@ class EmployeeWorkInformationForm(ModelForm):
     """
     Form for EmployeeWorkInformation model
     """
-    # Define site choices
-    SITE_CHOICES = [
-        ("", _("---Select Site---")),
-        ("BANDEONG", "BANDEONG"),
-        ("VITA", "VITA"),
-        ("LISSASFA", "LISSASFA"),
-        ("SIDI OTHMANE", "SIDI OTHMANE"),
-        ("DIRECTION POLE", "DIRECTION POLE"),
-        ("ZENATA", "ZENATA"),
-        ("Temara", "Temara"),
-        ("FINANCE", "FINANCE"),
-        ("Errahma", "Errahma"),
-        ("VOVITA", "VOVITA"),
-        ("CASA ANFA", "CASA ANFA"),
-        ("VOLISSASFA", "VOLISSASFA"),
-    ]
-
-    # Override the location field to use ChoiceField
-    location = forms.ChoiceField(
-        choices=SITE_CHOICES,
+    # Site is backed by the Site table (shared with recruitment/onboarding).
+    location = forms.ModelChoiceField(
+        queryset=Site.objects.all(),
         required=False,
         label=_("Site"),
+        empty_label=_("---Select Site---"),
         widget=forms.Select(attrs={"class": "oh-select oh-select-2 w-100"})
     )
 

@@ -27,6 +27,7 @@ from base.models import (
     EmployeeType,
     JobPosition,
     JobRole,
+    Site,
     WorkType,
     validate_time_format,
 )
@@ -606,8 +607,13 @@ class EmployeeWorkInformation(models.Model):
     tags = models.ManyToManyField(
         EmployeeTag, blank=True, verbose_name=_("Employee tag")
     )
-    location = models.CharField(
-        max_length=50, null=True, blank=True, verbose_name=_("Site")
+    location = models.ForeignKey(
+        Site,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="employee_work_info",
+        verbose_name=_("Site"),
     )
     email = models.CharField(
         max_length=254, blank=True, null=True, verbose_name=_("Numéro de CNSS")

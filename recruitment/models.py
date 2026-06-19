@@ -23,7 +23,7 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 from base.horilla_company_manager import HorillaCompanyManager
-from base.models import Company, JobPosition
+from base.models import Company, JobPosition, Site
 from employee.models import Employee
 from horilla.models import HorillaModel
 from horilla_audit.methods import get_diff
@@ -157,6 +157,13 @@ class Recruitment(HorillaModel):
         null=True,
         blank=True,
         verbose_name=_("Company"),
+    )
+    site = models.ForeignKey(
+        Site,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name=_("Site"),
     )
     start_date = models.DateField(default=django.utils.timezone.now)
     end_date = models.DateField(blank=True, null=True)

@@ -255,6 +255,7 @@ class RecruitmentCreationForm(ModelForm):
                 format="%Y-%m-%d"
             ),
             "description": forms.Textarea(attrs={"data-summernote": ""}),
+            "site": forms.Select(attrs={"class": "oh-select oh-select-2 w-100"}),
         }
         labels = {"description": _("Description"), "vacancy": _("Vacancy")}
 
@@ -587,13 +588,21 @@ class ApplicationForm(RegistrationForm):
             self.fields["profile"].required = False
 
     def clean(self, *args, **kwargs):
-        name = self.cleaned_data["name"]
+        cleaned_data = super().clean()
         request = getattr(_thread_locals, "request", None)
 
+        name = cleaned_data.get("name")
+        profile = cleaned_data.get("profile")
+        resume = cleaned_data.get("resume")
+        recruitment: Recruitment = cleaned_data.get("recruitment_id")
+
+        # If recruitment failed its own validation it won't be in
+        # cleaned_data; the field error is already reported, so stop here
+        # instead of raising a KeyError (which would surface as a 500).
+        if not recruitment:
+            return cleaned_data
+
         errors = {}
-        profile = self.cleaned_data["profile"]
-        resume = self.cleaned_data["resume"]
-        recruitment: Recruitment = self.cleaned_data["recruitment_id"]
         if not resume and not recruitment.optional_resume:
             errors["resume"] = _("This field is required")
         if not profile and not recruitment.optional_profile_image:
@@ -605,10 +614,8 @@ class ApplicationForm(RegistrationForm):
             and request
             and request.user.has_perm("recruitment.add_candidate")
         ):
-            profile_pic_url = f"https://ui-avatars.com/api/?name={name}"
-            self.cleaned_data["profile"] = profile_pic_url
-        super().clean()
-        return self.cleaned_data
+            cleaned_data["profile"] = f"https://ui-avatars.com/api/?name={name}"
+        return cleaned_data
 
 
 class RecruitmentDropDownForm(DropDownForm):

@@ -1207,7 +1207,8 @@ def employee_creation(request, token):
             work_info.date_joining = candidate.joining_date
             work_info.email = candidate.email
             work_info.company_id = candidate.recruitment_id.company_id  # Add company assignment
-            
+            work_info.location = candidate.recruitment_id.site  # Snapshot recruitment site as employee site
+
             try:
                 work_info.save()
                 print("Work info saved successfully")
@@ -1223,6 +1224,7 @@ def employee_creation(request, token):
                     existing_work_info.date_joining = candidate.joining_date
                     existing_work_info.email = candidate.email
                     existing_work_info.company_id = candidate.recruitment_id.company_id
+                    existing_work_info.location = candidate.recruitment_id.site
                     existing_work_info.save()
                     print("Existing work info updated successfully")
             onboarding_portal.count = 3

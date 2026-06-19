@@ -92,7 +92,7 @@ class Post(models.Model):
             # Get the user's work location
             if hasattr(user, 'employee_get') and hasattr(user.employee_get, 'employee_work_info'):
                 user_location = user.employee_get.employee_work_info.location
-                if user_location and user_location in self.get_sites_list():
+                if user_location and user_location.site_name in self.get_sites_list():
                     return True
             return False
         except:

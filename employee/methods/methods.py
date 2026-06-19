@@ -20,6 +20,7 @@ from base.models import (
     EmployeeType,
     JobPosition,
     JobRole,
+    Site,
     WorkType,
 )
 from employee.models import Employee, EmployeeWorkInformation
@@ -515,6 +516,11 @@ def bulk_create_work_info_import(success_lists):
 
         company_obj = existing_companies.get(work_info.get("Company"))
         location = work_info.get("Location")
+        location_obj = None
+        if location and str(location).strip() and not pd.isnull(location):
+            location_obj, _ = Site.objects.get_or_create(
+                site_name=str(location).strip()
+            )
 
         # Parsing dates and salary
         date_joining = (
@@ -555,7 +561,7 @@ def bulk_create_work_info_import(success_lists):
                 shift_id=shift_obj,
                 reporting_manager_id=reporting_manager_obj,
                 company_id=company_obj,
-                location=location,
+                location=location_obj,
                 date_joining=(
                     date_joining if not pd.isnull(date_joining) else datetime.today()
                 ),
@@ -577,7 +583,7 @@ def bulk_create_work_info_import(success_lists):
             employee_work_info.shift_id = shift_obj
             employee_work_info.reporting_manager_id = reporting_manager_obj
             employee_work_info.company_id = company_obj
-            employee_work_info.location = location
+            employee_work_info.location = location_obj
             employee_work_info.date_joining = (
                 date_joining if not pd.isnull(date_joining) else datetime.today()
             )
