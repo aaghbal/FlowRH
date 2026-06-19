@@ -54,19 +54,14 @@ class HorillaCompanyManager(models.Manager):
         if request is not None:
             selected_company = request.session.get("selected_company")
         try:
-            queryset = (
-                queryset.filter(self.model.company_filter)
-                if selected_company != "all" and selected_company
-                else queryset
-            )
+            if selected_company != "all" and selected_company:
+                # The company filter can span multi-valued relations, which may
+                # introduce duplicate rows, so apply distinct() directly instead
+                # of running two COUNT queries on every queryset access just to
+                # decide whether distinct() is needed.
+                queryset = queryset.filter(self.model.company_filter).distinct()
         except Exception as e:
             logger.error(e)
-        try:
-            has_duplicates = queryset.count() != queryset.distinct().count()
-            if has_duplicates:
-                queryset = queryset.distinct()
-        except:
-            pass
         return queryset
 
     def all(self):

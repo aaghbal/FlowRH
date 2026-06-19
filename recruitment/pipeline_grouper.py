@@ -85,7 +85,12 @@ def group_by_queryset(
             field_obj = model_copy._meta.get_field(field)
             model_copy = field_obj.related_model
         if model_copy:
-            groupers = model_copy.objects.all()
+            # only consider groupers that actually appear in the queryset.
+            # empty groups are dropped by generate_groups anyway, so iterating
+            # over every row of the related model (e.g. all OnboardingStage
+            # objects across all recruitments) just wastes a COUNT query each.
+            grouper_ids = queryset.values_list(group_field, flat=True).distinct()
+            groupers = model_copy.objects.filter(id__in=grouper_ids)
             groups = generate_groups(
                 request,
                 groupers,

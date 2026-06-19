@@ -838,12 +838,19 @@ def onboarding_view(request):
         ) | recruitments.filter(
             onboarding_stage__employee_id__in=[request.user.employee_get]
         )
+    # include recruitments the user has onboarding tasks for. Resolve the
+    # recruitment ids in a single query instead of evaluating the whole
+    # `recruitments` queryset once per task with `not in`.
     employee_tasks = request.user.employee_get.onboarding_task.all()
-    for task in employee_tasks:
-        if task.stage_id and task.stage_id.recruitment_id not in recruitments:
-            recruitments = recruitments | filter_obj.qs.filter(
-                id=task.stage_id.recruitment_id.id
-            )
+    task_recruitment_ids = list(
+        employee_tasks.filter(stage_id__isnull=False).values_list(
+            "stage_id__recruitment_id", flat=True
+        )
+    )
+    if task_recruitment_ids:
+        recruitments = recruitments | filter_obj.qs.filter(
+            id__in=task_recruitment_ids
+        )
     recruitments = recruitments.filter(is_active=True).distinct()
     status = request.GET.get("closed")
     if not status:
@@ -899,12 +906,19 @@ def kanban_view(request):
         ) | recruitments.filter(
             onboarding_stage__employee_id__in=[request.user.employee_get]
         )
+    # include recruitments the user has onboarding tasks for. Resolve the
+    # recruitment ids in a single query instead of evaluating the whole
+    # `recruitments` queryset once per task with `not in`.
     employee_tasks = request.user.employee_get.onboarding_task.all()
-    for task in employee_tasks:
-        if task.stage_id and task.stage_id.recruitment_id not in recruitments:
-            recruitments = recruitments | filter_obj.qs.filter(
-                id=task.stage_id.recruitment_id.id
-            )
+    task_recruitment_ids = list(
+        employee_tasks.filter(stage_id__isnull=False).values_list(
+            "stage_id__recruitment_id", flat=True
+        )
+    )
+    if task_recruitment_ids:
+        recruitments = recruitments | filter_obj.qs.filter(
+            id__in=task_recruitment_ids
+        )
     recruitments = recruitments.filter(is_active=True).distinct()
 
     status = request.GET.get("closed")
