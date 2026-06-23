@@ -65,6 +65,11 @@
                       <div class="oh-sticky-table__thead">
                         <div class="oh-sticky-table__tr">
                           <div class="oh-sticky-table__th {% if request.sort_option.order == '-title' %}arrow-up {% elif request.sort_option.order == 'title' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-get="{% url 'recruitment-search' %}?{{pd}}&orderby=title" hx-target="#recruitment-container">{% trans "Recruitment" %}</div>
+                          <div
+                            class="oh-sticky-table__th {% if request.sort_option.order == '-site' %}arrow-up {% elif request.sort_option.order == 'site' %}arrow-down {% else %} arrow-up-down {% endif %}"
+                            hx-get="{% url 'recruitment-search' %}?{{pd}}&orderby=site"
+                            hx-target="#recruitment-container"
+                          >{% trans "Site" %}</div>
                           <div data-cell-index="1" data-cell-title='{% trans "Managers" %}' class="oh-sticky-table__th" >{% trans "Managers" %}</div>
                           <div data-cell-index="2" data-cell-title='{% trans "Open Jobs" %}' class="oh-sticky-table__th" >{% trans "Open Jobs" %}</div>
                           <div data-cell-index="3" data-cell-title='{% trans "Vacancy" %}'
@@ -104,6 +109,10 @@
                               </button>
                               <span class="oh-permission-table__user">{{rec}}</span>
                             </div>
+                          </div>
+
+                          <div class="oh-sticky-table__td">
+                            {% if rec.site %}{{rec.site}}{% else %}-{% endif %}
                           </div>
 
                           <div data-cell-index="1" class="oh-sticky-table__td">
