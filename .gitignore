@@ -8,7 +8,9 @@ media
 *.sqlite3
 # Backup files # 
 *.bak 
-
+CV/
+cv_overrides.json
+extract_cv_data.py
 # Python # 
 *.py[cod] 
 *$py.class 

@@ -983,7 +983,7 @@ class AddQuestionForm(Form):
     AddQuestionForm
     """
 
-    verbose_name = "Add Question"
+    verbose_name = "Ajouter une question"
     question_ids = forms.ModelMultipleChoiceField(
         queryset=RecruitmentSurvey.objects.all(), label="Questions"
     )

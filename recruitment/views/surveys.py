@@ -6,6 +6,7 @@ This module is used to write views related to the survey features
 
 import json
 from datetime import datetime
+from urllib.parse import unquote
 from uuid import uuid4
 
 from django.contrib import messages
@@ -61,8 +62,14 @@ def survey_preview(request, title):
     """
     Used to render survey form to the candidate
     """
-    # title = request.GET.get("title")
-    template = SurveyTemplate.objects.get(title=str(title))
+    # Some servers (e.g. Passenger) pass the path without fully decoding it, so a
+    # title with a space can arrive double-encoded ("temaplate%20test"). Unquote
+    # to recover the real title; harmless for already-decoded titles.
+    title = unquote(str(title))
+    template = SurveyTemplate.objects.filter(title=title).first()
+    if template is None:
+        messages.error(request, _("Modèle de sondage introuvable."))
+        return redirect("recruitment-survey-question-template-view")
 
     form = SurveyPreviewForm(template=template).form
     return render(
@@ -159,7 +166,7 @@ def candidate_survey(request):
             attachment = request.FILES[key]
             if attachment.size > MAX_FILE_SIZE:
                 messages.error(
-                    request, _("File size exceeds the limit. Maximum size is 5 MB")
+                    request, _("La taille du fichier dépasse la limite. Taille maximale : 5 Mo")
                 )
                 return render(
                     request,
@@ -174,7 +181,7 @@ def candidate_survey(request):
             answer_data[key] = [attachment_path]
         answer.answer_json = json.dumps(answer_data)
         answer.save()
-        messages.success(request, _("Your answers are submitted."))
+        messages.success(request, _("Vos réponses ont été soumises."))
         return render(request, "candidate/success.html")
     return render(
         request,
@@ -273,7 +280,7 @@ def update_question_template(request, survey_id):
             instance.template_id.set(form.cleaned_data["template_id"])
             instance.recruitment_ids.set(form.recruitment)
             # instance.job_position_ids.set(form.job_positions)
-            messages.success(request, _("New survey question updated."))
+            messages.success(request, _("Question du sondage mise à jour."))
             return HttpResponse(
                 render(
                     request, "survey/template_update_form.html", {"form": form}
@@ -299,7 +306,7 @@ def create_question_template(request):
             instance.recruitment_ids.set(form.recruitment)
             instance.template_id.set(form.cleaned_data["template_id"])
             # instance.job_position_ids.set(form.job_positions)
-            messages.success(request, _("New survey question created."))
+            messages.success(request, _("Nouvelle question de sondage créée."))
             return HttpResponse(
                 render(
                     request, "survey/template_form.html", {"form": form}
@@ -317,11 +324,11 @@ def delete_survey_question(request, survey_id):
     """
     try:
         RecruitmentSurvey.objects.get(id=survey_id).delete()
-        messages.success(request, _("Question was deleted successfully"))
+        messages.success(request, _("La question a été supprimée avec succès"))
     except RecruitmentSurvey.DoesNotExist:
-        messages.error(request, _("Question not found."))
+        messages.error(request, _("Question introuvable."))
     except ProtectedError:
-        messages.error(request, _("You cannot delete this question"))
+        messages.error(request, _("Vous ne pouvez pas supprimer cette question"))
     return redirect(view_question_template)
 
 
@@ -362,7 +369,7 @@ def application_form(request):
                 candidate_obj.stage_id = stages.filter(stage_type="applied").first()
             else:
                 candidate_obj.stage_id = stages.order_by("sequence").first()
-            messages.success(request, _("Application saved."))
+            messages.success(request, _("Candidature enregistrée."))
 
             resume = request.FILES.get("resume")
             if resume:
@@ -445,7 +452,7 @@ def create_template(request):
         request.user.has_perm("recruitment.add_surveytemplate")
         or request.user.has_perm("recruitment.change_surveytemplate")
     ):
-        messages.info(request, "You dont have permission.")
+        messages.info(request, _("Vous n'avez pas la permission."))
         return HttpResponse("<script>window.location.reload()</script>")
 
     title = request.GET.get("title")
@@ -457,7 +464,7 @@ def create_template(request):
         form = TemplateForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            messages.success(request, "Template saved")
+            messages.success(request, _("Modèle enregistré"))
             return HttpResponse("<script>window.location.reload()</script>")
     return render(request, "survey/main_form.html", {"form": form})
 
@@ -469,11 +476,18 @@ def delete_template(request):
     This method is used to delete the survey template group
     """
     title = request.GET.get("title")
-    SurveyTemplate.objects.filter(title=str(title)).delete()
+    # SurveyTemplate.objects is a HorillaCompanyManager which applies .distinct()
+    # when a specific company is selected; Django forbids delete() on a distinct
+    # queryset. Collect the ids from the scoped queryset (distinct is fine for
+    # values_list), then delete through the base manager (no distinct).
+    template_ids = list(
+        SurveyTemplate.objects.filter(title=str(title)).values_list("pk", flat=True)
+    )
+    SurveyTemplate._base_manager.filter(pk__in=template_ids).delete()
     if title == "None":
-        messages.info(request, "This template group cannot be deleted")
+        messages.info(request, _("Ce groupe de modèles ne peut pas être supprimé"))
     else:
-        messages.success(request, "Template group deleted")
+        messages.success(request, _("Groupe de modèles supprimé"))
 
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
@@ -495,6 +509,6 @@ def question_add(request):
         form = AddQuestionForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Question added")
+            messages.success(request, _("Question ajoutée"))
             return HttpResponse("<script>window.location.reload()</script>")
     return render(request, "survey/add_form.html", {"form": form})
