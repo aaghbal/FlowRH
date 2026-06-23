@@ -190,6 +190,7 @@ class Recruitment(HorillaModel):
             ("job_position_id", "start_date", "company_id"),
         ]
         permissions = (("archive_recruitment", "Archive Recruitment"),)
+        ordering = ["-id"]
 
     def total_hires(self):
         """
