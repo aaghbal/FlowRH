@@ -354,6 +354,18 @@ class Candidate(HorillaModel):
         related_name="candidate",
         verbose_name=_("Recruitment"),
     )
+    company_id = models.ForeignKey(
+        Company,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="pool_candidates",
+        verbose_name=_("Company"),
+        help_text=_(
+            "Company of the candidate. Set automatically from the recruitment; "
+            "used to keep pool candidates (without recruitment) visible per company."
+        ),
+    )
     job_position_id = models.ForeignKey(
         JobPosition,
         on_delete=models.PROTECT,
@@ -378,7 +390,13 @@ class Candidate(HorillaModel):
     schedule_date = models.DateTimeField(
         blank=True, null=True, verbose_name=_("Schedule date")
     )
-    email = models.EmailField(max_length=254, unique=True, verbose_name=_("Email"))
+    email = models.EmailField(
+        max_length=254,
+        unique=True,
+        null=True,
+        blank=True,
+        verbose_name=_("Email"),
+    )
     mobile = models.CharField(
         max_length=15,
         blank=True,
@@ -571,15 +589,22 @@ class Candidate(HorillaModel):
             if self.stage_id.stage_type == "hired":
                 self.hired = True
 
-        if not self.recruitment_id.is_event_based and self.job_position_id is None:
-            self.job_position_id = self.recruitment_id.job_position_id
-        if self.job_position_id not in self.recruitment_id.open_positions.all():
-            raise ValidationError({"job_position_id": _("Choose valid choice")})
-        if self.recruitment_id.is_event_based and self.job_position_id is None:
-            raise ValidationError({"job_position_id": _("This field is required.")})
+        # A candidate may be imported without a recruitment (talent pool). Only run
+        # the recruitment-dependent validation when a recruitment is set, so the
+        # candidate can be created now and affected to a recruitment later.
+        if self.recruitment_id is not None:
+            # keep the candidate's company aligned with its recruitment
+            if self.recruitment_id.company_id is not None:
+                self.company_id = self.recruitment_id.company_id
+            if not self.recruitment_id.is_event_based and self.job_position_id is None:
+                self.job_position_id = self.recruitment_id.job_position_id
+            if self.job_position_id not in self.recruitment_id.open_positions.all():
+                raise ValidationError({"job_position_id": _("Choose valid choice")})
+            if self.recruitment_id.is_event_based and self.job_position_id is None:
+                raise ValidationError({"job_position_id": _("This field is required.")})
         if self.stage_id and self.stage_id.stage_type == "cancelled":
             self.canceled = True
-        if self.canceled:
+        if self.canceled and self.recruitment_id is not None:
             cancelled_stage = Stage.objects.filter(
                 recruitment_id=self.recruitment_id, stage_type="cancelled"
             ).first()
