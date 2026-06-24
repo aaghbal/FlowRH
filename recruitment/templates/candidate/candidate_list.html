@@ -219,6 +219,17 @@
                       </button>
                     {% endif %}
                   {% endif %}
+                  {% if not cand.recruitment_id and perms.recruitment.change_candidate %}
+                    <button class="oh-btn oh-btn--light-bkg w-100" title="{% trans 'Affecter à un recrutement' %}"
+                        data-toggle="oh-modal-toggle"
+                        data-target="#createModal"
+                        hx-get="{% url 'candidate-affect-recruitment' cand.id %}"
+                        hx-target="#createTarget"
+                        style="padding:0.8rem 1rem"
+                      >
+                      <ion-icon name="briefcase-outline"></ion-icon>
+                    </button>
+                  {% endif %}
                   {% if cand.email in emp_list %}
                     <button class="oh-btn oh-btn--light-bkg w-100"  title='{% trans "Candidate is Converted " %}' style="opacity: 30%; padding:0.8rem 1rem">
                       <ion-icon name="thumbs-down-outline"></ion-icon></button>

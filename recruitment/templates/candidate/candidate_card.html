@@ -108,6 +108,18 @@
                     style="display: none"
                 >
                     <ul class="oh-dropdown__items">
+                        {% if not cand.recruitment_id and perms.recruitment.change_candidate %}
+                            <li class="oh-dropdown__item">
+                                <a
+                                    data-toggle="oh-modal-toggle"
+                                    data-target="#createModal"
+                                    hx-get="{% url 'candidate-affect-recruitment' cand.id %}"
+                                    hx-target="#createTarget"
+                                    class="oh-dropdown__link"
+                                    >{% trans "Affecter à un recrutement" %}</a
+                                >
+                            </li>
+                        {% endif %}
                         {% if not cand.email in emp_list %}
                             {% if not cand.start_onboard and perms.recruitment.change_candidate %}
                             <li class="oh-dropdown__item">

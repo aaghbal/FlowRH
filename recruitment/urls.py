@@ -466,6 +466,11 @@ urlpatterns = [
     ),
     path("to-skill-zone/<int:cand_id>", views.to_skill_zone, name="to-skill-zone"),
     path(
+        "candidate-affect-recruitment/<int:cand_id>",
+        views.affect_to_recruitment,
+        name="candidate-affect-recruitment",
+    ),
+    path(
         "skill-zone-cand-delete/<int:sz_cand_id>",
         views.skill_zone_cand_delete,
         name="skill-zone-cand-delete",

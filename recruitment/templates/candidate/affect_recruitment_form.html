@@ -1,0 +1,42 @@
+{% load i18n %}
+<div class="oh-modal__dialog-header">
+  <h5 class="oh-modal__dialog-title">
+    {% trans "Affecter au recrutement" %} — {{ candidate.name }}
+  </h5>
+</div>
+
+<form
+  hx-post="{% url 'candidate-affect-recruitment' candidate.id %}"
+  hx-target="#createTarget"
+  hx-swap="innerHTML"
+  id="affectRecruitmentForm"
+>
+  {% csrf_token %}
+  <div class="oh-modal__dialog-body">
+    <div class="oh-input-group mb-3">
+      <label class="oh-label" for="affect_recruitment_id">
+        {% trans "Recrutement" %} <span class="text-danger">*</span>
+      </label>
+      <select
+        name="recruitment_id"
+        id="affect_recruitment_id"
+        class="oh-select oh-select-2 w-100"
+        required
+      >
+        <option value="">{% trans "Choisir un recrutement..." %}</option>
+        {% for rec in recruitments %}
+          <option value="{{ rec.id }}">{{ rec }}{% if rec.site %} ({{ rec.site }}){% endif %}</option>
+        {% endfor %}
+      </select>
+      <small class="text-muted">
+        {% trans "Le candidat sera placé dans l'étape initiale du recrutement." %}
+      </small>
+    </div>
+  </div>
+
+  <div class="oh-modal__dialog-footer d-flex justify-content-end">
+    <button type="submit" class="oh-btn oh-btn--secondary">
+      {% trans "Affecter" %}
+    </button>
+  </div>
+</form>

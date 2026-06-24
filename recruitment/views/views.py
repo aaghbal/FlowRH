@@ -2603,6 +2603,65 @@ def to_skill_zone(request, cand_id):
 
 
 @login_required
+@permission_required("recruitment.change_candidate")
+def affect_to_recruitment(request, cand_id):
+    """
+    Affect a candidate (typically a pool candidate without recruitment) to a
+    recruitment. Sets the recruitment, a valid job position and the first/applied
+    stage so the candidate enters the pipeline.
+    """
+    candidate = Candidate.objects.get(id=cand_id)
+    template = "candidate/affect_recruitment_form.html"
+    recruitments = Recruitment.objects.filter(is_active=True, closed=False)
+
+    if request.method == "POST":
+        rec_id = request.POST.get("recruitment_id")
+        recruitment = Recruitment.objects.filter(id=rec_id).first()
+        if recruitment is None:
+            messages.error(request, _("Veuillez choisir un recrutement."))
+            return render(
+                request, template, {"candidate": candidate, "recruitments": recruitments}
+            )
+
+        # choose a valid job position for this recruitment
+        job_position = None
+        if not recruitment.is_event_based and recruitment.job_position_id_id:
+            job_position = recruitment.job_position_id
+        if job_position is None or not recruitment.open_positions.filter(
+            id=getattr(job_position, "id", None)
+        ).exists():
+            job_position = recruitment.open_positions.first() or job_position
+
+        # choose the entry stage (applied) or the first stage by sequence
+        stage = (
+            recruitment.stage_set.filter(stage_type="applied").first()
+            or recruitment.stage_set.order_by("sequence").first()
+        )
+
+        # optional explicit stage from the form
+        posted_stage = request.POST.get("stage_id")
+        if posted_stage:
+            stage = recruitment.stage_set.filter(id=posted_stage).first() or stage
+
+        candidate.recruitment_id = recruitment
+        candidate.job_position_id = job_position
+        candidate.stage_id = stage
+        try:
+            candidate.save()
+            messages.success(
+                request,
+                _("Candidat affecté au recrutement %(rec)s.") % {"rec": recruitment},
+            )
+            return HttpResponse("<script>window.location.reload()</script>")
+        except Exception as exc:
+            messages.error(request, _("Affectation impossible : %(err)s") % {"err": exc})
+
+    return render(
+        request, template, {"candidate": candidate, "recruitments": recruitments}
+    )
+
+
+@login_required
 def update_candidate_rating(request, cand_id):
     """
     This method is used to update the candidate rating
