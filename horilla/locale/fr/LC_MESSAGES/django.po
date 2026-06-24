@@ -27314,7 +27314,7 @@ msgstr "Importer Employé"
 #: recruitment/templates/survey/candidate_survey_form.html:19
 #: recruitment/templates/survey/survey_preview.html:18
 msgid "Survey"
-msgstr "Questionnaire d'intégration"
+msgstr "Questionnaire de candidature"
 
 #: recruitment/templates/candidate/individual.html:369
 msgid "Recruitment Information"
