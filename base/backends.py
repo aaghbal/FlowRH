@@ -4,11 +4,14 @@ email_backend.py
 This module is used to write email backends
 """
 
+import html as html_lib
 import importlib
 import logging
+import re
 
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.mail.backends.smtp import EmailBackend
+from django.utils.html import strip_tags
 
 from base.models import DynamicEmailConfiguration, EmailLog
 from horilla import settings
@@ -172,12 +175,51 @@ if EMAIL_BACKEND and EMAIL_BACKEND != default:
     BACKEND_CLASS = getattr(module, class_name)
 
 
+def html_to_plain_text(html):
+    """Build a readable plain-text version from an HTML email body."""
+    # keep link targets readable, drop scripts/styles
+    text = re.sub(r"(?is)<(script|style).*?</\1>", " ", html or "")
+    text = re.sub(r"(?i)<br\s*/?>", "\n", text)
+    text = re.sub(r"(?i)</(p|h[1-6]|div|tr|li|td)>", "\n", text)
+    text = strip_tags(text)
+    text = html_lib.unescape(text)
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
+    return text.strip()
+
+
+def ensure_plain_text_alternative(message):
+    """
+    Add a text/plain alternative to HTML-only emails so they are sent as
+    multipart/alternative. HTML-only messages are heavily penalised by spam
+    filters (SpamAssassin MIME_HTML_ONLY); this improves deliverability.
+    """
+    try:
+        is_html_only = (
+            getattr(message, "content_subtype", "plain") == "html"
+            and not getattr(message, "alternatives", None)
+        )
+        if not is_html_only:
+            return
+        html_body = message.body
+        plain_body = html_to_plain_text(html_body)
+        # turn the EmailMessage into a multipart/alternative message
+        message.__class__ = EmailMultiAlternatives
+        message.alternatives = [(html_body, "text/html")]
+        message.body = plain_body or " "
+        message.content_subtype = "plain"
+    except Exception as exc:  # never block sending because of this
+        logger.warning("Could not add plain-text alternative: %s", exc)
+
+
 class ConfiguredEmailBackend(BACKEND_CLASS):
 
     def send_messages(self, email_messages):
+        for message in email_messages:
+            ensure_plain_text_alternative(message)
         response = super(BACKEND_CLASS, self).send_messages(email_messages)
         for message in email_messages:
-            from_email = self.dynamic_from_email_with_display_name or getattr(settings, "DEFAULT_FROM_EMAIL", "flowrh@gmail.com")
+            from_email = self.dynamic_from_email_with_display_name or getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@flowrh.conexusitapps.ma")
             email_log = EmailLog(
                 subject=message.subject,
                 from_email=from_email,
@@ -190,8 +232,8 @@ class ConfiguredEmailBackend(BACKEND_CLASS):
 
 
 if EMAIL_BACKEND != default:
-    from_mail = getattr(settings, "DEFAULT_FROM_EMAIL", "flowrh@gmail.com")
-    username = getattr(settings, "EMAIL_HOST_USER", "flowrh@gmail.com")
+    from_mail = getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@flowrh.conexusitapps.ma")
+    username = getattr(settings, "EMAIL_HOST_USER", "no-reply@flowrh.conexusitapps.ma")
     ConfiguredEmailBackend.dynamic_username = from_mail
     ConfiguredEmailBackend.dynamic_from_email_with_display_name = from_mail
 

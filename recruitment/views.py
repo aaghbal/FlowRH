@@ -664,7 +664,7 @@ def change_candidate_stage(request):
                             if stage.recruitment_id.is_vacancy_filled():
                                 context["message"] = _("Vaccancy is filled")
                                 context["vacancy"] = stage.recruitment_id.vacancy
-                        messages.success(request, "Candidate stage updated")
+                        messages.success(request, "Étape du candidat mise à jour")
                 except Candidate.DoesNotExist:
                     messages.error(request, _("Candidate not found."))
         else:
@@ -682,7 +682,7 @@ def change_candidate_stage(request):
                             context["vacancy"] = stage.recruitment_id.vacancy
                     candidate.stage_id = stage
                     candidate.save()
-                    messages.success(request, "Candidate stage updated")
+                    messages.success(request, "Étape du candidat mise à jour")
             except Candidate.DoesNotExist:
                 messages.error(request, _("Candidate not found."))
         return JsonResponse(context)
@@ -695,7 +695,7 @@ def change_candidate_stage(request):
     if stage:
         candidate.stage_id = stage
         candidate.save()
-        messages.success(request, "Candidate stage updated")
+        messages.success(request, "Étape du candidat mise à jour")
     return stage_component(request)
 
 
@@ -903,7 +903,7 @@ def candidate_stage_update(request, cand_id):
             )
 
         return JsonResponse(
-            {"type": "success", "message": _("Candidate stage updated")}
+            {"type": "success", "message": _("Étape du candidat mise à jour")}
         )
     return JsonResponse(
         {"type": "danger", "message": _("Something went wrong, Try agian.")}

@@ -74,24 +74,17 @@
           <td>
             <table class="hr-table-main__header">
               <tr>
-                <td style="width: 50%">
-                  <img src="{{ logo_b64 }}" height="30" width="110.4" />
+                <td style="width: 50%; font-weight: bold; font-size: 18px; color: #1c1c1c;">
+                  {% if instance.company_id %}{{ instance.company_id.company }}{% elif instance.recruitment_id %}{{ instance.recruitment_id.company_id.company }}{% else %}{{ white_label_company_name }}{% endif %}
                 </td>
-                <td style="width: 50%; text-align: right">
-                  <a href="#" class="hr-link">View in browser</a>
-                </td>
+                <td style="width: 50%; text-align: right"></td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td align="center" style="padding-top:20px;padding-bottom: 20px ;">
-            <img src="{{ commitment_b64 }}" style="display:block;height:auto;border:0;width:20%" width="272" />
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:15px 25px 0 25px; font-size: 24px;" align="center">
-            <strong>Hello {{ instance.name }}, Congratulations on your selection!</strong>
+          <td style="padding:30px 25px 0 25px; font-size: 24px;" align="center">
+            <strong>Bonjour {{ instance.name }}, félicitations pour votre sélection !</strong>
           </td>
         </tr>
         <tr>
@@ -111,7 +104,7 @@ Nous vous adressons nos meilleurs vœux pour la suite de votre parcours ! Nous v
                 padding: 15px 25px;
                 text-decoration: none;
                 font-weight: bold;
-              ">Complete Profile</a>
+              ">Compléter mon profil</a>
           </td>
         </tr>
 
@@ -137,7 +130,7 @@ Vous ne voulez plus recevoir ces emails ?
               padding-top: 10px;
               color: #5c5c5c;
               font-size: 12px;
-            ">&copy; {{current_year}} {{white_label_company_name}}</td>
+            ">&copy; {{current_year}} {% if instance.company_id %}{{ instance.company_id.company }}{% elif instance.recruitment_id %}{{ instance.recruitment_id.company_id.company }}{% else %}{{ white_label_company_name }}{% endif %}</td>
         </tr>
       </table>
     </center>

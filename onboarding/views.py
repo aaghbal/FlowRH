@@ -865,7 +865,7 @@ def onboarding_view(request):
         "onboarding_stage__onboarding_task",
         "onboarding_stage__onboarding_task__candidates",
     )
-    paginator = Paginator(recruitments.order_by("id"), 4)
+    paginator = Paginator(recruitments.order_by("-id"), 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     groups = onboarding_query_grouper(request, page_obj)
@@ -938,7 +938,7 @@ def kanban_view(request):
         "onboarding_stage__onboarding_task",
         "onboarding_stage__onboarding_task__candidates",
     )
-    paginator = Paginator(recruitments, 4)
+    paginator = Paginator(recruitments.order_by("-id"), 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     groups = onboarding_query_grouper(request, page_obj)
@@ -983,32 +983,35 @@ def user_creation(request, token):
     GET : return user creation form template
     POST : return user_save function
     """
+    onboarding_portal = OnboardingPortal.objects.filter(token=token).first()
+    # The token is unique per sent link; if the portal was deleted or the link
+    # was regenerated (mail re-sent), old links no longer match -> show a clean
+    # "invalid/expired link" page instead of crashing with a raw error.
+    if not onboarding_portal or onboarding_portal.used is True:
+        return render(request, "404.html")
+    if onboarding_portal.count == 3:
+        return redirect("employee-bank-details", token)
+    candidate = onboarding_portal.candidate_id
+    user = User.objects.filter(username=candidate.email).first()
+    form = UserCreationForm(instance=user)
     try:
-        onboarding_portal = OnboardingPortal.objects.get(token=token)
-        if not onboarding_portal or onboarding_portal.used is True:
-            return render(request, "404.html")
-        if onboarding_portal.count == 3:
-            return redirect("employee-bank-details", token)
-        candidate = onboarding_portal.candidate_id
-        user = User.objects.filter(username=candidate.email).first()
-        form = UserCreationForm(instance=user)
-        try:
-            if request.method == "POST":
-                form = UserCreationForm(request.POST, instance=user)
-                if form.is_valid():
-                    return user_save(form, onboarding_portal, request, token)
-        except Exception:
-            messages.error(request, _("User with email-id already exists.."))
-        return render(
-            request,
-            "onboarding/user_creation.html",
-            {
-                "form": form,
-                "company": onboarding_portal.candidate_id.recruitment_id.company_id,
-            },
-        )
-    except Exception as error:
-        return HttpResponse(error)
+        if request.method == "POST":
+            form = UserCreationForm(request.POST, instance=user)
+            if form.is_valid():
+                return user_save(form, onboarding_portal, request, token)
+    except Exception:
+        messages.error(request, _("User with email-id already exists.."))
+    company = getattr(
+        getattr(candidate, "recruitment_id", None), "company_id", None
+    ) or getattr(candidate, "company_id", None)
+    return render(
+        request,
+        "onboarding/user_creation.html",
+        {
+            "form": form,
+            "company": company,
+        },
+    )
 
 
 def user_save(form, onboarding_portal, request, token):
