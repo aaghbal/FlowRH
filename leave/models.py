@@ -119,6 +119,13 @@ TIME_PERIOD = [("day", _("Day")), ("month", _("Month")), ("year", _("Year"))]
 
 PAYMENT = [("paid", _("Paid")), ("unpaid", _("Unpaid"))]
 
+LEAVE_CATEGORY = [
+    ("annuel", _("Annuel")),
+    ("special", _("Spécial")),
+    ("recuperation", _("Récupération")),
+    ("maladie", _("Maladie")),
+]
+
 CARRYFORWARD_TYPE = [
     ("no carryforward", _("No Carry Forward")),
     ("carryforward", _("Carry Forward")),
@@ -164,6 +171,12 @@ WEEK_DAYS = [
 class LeaveType(HorillaModel):
     icon = models.ImageField(null=True, blank=True, upload_to="leave/leave_icon")
     name = models.CharField(max_length=30, null=False)
+    category = models.CharField(
+        max_length=30,
+        choices=LEAVE_CATEGORY,
+        default="annuel",
+        verbose_name=_("Catégorie de congé"),
+    )
     color = models.CharField(null=True, max_length=30)
     payment = models.CharField(max_length=30, choices=PAYMENT, default="unpaid")
     count = models.FloatField(null=True, default=1)

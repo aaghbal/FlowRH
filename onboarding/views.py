@@ -759,9 +759,11 @@ def onboarding_query_grouper(request, queryset):
     groups = []
     for rec in queryset:
         employees = []
-        stages = OnboardingStageFilter(
-            request.GET, queryset=rec.onboarding_stage.all()
-        ).qs.order_by("sequence")
+        stages = (
+            OnboardingStageFilter(request.GET, queryset=rec.onboarding_stage.all())
+            .qs.order_by("sequence")
+            .prefetch_related("employee_id", "onboarding_task")
+        )
         all_stages_grouper = []
         data = {"recruitment": rec, "stages": []}
         for stage in stages:
@@ -859,12 +861,11 @@ def onboarding_view(request):
     onboarding_stages = OnboardingStage.objects.all()
     choices = CandidateTask.choice
     previous_data = request.GET.urlencode()
-    recruitments = recruitments.prefetch_related(
-        "onboarding_stage",
-        "onboarding_stage__employee_id",
-        "onboarding_stage__onboarding_task",
-        "onboarding_stage__onboarding_task__candidates",
-    )
+    # Only the base onboarding_stage relation is used via recruitment.onboarding_stage
+    # in the template; the deeper relations are reached through the grouper's own
+    # objects, so prefetching them here was wasted work (the candidates chain could
+    # load every candidate of every task).
+    recruitments = recruitments.prefetch_related("onboarding_stage")
     paginator = Paginator(recruitments.order_by("-id"), 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -932,12 +933,10 @@ def kanban_view(request):
     previous_data = request.GET.urlencode()
 
     filter_obj = RecruitmentFilter(request.GET, queryset=recruitments)
-    recruitments = recruitments.prefetch_related(
-        "onboarding_stage",
-        "onboarding_stage__employee_id",
-        "onboarding_stage__onboarding_task",
-        "onboarding_stage__onboarding_task__candidates",
-    )
+    # Only the base onboarding_stage relation is used in the template; the deeper
+    # relations are reached through the grouper's own objects, so prefetching them
+    # here was wasted work.
+    recruitments = recruitments.prefetch_related("onboarding_stage")
     paginator = Paginator(recruitments.order_by("-id"), 4)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

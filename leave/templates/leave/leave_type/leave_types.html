@@ -53,6 +53,10 @@
 
                 <div class="oh-timeoff-modal__stats-container mb-1">
                     <div class="oh-timeoff-modal__stat mt-1">
+                        <span class="oh-timeoff-modal__stat-title fw-bold text-dark">{% trans "Type de congé" %}</span>
+                        <span class="oh-timeoff-modal__stat-title">{{leave_type.get_category_display}}</span>
+                    </div>
+                    <div class="oh-timeoff-modal__stat mt-1">
                         <span class="oh-timeoff-modal__stat-title fw-bold text-dark">{% trans "Payment" %}</span>
                         <span class="oh-timeoff-modal__stat-title">{{leave_type.get_payment_display}}</span>
                     </div>
