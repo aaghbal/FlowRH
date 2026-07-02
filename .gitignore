@@ -15,6 +15,7 @@ extract_cv_data.py
 *.py[cod] 
 *$py.class 
 Documentation_Module_Conge.docx
+.~lock.Documentation_Module_Conge.docx#
 # Distribution / packaging 
 .Python build/ 
 develop-eggs/ 

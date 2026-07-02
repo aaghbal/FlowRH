@@ -39,6 +39,8 @@ from base.models import Site
 from employee.models import (
     Actiontype,
     BonusPoint,
+    CompanyDocument,
+    CompanyDocumentCategory,
     DisciplinaryAction,
     Employee,
     EmployeeBankDetails,
@@ -745,6 +747,32 @@ class PolicyForm(ModelForm):
         if commit:
             instance.attachments.add(*multiple_attachment_ids)
         return instance, attachemnts
+
+
+class CompanyDocumentForm(ModelForm):
+    """
+    Form to upload a company document.
+    """
+
+    class Meta:
+        model = CompanyDocument
+        fields = ["title", "category", "document", "description"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["document"].widget.attrs.update(
+            {"accept": ".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.zip"}
+        )
+
+
+class CompanyDocumentCategoryForm(ModelForm):
+    """
+    Form to create/update a company document category.
+    """
+
+    class Meta:
+        model = CompanyDocumentCategory
+        fields = ["name"]
 
 
 class BonusPointAddForm(ModelForm):

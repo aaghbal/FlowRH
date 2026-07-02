@@ -1,0 +1,55 @@
+{% load i18n %}
+<section class="oh-wrapper oh-main__topbar" style="padding-bottom: 1rem;">
+  <div class="oh-main__titlebar oh-main__titlebar--left oh-d-flex-column--resp oh-mb-3--small">
+    <h1 class="oh-main__titlebar-title fw-bold">{% trans "Documents de l'entreprise" %}</h1>
+  </div>
+
+  <div class="oh-main__titlebar oh-main__titlebar--right oh-d-flex-column--resp oh-mb-3--small">
+    <div class="oh-input-group oh-input__search-group mr-4">
+      <ion-icon name="search-outline" class="oh-input-group__icon oh-input-group__icon--left md hydrated" role="img" aria-label="search outline"></ion-icon>
+      <input hx-get="{% url 'search-company-documents' %}"
+             name="search"
+             hx-include="#companyDocFilter"
+             hx-trigger="keyup changed delay:.3s"
+             hx-target="#companyDocumentsContainer"
+             type="text" placeholder="{% trans 'Rechercher' %}"
+             style="margin-right:10px" class="oh-input oh-input__icon mr-3"
+             autocomplete="false" aria-label="Search Input" />
+    </div>
+
+    <div class="oh-input-group mr-4" style="min-width:220px;">
+      <select id="companyDocFilter"
+              name="category"
+              hx-get="{% url 'search-company-documents' %}"
+              hx-trigger="change"
+              hx-target="#companyDocumentsContainer"
+              class="oh-select oh-select-2 w-100">
+        <option value="">{% trans "Toutes les catégories" %}</option>
+        {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    {% if perms.employee.add_companydocument %}
+      <div class="oh-main__titlebar-button-container">
+        {% if perms.employee.add_companydocumentcategory %}
+          <a hx-get="{% url 'create-company-document-category' %}"
+             hx-target="#objectCreateModalTarget"
+             data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
+             class="oh-btn oh-btn--light-bkg mr-2">
+            <ion-icon name="pricetags-outline"></ion-icon>
+            {% trans "Ajouter catégorie" %}
+          </a>
+        {% endif %}
+        <a hx-get="{% url 'create-company-document' %}"
+           hx-target="#objectCreateModalTarget"
+           data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
+           class="oh-btn oh-btn--secondary">
+          <ion-icon name="cloud-upload-outline"></ion-icon>
+          {% trans "Téléverser" %}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>

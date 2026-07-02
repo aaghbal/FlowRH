@@ -15,7 +15,12 @@ from django_filters import CharFilter
 from accessibility.methods import check_is_accessible
 from accessibility.models import DefaultAccessibility
 from base.methods import filtersubordinatesemployeemodel
-from employee.models import DisciplinaryAction, Employee, Policy
+from employee.models import (
+    CompanyDocument,
+    DisciplinaryAction,
+    Employee,
+    Policy,
+)
 from horilla.filters import FilterSet, HorillaFilterSet, filter_by_name
 from horilla.horilla_middlewares import _thread_locals
 from horilla_documents.models import Document
@@ -246,6 +251,18 @@ class PolicyFilter(FilterSet):
     class Meta:
         model = Policy
         fields = "__all__"
+
+
+class CompanyDocumentFilter(FilterSet):
+    """
+    Filter set for company documents library.
+    """
+
+    search = django_filters.CharFilter(field_name="title", lookup_expr="icontains")
+
+    class Meta:
+        model = CompanyDocument
+        fields = ["category"]
 
 
 class DocumentRequestFilter(FilterSet):

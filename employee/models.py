@@ -823,6 +823,52 @@ class Policy(HorillaModel):
         self.attachments.all().delete()
 
 
+class CompanyDocumentCategory(HorillaModel):
+    """
+    Category for company documents library (admin manageable).
+    """
+
+    name = models.CharField(max_length=100, unique=True, verbose_name=_("Nom"))
+    objects = models.Manager()
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = _("Catégorie de document")
+        verbose_name_plural = _("Catégories de documents")
+
+    def __str__(self):
+        return self.name
+
+
+class CompanyDocument(HorillaModel):
+    """
+    Company documents library. Admin uploads, employees download.
+    """
+
+    title = models.CharField(max_length=150, verbose_name=_("Titre"))
+    category = models.ForeignKey(
+        CompanyDocumentCategory,
+        on_delete=models.PROTECT,
+        related_name="documents",
+        verbose_name=_("Catégorie"),
+    )
+    document = models.FileField(
+        upload_to="employee/company_documents", verbose_name=_("Fichier")
+    )
+    description = models.TextField(
+        blank=True, null=True, max_length=255, verbose_name=_("Description")
+    )
+    objects = models.Manager()
+
+    class Meta:
+        ordering = ["-id"]
+        verbose_name = _("Document de l'entreprise")
+        verbose_name_plural = _("Documents de l'entreprise")
+
+    def __str__(self):
+        return self.title
+
+
 class BonusPoint(HorillaModel):
     """
     Model representing bonus points for employees with associated conditions.

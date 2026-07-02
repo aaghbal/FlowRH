@@ -56,6 +56,10 @@ SUBMENUS = [
         "redirect": reverse("view-policies"),
     },
     {
+        "menu": trans("Documents de l'entreprise"),
+        "redirect": reverse("company-documents-view"),
+    },
+    {
         "menu": trans("Organigramme"),
         "redirect": reverse("organisation-chart"),
     },

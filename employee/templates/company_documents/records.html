@@ -1,0 +1,60 @@
+{% load i18n %}
+{% load static %}
+{% if grouped_documents %}
+  {% for category, documents in grouped_documents %}
+    <div class="oh-card mb-4">
+      <div class="oh-card__body">
+        <h5 class="fw-bold mb-3" style="display:flex;align-items:center;gap:.5rem;">
+          <ion-icon name="folder-open-outline"></ion-icon>
+          {{ category.name }}
+          <span class="oh-badge oh-badge--secondary ms-2">{{ documents|length }}</span>
+        </h5>
+        <div class="oh-sticky-table">
+          <div class="oh-sticky-table__table">
+            <div class="oh-sticky-table__thead">
+              <div class="oh-sticky-table__tr">
+                <div class="oh-sticky-table__th">{% trans "Titre" %}</div>
+                <div class="oh-sticky-table__th">{% trans "Description" %}</div>
+                <div class="oh-sticky-table__th">{% trans "Ajouté le" %}</div>
+                <div class="oh-sticky-table__th text-center">{% trans "Actions" %}</div>
+              </div>
+            </div>
+            <div class="oh-sticky-table__tbody">
+              {% for document in documents %}
+                <div class="oh-sticky-table__tr">
+                  <div class="oh-sticky-table__td fw-bold">{{ document.title }}</div>
+                  <div class="oh-sticky-table__td">{{ document.description|default:"-" }}</div>
+                  <div class="oh-sticky-table__td">{{ document.created_at|date:"d/m/Y" }}</div>
+                  <div class="oh-sticky-table__td text-center">
+                    {% if document.document %}
+                      <a href="{{ document.document.url }}" download
+                         class="oh-btn oh-btn--light-bkg oh-btn--small" title="{% trans 'Télécharger' %}">
+                        <ion-icon name="download-outline"></ion-icon>
+                        {% trans "Télécharger" %}
+                      </a>
+                    {% endif %}
+                    {% if perms.employee.delete_companydocument %}
+                      <a href="{% url 'delete-company-document' document.id %}"
+                         class="oh-btn oh-btn--danger-outline oh-btn--small"
+                         onclick="return confirm('{% trans "Supprimer ce document ?" %}')"
+                         title="{% trans 'Supprimer' %}">
+                        <ion-icon name="trash-outline"></ion-icon>
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <main>
+    <div class="oh-404">
+      <img style="width:150px;height:150px;" src="{% static 'images/ui/insurance-policy.png' %}" class="oh-404__image mb-4" alt="404"/>
+      <h5 class="oh-404__subtitle">{% trans "Aucun document disponible." %}</h5>
+    </div>
+  </main>
+{% endif %}

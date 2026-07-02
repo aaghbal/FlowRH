@@ -1,0 +1,21 @@
+{% load i18n %}
+<div class="oh-modal__dialog-header">
+    <h2 class="oh-modal__dialog-title">
+        {% trans "Ajouter une catégorie" %}
+    </h2>
+    <button class="oh-modal__close" aria-label="Close">
+        <ion-icon name="close-outline"></ion-icon>
+    </button>
+</div>
+
+<div class="oh-modal__dialog-body">
+    <form hx-post="{% url 'create-company-document-category' %}"
+          class="oh-profile-section" hx-target="#objectCreateModalTarget">
+        {{ form.as_p }}
+        <div class="oh-modal__dialog-footer p-0">
+            <button type="submit" class="oh-btn oh-btn--secondary oh-btn--shadow mt-3">
+                {% trans "Sauvegarder" %}
+            </button>
+        </div>
+    </form>
+</div>

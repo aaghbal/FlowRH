@@ -7,7 +7,7 @@ This module is used to map url path with view methods.
 from django.urls import path
 
 from base.views import object_delete, object_duplicate
-from employee import not_in_out_dashboard, policies, views
+from employee import company_documents, not_in_out_dashboard, policies, views
 from employee.forms import DisciplinaryActionForm
 from employee.models import DisciplinaryAction, Employee, EmployeeTag
 from horilla_documents.models import DocumentRequest
@@ -275,6 +275,31 @@ urlpatterns = [
         "get-attachments-policy",
         policies.get_attachments,
         name="get-attachments-policy",
+    ),
+    path(
+        "company-documents/",
+        company_documents.company_documents_view,
+        name="company-documents-view",
+    ),
+    path(
+        "company-documents/search",
+        company_documents.search_company_documents,
+        name="search-company-documents",
+    ),
+    path(
+        "company-documents/create",
+        company_documents.create_company_document,
+        name="create-company-document",
+    ),
+    path(
+        "company-documents/delete/<int:doc_id>",
+        company_documents.delete_company_document,
+        name="delete-company-document",
+    ),
+    path(
+        "company-documents/category/create",
+        company_documents.create_company_document_category,
+        name="create-company-document-category",
     ),
     path("file-upload/<int:id>", views.file_upload, name="file-upload"),
     path("view-file/<int:id>", views.view_file, name="view-file"),
