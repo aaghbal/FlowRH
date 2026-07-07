@@ -1816,7 +1816,21 @@ def update_probation_end(request):
     candidate_id = request.GET.getlist("candidate_id")
     probation_end = request.GET["probation_end"]
     Candidate.objects.filter(id__in=candidate_id).update(probation_end=probation_end)
-    return JsonResponse({"message": "Probation end date updated", "type": "success"})
+    return JsonResponse({"message": _("Date de fin de période d'essai mise à jour"), "type": "success"})
+
+
+@login_required
+@stage_manager_can_enter("recruitment.change_stage")
+def update_probation_end_2(request):
+    """
+    This method is used to update the 2nd probation end date
+    """
+    candidate_id = request.GET.getlist("candidate_id")
+    probation_end_2 = request.GET["probation_end_2"]
+    Candidate.objects.filter(id__in=candidate_id).update(
+        probation_end_2=probation_end_2
+    )
+    return JsonResponse({"message": _("Date de fin de période d'essai mise à jour"), "type": "success"})
 
 
 @login_required

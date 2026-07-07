@@ -98,6 +98,16 @@ class EmployeeFilter(HorillaFilterSet):
         lookup_expr="lte",
         widget=forms.DateInput(attrs={"type": "date"}),
     )
+    probation_2_from = django_filters.DateFilter(
+        field_name="candidate_get__probation_end_2",
+        lookup_expr="gte",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+    probation_2_till = django_filters.DateFilter(
+        field_name="candidate_get__probation_end_2",
+        lookup_expr="lte",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
 
     not_in_yet = django_filters.DateFilter(
         method="not_in_yet_func",

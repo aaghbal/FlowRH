@@ -54,10 +54,11 @@
           <div class="oh-sticky-table__th {% if request.sort_option.order == '-name' %}arrow-up {% elif request.sort_option.order == 'name' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=name">{% trans "Candidate" %}</div>
           <div data-cell-index="1" data-cell-title='{% trans "Email" %}' class="oh-sticky-table__th">{% trans "Email" %}</div>
           <div data-cell-index="2" data-cell-title='{% trans "Date of joining" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-joining_date' %}arrow-up {% elif request.sort_option.order == 'joining_date' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=joining_date">{% trans "Date of joining" %}</div>
-          <div data-cell-index="3" data-cell-title='{% trans "Fin de période d'essai" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-probation_end' %}arrow-up {% elif request.sort_option.order == 'probation_end' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=probation_end">{% trans "Fin de période d'essai" %}</div>
-          <div data-cell-index="4" data-cell-title='{% trans "Job position" %}' class="oh-sticky-table__th">{% trans "Job position" %}</div>
-          <div data-cell-index="5" data-cell-title='{% trans "Recruitment" %}' class="oh-sticky-table__th">{% trans "Recruitment" %}</div>
-          <div data-cell-index="6" data-cell-title='{% trans "lettre d'embauche" %}' class="oh-sticky-table__th">{% trans "lettre d'embauche" %}</div>
+          <div data-cell-index="3" data-cell-title='{% trans "Fin de 1ère période d'essai" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-probation_end' %}arrow-up {% elif request.sort_option.order == 'probation_end' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=probation_end">{% trans "Fin de 1ère période d'essai" %}</div>
+          <div data-cell-index="4" data-cell-title='{% trans "Fin de 2ème période d'essai" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-probation_end_2' %}arrow-up {% elif request.sort_option.order == 'probation_end_2' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=probation_end_2">{% trans "Fin de 2ème période d'essai" %}</div>
+          <div data-cell-index="5" data-cell-title='{% trans "Job position" %}' class="oh-sticky-table__th">{% trans "Job position" %}</div>
+          <div data-cell-index="6" data-cell-title='{% trans "Recruitment" %}' class="oh-sticky-table__th">{% trans "Recruitment" %}</div>
+          <div data-cell-index="7" data-cell-title='{% trans "lettre d'embauche" %}' class="oh-sticky-table__th">{% trans "lettre d'embauche" %}</div>
           <div class="oh-sticky-table__th oh-sticky-table__right" style="width: 290px;">{% trans "Actions" %}</div>
         </div>
       </div>
@@ -97,9 +98,13 @@
             <input type="date" class="oh-input" style="width: 150px;" value="{{candidate.probation_end|date:'Y-m-d'}}"
               name="probation_end" onchange="probotionEnd($(this))" data-candidate-id="{{candidate.id}}">
           </a>
-          <a data-cell-index="4" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.job_position_id}}</a>
-          <a data-cell-index="5" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.recruitment_id}}</a>
-          <a data-cell-index="6" style="color: inherit; text-decoration: none" class="oh-sticky-table__td" onload="event.stopPropagation()">
+          <a data-cell-index="4" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">
+            <input type="date" class="oh-input" style="width: 150px;" value="{{candidate.probation_end_2|date:'Y-m-d'}}"
+              name="probation_end_2" onchange="probotionEnd2($(this))" data-candidate-id="{{candidate.id}}">
+          </a>
+          <a data-cell-index="5" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.job_position_id}}</a>
+          <a data-cell-index="6" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.recruitment_id}}</a>
+          <a data-cell-index="7" style="color: inherit; text-decoration: none" class="oh-sticky-table__td" onload="event.stopPropagation()">
             <select hx-get="{% url 'update-offer-letter-status' %}?candidate_id={{candidate.id}}" hx-swap="none"  name="status" id="id_offeletter_status_{{candidate.id}}" class="w-100" style="height: 40px;border:solid 1px rgba(128, 128, 128, 0.32);">
               {% for status in candidate.offer_letter_statuses %}
               {{candidate.offer_letter_status }} {{status.0}}
@@ -209,6 +214,26 @@
       data: {
         "candidate_id":candId,
         "probation_end":dateVal,
+      },
+      success: function (response) {
+        $("#ohMessages").append(`
+            <div class="oh-alert-container">
+				<div class="oh-alert oh-alert--animated oh-alert--${response.type}">
+				${response.message}
+				</div>
+            </div>`);
+      }
+    });
+  }
+  function probotionEnd2($element){
+    candId = $element.attr("data-candidate-id");
+    dateVal = $element.val()
+    $.ajax({
+      type: "get",
+      url: "{% url 'update-probotion-end-2' %}",
+      data: {
+        "candidate_id":candId,
+        "probation_end_2":dateVal,
       },
       success: function (response) {
         $("#ohMessages").append(`

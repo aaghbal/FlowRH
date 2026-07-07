@@ -125,6 +125,11 @@ urlpatterns = [
     path(
         "update-probotion-end", views.update_probation_end, name="update-probotion-end"
     ),
+    path(
+        "update-probotion-end-2",
+        views.update_probation_end_2,
+        name="update-probotion-end-2",
+    ),
     path("task-report-onboarding", views.task_report, name="task-report-onboarding"),
     path(
         "candidate-tasks-status",

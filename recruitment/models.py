@@ -465,6 +465,7 @@ class Candidate(HorillaModel):
     sequence = models.IntegerField(null=True, default=0)
 
     probation_end = models.DateField(null=True, editable=False)
+    probation_end_2 = models.DateField(null=True, editable=False)
     offer_letter_status = models.CharField(
         max_length=10,
         choices=offer_letter_statuses,

@@ -70,6 +70,20 @@ class CandidateFilter(FilterSet):
         lookup_expr="gte",
         widget=forms.DateInput(attrs={"type": "date"}),
     )
+    probation_end_2 = django_filters.DateFilter(
+        field_name="probation_end_2",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+    probation_end_2_till = django_filters.DateFilter(
+        field_name="probation_end_2",
+        lookup_expr="lte",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
+    probation_end_2_from = django_filters.DateFilter(
+        field_name="probation_end_2",
+        lookup_expr="gte",
+        widget=forms.DateInput(attrs={"type": "date"}),
+    )
     schedule_date = django_filters.DateFilter(
         field_name="schedule_date",
         widget=forms.DateInput(attrs={"type": "date"}),
@@ -409,7 +423,8 @@ class CandidateReGroup:
         ("country", "Country"),
         ("stage_id", "Stage"),
         ("joining_date", "Date de début"),
-        ("probation_end", "Date de fin de période d'essai"),
+        ("probation_end", "Date de fin de 1ère période d'essai"),
+        ("probation_end_2", "Date de fin de 2ème période d'essai"),
         ("offer_letter_status", "Statut de la lettre d'offre"),
         ("rejected_candidate__reject_reason_id", "Motif de refus"),
         ("skillzonecandidate_set__skill_zone_id", "Zone de compétence"),
