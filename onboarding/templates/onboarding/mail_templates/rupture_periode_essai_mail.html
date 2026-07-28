@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rupture de votre période d'essai</title>
+  </head>
+  <body style="margin: 0; background-color: #e5e5e5">
+    <table
+      style="
+        background-color: #ffffff;
+        margin: 15px auto 0 auto;
+        width: 100%;
+        max-width: 650px;
+        border-spacing: 0;
+        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        color: #1c1c1c;
+        font-size: 14px;
+        line-height: 1.6;
+      "
+    >
+      <tr>
+        <td style="padding: 30px 25px">
+          <p>Bonjour {{ candidate.name }},</p>
+
+          <p>
+            Vous trouverez ci-joint le courrier relatif à la rupture de votre
+            période d'essai, votre contrat de travail étant rompu le
+            <b>{{ rupture_date|date:"d/m/Y" }}</b>.
+          </p>
+
+          <p>
+            Nous vous remercions de bien vouloir en prendre connaissance et de
+            suivre les modalités qui y sont indiquées.
+          </p>
+
+          <p>
+            Cordialement,<br />
+            Direction des Ressources Humaines<br />
+            M Automotiv
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

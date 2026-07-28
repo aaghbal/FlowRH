@@ -120,7 +120,7 @@
                                         {% if interview.completed %}
                                             <div class="d-flex" style="color:green;">
                                                 <i id="fabIcon" style="font-size:18px;" class="material-icons ms-3 mt-2">check_circle</i>
-                                                <span class="oh-activity-sidebar__q mt-2">{% trans "Interview Completed" %}</span>
+                                                <span class="oh-activity-sidebar__q mt-2">{% trans "Entretien terminé." %}</span>
                                             </div>
                                         {% elif interview.interview_date|date:"Y-m-d" < now|date:"Y-m-d" %}
                                             <div class="d-flex" style="color:red;">

@@ -275,7 +275,7 @@ function bulkStageUpdate(canIds, stageId, preStageId) {
             if (response.message) {
                 Swal.fire({
                     title: response.message,
-                    text: `Total vacancy is ${response.vacancy}.`, // Using template literals
+                    text: `Nombre total de postes vacants: ${response.vacancy}.`, // Using template literals
                     icon: "info",
                     confirmButtonText: "Ok",
                 });
@@ -301,7 +301,7 @@ function updateCandStage(canIds, stageId, preStageId) {
             if (response.message) {
                 Swal.fire({
                     title: response.message,
-                    text: `Total vacancy is ${response.vacancy}.`, // Using template literals
+                    text: `Nombre total de postes vacants: ${response.vacancy}.`, // Using template literals
                     icon: "info",
                     confirmButtonText: "Ok",
                 });

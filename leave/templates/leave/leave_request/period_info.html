@@ -1,0 +1,105 @@
+{% load i18n %}
+{% comment %}
+Info panel displayed under the fields of a leave request form : the holidays and
+the company leaves included in the selected period, and the days really deducted.
+Include it with the id of the form : {% include "leave/leave_request/period_info.html" with form_id="userLeaveForm" %}
+{% endcomment %}
+<script>
+    $(document).ready(function () {
+        var $form = $("#{{ form_id }}");
+        if (!$form.length) {
+            return;
+        }
+
+        var $info = $('<div id="leavePeriodInfo" class="mt-3 px-3"></div>');
+        $form.find(".row").first().after($info);
+
+        function formatDays(days) {
+            return String(days).replace(".", ",");
+        }
+
+        function buildDetails(summary, items) {
+            var list = "";
+            items.forEach(function (item) {
+                list += `<li style="text-align: left;">${item}</li>`;
+            });
+            return `
+                <details class="mt-1">
+                    <summary style="cursor: pointer;">${summary}</summary>
+                    <ul class="mt-1 mb-0" style="padding-left: 20px;">${list}</ul>
+                </details>`;
+        }
+
+        function render(response) {
+            if (!response.valid) {
+                $info.empty();
+                return;
+            }
+            var content = "";
+
+            if (response.leave_type_selected) {
+                content += `<div>
+                        {% trans "Jours demandés" %} :
+                        <b>${formatDays(response.requested_days)}</b> &mdash;
+                        {% trans "jours décomptés" %} :
+                        <b>${formatDays(response.effective_days)}</b>
+                    </div>`;
+            }
+
+            if (response.holiday_count) {
+                var holidayItems = response.holidays.map(function (holiday) {
+                    return `${holiday.name} &mdash; ${holiday.dates}`;
+                });
+                var holidaySummary = `<b>${response.holiday_count}</b> {% trans "jour(s) férié(s) dans la période" %}
+                    (${response.exclude_holiday ? "{% trans 'non décompté(s)' %}" : "{% trans 'décompté(s)' %}"})`;
+                content += buildDetails(holidaySummary, holidayItems);
+            }
+
+            if (response.company_leave_count) {
+                var companySummary = `<b>${response.company_leave_count}</b> {% trans "jour(s) de congé d'entreprise dans la période" %}
+                    (${response.exclude_company_leave ? "{% trans 'non décompté(s)' %}" : "{% trans 'décompté(s)' %}"})`;
+                content += buildDetails(companySummary, response.company_leaves);
+            }
+
+            if (!response.holiday_count && !response.company_leave_count) {
+                content += `<div>{% trans "Aucun jour férié ni congé d'entreprise dans cette période." %}</div>`;
+            }
+
+            $info.html(`
+                <div class="oh-card oh-card--no-shadow p-3" style="border: 1px solid rgba(128, 128, 128, 0.3); font-size: 14px;">
+                    ${content}
+                </div>`);
+        }
+
+        function refresh() {
+            var startDate = $form.find("[name=start_date]").val();
+            var endDate = $form.find("[name=end_date]").val();
+            if (!startDate || !endDate) {
+                $info.empty();
+                return;
+            }
+            $.ajax({
+                type: "GET",
+                url: "{% url 'leave-period-info' %}",
+                data: {
+                    start_date: startDate,
+                    end_date: endDate,
+                    leave_type_id: $form.find("[name=leave_type_id]").val() || "",
+                    employee_id: $form.find("[name=employee_id]").val() || "",
+                    start_date_breakdown: $form.find("[name=start_date_breakdown]").val() || "full_day",
+                    end_date_breakdown: $form.find("[name=end_date_breakdown]").val() || "full_day",
+                },
+                success: function (response) {
+                    render(response);
+                },
+            });
+        }
+
+        $form.on(
+            "change",
+            "[name=start_date], [name=end_date], [name=leave_type_id], [name=employee_id], [name=start_date_breakdown], [name=end_date_breakdown]",
+            refresh
+        );
+        refresh();
+    });
+</script>

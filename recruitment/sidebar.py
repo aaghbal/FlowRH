@@ -29,7 +29,7 @@ SUBMENUS = [
         "accessibility": "recruitment.sidebar.pipeline_accessibility",
     },
     {
-        "menu": _("Recruitment Survey"),
+        "menu": _("Grilles de questionnaires"),
         "redirect": reverse("recruitment-survey-question-template-view"),
         "accessibility": "recruitment.sidebar.survey_accessibility",
     },

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rupture de votre période d'essai</title>
+    <style>
+      @page {
+        size: a4 portrait;
+        margin: 2.5cm;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11pt;
+        color: #000000;
+      }
+
+      .letter-header {
+        line-height: 1.3;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 12pt;
+      }
+
+      .letter-recipient {
+        text-align: right;
+        line-height: 1.3;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 12pt;
+        margin-top: 60px;
+      }
+
+      .letter-subject {
+        font-size: 13pt;
+        margin-top: 70px;
+        margin-bottom: 35px;
+      }
+
+      .letter-body {
+        text-align: justify;
+        line-height: 1.7;
+      }
+
+      .letter-signature {
+        text-align: center;
+        line-height: 1.4;
+        margin-top: 110px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="letter-header">
+      Direction des Ressources Humaines<br />
+      M Automotiv<br />
+      44, Bd Khalid Bnou Aloualid,<br />
+      Ain Sbaâ, Casablanca
+    </div>
+
+    <div class="letter-recipient">
+      <b>M. / Mme {{ candidate.name }}</b><br />
+      Adresse&nbsp;: {{ candidate.address|default_if_none:""|linebreaksbr }}
+    </div>
+
+    <div class="letter-subject">
+      <b><u>Objet&nbsp;: Rupture de votre p&eacute;riode d&rsquo;essai</u></b>
+    </div>
+
+    <div class="letter-body">
+      <p>Monsieur/Madame,</p>
+
+      <p>
+        Pour faire suite &agrave; l&rsquo;entretien que vous avez eu avec votre
+        hi&eacute;rarchie, nous vous confirmons devoir mettre fin &agrave; votre
+        p&eacute;riode d&rsquo;essai.
+      </p>
+
+      <p>
+        En application de la loi, la dur&eacute;e de pr&eacute;avis est de 8
+        jours. Toutefois, vous &ecirc;tes dispens&eacute; d&rsquo;effectuer ce
+        pr&eacute;avis, de ce fait votre contrat de travail sera rompu le
+        <b>{{ rupture_date|date:"d/m/Y" }}</b>
+      </p>
+
+      <p>
+        Vous voudrez bien, avant de nous quitter, prendre contact avec
+        <b>le Charg&eacute; Paie M. Tawfik ABBARAGH</b> afin de convenir
+        d&rsquo;un rendez-vous pour vous permettre de retirer, en &eacute;change
+        de votre badge, votre certificat de travail et votre solde de tout
+        compte.
+      </p>
+
+      <p>
+        Veuillez agr&eacute;er, Monsieur/Madame, l&rsquo;expression de nos
+        salutations distingu&eacute;es.
+      </p>
+    </div>
+
+    <div class="letter-signature">
+      <b>Hossam EL OMARI</b><br />
+      <b>People, Workplace &amp; Organization&nbsp; Director</b>
+    </div>
+  </body>
+</html>

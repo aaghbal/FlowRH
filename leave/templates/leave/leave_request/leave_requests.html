@@ -95,6 +95,7 @@
                         hx-get="{% url 'request-filter' %}?{{pd}}&sortby=requested_days" hx-target="#leaveRequest">
                         Jours demandés
                     </div>
+                    <div class="oh-sticky-table__th" style="width:115px;">Jours de congé disponibles</div>
                     <div class="oh-sticky-table__th" style="width:115px;">Congés simultanés</div>
                     <div class="oh-sticky-table__th {% if request.sort_option.order == '-status' %}arrow-up {% elif request.sort_option.order == 'status' %}arrow-down {% else %}arrow-up-down {% endif %}"
                         hx-get="{% url 'request-filter' %}?{{pd}}&sortby=status" hx-target="#leaveRequest">
@@ -208,6 +209,7 @@
                         <div class="oh-sticky-table__td dateformat_changer">{{leave_request.start_date}}</div>
                         <div class="oh-sticky-table__td dateformat_changer">{{leave_request.end_date}}</div>
                         <div class="oh-sticky-table__td">{{leave_request.requested_days}}</div>
+                        <div class="oh-sticky-table__td">{{leave_request.available_leave_days}}</div>
                         <div class="oh-sticky-table__td" onclick="event.stopPropagation()">
                             <div class="d-flex" style="justify-content:center;" data-target="#clashViewModal"
                                 data-toggle="oh-modal-toggle"

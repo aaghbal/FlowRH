@@ -18,6 +18,7 @@ import logging
 import os
 import random
 import secrets
+from datetime import timedelta
 from urllib.parse import parse_qs
 
 from django import template
@@ -32,6 +33,8 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
+from django.utils.dateparse import parse_date
 from django.utils.translation import gettext as __
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
@@ -563,6 +566,21 @@ def candidates_view(request):
     mail_templates = HorillaMailTemplate.objects.all()
     data_dict = parse_qs(previous_data)
     get_key_instances(Candidate, data_dict)
+
+    today = timezone.now().date()
+    week_later = today + timedelta(days=7)
+    probation_1_alert = queryset.filter(
+        probation_status="attente",
+        probation_end__isnull=False,
+        probation_end__gte=today,
+        probation_end__lte=week_later,
+    )
+    probation_2_alert = queryset.filter(
+        probation_status="attente",
+        probation_end_2__isnull=False,
+        probation_end_2__gte=today,
+        probation_end_2__lte=week_later,
+    )
     return render(
         request,
         "onboarding/candidates_view.html",
@@ -574,6 +592,8 @@ def candidates_view(request):
             "mail_templates": mail_templates,
             "hired_candidates": queryset,
             "filter_dict": data_dict,
+            "probation_1_alert": probation_1_alert,
+            "probation_2_alert": probation_2_alert,
         },
     )
 
@@ -1645,7 +1665,7 @@ def update_joining(request):
     return JsonResponse(
         {
             "type": "success",
-            "message": _("{candidate}'s Date of joining updated sussefully").format(
+            "message": _("Date d'entrée de {candidate} mise à jour avec succès").format(
                 candidate=candidate_obj.name
             ),
         }
@@ -1831,6 +1851,162 @@ def update_probation_end_2(request):
         probation_end_2=probation_end_2
     )
     return JsonResponse({"message": _("Date de fin de période d'essai mise à jour"), "type": "success"})
+
+
+@login_required
+@stage_manager_can_enter("recruitment.change_stage")
+def validate_probation(request):
+    """
+    This method is used to validate the probation period of a candidate and to
+    send him the "Confirmation d'embauche" letter as a pdf attachment. The date
+    of the definitive hiring is the one entered by the validator.
+    """
+    candidate_id = request.GET["candidate_id"]
+    candidate = Candidate.objects.filter(id=candidate_id).first()
+    if not candidate:
+        return JsonResponse({"message": _("Candidat introuvable"), "type": "danger"})
+    try:
+        confirmation_date = parse_date(request.GET.get("confirmation_date", ""))
+    except ValueError:
+        confirmation_date = None
+    if not confirmation_date:
+        return JsonResponse(
+            {
+                "message": _("La date d'embauche définitive est invalide"),
+                "type": "danger",
+            }
+        )
+    candidate.probation_status = "valide"
+    candidate.save()
+
+    if not candidate.email:
+        return JsonResponse(
+            {
+                "message": _("Période d'essai validée, le candidat n'a pas d'email"),
+                "type": "warning",
+            }
+        )
+    context = {"candidate": candidate, "confirmation_date": confirmation_date}
+    try:
+        letter = render_to_string(
+            "onboarding/mail_templates/confirmation_embauche.html", context
+        )
+        html_message = render_to_string(
+            "onboarding/mail_templates/confirmation_embauche_mail.html", context
+        )
+        email = EmailMessage(
+            subject="Confirmation d'embauche",
+            body=html_message,
+            to=[candidate.email],
+        )
+        email.content_subtype = "html"
+        email.attach(
+            "Confirmation d'embauche.pdf",
+            generate_pdf(
+                letter, {}, path=False, title="Confirmation d'embauche.pdf"
+            ).content,
+            "application/pdf",
+        )
+        email.send()
+    except Exception as e:
+        logger.error(e)
+        return JsonResponse(
+            {
+                "message": _(
+                    "Période d'essai validée, mais l'envoi de la lettre de confirmation a échoué"
+                ),
+                "type": "warning",
+            }
+        )
+    return JsonResponse(
+        {
+            "message": _("Période d'essai validée, lettre de confirmation envoyée"),
+            "type": "success",
+        }
+    )
+
+
+@login_required
+@stage_manager_can_enter("recruitment.change_stage")
+def reject_probation(request):
+    """
+    This method is used to reject the probation period of a candidate,
+    deactivate the linked employee record (soft-deactivation, the employee
+    row is kept in the database but marked inactive) and send him the
+    "Rupture de période d'essai" letter as a pdf attachment. The date of the
+    contract termination is the one entered by the validator.
+    """
+    candidate_id = request.GET["candidate_id"]
+    candidate = Candidate.objects.filter(id=candidate_id).first()
+    if not candidate:
+        return JsonResponse({"message": _("Candidat introuvable"), "type": "danger"})
+    try:
+        rupture_date = parse_date(request.GET.get("rupture_date", ""))
+    except ValueError:
+        rupture_date = None
+    if not rupture_date:
+        return JsonResponse(
+            {
+                "message": _("La date de rupture du contrat est invalide"),
+                "type": "danger",
+            }
+        )
+    candidate.probation_status = "rejete"
+    candidate.save()
+    if candidate.converted_employee_id:
+        employee = candidate.converted_employee_id
+        employee.is_active = False
+        employee.save()
+
+    if not candidate.email:
+        return JsonResponse(
+            {
+                "message": _(
+                    "Période d'essai rejetée, employé désactivé, le candidat n'a pas d'email"
+                ),
+                "type": "warning",
+            }
+        )
+    context = {"candidate": candidate, "rupture_date": rupture_date}
+    try:
+        letter = render_to_string(
+            "onboarding/mail_templates/rupture_periode_essai.html", context
+        )
+        html_message = render_to_string(
+            "onboarding/mail_templates/rupture_periode_essai_mail.html", context
+        )
+        email = EmailMessage(
+            subject="Rupture de votre période d'essai",
+            body=html_message,
+            to=[candidate.email],
+        )
+        email.content_subtype = "html"
+        email.attach(
+            "Rupture de periode d'essai.pdf",
+            generate_pdf(
+                letter, {}, path=False, title="Rupture de periode d'essai.pdf"
+            ).content,
+            "application/pdf",
+        )
+        email.send()
+    except Exception as e:
+        logger.error(e)
+        return JsonResponse(
+            {
+                "message": _(
+                    "Période d'essai rejetée, employé désactivé, mais l'envoi de la lettre de rupture a échoué"
+                ),
+                "type": "warning",
+            }
+        )
+    return JsonResponse(
+        {
+            "message": _(
+                "Période d'essai rejetée, employé désactivé, lettre de rupture envoyée"
+            ),
+            "type": "success",
+        }
+    )
 
 
 @login_required

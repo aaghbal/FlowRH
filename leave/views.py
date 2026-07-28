@@ -887,7 +887,7 @@ def leave_request_approve(request, id, emp_id=None):
 
     # Block admin approval until manager has approved (if a manager exists)
     if manager_approval and not manager_approval.is_approved:
-        messages.warning(request, _("Manager approval is required before admin approval."))
+        messages.warning(request, _("L'approbation du responsable est requise avant l'approbation de l'admin."))
         if emp_id is not None:
             return redirect(f"/employee/employee-view/{emp_id}/")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
@@ -4086,6 +4086,124 @@ def employee_available_leave_count(request):
     }
     return render(
         request, "leave/leave_request/employee_available_leave_count.html", context
+    )
+
+
+WEEK_DAY_NAMES = [
+    _("Lundi"),
+    _("Mardi"),
+    _("Mercredi"),
+    _("Jeudi"),
+    _("Vendredi"),
+    _("Samedi"),
+    _("Dimanche"),
+]
+
+
+@login_required
+def leave_period_info(request):
+    """
+    Ajax method used by the leave request forms to display the holidays and the
+    company leaves included in the period selected by the employee, with the
+    number of days that will really be deducted from his leaves.
+    """
+    try:
+        start_date = datetime.strptime(request.GET["start_date"], "%Y-%m-%d").date()
+        end_date = datetime.strptime(request.GET["end_date"], "%Y-%m-%d").date()
+    except (KeyError, ValueError):
+        return JsonResponse({"valid": False})
+    if end_date < start_date:
+        return JsonResponse({"valid": False})
+
+    # the holidays and the company leaves are the ones of the company of the
+    # employee the request is for, the manager may request for an employee of
+    # another company than the selected one
+    employee = None
+    employee_id = request.GET.get("employee_id")
+    if employee_id:
+        employee = Employee.objects.filter(id=employee_id).first()
+    if employee is None:
+        employee = getattr(request.user, "employee_get", None)
+    company = employee.get_company() if employee else None
+
+    holidays = Holidays.objects.all()
+    company_leaves = CompanyLeaves.objects.all()
+    if company:
+        holidays = holidays.filter(Q(company_id=company) | Q(company_id__isnull=True))
+        company_leaves = company_leaves.filter(
+            Q(company_id=company) | Q(company_id__isnull=True)
+        )
+
+    requested_dates = leave_requested_dates(start_date, end_date)
+    holiday_dates = holiday_dates_list(holidays)
+    company_leave_dates = company_leave_dates_list(company_leaves, start_date)
+
+    holidays_in_period = []
+    for holiday in holidays:
+        holiday_end_date = holiday.end_date or holiday.start_date
+        overlap_start = max(holiday.start_date, start_date)
+        overlap_end = min(holiday_end_date, end_date)
+        if overlap_start > overlap_end:
+            continue
+        if overlap_start == overlap_end:
+            dates = overlap_start.strftime("%d/%m/%Y")
+        else:
+            dates = _("du {start} au {end}").format(
+                start=overlap_start.strftime("%d/%m/%Y"),
+                end=overlap_end.strftime("%d/%m/%Y"),
+            )
+        holidays_in_period.append({"name": holiday.name, "dates": dates})
+
+    company_leaves_in_period = [
+        f"{WEEK_DAY_NAMES[requested_date.weekday()]} {requested_date.strftime('%d/%m/%Y')}"
+        for requested_date in requested_dates
+        if requested_date in company_leave_dates
+    ]
+
+    holiday_count = sum(
+        requested_date in holiday_dates for requested_date in requested_dates
+    )
+    company_leave_count = len(company_leaves_in_period)
+
+    leave_type = LeaveType.objects.filter(
+        id=request.GET.get("leave_type_id") or None
+    ).first()
+    exclude_holiday = bool(leave_type) and leave_type.exclude_holiday == "yes"
+    exclude_company_leave = bool(leave_type) and leave_type.exclude_company_leave == "yes"
+
+    requested_days = calculate_requested_days(
+        start_date,
+        end_date,
+        request.GET.get("start_date_breakdown", "full_day"),
+        request.GET.get("end_date_breakdown", "full_day"),
+    )
+    # same deduction rules as the ones applied when the request is saved
+    if exclude_holiday and exclude_company_leave:
+        excluded_dates = set(holiday_dates) | set(company_leave_dates)
+        deducted_days = sum(
+            requested_date in excluded_dates for requested_date in requested_dates
+        )
+    elif exclude_holiday:
+        deducted_days = holiday_count
+    elif exclude_company_leave:
+        deducted_days = company_leave_count
+    else:
+        deducted_days = 0
+    effective_days = max(requested_days - deducted_days, 0)
+
+    return JsonResponse(
+        {
+            "valid": True,
+            "requested_days": requested_days,
+            "effective_days": effective_days,
+            "leave_type_selected": bool(leave_type),
+            "holidays": holidays_in_period,
+            "holiday_count": holiday_count,
+            "exclude_holiday": exclude_holiday,
+            "company_leaves": company_leaves_in_period,
+            "company_leave_count": company_leave_count,
+            "exclude_company_leave": exclude_company_leave,
+        }
     )
 
 

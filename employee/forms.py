@@ -418,28 +418,11 @@ class EmployeeWorkInformationUpdateForm(ModelForm):
     """
     Form for EmployeeWorkInformation model
     """
-    # Use the same site choices as in EmployeeWorkInformationForm
-    SITE_CHOICES = [
-        ("", _("---Select Site---")),
-        ("BANDEONG", "BANDEONG"),
-        ("VITA", "VITA"),
-        ("LISSASFA", "LISSASFA"),
-        ("SIDI OTHMANE", "SIDI OTHMANE"),
-        ("DIRECTION POLE", "DIRECTION POLE"),
-        ("ZENATA", "ZENATA"),
-        ("Temara", "Temara"),
-        ("FINANCE", "FINANCE"),
-        ("Errahma", "Errahma"),
-        ("VOVITA", "VOVITA"),
-        ("CASA ANFA", "CASA ANFA"),
-        ("VOLISSASFA", "VOLISSASFA"),
-    ]
-
-    # Override the location field to use ChoiceField
-    location = forms.ChoiceField(
-        choices=SITE_CHOICES,
+    location = forms.ModelChoiceField(
+        queryset=Site.objects.all(),
         required=False,
         label=_("Site"),
+        empty_label=_("---Select Site---"),
         widget=forms.Select(attrs={"class": "oh-select oh-select-2 w-100"})
     )
 

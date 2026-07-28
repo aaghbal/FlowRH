@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Prolongation de votre période d'essai</title>
+  </head>
+  <body style="margin: 0; background-color: #e5e5e5">
+    <table
+      style="
+        background-color: #ffffff;
+        margin: 15px auto 0 auto;
+        width: 100%;
+        max-width: 650px;
+        border-spacing: 0;
+        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        color: #1c1c1c;
+        font-size: 14px;
+        line-height: 1.6;
+      "
+    >
+      <tr>
+        <td style="padding: 30px 25px">
+          <p>Bonjour {{ candidate.name }},</p>
+
+          <p>
+            Nous vous confirmons que votre période d'essai sera renouvelée pour
+            une durée de {{ extension_duration }}, soit du
+            <b>{{ extension_start|date:"d/m/Y" }}</b> au
+            <b>{{ extension_end|date:"d/m/Y" }}</b>.
+          </p>
+
+          <p>
+            Vous trouverez ci-joint le courrier de prolongation de votre période
+            d'essai au format PDF.
+          </p>
+
+          <p>
+            Cordialement,<br />
+            Direction des Ressources Humaines<br />
+            M Automotiv
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

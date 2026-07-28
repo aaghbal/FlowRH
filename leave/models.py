@@ -643,6 +643,16 @@ class LeaveRequest(HorillaModel):
         """
         return self.penaltyaccounts_set.count()
 
+    def available_leave_days(self):
+        """
+        This method is used to return the days still available to the employee
+        for the leave type of the request
+        """
+        available_leave = AvailableLeave.objects.filter(
+            employee_id=self.employee_id, leave_type_id=self.leave_type_id
+        ).first()
+        return available_leave.total_leave_days if available_leave else 0
+
     def requested_dates(self):
         """
         :return: this functions returns a list of dates from start date to end date.

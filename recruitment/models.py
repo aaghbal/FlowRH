@@ -344,6 +344,11 @@ class Candidate(HorillaModel):
         ("software", _("Dans le logiciel")),
         ("other", _("Autre")),
     ]
+    probation_statuses = [
+        ("attente", "en attente"),
+        ("valide", "validé"),
+        ("rejete", "rejeté"),
+    ]
     name = models.CharField(max_length=100, null=True, verbose_name=_("Name"))
     profile = models.ImageField(upload_to=candidate_photo_upload_path, null=True, blank=True)
     portfolio = models.URLField(max_length=200, blank=True)
@@ -466,6 +471,15 @@ class Candidate(HorillaModel):
 
     probation_end = models.DateField(null=True, editable=False)
     probation_end_2 = models.DateField(null=True, editable=False)
+    probation_status = models.CharField(
+        max_length=10,
+        choices=probation_statuses,
+        default="attente",
+        editable=False,
+    )
+    # set once the "Prolongation de période d'essai" letter has been mailed, so
+    # the scheduled job never sends it twice to the same candidate
+    probation_extension_mail_sent = models.BooleanField(default=False, editable=False)
     offer_letter_status = models.CharField(
         max_length=10,
         choices=offer_letter_statuses,

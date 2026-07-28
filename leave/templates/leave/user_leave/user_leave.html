@@ -33,10 +33,10 @@
             </div>
             <div class="oh-kanban-card__details mt-2">
                 <span class="oh-kanban-card__title">{{user_leave.leave_type_id|truncatechars:20}}</span>
-                <span class="oh-kanban-card__subtitle">{% trans "Disponibles Congé Jours" %} : {% if user_leave.leave_type_id.limit_leave %}{{user_leave.available_days}} {% else %}{% trans "No Limit" %}{% endif %}</span><br>
+                <span class="oh-kanban-card__subtitle">{% trans "Disponibles congé Jours" %} : {% if user_leave.leave_type_id.limit_leave %}{{user_leave.available_days}} {% else %}{% trans "No Limit" %}{% endif %}</span><br>
                 <span class="oh-kanban-card__subtitle">{% trans "Jours de congé reportés" %} :
                     {{user_leave.carryforward_days}}</span><br>
-                <span class="oh-kanban-card__subtitle">{% trans "Total Congé Jours" %} : {% if user_leave.leave_type_id.limit_leave %}{{user_leave.total_leave_days}}{% else %}{% trans "No Limit" %}{% endif %}</span><br>
+                <span class="oh-kanban-card__subtitle">{% trans "Total congé Jours" %} : {% if user_leave.leave_type_id.limit_leave %}{{user_leave.total_leave_days}}{% else %}{% trans "No Limit" %}{% endif %}</span><br>
                 <span class="oh-kanban-card__subtitle">{% trans "Congé pris" %} :{{user_leave.leave_taken}}</span>
             </div>
         </div>

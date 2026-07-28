@@ -211,6 +211,62 @@
         </div>
     </form>
 </section>
+{% if probation_1_alert or probation_2_alert %}
+<div class="oh-wrapper">
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="oh-card oh-card--no-shadow oh-card__body mb-3" style="border: 1px solid rgba(128,128,128,0.3);">
+                <h5 class="mb-2">{% trans "Fin de 1ère période d'essai dans moins d'une semaine" %}</h5>
+                {% if probation_1_alert %}
+                <table class="w-100">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Candidat" %}</th>
+                            <th>{% trans "Fin de 1ère période d'essai" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for candidate in probation_1_alert %}
+                        <tr id="probation-1-alert-row-{{candidate.id}}">
+                            <td>{{candidate.name}}</td>
+                            <td>{{candidate.probation_end|date:"d/m/Y"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted mb-0">{% trans "Aucun candidat" %}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="oh-card oh-card--no-shadow oh-card__body mb-3" style="border: 1px solid rgba(128,128,128,0.3);">
+                <h5 class="mb-2">{% trans "Fin de 2ème période d'essai dans moins d'une semaine" %}</h5>
+                {% if probation_2_alert %}
+                <table class="w-100">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Candidat" %}</th>
+                            <th>{% trans "Fin de 2ème période d'essai" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for candidate in probation_2_alert %}
+                        <tr id="probation-2-alert-row-{{candidate.id}}">
+                            <td>{{candidate.name}}</td>
+                            <td>{{candidate.probation_end_2|date:"d/m/Y"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted mb-0">{% trans "Aucun candidat" %}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 {% if candidates %}
     <div class="d-flex flex-row-reverse oh-wrapper">
         <span

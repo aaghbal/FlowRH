@@ -301,7 +301,9 @@ def cal_effective_requested_days(start_date, end_date, leave_type_id, requested_
 
 class LeaveRequestCreationForm(ModelForm):
     start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), label=_("Date de fin")
+    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -443,7 +445,9 @@ class LeaveRequestCreationForm(ModelForm):
 
 class LeaveRequestUpdationForm(ModelForm):
     start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), label=_("Date de fin")
+    )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -704,7 +708,9 @@ class CompanyLeaveForm(ModelForm):
 
 class UserLeaveRequestForm(ModelForm):
     start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), label=_("Date de fin")
+    )
     description = forms.CharField(label=_("Description"), widget=forms.Textarea)
 
     def clean(self):
@@ -885,7 +891,9 @@ class RejectForm(forms.Form):
 
 class UserLeaveRequestCreationForm(ModelForm):
     start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), label=_("Date de fin")
+    )
 
     def as_p(self, *args, **kwargs):
         """

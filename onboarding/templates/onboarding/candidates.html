@@ -56,9 +56,10 @@
           <div data-cell-index="2" data-cell-title='{% trans "Date of joining" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-joining_date' %}arrow-up {% elif request.sort_option.order == 'joining_date' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=joining_date">{% trans "Date of joining" %}</div>
           <div data-cell-index="3" data-cell-title='{% trans "Fin de 1ère période d'essai" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-probation_end' %}arrow-up {% elif request.sort_option.order == 'probation_end' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=probation_end">{% trans "Fin de 1ère période d'essai" %}</div>
           <div data-cell-index="4" data-cell-title='{% trans "Fin de 2ème période d'essai" %}' class="oh-sticky-table__th {% if request.sort_option.order == '-probation_end_2' %}arrow-up {% elif request.sort_option.order == 'probation_end_2' %}arrow-down {% else %} arrow-up-down {% endif %}" hx-target="#candidates" hx-get="{% url 'candidate-filter' %}?{{pd}}&orderby=probation_end_2">{% trans "Fin de 2ème période d'essai" %}</div>
-          <div data-cell-index="5" data-cell-title='{% trans "Job position" %}' class="oh-sticky-table__th">{% trans "Job position" %}</div>
-          <div data-cell-index="6" data-cell-title='{% trans "Recruitment" %}' class="oh-sticky-table__th">{% trans "Recruitment" %}</div>
-          <div data-cell-index="7" data-cell-title='{% trans "lettre d'embauche" %}' class="oh-sticky-table__th">{% trans "lettre d'embauche" %}</div>
+          <div data-cell-index="5" data-cell-title='{% trans "Statut période d'essai" %}' class="oh-sticky-table__th">{% trans "Statut période d'essai" %}</div>
+          <div data-cell-index="6" data-cell-title='{% trans "Job position" %}' class="oh-sticky-table__th">{% trans "Job position" %}</div>
+          <div data-cell-index="7" data-cell-title='{% trans "Recruitment" %}' class="oh-sticky-table__th">{% trans "Recruitment" %}</div>
+          <div data-cell-index="8" data-cell-title='{% trans "lettre d'embauche" %}' class="oh-sticky-table__th">{% trans "lettre d'embauche" %}</div>
           <div class="oh-sticky-table__th oh-sticky-table__right" style="width: 290px;">{% trans "Actions" %}</div>
         </div>
       </div>
@@ -102,9 +103,30 @@
             <input type="date" class="oh-input" style="width: 150px;" value="{{candidate.probation_end_2|date:'Y-m-d'}}"
               name="probation_end_2" onchange="probotionEnd2($(this))" data-candidate-id="{{candidate.id}}">
           </a>
-          <a data-cell-index="5" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.job_position_id}}</a>
-          <a data-cell-index="6" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.recruitment_id}}</a>
-          <a data-cell-index="7" style="color: inherit; text-decoration: none" class="oh-sticky-table__td" onload="event.stopPropagation()">
+          <div data-cell-index="5" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">
+            <span class="oh-badge" style="border-radius: 4px; font-weight: bold; white-space: nowrap;
+              {% if candidate.probation_status == 'valide' %}background-color: yellowgreen; color: white;
+              {% elif candidate.probation_status == 'rejete' %}background-color: crimson; color: white;
+              {% else %}background-color: #9e9e9e; color: white;{% endif %}"
+              id="probation-status-badge-{{candidate.id}}">
+              {{candidate.get_probation_status_display}}
+            </span>
+            {% if candidate.converted_employee_id and candidate.probation_status == 'attente' %}
+            <div class="oh-btn-group mt-1" id="probation-actions-{{candidate.id}}">
+              <button type="button" class="oh-btn w-100" style="background-color: yellowgreen; color: white;" title="{% trans "Valider la période d'essai" %}"
+                onclick="validateProbation($(this))" data-candidate-id="{{candidate.id}}">
+                <ion-icon name="checkmark-outline"></ion-icon>
+              </button>
+              <button type="button" class="oh-btn w-100" style="background-color: crimson; color: white;" title="{% trans "Rejeter la période d'essai" %}"
+                onclick="rejectProbation($(this))" data-candidate-id="{{candidate.id}}">
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+            </div>
+            {% endif %}
+          </div>
+          <a data-cell-index="6" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.job_position_id}}</a>
+          <a data-cell-index="7" style="color: inherit; text-decoration: none" class="oh-sticky-table__td">{{candidate.recruitment_id}}</a>
+          <a data-cell-index="8" style="color: inherit; text-decoration: none" class="oh-sticky-table__td" onload="event.stopPropagation()">
             <select hx-get="{% url 'update-offer-letter-status' %}?candidate_id={{candidate.id}}" hx-swap="none"  name="status" id="id_offeletter_status_{{candidate.id}}" class="w-100" style="height: 40px;border:solid 1px rgba(128, 128, 128, 0.32);">
               {% for status in candidate.offer_letter_statuses %}
               {{candidate.offer_letter_status }} {{status.0}}
@@ -243,6 +265,104 @@
 				</div>
             </div>`);
       }
+    });
+  }
+  function validateProbation($element){
+    candId = $element.attr("data-candidate-id");
+    Swal.fire({
+      html: `<p>{% trans "Voulez-vous vraiment valider la période d'essai ? Cette action est définitive et ne pourra plus être modifiée." %}</p>
+             <p class="mb-0">{% trans "Date d'embauche définitive à faire figurer sur la lettre de confirmation :" %}</p>
+             <input type="date" id="probationConfirmationDate" class="swal2-input">`,
+      icon: "question",
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonColor: "#008000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "{% trans 'Oui' %}",
+      cancelButtonText: "{% trans 'Annuler' %}",
+      preConfirm: () => {
+        let confirmationDate = $("#probationConfirmationDate").val();
+        if (!confirmationDate) {
+          Swal.showValidationMessage("{% trans "Veuillez saisir la date d'embauche définitive" %}");
+          return false;
+        }
+        return confirmationDate;
+      },
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        return;
+      }
+      $.ajax({
+        type: "get",
+        url: "{% url 'validate-probation' %}",
+        data: {
+          "candidate_id":candId,
+          "confirmation_date":result.value,
+        },
+        success: function (response) {
+          $("#ohMessages").append(`
+              <div class="oh-alert-container">
+                  <div class="oh-alert oh-alert--animated oh-alert--${response.type}">
+                  ${response.message}
+                  </div>
+              </div>`);
+          if (response.type !== "danger") {
+            $("#probation-actions-" + candId).hide();
+            setTimeout(function () {
+              location.reload();
+            }, 2500);
+          }
+        }
+      });
+    });
+  }
+  function rejectProbation($element){
+    candId = $element.attr("data-candidate-id");
+    Swal.fire({
+      html: `<p>{% trans "Voulez-vous vraiment rejeter la période d'essai et désactiver cet employé ?" %}</p>
+             <p class="mb-0">{% trans "Date de rupture du contrat à faire figurer sur la lettre de rupture :" %}</p>
+             <input type="date" id="probationRuptureDate" class="swal2-input">`,
+      icon: "warning",
+      showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonColor: "#008000",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "{% trans 'Oui' %}",
+      cancelButtonText: "{% trans 'Annuler' %}",
+      preConfirm: () => {
+        let ruptureDate = $("#probationRuptureDate").val();
+        if (!ruptureDate) {
+          Swal.showValidationMessage("{% trans 'Veuillez saisir la date de rupture du contrat' %}");
+          return false;
+        }
+        return ruptureDate;
+      },
+    }).then((result) => {
+      if (!result.isConfirmed) {
+        return;
+      }
+      $.ajax({
+        type: "get",
+        url: "{% url 'reject-probation' %}",
+        data: {
+          "candidate_id":candId,
+          "rupture_date":result.value,
+        },
+        success: function (response) {
+          $("#ohMessages").append(`
+              <div class="oh-alert-container">
+                  <div class="oh-alert oh-alert--animated oh-alert--${response.type}">
+                  ${response.message}
+                  </div>
+              </div>`);
+          if (response.type !== "danger") {
+            $("#probation-actions-" + candId).hide();
+            setTimeout(function () {
+              location.reload();
+            }, 2500);
+          }
+        }
+      });
     });
   }
   $(document).ready(function () {

@@ -130,6 +130,12 @@ urlpatterns = [
         views.update_probation_end_2,
         name="update-probotion-end-2",
     ),
+    path(
+        "validate-probation", views.validate_probation, name="validate-probation"
+    ),
+    path(
+        "reject-probation", views.reject_probation, name="reject-probation"
+    ),
     path("task-report-onboarding", views.task_report, name="task-report-onboarding"),
     path(
         "candidate-tasks-status",

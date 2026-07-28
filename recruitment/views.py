@@ -568,7 +568,7 @@ def update_candidate_stage_and_sequence(request):
         candidate.update(sequence=index, stage_id=stage)
     if stage.stage_type == "hired":
         if stage.recruitment_id.is_vacancy_filled():
-            context["message"] = _("Vaccancy is filled")
+            context["message"] = _("Le poste est pourvu.")
             context["vacancy"] = stage.recruitment_id.vacancy
     return JsonResponse(context)
 
@@ -662,7 +662,7 @@ def change_candidate_stage(request):
                         candidate.save()
                         if stage.stage_type == "hired":
                             if stage.recruitment_id.is_vacancy_filled():
-                                context["message"] = _("Vaccancy is filled")
+                                context["message"] = _("Le poste est pourvu.")
                                 context["vacancy"] = stage.recruitment_id.vacancy
                         messages.success(request, "Étape du candidat mise à jour")
                 except Candidate.DoesNotExist:
@@ -678,7 +678,7 @@ def change_candidate_stage(request):
                     candidate.save()
                     if stage.stage_type == "hired":
                         if stage.recruitment_id.is_vacancy_filled():
-                            context["message"] = _("Vaccancy is filled")
+                            context["message"] = _("Le poste est pourvu.")
                             context["vacancy"] = stage.recruitment_id.vacancy
                     candidate.stage_id = stage
                     candidate.save()
@@ -1861,7 +1861,7 @@ def interview_schedule(request, cand_id):
                 redirect=reverse("interview-view"),
             )
 
-            messages.success(request, "Interview Scheduled successfully.")
+            messages.success(request, "Entretien programmé avec succès.")
             return HttpResponse("<script>window.location.reload()</script>")
     return render(request, template, {"form": form, "cand_id": cand_id})
 
@@ -1900,7 +1900,7 @@ def create_interview_schedule(request):
                 redirect=reverse("interview-view"),
             )
 
-            messages.success(request, "Interview Scheduled successfully.")
+            messages.success(request, "Entretien programmé avec succès.")
             return HttpResponse("<script>window.location.reload()</script>")
     return render(request, template, {"form": form})
 
@@ -3019,7 +3019,7 @@ def check_vaccancy(request):
     stage = Stage.objects.get(id=stage_id)
     message = "No message"
     if stage and stage.recruitment_id.is_vacancy_filled():
-        message = _("Vaccancy is filled")
+        message = _("Le poste est pourvu.")
     return JsonResponse({"message": message})
 
 

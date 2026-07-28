@@ -28,9 +28,93 @@
     <div class="oh-checkpoint-badge" id="unselectAllUsers">
       {% trans "Unselect All" %}
     </div>
+    {% if filter_route_name == "employee-widget-filter" %}
+    <div
+      class="oh-checkpoint-badge oh-checkpoint-badge--secondary"
+      id="selectAllWomen"
+      title="{% trans "Ne garder que les femmes dans la liste et toutes les sélectionner" %}"
+    >
+      {% trans "Toutes les femmes" %}
+    </div>
+    {% endif %}
   </div>
 
   <div class="oh-checkpoint-badge oh-checkpoint-badge--success m-zero" id="selectAllInstances">
     {% trans "Select All" %} {{queryset|length}} {% trans "Item" %}
   </div>
 </div>
+
+{% if filter_route_name == "employee-widget-filter" %}
+<script>
+  $(document).ready(function () {
+    // keeps only the women in the list and selects them all, to assign a
+    // maternity leave to every woman of the company for example
+    $("#{{section_id}} #selectAllWomen").click(function (e) {
+      e.preventDefault();
+      var $section = $("#{{section_id}}");
+      $.ajax({
+        type: "get",
+        url: "{% url filter_route_name %}",
+        data: { gender: "female" },
+        success: function (response) {
+          if (!response.ids.length) {
+            // no woman to select : give the whole list back instead of
+            // leaving the user in front of an empty table, and say why
+            $section
+              .find("#chooseTableHeaderParent .oh-sticky-table__tbody")
+              .show();
+            $section
+              .find(".visible-count")
+              .html(
+                $section.find(
+                  ".oh-sticky-table__tr--custom:visible .oh-sticky-table__sd"
+                ).length
+              );
+            Swal.fire({
+              text: "{% trans "Aucune femme n'a été trouvée. Vérifiez que le genre est bien renseigné sur les fiches des employées." %}",
+              icon: "info",
+              confirmButtonColor: "#008000",
+              confirmButtonText: "{% trans 'Fermer' %}",
+            });
+            return;
+          }
+          $section
+            .find("#chooseTableHeaderParent .oh-sticky-table__tbody")
+            .hide();
+          $.each(response.ids, function (index, instanceId) {
+            $section
+              .find(
+                `#chooseTableHeaderParent .oh-sticky-table__tbody[data-instance-id=${instanceId}]`
+              )
+              .show();
+          });
+          $section
+            .find(".visible-count")
+            .html(
+              $section.find(
+                ".oh-sticky-table__tr--custom:visible .oh-sticky-table__sd"
+              ).length
+            );
+          // start from a clean selection so the button always selects the
+          // women and nothing else
+          $section.find(".all-choose-user-row").prop("checked", false);
+          $section
+            .find(".oh-sticky-table__tr--custom .oh-sticky-table__sd")
+            .removeClass("oh-sticky-table__tr--selected");
+          $section.find("#choose-all-user").prop("checked", true).change();
+          // report the selection to the underlying select
+          $section.find("#filterChoose{{section_id}}").click();
+        },
+        error: function () {
+          Swal.fire({
+            text: "{% trans "La sélection des femmes a échoué, réessayez." %}",
+            icon: "error",
+            confirmButtonColor: "#008000",
+            confirmButtonText: "{% trans 'Fermer' %}",
+          });
+        },
+      });
+    });
+  });
+</script>
+{% endif %}

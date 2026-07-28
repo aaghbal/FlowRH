@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Confirmation d'embauche</title>
+  </head>
+  <body style="margin: 0; background-color: #e5e5e5">
+    <table
+      style="
+        background-color: #ffffff;
+        margin: 15px auto 0 auto;
+        width: 100%;
+        max-width: 650px;
+        border-spacing: 0;
+        font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+        color: #1c1c1c;
+        font-size: 14px;
+        line-height: 1.6;
+      "
+    >
+      <tr>
+        <td style="padding: 30px 25px">
+          <p>Bonjour {{ candidate.name }},</p>
+
+          <p>
+            Nous avons le plaisir de vous confirmer votre embauche définitive à
+            M Automotiv à dater du
+            <b>{{ confirmation_date|date:"d/m/Y" }}</b>, votre période d'essai
+            ayant donné entière satisfaction.
+          </p>
+
+          <p>
+            Vous trouverez ci-joint votre lettre de confirmation d'embauche au
+            format PDF.
+          </p>
+
+          <p>
+            Cordialement,<br />
+            Direction des Ressources Humaines<br />
+            M Automotiv
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

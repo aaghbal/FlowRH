@@ -29,6 +29,22 @@ def update(self, *args, **kwargs):
 
 setattr(QuerySet, "update", update)
 
+django_queryset_delete = QuerySet.delete
+
+
+def delete(self, *args, **kwargs):
+    # HorillaCompanyManager.get_queryset() applies distinct() when a specific
+    # company is selected, which makes Django refuse delete() on the resulting
+    # queryset. distinct() only affects which rows/columns a SELECT returns,
+    # not which base-table rows match the WHERE clause, so it's safe to drop
+    # before deleting.
+    if self.query.distinct:
+        self.query.distinct = False
+    return django_queryset_delete(self, *args, **kwargs)
+
+
+setattr(QuerySet, "delete", delete)
+
 
 class HorillaCompanyManager(models.Manager):
     """
