@@ -561,6 +561,10 @@ def reload_queryset(fields):
                 field.queryset = field.queryset.model.objects.filter(**filter_criteria)
             else:
                 field.queryset = field.queryset.model.objects.all()
+            if model_name == "JobPosition":
+                # JobPosition.__str__ reads department_id.department : without
+                # select_related, rendering a select runs one SQL query per option
+                field.queryset = field.queryset.select_related("department_id")
 
     return fields
 
