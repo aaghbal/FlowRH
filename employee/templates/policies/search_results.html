@@ -33,7 +33,7 @@
   <div class="oh-policy-files">
     {% for document in found_documents %}
       <div class="oh-policy-file">
-        <ion-icon name="document-text" class="oh-policy-file__icon"></ion-icon>
+        <ion-icon name="document-text" class="oh-policy-file__icon oh-policy-file__icon--{{ document.file_type }}"></ion-icon>
         <div class="oh-policy-file__body">
           <a href="{{ document.attachment.url }}" target="_blank" rel="noopener noreferrer" class="oh-policy-file__name">{{ document.title }}</a>
           <span class="oh-policy-file__meta">

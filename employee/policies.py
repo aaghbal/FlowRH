@@ -28,6 +28,7 @@ from employee.forms import (
     PolicyFolderForm,
 )
 from employee.models import (
+    POLICY_DOCUMENT_EXTENSIONS,
     Actiontype,
     DisciplinaryAction,
     Employee,
@@ -213,11 +214,16 @@ def upload_policy_documents(request):
     if request.method == "POST":
         uploaded = 0
         for file in request.FILES.getlist("attachment"):
-            if not file.name.lower().endswith(".pdf"):
+            if not file.name.lower().endswith(
+                tuple(f".{extension}" for extension in POLICY_DOCUMENT_EXTENSIONS)
+            ):
                 messages.warning(
                     request,
-                    _("%(name)s ignoré : seuls les fichiers PDF sont acceptés.")
-                    % {"name": file.name},
+                    _("%(name)s ignoré : formats acceptés %(formats)s.")
+                    % {
+                        "name": file.name,
+                        "formats": ", ".join(POLICY_DOCUMENT_EXTENSIONS).upper(),
+                    },
                 )
                 continue
             PolicyDocument(

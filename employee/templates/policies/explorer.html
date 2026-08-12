@@ -34,7 +34,7 @@
             {{ subfolder.name }}
           </span>
           <span class="oh-policy-folder__meta">
-            {{ subfolder.subfolders.count }} {% trans 'dossier(s)' %} &middot; {{ subfolder.documents.count }} PDF
+            {{ subfolder.subfolders.count }} {% trans 'dossier(s)' %} &middot; {{ subfolder.documents.count }} {% trans 'fichier(s)' %}
           </span>
         </div>
         {% if perms.employee.change_policy or perms.employee.delete_policy %}
@@ -61,7 +61,7 @@
   <div class="oh-policy-files">
     {% for document in documents %}
       <div class="oh-policy-file">
-        <ion-icon name="document-text" class="oh-policy-file__icon"></ion-icon>
+        <ion-icon name="document-text" class="oh-policy-file__icon oh-policy-file__icon--{{ document.file_type }}"></ion-icon>
         <div class="oh-policy-file__body">
           <a href="{{ document.attachment.url }}" target="_blank" rel="noopener noreferrer" class="oh-policy-file__name">{{ document.title }}</a>
           <span class="oh-policy-file__meta">{{ document.file_name }}</span>
@@ -90,7 +90,7 @@
     {% if folder %}
       <h5>{% trans 'Ce dossier est vide.' %}</h5>
       {% if perms.employee.add_policy %}
-        <p class="mb-0">{% trans 'Créez un sous-dossier ou ajoutez des fichiers PDF.' %}</p>
+        <p class="mb-0">{% trans 'Créez un sous-dossier ou ajoutez des fichiers.' %}</p>
       {% endif %}
     {% else %}
       <h5>{% trans "Aucun dossier de politique pour le moment." %}</h5>

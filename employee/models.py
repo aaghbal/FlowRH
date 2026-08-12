@@ -908,9 +908,12 @@ class PolicyFolder(HorillaModel):
         return True
 
 
+POLICY_DOCUMENT_EXTENSIONS = ["pdf", "doc", "docx", "xls", "xlsx"]
+
+
 class PolicyDocument(HorillaModel):
     """
-    PDF document stored inside a policy folder.
+    Document (PDF, Word or Excel) stored inside a policy folder.
     """
 
     folder = models.ForeignKey(
@@ -922,8 +925,8 @@ class PolicyDocument(HorillaModel):
     title = models.CharField(max_length=150, verbose_name=trans("Titre"))
     attachment = models.FileField(
         upload_to="employee/policies",
-        validators=[FileExtensionValidator(["pdf"])],
-        verbose_name=trans("Fichier PDF"),
+        validators=[FileExtensionValidator(POLICY_DOCUMENT_EXTENSIONS)],
+        verbose_name=trans("Fichier"),
     )
 
     objects = models.Manager()
@@ -942,6 +945,25 @@ class PolicyDocument(HorillaModel):
         Name of the uploaded file, without its folder path.
         """
         return self.attachment.name.split("/")[-1]
+
+    @property
+    def extension(self):
+        """
+        Lowercase extension of the uploaded file, without the dot.
+        """
+        name = self.attachment.name or ""
+        return name.rsplit(".", 1)[-1].lower() if "." in name else ""
+
+    @property
+    def file_type(self):
+        """
+        Family of the document, used to pick its icon and color.
+        """
+        if self.extension in ("doc", "docx"):
+            return "word"
+        if self.extension in ("xls", "xlsx"):
+            return "excel"
+        return "pdf"
 
 
 class CompanyDocumentCategory(HorillaModel):

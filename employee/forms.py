@@ -49,6 +49,7 @@ from employee.models import (
     EmployeeTag,
     EmployeeWorkInformation,
     NoteFiles,
+    POLICY_DOCUMENT_EXTENSIONS,
     Policy,
     PolicyDocument,
     PolicyFolder,
@@ -765,7 +766,8 @@ class PolicyFolderForm(ModelForm):
 
 class PolicyDocumentForm(ModelForm):
     """
-    Form to upload one or more PDF documents inside a policy folder.
+    Form to upload one or more documents (PDF, Word, Excel) inside a
+    policy folder.
     """
 
     class Meta:
@@ -775,9 +777,11 @@ class PolicyDocumentForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["attachment"] = MultipleFileField(
-            label=_("Fichiers PDF"), required=True
+            label=_("Fichiers"), required=True
         )
-        self.fields["attachment"].widget.attrs.update({"accept": ".pdf"})
+        self.fields["attachment"].widget.attrs.update(
+            {"accept": ",".join(f".{ext}" for ext in POLICY_DOCUMENT_EXTENSIONS)}
+        )
 
 
 class CompanyDocumentForm(ModelForm):

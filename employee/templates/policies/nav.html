@@ -7,14 +7,14 @@
   <div class="oh-main__titlebar oh-main__titlebar--right oh-d-flex-column--resp oh-mb-3--small">
     <div class="oh-input-group oh-input__search-group mr-4">
       <ion-icon name="search-outline" class="oh-input-group__icon oh-input-group__icon--left md hydrated" role="img" aria-label="search outline"></ion-icon>
-      <input hx-get="{% url 'search-policies' %}?folder_id={{ folder.id|default_if_none:'' }}" name="search" hx-trigger="keyup changed delay:.3s" hx-target="#policyContainer" type="text" placeholder="{% trans 'Rechercher un dossier ou un PDF' %}" style="margin-right:10px" class="oh-input oh-input__icon mr-3" autocomplete="off" aria-label="Search Input" />
+      <input hx-get="{% url 'search-policies' %}?folder_id={{ folder.id|default_if_none:'' }}" name="search" hx-trigger="keyup changed delay:.3s" hx-target="#policyContainer" type="text" placeholder="{% trans 'Rechercher un dossier ou un fichier' %}" style="margin-right:10px" class="oh-input oh-input__icon mr-3" autocomplete="off" aria-label="Search Input" />
     </div>
     {% if perms.employee.add_policy %}
       <div class="oh-main__titlebar-button-container">
         {% if folder %}
           <a hx-get="{% url 'upload-policy-documents' %}?folder_id={{ folder.id }}" hx-target="#objectCreateModalTarget" data-toggle="oh-modal-toggle" data-target="#objectCreateModal" class="oh-btn oh-btn--light-danger mr-2" style="cursor: pointer;">
             <ion-icon name="cloud-upload-outline" class="me-1"></ion-icon>
-            {% trans 'Ajouter des PDF' %}
+            {% trans 'Ajouter des fichiers' %}
           </a>
         {% endif %}
         <a hx-get="{% url 'create-policy-folder' %}?parent_id={{ folder.id|default_if_none:'' }}" hx-target="#objectCreateModalTarget" data-toggle="oh-modal-toggle" data-target="#objectCreateModal" class="oh-btn oh-btn--secondary" style="cursor: pointer;">

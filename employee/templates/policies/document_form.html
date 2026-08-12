@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="oh-modal__dialog-header">
   <h2 class="oh-modal__dialog-title">
-    {% trans 'Ajouter des PDF dans' %} "{{ folder.name }}"
+    {% trans 'Ajouter des fichiers dans' %} "{{ folder.name }}"
   </h2>
   <button class="oh-modal__close" aria-label="Close">
     <ion-icon name="close-outline"></ion-icon>
@@ -14,7 +14,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <p class="text-muted" style="font-size: 12px;">
-      {% trans 'Vous pouvez sélectionner plusieurs fichiers. Seuls les fichiers PDF sont acceptés.' %}
+      {% trans 'Vous pouvez sélectionner plusieurs fichiers. Formats acceptés : PDF, Word (.doc, .docx) et Excel (.xls, .xlsx).' %}
     </p>
     <div class="oh-modal__dialog-footer p-0">
       <button type="submit" class="oh-btn oh-btn--secondary oh-btn--shadow mt-3">
