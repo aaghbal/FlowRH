@@ -560,6 +560,19 @@ def stage_component(request, view: str = "list"):
 
 
 
+def _pipeline_stages_and_candidates(request):
+    """
+    Returns the (stages, candidates) querysets of the pipeline session cache.
+    The cache is a per-process LocMemCache : with several workers or after its
+    300s timeout it is often empty, so always fall back to the database instead
+    of crashing on `None["stages"]`.
+    """
+    pipeline_cache = CACHE.get(str(request.session.session_key) + "pipeline")
+    if pipeline_cache:
+        return pipeline_cache["stages"], pipeline_cache["candidates"]
+    return Stage.objects.all(), Candidate.objects.filter(is_active=True)
+
+
 @login_required
 @manager_can_enter(perm="recruitment.change_candidate")
 def update_candidate_stage_and_sequence(request):
@@ -568,16 +581,11 @@ def update_candidate_stage_and_sequence(request):
     """
     order_list = request.GET.getlist("order")
     stage_id = request.GET["stage_id"]
-    stage = (
-        CACHE.get(request.session.session_key + "pipeline")["stages"]
-        .filter(id=stage_id)
-        .first()
-    )
+    stages, candidates = _pipeline_stages_and_candidates(request)
+    stage = stages.filter(id=stage_id).first()
     context = {}
     for index, cand_id in enumerate(order_list):
-        candidate = CACHE.get(request.session.session_key + "pipeline")[
-            "candidates"
-        ].filter(id=cand_id)
+        candidate = candidates.filter(id=cand_id)
         candidate.update(sequence=index, stage_id=stage)
     if stage.stage_type == "hired":
         if stage.recruitment_id.is_vacancy_filled():
@@ -594,16 +602,11 @@ def update_candidate_sequence(request):
     """
     order_list = request.GET.getlist("order")
     stage_id = request.GET["stage_id"]
-    stage = (
-        CACHE.get(request.session.session_key + "pipeline")["stages"]
-        .filter(id=stage_id)
-        .first()
-    )
+    stages, candidates = _pipeline_stages_and_candidates(request)
+    stage = stages.filter(id=stage_id).first()
     data = {}
     for index, cand_id in enumerate(order_list):
-        candidate = CACHE.get(request.session.session_key + "pipeline")[
-            "candidates"
-        ].filter(id=cand_id)
+        candidate = candidates.filter(id=cand_id)
         candidate.update(sequence=index, stage_id=stage)
     return JsonResponse(data)
 

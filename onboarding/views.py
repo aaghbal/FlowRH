@@ -1133,9 +1133,14 @@ def employee_creation(request, token):
             existing_employee.employee_user_id = user
             existing_employee.save()
     
-    # If employee exists and has bank details, they can proceed to login
-    if existing_employee and EmployeeBankDetails.objects.filter(employee_id=existing_employee).exists():
-        messages.success(request, _("Employee profile is complete. You can now login."))
+    # Only short-circuit to the login page when THIS portal already went
+    # through every step. Existing employee/bank records are not enough : when
+    # HR re-sends the portal (used/count reset), the candidate must be able to
+    # go through the personal-info and bank steps again, prefilled.
+    if onboarding_portal.used or onboarding_portal.count >= 4:
+        messages.success(
+            request, _("Votre profil est déjà complet, vous pouvez vous connecter.")
+        )
         return redirect("login")
 
     form = EmployeeCreationForm(

@@ -151,6 +151,38 @@
   </div>
 
 <script>
+  // The pipeline content is loaded through chained lazy htmx calls
+  // (pipeline-search -> stages -> candidates). When one of those calls fails
+  // (500, gateway timeout...), htmx swaps nothing : the grey skeleton stays
+  // forever without any feedback. Replace it with a visible retry button.
+  (function () {
+    function lazyLoadError(evt) {
+      var elt = evt.detail.elt;
+      if (
+        !elt ||
+        !elt.getAttribute ||
+        !elt.getAttribute("hx-get") ||
+        elt.getAttribute("hx-trigger") !== "load"
+      ) {
+        return;
+      }
+      var url = elt.getAttribute("hx-get");
+      elt.innerHTML = `
+        <div class="oh-alert oh-alert--danger m-3" style="cursor: pointer;">
+          {% trans "Le chargement a échoué." %}
+          <b>{% trans "Cliquez ici pour réessayer." %}</b>
+        </div>`;
+      elt.querySelector(".oh-alert").addEventListener("click", function () {
+        elt.innerHTML = '<div class="animated-background"></div>';
+        htmx.ajax("GET", url, { target: elt, swap: "innerHTML" });
+      });
+    }
+    document.body.addEventListener("htmx:responseError", lazyLoadError);
+    document.body.addEventListener("htmx:sendError", lazyLoadError);
+  })();
+</script>
+
+<script>
   function submitForm(elem) {
     $(elem).siblings(".add_more_submit").click();
   }
