@@ -50,6 +50,8 @@ from employee.models import (
     EmployeeWorkInformation,
     NoteFiles,
     Policy,
+    PolicyDocument,
+    PolicyFolder,
     PolicyMultipleFile,
 )
 from horilla import horilla_middlewares
@@ -730,6 +732,52 @@ class PolicyForm(ModelForm):
         if commit:
             instance.attachments.add(*multiple_attachment_ids)
         return instance, attachemnts
+
+
+class PolicyFolderForm(ModelForm):
+    """
+    Form to create / rename a policy folder. The parent folder is not part
+    of the form, it comes from the folder currently opened in the explorer.
+    """
+
+    class Meta:
+        model = PolicyFolder
+        fields = [
+            "name",
+            "description",
+            "is_visible_to_all",
+            "specific_employees",
+            "company_id",
+        ]
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 2}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["specific_employees"].widget.attrs.update(
+            {"class": "oh-select oh-select-2"}
+        )
+        self.fields["company_id"].widget.attrs.update(
+            {"class": "oh-select oh-select-2"}
+        )
+
+
+class PolicyDocumentForm(ModelForm):
+    """
+    Form to upload one or more PDF documents inside a policy folder.
+    """
+
+    class Meta:
+        model = PolicyDocument
+        fields = ["attachment"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["attachment"] = MultipleFileField(
+            label=_("Fichiers PDF"), required=True
+        )
+        self.fields["attachment"].widget.attrs.update({"accept": ".pdf"})
 
 
 class CompanyDocumentForm(ModelForm):

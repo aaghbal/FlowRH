@@ -12,6 +12,7 @@ from django.conf import settings
 from django.contrib.auth.models import Permission, User
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
@@ -821,6 +822,126 @@ class Policy(HorillaModel):
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
         self.attachments.all().delete()
+
+
+class PolicyFolder(HorillaModel):
+    """
+    Folder of the policies library.
+
+    A folder can contain other folders (self referencing `parent`) without
+    depth limit, and PDF documents (`PolicyDocument`) at any level.
+    A folder with `parent = None` is a root folder.
+    """
+
+    name = models.CharField(max_length=100, verbose_name=trans("Nom"))
+    parent = models.ForeignKey(
+        "self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="subfolders",
+        verbose_name=trans("Dossier parent"),
+    )
+    description = models.TextField(
+        blank=True, null=True, max_length=255, verbose_name=trans("Description")
+    )
+    is_visible_to_all = models.BooleanField(
+        default=True, verbose_name=trans("Visible par tous")
+    )
+    specific_employees = models.ManyToManyField(
+        Employee,
+        blank=True,
+        related_name="policy_folders",
+        verbose_name=trans("Employés spécifiques"),
+    )
+    company_id = models.ManyToManyField(
+        Company, blank=True, verbose_name=_("Company")
+    )
+
+    objects = HorillaCompanyManager("company_id")
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = trans("Dossier de politique")
+        verbose_name_plural = trans("Dossiers de politiques")
+
+    def __str__(self):
+        return self.name
+
+    def get_ancestors(self):
+        """
+        Return the folders from the root down to this one, used to build
+        the breadcrumb.
+        """
+        ancestors = []
+        folder = self
+        while folder is not None:
+            ancestors.insert(0, folder)
+            folder = folder.parent
+        return ancestors
+
+    def is_descendant_of(self, folder):
+        """
+        Check if `folder` is one of the parents of this folder, used to
+        avoid creating a loop when a folder is moved.
+        """
+        parent = self.parent
+        while parent is not None:
+            if parent.pk == folder.pk:
+                return True
+            parent = parent.parent
+        return False
+
+    def is_visible_for(self, employee):
+        """
+        A folder is visible to an employee only when the folder itself and
+        every one of its parents are visible to that employee.
+        """
+        for folder in self.get_ancestors():
+            if folder.is_visible_to_all:
+                continue
+            if (
+                employee is None
+                or not folder.specific_employees.filter(id=employee.id).exists()
+            ):
+                return False
+        return True
+
+
+class PolicyDocument(HorillaModel):
+    """
+    PDF document stored inside a policy folder.
+    """
+
+    folder = models.ForeignKey(
+        PolicyFolder,
+        on_delete=models.CASCADE,
+        related_name="documents",
+        verbose_name=trans("Dossier"),
+    )
+    title = models.CharField(max_length=150, verbose_name=trans("Titre"))
+    attachment = models.FileField(
+        upload_to="employee/policies",
+        validators=[FileExtensionValidator(["pdf"])],
+        verbose_name=trans("Fichier PDF"),
+    )
+
+    objects = models.Manager()
+
+    class Meta:
+        ordering = ["title"]
+        verbose_name = trans("Document de politique")
+        verbose_name_plural = trans("Documents de politiques")
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def file_name(self):
+        """
+        Name of the uploaded file, without its folder path.
+        """
+        return self.attachment.name.split("/")[-1]
 
 
 class CompanyDocumentCategory(HorillaModel):

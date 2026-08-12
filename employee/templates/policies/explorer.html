@@ -1,0 +1,102 @@
+{% load i18n %}{% load static %}
+<nav class="oh-policy-breadcrumb">
+  <a href="{% url 'view-policies' %}">
+    <ion-icon name="folder-open-outline"></ion-icon>
+    {% trans 'Politiques' %}
+  </a>
+  {% for ancestor in breadcrumb %}
+    <span class="oh-policy-breadcrumb__separator">/</span>
+    {% if forloop.last %}
+      <span class="oh-policy-breadcrumb__current">{{ ancestor.name }}</span>
+    {% else %}
+      <a href="{% url 'view-policies' %}?folder_id={{ ancestor.id }}">{{ ancestor.name }}</a>
+    {% endif %}
+  {% endfor %}
+</nav>
+
+{% if folder and folder.description %}
+  <p class="text-muted mb-4">{{ folder.description }}</p>
+{% endif %}
+
+{% if subfolders %}
+  <h2 class="oh-policy-section-title">{% trans 'Dossiers' %}</h2>
+  <div class="oh-policy-grid">
+    {% for subfolder in subfolders %}
+      <div class="oh-policy-folder" onclick="window.location.href='{% url 'view-policies' %}?folder_id={{ subfolder.id }}'">
+        <div class="oh-policy-folder__icon">
+          <ion-icon name="folder"></ion-icon>
+        </div>
+        <div class="oh-policy-folder__body">
+          <span class="oh-policy-folder__name" title="{{ subfolder.name }}">
+            {% if not subfolder.is_visible_to_all %}
+              <ion-icon name="lock-closed" style="font-size:12px;color:#868e96" title="{% trans 'Visible par certains employés seulement' %}"></ion-icon>
+            {% endif %}
+            {{ subfolder.name }}
+          </span>
+          <span class="oh-policy-folder__meta">
+            {{ subfolder.subfolders.count }} {% trans 'dossier(s)' %} &middot; {{ subfolder.documents.count }} PDF
+          </span>
+        </div>
+        {% if perms.employee.change_policy or perms.employee.delete_policy %}
+          <div class="oh-policy-folder__actions" onclick="event.stopPropagation();">
+            {% if perms.employee.change_policy %}
+              <a hx-get="{% url 'create-policy-folder' %}?instance_id={{ subfolder.id }}" hx-target="#objectCreateModalTarget" data-toggle="oh-modal-toggle" data-target="#objectCreateModal" title="{% trans 'Modifier' %}" style="cursor: pointer;">
+                <ion-icon name="create-outline"></ion-icon>
+              </a>
+            {% endif %}
+            {% if perms.employee.delete_policy %}
+              <a href="{% url 'delete-policy-folder' subfolder.id %}" class="text-danger" title="{% trans 'Supprimer' %}" style="cursor: pointer;" onclick="return confirm('{% trans "Supprimer ce dossier ainsi que tout son contenu ?" %}')">
+                <ion-icon name="trash-outline"></ion-icon>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if documents %}
+  <h2 class="oh-policy-section-title">{% trans 'Documents' %}</h2>
+  <div class="oh-policy-files">
+    {% for document in documents %}
+      <div class="oh-policy-file">
+        <ion-icon name="document-text" class="oh-policy-file__icon"></ion-icon>
+        <div class="oh-policy-file__body">
+          <a href="{{ document.attachment.url }}" target="_blank" rel="noopener noreferrer" class="oh-policy-file__name">{{ document.title }}</a>
+          <span class="oh-policy-file__meta">{{ document.file_name }}</span>
+        </div>
+        <div class="oh-policy-file__actions">
+          <a href="{{ document.attachment.url }}" target="_blank" rel="noopener noreferrer" title="{% trans 'Ouvrir' %}">
+            <ion-icon name="eye-outline"></ion-icon>
+          </a>
+          <a href="{{ document.attachment.url }}" download title="{% trans 'Télécharger' %}">
+            <ion-icon name="download-outline"></ion-icon>
+          </a>
+          {% if perms.employee.delete_policy %}
+            <a href="{% url 'delete-policy-document' document.id %}" class="text-danger" title="{% trans 'Supprimer' %}" onclick="return confirm('{% trans "Supprimer ce document ?" %}')">
+              <ion-icon name="trash-outline"></ion-icon>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if not subfolders and not documents %}
+  <div class="oh-policy-empty">
+    <ion-icon name="folder-open-outline"></ion-icon>
+    {% if folder %}
+      <h5>{% trans 'Ce dossier est vide.' %}</h5>
+      {% if perms.employee.add_policy %}
+        <p class="mb-0">{% trans 'Créez un sous-dossier ou ajoutez des fichiers PDF.' %}</p>
+      {% endif %}
+    {% else %}
+      <h5>{% trans "Aucun dossier de politique pour le moment." %}</h5>
+      {% if perms.employee.add_policy %}
+        <p class="mb-0">{% trans 'Commencez par créer un dossier.' %}</p>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endif %}

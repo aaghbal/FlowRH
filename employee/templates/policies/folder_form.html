@@ -1,0 +1,27 @@
+{% load i18n %}
+<div class="oh-modal__dialog-header">
+  <h2 class="oh-modal__dialog-title">
+    {% if folder %}
+      {% trans 'Modifier le dossier' %}
+    {% elif parent %}
+      {% trans 'Nouveau dossier dans' %} "{{ parent.name }}"
+    {% else %}
+      {% trans 'Nouveau dossier' %}
+    {% endif %}
+  </h2>
+  <button class="oh-modal__close" aria-label="Close">
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+</div>
+
+<div class="oh-modal__dialog-body">
+  <form hx-post="{% url 'create-policy-folder' %}?instance_id={{ folder.id|default_if_none:'' }}&parent_id={{ parent.id|default_if_none:'' }}"
+        class="oh-profile-section" hx-target="#objectCreateModalTarget">
+    {{ form.as_p }}
+    <div class="oh-modal__dialog-footer p-0">
+      <button type="submit" class="oh-btn oh-btn--secondary oh-btn--shadow mt-3">
+        {% trans 'Sauvegarder' %}
+      </button>
+    </div>
+  </form>
+</div>

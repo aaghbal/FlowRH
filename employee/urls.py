@@ -261,20 +261,25 @@ urlpatterns = [
     ),
     path("view-policies/", policies.view_policies, name="view-policies"),
     path("search-policies", policies.search_policies, name="search-policies"),
-    path("create-policy", policies.create_policy, name="create-policy"),
-    path("view-policy", policies.view_policy, name="view-policy"),
     path(
-        "add-attachment-policy", policies.add_attachment, name="add-attachment-policy"
+        "create-policy-folder",
+        policies.create_policy_folder,
+        name="create-policy-folder",
     ),
     path(
-        "remove-attachment-policy",
-        policies.remove_attachment,
-        name="remove-attachment-policy",
+        "delete-policy-folder/<int:folder_id>",
+        policies.delete_policy_folder,
+        name="delete-policy-folder",
     ),
     path(
-        "get-attachments-policy",
-        policies.get_attachments,
-        name="get-attachments-policy",
+        "upload-policy-documents",
+        policies.upload_policy_documents,
+        name="upload-policy-documents",
+    ),
+    path(
+        "delete-policy-document/<int:document_id>",
+        policies.delete_policy_document,
+        name="delete-policy-document",
     ),
     path(
         "company-documents/",
@@ -354,7 +359,6 @@ urlpatterns = [
         name="document-delete",
     ),
     path("organisation-chart/", views.organisation_chart, name="organisation-chart"),
-    path("delete-policies", policies.delete_policies, name="delete-policies"),
     path(
         "disciplinary-actions/",
         policies.disciplinary_actions,

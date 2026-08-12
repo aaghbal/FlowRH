@@ -1,0 +1,25 @@
+{% load i18n %}
+<div class="oh-modal__dialog-header">
+  <h2 class="oh-modal__dialog-title">
+    {% trans 'Ajouter des PDF dans' %} "{{ folder.name }}"
+  </h2>
+  <button class="oh-modal__close" aria-label="Close">
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+</div>
+
+<div class="oh-modal__dialog-body">
+  <form action="{% url 'upload-policy-documents' %}?folder_id={{ folder.id }}" method="post"
+        enctype="multipart/form-data" class="oh-profile-section">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <p class="text-muted" style="font-size: 12px;">
+      {% trans 'Vous pouvez sélectionner plusieurs fichiers. Seuls les fichiers PDF sont acceptés.' %}
+    </p>
+    <div class="oh-modal__dialog-footer p-0">
+      <button type="submit" class="oh-btn oh-btn--secondary oh-btn--shadow mt-3">
+        {% trans 'Téléverser' %}
+      </button>
+    </div>
+  </form>
+</div>

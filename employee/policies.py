@@ -13,159 +13,246 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from base.methods import (
-    eval_validate,
     filtersubordinates,
     get_key_instances,
     paginator_qry,
 )
-from employee.filters import DisciplinaryActionFilter, PolicyFilter
-from employee.forms import DisciplinaryActionForm, PolicyForm
+from employee.filters import DisciplinaryActionFilter
+from employee.forms import (
+    DisciplinaryActionForm,
+    PolicyDocumentForm,
+    PolicyFolderForm,
+)
 from employee.models import (
     Actiontype,
     DisciplinaryAction,
     Employee,
-    Policy,
-    PolicyMultipleFile,
+    PolicyDocument,
+    PolicyFolder,
 )
 from horilla.decorators import hx_request_required, login_required, permission_required
 from notifications.signals import notify
 
 
+def _requesting_employee(request):
+    """
+    Employee linked to the logged in user, None when the user has no
+    employee profile.
+    """
+    return Employee.objects.filter(employee_user_id=request.user).first()
+
+
+def _can_see_everything(request):
+    """
+    Users holding the policy view permission browse every folder, the
+    others only see the folders shared with them.
+    """
+    return request.user.has_perm("employee.view_policy")
+
+
+def _accessible_folder(request, folder_id):
+    """
+    Return the folder matching `folder_id`, or None for the root level.
+    A folder the user is not allowed to open is treated as the root.
+    """
+    if not folder_id or not str(folder_id).isdigit():
+        return None
+    folder = PolicyFolder.objects.filter(id=folder_id).first()
+    if folder is None:
+        return None
+    if not _can_see_everything(request) and not folder.is_visible_for(
+        _requesting_employee(request)
+    ):
+        return None
+    return folder
+
+
+def _visible_folders(request, folders):
+    """
+    Keep only the folders the requesting user is allowed to see.
+    """
+    if _can_see_everything(request):
+        return list(folders)
+    employee = _requesting_employee(request)
+    return [folder for folder in folders if folder.is_visible_for(employee)]
+
+
+def _explorer_context(request, folder):
+    """
+    Content of the folder currently opened: breadcrumb, sub folders and
+    PDF documents. `folder` is None at the root of the library.
+    """
+    subfolders = PolicyFolder.objects.filter(parent=folder).order_by("name")
+    documents = (
+        PolicyDocument.objects.filter(folder=folder).order_by("title")
+        if folder is not None
+        else PolicyDocument.objects.none()
+    )
+    return {
+        "folder": folder,
+        "breadcrumb": folder.get_ancestors() if folder is not None else [],
+        "subfolders": _visible_folders(request, subfolders),
+        "documents": documents,
+    }
+
+
+def _folder_url(folder):
+    """
+    Url of the explorer opened on the given folder.
+    """
+    url = reverse("view-policies")
+    if folder is not None:
+        url = f"{url}?folder_id={folder.id}"
+    return url
+
+
 @login_required
 def view_policies(request):
     """
-    Method is used render template to view all the policy records
+    Render the policies explorer, at the root or inside a folder.
     """
-    policies = Policy.objects.all()
-    if not request.user.has_perm("employee.view_policy"):
-        policies = policies.filter(is_visible_to_all=True)
-    return render(
-        request,
-        "policies/view_policies.html",
-        {"policies": paginator_qry(policies, request.GET.get("page"))},
-    )
-
-
-@login_required
-@hx_request_required
-@permission_required("employee.add_policy")
-def create_policy(request):
-    """
-    Method is used to create/update new policy
-    """
-    instance_id = request.GET.get("instance_id")
-    instance = None
-    if isinstance(eval_validate(str(instance_id)), int):
-        instance = Policy.objects.filter(id=instance_id).first()
-    form = PolicyForm(instance=instance)
-    if request.method == "POST":
-        form = PolicyForm(request.POST, request.FILES, instance=instance)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Policy saved")
-            form = PolicyForm()
-            # return HttpResponse("<script>window.location.reload()</script>")
-    return render(request, "policies/form.html", {"form": form})
+    folder = _accessible_folder(request, request.GET.get("folder_id"))
+    return render(request, "policies/view_policies.html", _explorer_context(request, folder))
 
 
 @login_required
 @hx_request_required
 def search_policies(request):
     """
-    This method is used to search in policies
+    Search folders and documents in the whole library. Without a search
+    term the current folder content is returned back.
     """
-    policies = PolicyFilter(request.GET).qs
-    if not request.user.has_perm("employee.view_policy"):
-        policies = policies.filter(is_visible_to_all=True)
+    search = request.GET.get("search", "").strip()
+    folder = _accessible_folder(request, request.GET.get("folder_id"))
+    if not search:
+        return render(request, "policies/explorer.html", _explorer_context(request, folder))
+    folders = _visible_folders(
+        request, PolicyFolder.objects.filter(name__icontains=search).order_by("name")
+    )
+    documents = PolicyDocument.objects.filter(title__icontains=search).order_by("title")
+    if not _can_see_everything(request):
+        employee = _requesting_employee(request)
+        documents = [
+            document
+            for document in documents
+            if document.folder.is_visible_for(employee)
+        ]
     return render(
         request,
-        "policies/records.html",
+        "policies/search_results.html",
         {
-            "policies": paginator_qry(policies, request.GET.get("page")),
-            "pd": request.GET.urlencode(),
+            "folder": folder,
+            "search": search,
+            "found_folders": folders,
+            "found_documents": documents,
         },
     )
 
 
 @login_required
 @hx_request_required
-def view_policy(request):
+@permission_required("employee.add_policy")
+def create_policy_folder(request):
     """
-    This method is used to view the policy
+    Create a folder inside the opened folder, or rename/update an
+    existing one when `instance_id` is given.
     """
-    instance_id = request.GET["instance_id"]
-    policy = Policy.objects.filter(id=instance_id).first()
+    instance_id = request.GET.get("instance_id")
+    instance = None
+    if instance_id and str(instance_id).isdigit():
+        instance = PolicyFolder.objects.filter(id=instance_id).first()
+    parent = _accessible_folder(request, request.GET.get("parent_id"))
+    form = PolicyFolderForm(instance=instance)
+    if request.method == "POST":
+        form = PolicyFolderForm(request.POST, instance=instance)
+        if form.is_valid():
+            folder = form.save(commit=False)
+            if instance is None:
+                folder.parent = parent
+            folder.save()
+            form.save_m2m()
+            messages.success(request, _("Dossier enregistré."))
+            return HttpResponse("<script>window.location.reload()</script>")
     return render(
         request,
-        "policies/view_policy.html",
-        {
-            "policy": policy,
-        },
+        "policies/folder_form.html",
+        {"form": form, "parent": parent, "folder": instance},
     )
 
 
 @login_required
 @permission_required("employee.delete_policy")
-def delete_policies(request):
+def delete_policy_folder(request, folder_id):
     """
-    This method is to delete policy
+    Delete a folder with everything it contains (sub folders and PDF).
     """
-    try:
-        ids = request.GET.getlist("ids")
-        count, dict = Policy.objects.filter(id__in=ids).delete()
-        if count == 0:
-            messages.error(request, _("Policies Not Found"))
-        else:
-            messages.success(request, "Policies deleted")
-    except ValueError:
-        messages.error(request, _("Policies Not Found"))
-    return redirect(view_policies)
+    folder = PolicyFolder.objects.filter(id=folder_id).first()
+    if folder is None:
+        messages.error(request, _("Dossier introuvable."))
+        return redirect("view-policies")
+    parent = folder.parent
+    folder.delete()
+    messages.success(request, _("Dossier supprimé."))
+    return redirect(_folder_url(parent))
 
 
 @login_required
-@permission_required("employee.add_policymultiplefile")
-def add_attachment(request):
+@permission_required("employee.add_policy")
+def upload_policy_documents(request):
     """
-    This method is used to add attachment to policy
+    Upload one or several PDF files inside the opened folder.
     """
-    files = request.FILES.getlist("files")
-    policy_id = request.GET["policy_id"]
-    attachments = []
-    for file in files:
-        attachment = PolicyMultipleFile()
-        attachment.attachment = file
-        attachment.save()
-        attachments.append(attachment)
-    policy = Policy.objects.get(id=policy_id)
-    policy.attachments.add(*attachments)
-    messages.success(request, "Attachments added")
-    return render(request, "policies/attachments.html", {"policy": policy})
+    folder = _accessible_folder(request, request.GET.get("folder_id"))
+    if folder is None:
+        messages.error(request, _("Sélectionnez d'abord un dossier."))
+        return redirect("view-policies")
+    if request.method == "POST":
+        uploaded = 0
+        for file in request.FILES.getlist("attachment"):
+            if not file.name.lower().endswith(".pdf"):
+                messages.warning(
+                    request,
+                    _("%(name)s ignoré : seuls les fichiers PDF sont acceptés.")
+                    % {"name": file.name},
+                )
+                continue
+            PolicyDocument(
+                folder=folder,
+                title=file.name.rsplit(".", 1)[0],
+                attachment=file,
+            ).save()
+            uploaded += 1
+        if uploaded:
+            messages.success(
+                request,
+                _("%(count)s document(s) ajouté(s).") % {"count": uploaded},
+            )
+        return redirect(_folder_url(folder))
+    return render(
+        request,
+        "policies/document_form.html",
+        {"form": PolicyDocumentForm(), "folder": folder},
+    )
 
 
 @login_required
-@permission_required("employee.delete_policymultiplefile")
-def remove_attachment(request):
+@permission_required("employee.delete_policy")
+def delete_policy_document(request, document_id):
     """
-    This method is used to remove the attachments
+    Delete a PDF document from its folder.
     """
-    ids = request.GET.getlist("ids")
-    policy_id = request.GET["policy_id"]
-    policy = Policy.objects.get(id=policy_id)
-    PolicyMultipleFile.objects.filter(id__in=ids).delete()
-    return render(request, "policies/attachments.html", {"policy": policy})
-
-
-@login_required
-def get_attachments(request):
-    """
-    This method is used to view all the attachments inside the policy
-    """
-    policy = request.GET["policy_id"]
-    policy = Policy.objects.get(id=policy)
-    return render(request, "policies/attachments.html", {"policy": policy})
+    document = PolicyDocument.objects.filter(id=document_id).first()
+    if document is None:
+        messages.error(request, _("Document introuvable."))
+        return redirect("view-policies")
+    folder = document.folder
+    document.delete()
+    messages.success(request, _("Document supprimé."))
+    return redirect(_folder_url(folder))
 
 
 @login_required

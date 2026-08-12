@@ -1,0 +1,64 @@
+{% load i18n %}{% load static %}
+<nav class="oh-policy-breadcrumb">
+  <a href="{% url 'view-policies' %}">
+    <ion-icon name="folder-open-outline"></ion-icon>
+    {% trans 'Politiques' %}
+  </a>
+  <span class="oh-policy-breadcrumb__separator">/</span>
+  <span class="oh-policy-breadcrumb__current">{% trans 'Résultats pour' %} "{{ search }}"</span>
+</nav>
+
+{% if found_folders %}
+  <h2 class="oh-policy-section-title">{% trans 'Dossiers' %}</h2>
+  <div class="oh-policy-grid">
+    {% for result in found_folders %}
+      <div class="oh-policy-folder" onclick="window.location.href='{% url 'view-policies' %}?folder_id={{ result.id }}'">
+        <div class="oh-policy-folder__icon">
+          <ion-icon name="folder"></ion-icon>
+        </div>
+        <div class="oh-policy-folder__body">
+          <span class="oh-policy-folder__name" title="{{ result.name }}">{{ result.name }}</span>
+          <span class="oh-policy-folder__meta">
+            {% for ancestor in result.get_ancestors %}{% if not forloop.last %}{{ ancestor.name }} / {% endif %}{% empty %}{% endfor %}
+            {% if not result.parent %}{% trans 'Racine' %}{% endif %}
+          </span>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if found_documents %}
+  <h2 class="oh-policy-section-title">{% trans 'Documents' %}</h2>
+  <div class="oh-policy-files">
+    {% for document in found_documents %}
+      <div class="oh-policy-file">
+        <ion-icon name="document-text" class="oh-policy-file__icon"></ion-icon>
+        <div class="oh-policy-file__body">
+          <a href="{{ document.attachment.url }}" target="_blank" rel="noopener noreferrer" class="oh-policy-file__name">{{ document.title }}</a>
+          <span class="oh-policy-file__meta">
+            {% for ancestor in document.folder.get_ancestors %}{{ ancestor.name }}{% if not forloop.last %} / {% endif %}{% endfor %}
+          </span>
+        </div>
+        <div class="oh-policy-file__actions">
+          <a href="{% url 'view-policies' %}?folder_id={{ document.folder.id }}" title="{% trans 'Ouvrir le dossier' %}">
+            <ion-icon name="folder-open-outline"></ion-icon>
+          </a>
+          <a href="{{ document.attachment.url }}" target="_blank" rel="noopener noreferrer" title="{% trans 'Ouvrir' %}">
+            <ion-icon name="eye-outline"></ion-icon>
+          </a>
+          <a href="{{ document.attachment.url }}" download title="{% trans 'Télécharger' %}">
+            <ion-icon name="download-outline"></ion-icon>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if not found_folders and not found_documents %}
+  <div class="oh-policy-empty">
+    <img style="width: 130px; height: 130px" src="{% static 'images/ui/no-results.png' %}" class="mb-3" alt="" />
+    <h5>{% trans 'Aucun résultat trouvé !' %}</h5>
+  </div>
+{% endif %}
