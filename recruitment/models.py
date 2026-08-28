@@ -23,7 +23,7 @@ from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 from base.horilla_company_manager import HorillaCompanyManager
-from base.models import Company, JobPosition, Site
+from base.models import Company, Department, JobPosition, Site
 from employee.models import Employee
 from horilla.models import HorillaModel
 from horilla_audit.methods import get_diff
@@ -133,6 +133,19 @@ class Recruitment(HorillaModel):
         help_text=_(
             "To archive and un-archive a recruitment, if active is false then it \
             will not appear on recruitment list view."
+        ),
+    )
+    department_id = models.ForeignKey(
+        Department,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="recruitments",
+        verbose_name=_("Department"),
+        help_text=_(
+            "Department of the recruitment. It is assigned automatically to every "
+            "candidate of this recruitment, including applications coming from the "
+            "public application link."
         ),
     )
     open_positions = models.ManyToManyField(
@@ -378,6 +391,19 @@ class Candidate(HorillaModel):
         blank=True,
         verbose_name=_("Job Position"),
     )
+    department_id = models.ForeignKey(
+        Department,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        editable=False,
+        related_name="candidates",
+        verbose_name=_("Department"),
+        help_text=_(
+            "Department of the candidate. Set automatically from the recruitment, "
+            "or from the job position when the recruitment has no department."
+        ),
+    )
     stage_id = models.ForeignKey(
         Stage,
         on_delete=models.PROTECT,
@@ -611,12 +637,20 @@ class Candidate(HorillaModel):
             # keep the candidate's company aligned with its recruitment
             if self.recruitment_id.company_id is not None:
                 self.company_id = self.recruitment_id.company_id
+            # same for the department, so a candidate created from the back-office
+            # or from the public application link never has to fill it in
+            if self.recruitment_id.department_id is not None:
+                self.department_id = self.recruitment_id.department_id
             if not self.recruitment_id.is_event_based and self.job_position_id is None:
                 self.job_position_id = self.recruitment_id.job_position_id
             if self.job_position_id not in self.recruitment_id.open_positions.all():
                 raise ValidationError({"job_position_id": _("Choose valid choice")})
             if self.recruitment_id.is_event_based and self.job_position_id is None:
                 raise ValidationError({"job_position_id": _("This field is required.")})
+        # fall back on the job position's own department: covers pool candidates
+        # (no recruitment) and recruitments created before the department field
+        if self.department_id is None and self.job_position_id is not None:
+            self.department_id = self.job_position_id.department_id
         if self.stage_id and self.stage_id.stage_type == "cancelled":
             self.canceled = True
         if self.canceled and self.recruitment_id is not None:

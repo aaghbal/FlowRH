@@ -1,0 +1,41 @@
+{% load i18n %}
+<script>
+  // Narrow the "Job Position" list down to the department picked on the
+  // recruitment form. Without it the user scrolls through every position of
+  // every department to find the handful that belong to the one they chose.
+  (function () {
+    var jobPositionsUrl = "{% url 'get-job-positions' %}";
+
+    function reloadPositions($department, $positions) {
+      var departmentId = $department.val();
+      if (!departmentId) {
+        return;
+      }
+      // keep whatever is already ticked, the department may not have changed
+      var selected = $positions.val() || [];
+      $.getJSON(jobPositionsUrl, { department_id: departmentId }, function (data) {
+        var positions = data.job_positions || {};
+        $positions.empty();
+        $.each(positions, function (id, title) {
+          $positions.append(
+            new Option(title, id, false, selected.indexOf(String(id)) !== -1)
+          );
+        });
+        $positions.trigger("change");
+      });
+    }
+
+    $(document).ready(function () {
+      var $department = $("[name='department_id'][data-department-filter]");
+      var $positions = $("[name='open_positions']");
+      if (!$department.length || !$positions.length) {
+        return;
+      }
+      // only on an explicit change: filtering on load would silently drop
+      // positions already saved on a recruitment from another department
+      $department.on("change", function () {
+        reloadPositions($department, $positions);
+      });
+    });
+  })();
+</script>

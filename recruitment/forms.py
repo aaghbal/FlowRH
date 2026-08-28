@@ -256,8 +256,18 @@ class RecruitmentCreationForm(ModelForm):
             ),
             "description": forms.Textarea(attrs={"data-summernote": ""}),
             "site": forms.Select(attrs={"class": "oh-select oh-select-2 w-100"}),
+            "department_id": forms.Select(
+                attrs={
+                    "class": "oh-select oh-select-2 w-100",
+                    "data-department-filter": "open_positions",
+                }
+            ),
         }
-        labels = {"description": _("Description"), "vacancy": _("Vacancy")}
+        labels = {
+            "description": _("Description"),
+            "vacancy": _("Vacancy"),
+            "department_id": _("Department"),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -316,7 +326,34 @@ class RecruitmentCreationForm(ModelForm):
             raise forms.ValidationError(
                 _("Job position is required if the recruitment is publishing.")
             )
+        self._clean_department(open_positions)
         super().clean()
+
+    def _clean_department(self, open_positions):
+        """
+        Keep the recruitment's department consistent with its job positions.
+
+        When no department is picked but every chosen position belongs to the same
+        one, fill it in rather than leaving the candidates without a department.
+        """
+        department = self.cleaned_data.get("department_id")
+        if not open_positions:
+            return
+        position_departments = {
+            position.department_id for position in open_positions
+        }
+        if department is None:
+            if len(position_departments) == 1:
+                self.cleaned_data["department_id"] = position_departments.pop()
+            return
+        outside = position_departments - {department}
+        if outside:
+            self.add_error(
+                "open_positions",
+                _("Every job position must belong to the department {}.").format(
+                    department
+                ),
+            )
 
 
 class StageCreationForm(ModelForm):
