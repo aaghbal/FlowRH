@@ -31,6 +31,10 @@ ALL_MENUS = {}
 
 
 def sidebar(request):
+    # imported here, not at module level: base.role_access pulls in the ORM,
+    # and this module is loaded while the app registry is still warming up
+    from base.role_access import allowed_pages, can_access
+    from base.role_pages import pages_for_path
 
     base_dir_apps = get_apps_in_base_dir()
 
@@ -79,6 +83,22 @@ def sidebar(request):
                                 PermWrapper(request.user),
                             ):
                                 MENU["submenu"].append(submenu)
+
+        # the accessibility callables above can only widen access, so they
+        # would still show a role holder the pages their role withholds --
+        # which RoleAccessMiddleware then refuses. Drop them here so the menu
+        # and the middleware agree, and drop a module left with no entry.
+        # Skipped entirely for users no role restricts, which is the common
+        # case and spares the URL resolution below.
+        if allowed_pages(request.user) is not None:
+            for menu in MENUS:
+                menu["submenu"] = [
+                    submenu
+                    for submenu in menu["submenu"]
+                    if can_access(request.user, pages_for_path(submenu["redirect"]))
+                ]
+            MENUS[:] = [menu for menu in MENUS if menu["submenu"]]
+
         ALL_MENUS[request.session.session_key] = MENUS
 
 

@@ -153,3 +153,17 @@ def readable(value):
     except:
         value = value
     return value
+
+
+@register.filter(name="role_allows")
+def role_allows(user, page_key):
+    """
+    Whether ``user``'s roles allow the catalogued page ``page_key``.
+
+    For the sidebar entries written straight into the template instead of
+    coming from a module's `SUBMENUS`, which `horilla.config.sidebar` never
+    sees and so cannot filter.
+    """
+    from base.role_access import can_access
+
+    return can_access(user, {page_key})

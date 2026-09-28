@@ -23,6 +23,7 @@ from base.models import (
     HorillaMailTemplate,
     JobPosition,
     JobRole,
+    Role,
     RotatingShift,
     RotatingShiftAssign,
     RotatingWorkType,
@@ -205,6 +206,22 @@ urlpatterns = [
         views.object_delete,
         name="company-delete",
         kwargs={"model": Company, "redirect": "/settings/company-view"},
+    ),
+    path("settings/role-view/", views.role_view, name="role-view"),
+    path("settings/role-create/", views.role_create, name="role-create"),
+    path(
+        "settings/role-update/<int:obj_id>/",
+        views.role_update,
+        name="role-update",
+    ),
+    path(
+        "role-delete/<int:obj_id>/",
+        views.object_delete,
+        name="role-delete",
+        kwargs={
+            "model": Role,
+            "redirect_path": "/settings/role-view/",
+        },
     ),
     path("settings/department-view/", views.department_view, name="department-view"),
     path(

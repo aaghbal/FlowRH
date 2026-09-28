@@ -55,6 +55,7 @@ from base.models import (
     JobRole,
     MultipleApprovalCondition,
     PenaltyAccounts,
+    Role,
     RotatingShift,
     RotatingShiftAssign,
     RotatingWorkType,
@@ -2804,3 +2805,81 @@ class PenaltyAccountForm(ModelForm):
                 id__in=available_leaves.values_list("leave_type_id", flat=True)
             )
             self.fields["leave_type_id"].queryset = assigned_leave_types
+
+
+class RoleForm(ModelForm):
+    """
+    Role form.
+
+    The accessible pages are not a plain model field: the template renders one
+    checkbox and one access level per page of `PAGE_CATALOG`, and they are
+    folded back into the `pages` JSON here. That keeps the role definition in
+    the vocabulary of the menu rather than in raw permission codenames.
+    """
+
+    class Meta:
+        model = Role
+        fields = ["name", "description", "job_positions", "employees", "company_id"]
+        widgets = {
+            "name": TextInput(
+                attrs={"class": "oh-input w-100", "placeholder": _("Nom du rôle")}
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "oh-input w-100", "rows": 2},
+            ),
+            "job_positions": forms.SelectMultiple(
+                attrs={"class": "oh-select oh-select-2 w-100"}
+            ),
+            "employees": forms.SelectMultiple(
+                attrs={"class": "oh-select oh-select-2 w-100"}
+            ),
+            "company_id": forms.SelectMultiple(
+                attrs={"class": "oh-select oh-select-2 w-100"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        reload_queryset(self.fields)
+        self.fields["employees"].queryset = Employee.objects.filter(is_active=True)
+
+    def selected_pages(self):
+        """
+        Current selection, as ``{page_key: level}``.
+
+        Reads the submitted data when the form is bound so a failed validation
+        redisplays what the user had ticked, and the stored value otherwise.
+        A brand new role starts on the self-service defaults: every page is
+        deniable now, so an untouched form would otherwise create a role that
+        shuts its holders out of their own profile and their own leave.
+        """
+        from base.role_pages import DEFAULT_PAGES, VIEW
+
+        if self.is_bound:
+            return self._pages_from_data(self.data)
+        if self.instance.pk is None:
+            return {key: VIEW for key in DEFAULT_PAGES}
+        return self.instance.pages or {}
+
+    @staticmethod
+    def _pages_from_data(data):
+        from base.role_pages import ACCESS_LEVELS, VIEW, iter_pages
+
+        levels = {level for level, _label in ACCESS_LEVELS}
+        pages = {}
+        for key, *_rest in iter_pages():
+            if not data.get(f"page_{key}"):
+                continue
+            level = data.get(f"level_{key}", VIEW)
+            pages[key] = level if level in levels else VIEW
+        return pages
+
+    def clean(self):
+        cleaned_data = super().clean()
+        pages = self._pages_from_data(self.data)
+        if not pages:
+            raise ValidationError(
+                _("Sélectionnez au moins une page accessible pour ce rôle.")
+            )
+        self.instance.pages = pages
+        return cleaned_data

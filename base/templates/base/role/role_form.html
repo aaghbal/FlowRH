@@ -1,0 +1,153 @@
+{% load i18n %} {% load static %}
+<div class="oh-modal__dialog-header">
+  <h5 class="oh-modal__dialog-title">
+    {% if role %}{% trans "Modifier le rôle" %}{% else %}{% trans "Créer un rôle" %}{% endif %}
+  </h5>
+  <button class="oh-modal__close" aria-label="Close">
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+</div>
+<div class="oh-modal__dialog-body">
+  <form
+    hx-post="{% if role %}{% url 'role-update' role.id %}{% else %}{% url 'role-create' %}{% endif %}"
+    hx-target="{% if role %}#roleEditForm{% else %}#roleForm{% endif %}"
+    class="oh-profile-section"
+  >
+    {% csrf_token %}
+    <div class="row">
+      {% for error in form.non_field_errors %}
+      <ul class="errorlist">
+        <li>{{ error }}</li>
+      </ul>
+      {% endfor %}
+
+      <div class="col-12 col-md-6">
+        <label class="oh-label required-star" for="{{ form.name.id_for_label }}"
+          >{% trans "Nom du rôle" %}</label
+        >
+        {{ form.name }} {{ form.name.errors }}
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="oh-label" for="{{ form.description.id_for_label }}"
+          >{% trans "Description" %}</label
+        >
+        {{ form.description }} {{ form.description.errors }}
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="oh-label" for="{{ form.job_positions.id_for_label }}"
+          title="{{ form.job_positions.help_text }}"
+          >{% trans "Postes" %}</label
+        >
+        {{ form.job_positions }} {{ form.job_positions.errors }}
+        <div class="oh-text--light" style="font-size: 12px">
+          {% trans "Tout employé occupant l'un de ces postes reçoit le rôle automatiquement." %}
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="oh-label" for="{{ form.employees.id_for_label }}"
+          >{% trans "Employés" %}</label
+        >
+        {{ form.employees }} {{ form.employees.errors }}
+        <div class="oh-text--light" style="font-size: 12px">
+          {% trans "Attribution individuelle, en plus des postes." %}
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <label class="oh-label" for="{{ form.company_id.id_for_label }}"
+          >{% trans "Société" %}</label
+        >
+        {{ form.company_id }} {{ form.company_id.errors }}
+      </div>
+    </div>
+
+    <hr />
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="mb-0">{% trans "Pages accessibles" %}</h6>
+      <span class="oh-text--light" style="font-size: 12px">
+        {% trans "Cochez une page, puis choisissez le niveau d'accès." %}
+      </span>
+    </div>
+
+    <div id="rolePages">
+      {% for module in modules %}
+      <div class="oh-card mb-2" style="padding: 10px">
+        <div class="d-flex align-items-center mb-2">
+          <label class="oh-label mb-0 me-2" style="font-weight: bold">
+            {{ module.label }}
+          </label>
+          <button
+            type="button"
+            class="oh-btn oh-btn--light-bkg oh-btn--small module-toggle"
+            data-module="{{ module.key }}"
+          >
+            {% trans "Tout cocher / décocher" %}
+          </button>
+        </div>
+        <div class="row">
+          {% for page in module.pages %}
+          <div class="col-12 col-md-6 d-flex align-items-center mb-1">
+            <input
+              type="checkbox"
+              class="me-2 page-check"
+              data-module="{{ module.key }}"
+              name="page_{{ page.key }}"
+              id="page_{{ page.key }}"
+              {% if page.checked %}checked{% endif %}
+            />
+            <label
+              class="oh-label mb-0 me-2 flex-grow-1"
+              for="page_{{ page.key }}"
+              style="font-weight: normal"
+              >{{ page.label }}</label
+            >
+            <select
+              name="level_{{ page.key }}"
+              class="oh-select oh-select--sm"
+              style="width: 190px"
+            >
+              {% for value, label in access_levels %}
+              <option value="{{ value }}" {% if page.level == value %}selected{% endif %}>
+                {{ label }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="d-flex flex-row-reverse w-100 mt-4">
+      <button type="submit" class="oh-btn oh-btn--secondary pl-5 pr-5">
+        {% if role %}{% trans "Enregistrer" %}{% else %}{% trans "Créer" %}{% endif %}
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  (function () {
+    // "check all" per module, and grey out the level of an unticked page so it
+    // is obvious the selector only matters once the page itself is granted
+    function syncLevel(check) {
+      var select = $(check).closest("div").find("select");
+      select.prop("disabled", !check.checked);
+    }
+    $("#rolePages .page-check").each(function () {
+      syncLevel(this);
+    });
+    $("#rolePages").on("change", ".page-check", function () {
+      syncLevel(this);
+    });
+    $("#rolePages").on("click", ".module-toggle", function () {
+      var module = $(this).data("module");
+      var boxes = $("#rolePages .page-check[data-module='" + module + "']");
+      var target = boxes.filter(":checked").length !== boxes.length;
+      boxes.prop("checked", target).each(function () {
+        syncLevel(this);
+      });
+    });
+  })();
+</script>

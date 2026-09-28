@@ -1,0 +1,132 @@
+{% extends 'settings.html' %} {% load i18n %} {% block settings %} {% load static %}
+<div class="oh-inner-sidebar-content">
+  {% if perms.base.view_role %}
+  <div
+    class="oh-inner-sidebar-content__header d-flex justify-content-between align-items-center"
+  >
+    <h2 class="oh-inner-sidebar-content__title">{% trans "Rôles" %}</h2>
+    {% if perms.base.add_role %}
+    <button
+      class="oh-btn oh-btn--secondary oh-btn--shadow"
+      data-toggle="oh-modal-toggle"
+      data-target="#roleModal"
+      hx-get="{% url 'role-create' %}"
+      hx-target="#roleForm"
+    >
+      <ion-icon name="add-outline" class="me-1"></ion-icon>
+      {% trans "Créer" %}
+    </button>
+    {% endif %}
+  </div>
+
+  {% if rows %}
+  <div class="oh-sticky-table">
+    <div class="oh-sticky-table__table">
+      <div class="oh-sticky-table__thead">
+        <div class="oh-sticky-table__tr">
+          <div class="oh-sticky-table__th">{% trans "Rôle" %}</div>
+          <div class="oh-sticky-table__th">{% trans "Pages accessibles" %}</div>
+          <div class="oh-sticky-table__th">{% trans "Attribué à" %}</div>
+          <div class="oh-sticky-table__th">{% trans "Employés concernés" %}</div>
+          <div class="oh-sticky-table__th">{% trans "Actions" %}</div>
+        </div>
+      </div>
+      <div class="oh-sticky-table__tbody">
+        {% for row in rows %}
+        <div class="oh-sticky-table__tr">
+          <div class="oh-sticky-table__td">
+            <strong>{{ row.role.name }}</strong>
+            {% if row.role.description %}
+            <div class="oh-text--light" style="font-size: 12px">
+              {{ row.role.description }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="oh-sticky-table__td">
+            {% for module in row.modules %}
+            <span class="oh-badge oh-badge--secondary me-1 mb-1">{{ module }}</span>
+            {% empty %}
+            <span class="oh-text--light">{% trans "Aucune" %}</span>
+            {% endfor %}
+          </div>
+          <div class="oh-sticky-table__td">
+            {% for position in row.role.job_positions.all %}
+            <span class="oh-badge oh-badge--info me-1 mb-1"
+              >{{ position.job_position }}</span
+            >
+            {% endfor %}
+            {% for employee in row.role.employees.all %}
+            <span class="oh-badge oh-badge--success me-1 mb-1"
+              >{{ employee }}</span
+            >
+            {% endfor %}
+            {% if not row.role.job_positions.all and not row.role.employees.all %}
+            <span class="oh-text--light">{% trans "Personne" %}</span>
+            {% endif %}
+          </div>
+          <div class="oh-sticky-table__td">{{ row.holders }}</div>
+          <div class="oh-sticky-table__td">
+            {% if perms.base.change_role %}
+            <button
+              class="oh-btn oh-btn--light-bkg w-50"
+              data-toggle="oh-modal-toggle"
+              data-target="#roleEditModal"
+              hx-get="{% url 'role-update' row.role.id %}"
+              hx-target="#roleEditForm"
+              title="{% trans 'Modifier' %}"
+            >
+              <ion-icon name="create-outline"></ion-icon>
+            </button>
+            {% endif %}
+            {% if perms.base.delete_role %}
+            <button
+              class="oh-btn oh-btn--danger-outline w-50"
+              hx-post="{% url 'role-delete' row.role.id %}"
+              hx-confirm="{% trans 'Voulez-vous vraiment supprimer ce rôle ? Les employés concernés perdront les accès correspondants.' %}"
+              title="{% trans 'Supprimer' %}"
+            >
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div
+    style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;"
+  >
+    <img
+      style="display: block; width: 15%; margin: 20px auto; filter: opacity(0.5);"
+      src="{% static 'images/ui/connection.png' %}"
+      alt=""
+    />
+    <h5 class="oh-404__subtitle">
+      {% trans "Aucun rôle n'a encore été créé." %}
+    </h5>
+  </div>
+  {% endif %} {% endif %}
+</div>
+
+<div
+  class="oh-modal"
+  id="roleModal"
+  role="dialog"
+  aria-labelledby="roleModalLabel"
+  aria-hidden="true"
+>
+  <div class="oh-modal__dialog oh-modal__dialog--lg" id="roleForm"></div>
+</div>
+
+<div
+  class="oh-modal"
+  id="roleEditModal"
+  role="dialog"
+  aria-labelledby="roleEditModal"
+  aria-hidden="true"
+>
+  <div class="oh-modal__dialog oh-modal__dialog--lg" id="roleEditForm"></div>
+</div>
+{% endblock settings %}

@@ -60,6 +60,7 @@ from base.forms import (
     AnnouncementExpireForm,
     AssignPermission,
     AssignUserGroup,
+    RoleForm,
     AuditTagForm,
     ChangePasswordForm,
     ChangeUsernameForm,
@@ -142,6 +143,7 @@ from base.models import (
     JobRole,
     MultipleApprovalCondition,
     MultipleApprovalManagers,
+    Role,
     RotatingShift,
     RotatingWorkType,
     RotatingWorkTypeAssign,
@@ -152,6 +154,7 @@ from base.models import (
     WorkTypeRequest,
     WorkTypeRequestComment,
 )
+from base.role_pages import ACCESS_LEVELS, catalog_with_selection, describe
 from employee.filters import EmployeeFilter
 from employee.forms import ActiontypeForm, EmployeeGeneralSettingPrefixForm
 from employee.models import (
@@ -7190,3 +7193,76 @@ def view_penalties(request):
     """
     records = PenaltyFilter(request.GET).qs
     return render(request, "penalty/penalty_view.html", {"records": records})
+
+
+@login_required
+@permission_required("base.view_role")
+def role_view(request):
+    """
+    Lists the roles, with the pages catalogue used to describe each of them.
+    """
+    roles = Role.objects.all().prefetch_related("job_positions", "employees")
+    rows = [
+        {
+            "role": role,
+            "modules": describe(role.pages or {}),
+            "holders": role.holders().count(),
+        }
+        for role in roles
+    ]
+    return render(request, "base/role/role.html", {"rows": rows})
+
+
+@login_required
+@hx_request_required
+@permission_required("base.add_role")
+def role_create(request):
+    """
+    Renders and handles the role creation form.
+    """
+    form = RoleForm()
+    if request.method == "POST":
+        form = RoleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Le rôle a été créé."))
+            return HttpResponse("<script>window.location.reload()</script>")
+    return render(
+        request,
+        "base/role/role_form.html",
+        {
+            "form": form,
+            "modules": catalog_with_selection(form.selected_pages()),
+            "access_levels": ACCESS_LEVELS,
+        },
+    )
+
+
+@login_required
+@hx_request_required
+@permission_required("base.change_role")
+def role_update(request, obj_id):
+    """
+    Renders and handles the role update form.
+    """
+    role = Role.objects.filter(id=obj_id).first()
+    if role is None:
+        messages.error(request, _("Ce rôle est introuvable."))
+        return HttpResponse("<script>window.location.reload()</script>")
+    form = RoleForm(instance=role)
+    if request.method == "POST":
+        form = RoleForm(request.POST, instance=role)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Le rôle a été mis à jour."))
+            return HttpResponse("<script>window.location.reload()</script>")
+    return render(
+        request,
+        "base/role/role_form.html",
+        {
+            "form": form,
+            "role": role,
+            "modules": catalog_with_selection(form.selected_pages()),
+            "access_levels": ACCESS_LEVELS,
+        },
+    )

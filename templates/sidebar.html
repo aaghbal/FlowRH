@@ -173,6 +173,7 @@ function initializeSummernote(candId,searchWords,) {
       {% endfor %}
 
       {% comment %} {% if request.user|config_perms %} {% endcomment %}
+      {% if request.user|role_allows:"personal.news_feed" %}
       <li
   class="oh-sidebar__menu-item"
   x-data="{ isOpen: getOpenState('filActualiteNav') }"
@@ -200,6 +201,7 @@ function initializeSummernote(candId,searchWords,) {
     <span>{% trans "Fil d'actualité" %}</span>
   </a>
 </li>
+      {% endif %}
       <li
        >
         <div

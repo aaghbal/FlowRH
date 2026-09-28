@@ -81,6 +81,16 @@
 												{% endif %}
 											</div>
 											<div class="oh-input-group">
+												{% if perms.base.view_role %}
+													<a
+														id="role"
+														href="{% url 'role-view' %}"
+														class="oh-inner-sidebar__link oh-dropdown__link"
+														>{% trans "Rôles" %}</a
+													>
+												{% endif %}
+											</div>
+											<div class="oh-input-group">
 												{% if perms.auth.view_group %}
 													<a
 														id="userGroup"

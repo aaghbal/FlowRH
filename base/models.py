@@ -11,10 +11,11 @@ from typing import Iterable
 import django
 from django.apps import apps
 from django.contrib import messages
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser, Group, Permission, User
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models import Q
+from django.db.models.signals import m2m_changed, post_delete, post_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
@@ -1857,3 +1858,167 @@ def create_deduction_cutleave_from_penalty(sender, instance, created, **kwargs):
 
 
 User.add_to_class("is_new_employee", models.BooleanField(default=False))
+
+
+class Role(HorillaModel):
+    """
+    A named set of accessible pages, granted to employees directly or through
+    the job positions they hold.
+
+    A role owns a hidden Django ``Group``: the pages ticked on the role are
+    translated into that group's permissions, and the holders are kept in sync
+    as its members. Everything downstream -- the sidebar, every
+    ``permission_required`` decorator -- therefore keeps working on plain
+    Django permissions and needs no change.
+    """
+
+    name = models.CharField(
+        max_length=60, unique=True, verbose_name=_("Nom du rôle")
+    )
+    description = models.TextField(
+        blank=True, null=True, verbose_name=_("Description")
+    )
+    group = models.OneToOneField(
+        Group,
+        on_delete=models.CASCADE,
+        null=True,
+        editable=False,
+        related_name="role",
+    )
+    # {"recruitment.candidates": "manage", "leave.requests": "view"}
+    pages = models.JSONField(default=dict, blank=True)
+    job_positions = models.ManyToManyField(
+        JobPosition,
+        blank=True,
+        related_name="roles",
+        verbose_name=_("Postes"),
+        help_text=_(
+            "Tout employé occupant l'un de ces postes reçoit le rôle "
+            "automatiquement."
+        ),
+    )
+    employees = models.ManyToManyField(
+        "employee.Employee",
+        blank=True,
+        related_name="roles",
+        verbose_name=_("Employés"),
+        help_text=_("Employés recevant ce rôle à titre individuel."),
+    )
+    company_id = models.ManyToManyField(Company, blank=True, verbose_name=_("Company"))
+
+    objects = HorillaCompanyManager("company_id")
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = _("Rôle")
+        verbose_name_plural = _("Rôles")
+
+    def __str__(self):
+        return self.name
+
+    def granted_permissions(self):
+        """Permission objects the ticked pages add up to."""
+        from base.role_pages import permissions_for
+
+        codes = set()
+        for key, level in (self.pages or {}).items():
+            codes.update(permissions_for(key, level))
+        if not codes:
+            return Permission.objects.none()
+        # a page may name a permission that no longer exists after a model is
+        # dropped; match on the pairs that do resolve instead of failing
+        query = Q()
+        for code in codes:
+            app_label, _sep, codename = code.partition(".")
+            query |= Q(content_type__app_label=app_label, codename=codename)
+        return Permission.objects.filter(query)
+
+    def holders(self):
+        """Employees who hold this role, directly or through their job position."""
+        from employee.models import Employee
+
+        return Employee.objects.filter(
+            Q(roles=self) | Q(employee_work_info__job_position_id__roles=self),
+            is_active=True,
+        ).distinct()
+
+    def sync(self):
+        """
+        Push the role onto its Django group: permissions from the ticked pages,
+        members from the holders. Safe to call as often as needed.
+        """
+        from base import role_access
+
+        if self.group_id is None:
+            # get_or_create, not create: a group left behind by an earlier role
+            # of the same name would otherwise break the unique constraint
+            self.group, _created = Group.objects.get_or_create(
+                name=self._group_name()
+            )
+            super().save(update_fields=["group"])
+        elif self.group.name != self._group_name():
+            self.group.name = self._group_name()
+            self.group.save()
+
+        self.group.permissions.set(self.granted_permissions())
+        users = [
+            employee.employee_user_id_id
+            for employee in self.holders()
+            if employee.employee_user_id_id
+        ]
+        self.group.user_set.set(User.objects.filter(id__in=users))
+        role_access.invalidate()
+
+    def _group_name(self):
+        # namespaced so a role never collides with a group created by hand
+        return f"role:{self.name}"
+
+
+@receiver(post_delete, sender=Role)
+def drop_group_with_role(sender, instance, **kwargs):
+    """
+    Remove the backing group when the role goes.
+
+    Handled as a signal rather than in ``Role.delete()`` because a queryset
+    delete never calls the model's method, and the orphan group left behind
+    would keep granting its permissions to everyone still in it.
+    """
+    from base import role_access
+
+    if instance.group_id:
+        Group.objects.filter(id=instance.group_id).delete()
+    role_access.invalidate()
+
+
+@receiver(post_save, sender=Role)
+def sync_role_on_save(sender, instance, **kwargs):
+    """Rebuild the role's group whenever the role itself changes."""
+    instance.sync()
+
+
+@receiver(m2m_changed, sender=Role.employees.through)
+@receiver(m2m_changed, sender=Role.job_positions.through)
+def sync_role_on_holders_changed(sender, instance, action, **kwargs):
+    """Re-sync once the holders (employees or job positions) settle."""
+    if action in ("post_add", "post_remove", "post_clear") and isinstance(
+        instance, Role
+    ):
+        instance.sync()
+
+
+@receiver(post_save, sender="employee.EmployeeWorkInformation")
+def sync_roles_on_job_position_changed(sender, instance, **kwargs):
+    """
+    Moving an employee to another job position must move their roles with it,
+    otherwise access would keep following the position they just left.
+
+    Only the roles actually concerned are rebuilt -- the one attached to the
+    new position, plus any the employee still belongs to and may need to leave
+    -- so bulk employee imports don't re-sync every role on every row.
+    """
+    user_id = getattr(instance.employee_id, "employee_user_id_id", None)
+    concerned = Q(job_positions=instance.job_position_id_id)
+    if user_id:
+        concerned |= Q(group__user__id=user_id)
+    for role in Role.objects.filter(concerned).distinct():
+        role.sync()

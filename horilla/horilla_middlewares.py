@@ -17,6 +17,9 @@ MIDDLEWARE.append("horilla.horilla_middlewares.ThreadLocalMiddleware")
 MIDDLEWARE.append("accessibility.middlewares.AccessibilityMiddleware")
 MIDDLEWARE.append("accessibility.middlewares.AccessibilityMiddleware")
 MIDDLEWARE.append("base.middleware.ForcePasswordChangeMiddleware")
+# last, so it decides on the request the earlier middlewares have finished
+# setting up (notably the selected company and the thread-local request)
+MIDDLEWARE.append("base.middleware.RoleAccessMiddleware")
 _thread_locals = threading.local()
 
 
