@@ -118,11 +118,12 @@ def rating(candidate_ratings, cand):
 
 @register.filter(name="avg_rating")
 def avg_rating(candidate_ratings, cand):
-    ratings = CandidateRating.objects.filter(candidate_id=cand.id)
-    rating_list = []
+    # Read the ratings off the candidate's own relation rather than querying
+    # CandidateRating directly: a view that prefetched candidate_rating then
+    # gets these from cache. This filter runs once per star per candidate, so
+    # the direct query cost five hits per row on every candidate list.
+    rating_list = [rating.rating for rating in cand.candidate_rating.all()]
     avg_rate = 0
-    for rating in ratings:
-        rating_list.append(rating.rating)
     if len(rating_list) != 0:
         avg_rate = round(sum(rating_list) / len(rating_list))
 

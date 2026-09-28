@@ -113,9 +113,29 @@ class HorillaFilterSet(FilterSet):
         for key, value in self.verbose_name.items():
             self.form.fields[key].label = value
 
+        self._select_related_permission_choices()
+
         request = getattr(_thread_locals, "request", None)
         if request:
             setattr(request, "is_filtering", True)
+
+    def _select_related_permission_choices(self):
+        """
+        Preload content_type on any Permission choice field.
+
+        Permission.__str__ renders "<content type> | <name>", so drawing a
+        permission <select> issues one query per option -- around 900 of them,
+        which dominated the cost of every page carrying such a filter. The
+        queryset has to be replaced on the bound form field: django_filters
+        builds that field from its own copy, so setting it on the filter alone
+        has no effect.
+        """
+        from django.contrib.auth.models import Permission
+
+        for field in self.form.fields.values():
+            queryset = getattr(field, "queryset", None)
+            if queryset is not None and queryset.model is Permission:
+                field.queryset = queryset.select_related("content_type")
 
     def search_in(self, queryset, name, value):
         """

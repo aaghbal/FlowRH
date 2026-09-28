@@ -122,3 +122,10 @@ yarn-error.log
 # Secrets and sensitive data
 secrets.json
 *.key
+
+# Virtualenv and generated static files. myenv/bin scripts carry the absolute
+# path of the machine that built them, so a committed copy hands every other
+# checkout a pip that installs into a directory that does not exist there.
+# staticfiles/ is rebuilt by collectstatic.
+myenv/
+staticfiles/

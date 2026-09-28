@@ -35,11 +35,8 @@ env = environ.Env(
         str,
         r"django-insecure-j8op9)1q8\$1&0^s&p*_0%d#pr@w9qj@1o=3#@d=a(^@9@zd@%j",
     ),
-    ALLOWED_HOSTS=(list, ["flowrh.conexusitapps.ma", "conexusitapps.ma"]),
-    CSRF_TRUSTED_ORIGINS=(list, [
-        "https://flowrh.conexusitapps.ma",
-        "https://conexusitapps.ma",
-    ]),
+    ALLOWED_HOSTS=(list, ["flowrh.nextretail.ma"]),
+    CSRF_TRUSTED_ORIGINS=(list, ["https://flowrh.nextretail.ma"]),
 )
 
 env.read_env(os.path.join(BASE_DIR, ".env"), overwrite=True)
@@ -50,9 +47,11 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = [
-    "*",
-]
+# "*" accepts any Host header, which lets an attacker who reaches the server
+# make Django build links (password reset mails above all) pointing at a domain
+# they control. Kept only while DEBUG is on, where the host is a local address
+# anyway; in production the value comes from ALLOWED_HOSTS in .env.
+ALLOWED_HOSTS = ["*"] if DEBUG else env("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -128,9 +127,12 @@ WSGI_APPLICATION = "horilla.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 if env("DATABASE_URL", default=None):
+    # env.db() defaults CONN_MAX_AGE to 0, i.e. a fresh connection per request,
+    # so set it here too rather than only on the DB_ENGINE branch below.
     DATABASES = {
         "default": env.db(),
     }
+    DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
 else:
     DATABASES = {
         "default": {
@@ -149,6 +151,24 @@ else:
             "CONN_MAX_AGE": env.int("CONN_MAX_AGE", default=60),
         }
     }
+
+# MySQL needs a few things set per connection that other backends don't.
+# utf8mb4 is the only charset that stores the full unicode range (emoji in
+# notes, accented names); STRICT_TRANS_TABLES makes MySQL raise on truncation
+# instead of silently cutting a value short, which matches how SQLite and
+# Postgres already behave here.
+if "mysql" in DATABASES["default"]["ENGINE"]:
+    DATABASES["default"].setdefault("OPTIONS", {}).update(
+        {
+            "charset": "utf8mb4",
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+    )
+    # CONN_MAX_AGE keeps connections open between requests, which matters far
+    # more on MySQL than on SQLite: a TCP + auth handshake per request costs
+    # more than most of the queries in it. The health check drops a connection
+    # the server closed (wait_timeout) instead of failing the request with it.
+    DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -208,11 +228,10 @@ MESSAGE_TAGS = {
 
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://flowrh.conexusitapps.ma",
-    "https://conexusitapps.ma",
-    "https://www.conexusitapps.ma",
-]
+# Read from CSRF_TRUSTED_ORIGINS in .env so the deployment domain is a setting
+# rather than an edit. A domain missing here makes Django refuse every POST,
+# the login form included, so it has to follow ALLOWED_HOSTS.
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 LOGIN_URL = "/login"
 

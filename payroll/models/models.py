@@ -455,10 +455,15 @@ if apps.is_installed("attendance"):
 
         # Additional fields and methods specific to AnotherModel
         @receiver(post_save, sender=Attendance)
-        def attendance_post_save(sender, instance, **kwargs):
+        def attendance_post_save(sender, instance, raw=False, **kwargs):
             """
             Overriding Attendance model save method
+
+            `raw` is set while loaddata installs a fixture, which carries its
+            own WorkRecord rows.
             """
+            if raw:
+                return
             if instance.first_save:
                 min_hour_second = strtime_seconds(instance.minimum_hour)
                 at_work_second = strtime_seconds(instance.attendance_worked_hour)
@@ -621,10 +626,16 @@ if apps.is_installed("leave"):
 
 
 @receiver(pre_save, sender=EmployeeWorkInformation)
-def employeeworkinformation_pre_save(sender, instance, **_kwargs):
+def employeeworkinformation_pre_save(sender, instance, raw=False, **_kwargs):
     """
     This method is used to override the save method for EmployeeWorkInformation Model
+
+    `raw` is set while loaddata installs a fixture. Work information is loaded
+    before payroll.Contract, so without this the employee looks contract-less
+    and gets a generated contract on top of the real one in the fixture.
     """
+    if raw:
+        return
     active_employee = (
         instance.employee_id if instance.employee_id.is_active == True else None
     )

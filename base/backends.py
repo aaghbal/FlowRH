@@ -219,7 +219,7 @@ class ConfiguredEmailBackend(BACKEND_CLASS):
             ensure_plain_text_alternative(message)
         response = super(BACKEND_CLASS, self).send_messages(email_messages)
         for message in email_messages:
-            from_email = self.dynamic_from_email_with_display_name or getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@flowrh.conexusitapps.ma")
+            from_email = self.dynamic_from_email_with_display_name or getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@flowrh.nextretail.ma")
             email_log = EmailLog(
                 subject=message.subject,
                 from_email=from_email,
@@ -232,8 +232,8 @@ class ConfiguredEmailBackend(BACKEND_CLASS):
 
 
 if EMAIL_BACKEND != default:
-    from_mail = getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@flowrh.conexusitapps.ma")
-    username = getattr(settings, "EMAIL_HOST_USER", "no-reply@flowrh.conexusitapps.ma")
+    from_mail = getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@flowrh.nextretail.ma")
+    username = getattr(settings, "EMAIL_HOST_USER", "no-reply@flowrh.nextretail.ma")
     ConfiguredEmailBackend.dynamic_username = from_mail
     ConfiguredEmailBackend.dynamic_from_email_with_display_name = from_mail
 

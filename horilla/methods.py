@@ -1,6 +1,7 @@
 import contextlib
 import importlib
 
+from django.apps import apps
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
@@ -19,9 +20,16 @@ def get_horilla_model_class(app_label, model):
         Model: The Django model class corresponding to the specified app label and model name.
 
     """
-    content_type = ContentType.objects.get(app_label=app_label, model=model)
-    model_class = content_type.model_class()
-    return model_class
+    # apps.get_model reads the in-memory app registry, where ContentType.objects
+    # .get() is a database query every call. This is called per row from
+    # templates (Employee.check_online among others), so the query cost added up
+    # to hundreds per page.
+    try:
+        return apps.get_model(app_label, model)
+    except LookupError as error:
+        raise ContentType.DoesNotExist(
+            f"No model {app_label}.{model}"
+        ) from error
 
 
 def dynamic_attr(obj, attribute_path):

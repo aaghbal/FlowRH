@@ -445,9 +445,13 @@ class Employee(models.Model):
             "employee_first_name",
         ]
         constraints = [
+            # No condition: MariaDB cannot create a conditional unique
+            # constraint and silently skips it, which left duplicate badge ids
+            # possible. A plain unique constraint on a nullable column is
+            # equivalent here anyway -- MySQL, Postgres and SQLite all treat
+            # NULLs as distinct, so blank badge ids stay exempt.
             models.UniqueConstraint(
                 fields=["badge_id"],
-                condition=models.Q(badge_id__isnull=False),
                 name="unique_badge_id",
             )
         ]
@@ -1059,7 +1063,7 @@ class BonusPoint(HorillaModel):
         return get_diff(self)
 
     @receiver(post_save, sender=Employee)
-    def bonus_post_save(sender, instance, **_kwargs):
+    def bonus_post_save(sender, instance, raw=False, **_kwargs):
         """
         Creates a BonusPoint instance for a newly created Employee if one doesn't already exist.
 
@@ -1067,8 +1071,14 @@ class BonusPoint(HorillaModel):
             sender (Employee): The model class (Employee) sending the signal.
             instance (Employee): The instance of the Employee model triggering the
                                 post-save signal.
+            raw (bool): True while loaddata is installing a fixture. The fixture
+                carries its own BonusPoint rows, so creating one here would take
+                the employee's slot and make the real row fail to load on its
+                unique employee_id.
             **_kwargs: Additional keyword arguments passed by the signal.
         """
+        if raw:
+            return
         if not BonusPoint.objects.filter(employee_id__id=instance.id).exists():
             BonusPoint.objects.create(employee_id=instance)
 

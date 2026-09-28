@@ -881,9 +881,24 @@ def employee_workinfo_complete(request):
     search = request.GET.get("search", "")
     employees_workinfos = filtersubordinates(
         request,
+        # The loop below reads every name in fields_to_focus off each row, and
+        # on a ForeignKey that loads the whole related object. Without these the
+        # page cost four queries per employee just to find out the field was
+        # set, which came to well over 2000 for ~535 employees.
         queryset=EmployeeWorkInformation.objects.filter(
             employee_id__employee_first_name__icontains=search,
             employee_id__is_active=True,
+        ).select_related(
+            "employee_id",
+            "job_position_id",
+            "department_id",
+            "work_type_id",
+            "employee_type_id",
+            "job_role_id",
+            "reporting_manager_id",
+            "company_id",
+            "shift_id",
+            "location",
         ),
         perm="employee.view_employeeworkinformation",
     )
@@ -3103,13 +3118,22 @@ def employee_permission_assign(request):
 
     context = {}
     template = "base/auth/permission.html"
+    # The permission table prints each employee's user, work information and
+    # granted permissions, all of which are per-row lookups unless preloaded.
+    base_employees = Employee.objects.select_related(
+        "employee_user_id",
+        "employee_work_info",
+        "employee_work_info__department_id",
+        "employee_work_info__job_position_id",
+        "employee_work_info__company_id",
+    ).prefetch_related("employee_user_id__user_permissions")
     if request.GET.get("profile_tab"):
         template = "tabs/group_permissions.html"
-        employees = Employee.objects.filter(id=request.GET["employee_id"]).distinct()
+        employees = base_employees.filter(id=request.GET["employee_id"]).distinct()
         emoloyee = employees.first()
         context["employee"] = emoloyee
     else:
-        employees = Employee.objects.filter(
+        employees = base_employees.filter(
             employee_user_id__user_permissions__isnull=False
         ).distinct()
         context["show_assign"] = True
@@ -3163,7 +3187,15 @@ def employee_permission_search(request, codename=None, uid=None):
     """
     context = {}
     template = "base/auth/permission_lines.html"
-    employees = EmployeeFilter(request.GET).qs
+    # Same per-row lookups as employee_permission_assign: the permission table
+    # prints each employee's user, work information and granted permissions.
+    employees = EmployeeFilter(request.GET).qs.select_related(
+        "employee_user_id",
+        "employee_work_info",
+        "employee_work_info__department_id",
+        "employee_work_info__job_position_id",
+        "employee_work_info__company_id",
+    ).prefetch_related("employee_user_id__user_permissions")
     if request.GET.get("profile_tab"):
         template = "base/auth/permission_accordion.html"
         employees = employees.filter(id=request.GET["employee_id"]).distinct()

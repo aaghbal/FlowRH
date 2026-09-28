@@ -183,7 +183,11 @@ class JobPosition(HorillaModel):
     JobPosition model
     """
 
-    job_position = models.CharField(max_length=50, blank=False, null=False)
+    # 100 rather than 50: real titles here run longer than 50 characters, e.g.
+    # "Responsable Service Accessoires & Plaques immatriculations". SQLite
+    # stored them anyway since it does not enforce varchar limits, so the
+    # overflow only surfaced on MySQL.
+    job_position = models.CharField(max_length=100, blank=False, null=False)
     department_id = models.ForeignKey(
         Department,
         on_delete=models.PROTECT,

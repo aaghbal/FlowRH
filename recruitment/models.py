@@ -268,10 +268,15 @@ class Recruitment(HorillaModel):
 
 
 @receiver(post_save, sender=Recruitment)
-def create_initial_stage(sender, instance, created, **kwargs):
+def create_initial_stage(sender, instance, created, raw=False, **kwargs):
     """
     This is post save method, used to create initial stage for the recruitment
+
+    `raw` is set while loaddata installs a fixture, which carries its own Stage
+    rows; creating the defaults then would duplicate every stage.
     """
+    if raw:
+        return
     if created:
         default_stages = [
             ("Sourcing", "applied", 0),
@@ -363,7 +368,12 @@ class Candidate(HorillaModel):
         ("rejete", "rejeté"),
     ]
     name = models.CharField(max_length=100, null=True, verbose_name=_("Name"))
-    profile = models.ImageField(upload_to=candidate_photo_upload_path, null=True, blank=True)
+    # candidate_photo_upload_path builds "<name>_<original filename>_<uuid4>.<ext>",
+    # which passes 100 characters easily; the default FileField max_length of
+    # 100 then truncates the path on MySQL and the image 404s.
+    profile = models.ImageField(
+        upload_to=candidate_photo_upload_path, max_length=255, null=True, blank=True
+    )
     portfolio = models.URLField(max_length=200, blank=True)
     recruitment_id = models.ForeignKey(
         Recruitment,

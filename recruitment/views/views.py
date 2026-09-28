@@ -183,12 +183,21 @@ def pipeline_grouper(request, recruitments):
         data = {"recruitment": rec, "stages": []}
         for stage in stages.order_by("sequence"):
             all_stages_grouper.append({"grouper": stage, "list": []})
-            stage_candidates = CandidateFilter(
-                request.GET,
-                stage.candidate_set.filter(
-                    is_active=True,
-                ),
-            ).qs.order_by("sequence")
+            stage_candidates = (
+                CandidateFilter(
+                    request.GET,
+                    stage.candidate_set.filter(
+                        is_active=True,
+                    ),
+                )
+                .qs.order_by("sequence")
+                # The candidate card reads job_position_id, stage_id and
+                # recruitment_id, and iterates candidate_interview. Without
+                # these the card costs four extra queries per candidate, so a
+                # single stage of 50 sends 200 round trips to the database.
+                .select_related("job_position_id", "stage_id", "recruitment_id")
+                .prefetch_related("candidate_interview")
+            )
 
             page_name = "page" + stage.stage + str(rec.id)
             grouper = group_by_queryset(
@@ -1546,7 +1555,11 @@ def candidate_view_list(request):
     This method renders all candidate on candidate_list.html template
     """
     previous_data = request.GET.urlencode()
-    candidates = Candidate.objects.all()
+    # candidate_list.html reads candidate_rating inside the five-star loop, so
+    # without the prefetch each candidate costs five queries for the same rows.
+    candidates = Candidate.objects.select_related(
+        "recruitment_id", "job_position_id"
+    ).prefetch_related("candidate_rating")
     if request.GET.get("is_active") is None:
         candidates = candidates.filter(is_active=True)
     candidates = CandidateFilter(request.GET, queryset=candidates).qs

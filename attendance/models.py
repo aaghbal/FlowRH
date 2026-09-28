@@ -1125,10 +1125,15 @@ class OverrideAttendances(Attendance):
 
     # Additional fields and methods specific to AnotherModel
     @receiver(post_save, sender=Attendance)
-    def attendance_post_save(sender, instance, **kwargs):
+    def attendance_post_save(sender, instance, raw=False, **kwargs):
         """
         Overriding Attendance model save method
+
+        `raw` is set while loaddata installs a fixture, which carries its own
+        WorkRecords rows.
         """
+        if raw:
+            return
         if instance.first_save:
             min_hour_second = strtime_seconds(instance.minimum_hour)
             at_work_second = strtime_seconds(instance.attendance_worked_hour)

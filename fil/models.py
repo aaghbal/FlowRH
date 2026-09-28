@@ -317,14 +317,15 @@ class Like(models.Model):
                 check=models.Q(post__isnull=False) | models.Q(comment__isnull=False),
                 name='like_post_or_comment'
             ),
+            # Unconditional for the same reason as Employee.unique_badge_id:
+            # MariaDB skips conditional unique constraints, and NULLs count as
+            # distinct in a unique index, so the null rows stay exempt anyway.
             models.UniqueConstraint(
                 fields=['user', 'post'],
-                condition=models.Q(post__isnull=False),
                 name='unique_post_like'
             ),
             models.UniqueConstraint(
                 fields=['user', 'comment'],
-                condition=models.Q(comment__isnull=False),
                 name='unique_comment_like'
             )
         ]
