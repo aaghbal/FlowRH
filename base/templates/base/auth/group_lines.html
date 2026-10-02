@@ -16,7 +16,7 @@
             </span>
             <button style="display: none;" type="submit" onclick="event.stopPropagation()" id="hxSubmit"></button>
           </form>
-          <span class="oh-user_permission_list-text oh-text--light">{% trans "Total" %} {{group.user_set.all|length}} {% trans "users in this group" %}</span>
+          <span class="oh-user_permission_list-text oh-text--light">{% trans "Total" %} {{group.user_set.all|length}} {% trans "utilisateurs dans ce groupe" %}</span>
         </div>
     </div>
     {% if perms.auth.change_group or perms.auth.delete_group %}
@@ -51,7 +51,7 @@
 {% else %}
   <div style="display: flex; flex-direction: column; align-items: center; height: 100%;">
       <img style="display: block; width: 15%; margin: 20px auto; filter: opacity(0.5);" src="{% static 'images/ui/employee_group.png' %}" class="" alt="Page not found. 404." />
-      <h5 class="oh-404__subtitle">{% trans "There is no employee group at this moment." %}</h5>
+      <h5 class="oh-404__subtitle">{% trans "Aucun groupe d'employés pour le moment." %}</h5>
   </div>
 {% endif %}
 
@@ -59,31 +59,31 @@
 
 <div class="oh-wrapper w-100">
     <div class="oh-pagination">
-      <span class="oh-pagination__page" data-toggle="modal" data-target="#addEmployeeModal">{% trans 'Page' %} {{ groups.number }} {% trans 'of' %} {{ groups.paginator.num_pages }}.</span>
+      <span class="oh-pagination__page" data-toggle="modal" data-target="#addEmployeeModal">{% trans "Page" %} {{ groups.number }} {% trans "sur" %} {{ groups.paginator.num_pages }}.</span>
 
       <nav class="oh-pagination__nav">
         <div class="oh-pagination__input-container me-3">
-          <span class="oh-pagination__label me-1">{% trans 'Page' %}</span>
+          <span class="oh-pagination__label me-1">{% trans "Page" %}</span>
 
           <input type="number" name="page" class="oh-pagination__input" value="{{ groups.number }}" hx-get="{% url 'user-group-search' %}?{{ pd }}" hx-target="#permissionContainer" min="1" />
-          <span class="oh-pagination__label">{% trans 'of' %} {{ groups.paginator.num_pages }}</span>
+          <span class="oh-pagination__label">{% trans "sur" %} {{ groups.paginator.num_pages }}</span>
         </div>
 
         <ul class="oh-pagination__items">
           {% if groups.has_previous %}
             <li class="oh-pagination__item oh-pagination__item--wide">
-              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page=1" class="oh-pagination__link">{% trans 'First' %}</a>
+              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page=1" class="oh-pagination__link">{% trans "Premier" %}</a>
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
-              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page={{ groups.previous_page_number }}" class="oh-pagination__link">{% trans 'Previous' %}</a>
+              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page={{ groups.previous_page_number }}" class="oh-pagination__link">{% trans "Précédent" %}</a>
             </li>
           {% endif %}
           {% if groups.has_next %}
             <li class="oh-pagination__item oh-pagination__item--wide">
-              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page={{ groups.next_page_number }}" class="oh-pagination__link">{% trans 'Next' %}</a>
+              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page={{ groups.next_page_number }}" class="oh-pagination__link">{% trans "Suivant" %}</a>
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
-              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page={{ groups.paginator.num_pages }}" class="oh-pagination__link">{% trans 'Last' %}</a>
+              <a hx-target="#permissionContainer" hx-get="{% url 'user-group-search' %}?{{ pd }}&page={{ groups.paginator.num_pages }}" class="oh-pagination__link">{% trans "Dernier" %}</a>
             </li>
           {% endif %}
         </ul>

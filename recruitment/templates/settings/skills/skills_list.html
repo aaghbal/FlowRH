@@ -3,8 +3,8 @@
 	<div class="oh-sticky-table__table oh-table--sortable">
 		<div class="oh-sticky-table__thead">
 			<div class="oh-sticky-table__tr">
-				<div class="oh-sticky-table__th" style="width:20px">{% trans "Sl.No" %}</div>
-				<div class="oh-sticky-table__th" align="center">{% trans "Skill" %}</div>
+				<div class="oh-sticky-table__th" style="width:20px">{% trans "N°" %}</div>
+				<div class="oh-sticky-table__th" align="center">{% trans "Compétence" %}</div>
 				{% if perms.recruitment.change_recruitment or perms.recruitment.delete_recruitment or perms.recruitment.add_recruitment %}
 					<div class="oh-sticky-table__th" align="center">{% trans "Actions" %}</div>
 				{% endif %}
@@ -32,10 +32,10 @@
 							></a>
 							{% endif %}
 							{% if perms.base.delete_deaprtment %}
-                            <a onclick="return confirm('{% trans "Are you sure want to delete this skill?" %}')"
+                            <a onclick="return confirm('{% trans "Voulez-vous vraiment supprimer cette compétence ?" %}')"
                                 href="{% url 'delete-skills' %}?ids={{skill.id}}"
                                 class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-50"
-                                title="{% trans 'Remove' %}"
+                                title="{% trans "Retirer" %}"
                             >
                                 <ion-icon name="trash-outline"></ion-icon>
                             </a>

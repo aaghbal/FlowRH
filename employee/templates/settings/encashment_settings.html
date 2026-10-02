@@ -3,15 +3,15 @@
   <form action="{% url 'encashment-condition-create' %}" class="settings-label mb-1" method="post">
     {% csrf_token %}
     <div class="oh-inner-sidebar-content__header mt-4">
-      <h2 class="oh-inner-sidebar-content__title">{% trans 'Encashment Redeem Condition' %}</h2>
+      <h2 class="oh-inner-sidebar-content__title">{% trans 'Conditions de monétisation' %}</h2>
     </div>
     <div>
       <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-3">
           <div class="oh-input-group">
             <div class="oh-label__info" for="bonus_unit">
-                <label class="oh-label" for="bonus_unit">{% trans "Bonus Unit" %}</label>
-                <span class="oh-info mr-2" title="{% trans "Set the amount for one bonus points encashment (unit)" %}">
+                <label class="oh-label" for="bonus_unit">{% trans "Unité de bonus" %}</label>
+                <span class="oh-info mr-2" title="{% trans "Montant correspondant à un point bonus monétisé (unité)" %}">
                 </span>
               </div>
             {{ encashment_form.bonus_amount }}
@@ -20,8 +20,8 @@
         <div class="col-sm-12 col-md-12 col-lg-3">
           <div class="oh-input-group">
             <div class="oh-label__info" for="bonus_unit">
-                <label class="oh-label" for="bonus_unit">{% trans "Leave Unit" %}</label>
-                <span class="oh-info mr-2" title="{% trans "Set the amout for one leave encashment" %}">
+                <label class="oh-label" for="bonus_unit">{% trans "Unité de congé" %}</label>
+                <span class="oh-info mr-2" title="{% trans "Montant correspondant à un jour de congé monétisé" %}">
                 </span>
               </div>
             {{ encashment_form.leave_amount }}
@@ -29,7 +29,7 @@
         </div>
         {% if perms.payroll.change_payrollsettings %}
           <div  class="d-flex align-items-end col-sm-12 col-md-12 col-lg-3">
-            <button type="submit" class="oh-btn oh-btn--secondary mt-2 mr-0 oh-btn--w-100-resp">{% trans 'Save Changes' %}</button>
+            <button type="submit" class="oh-btn oh-btn--secondary mt-2 mr-0 oh-btn--w-100-resp">{% trans 'Sauvegarder Modifications' %}</button>
           </div>
         {% endif %}
       </div>

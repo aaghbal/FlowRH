@@ -21,7 +21,7 @@
 	<div
 		class="oh-main__titlebar oh-main__titlebar--left oh-d-flex-column--resp oh-mb-3--small"
 	>
-		<h1 class="oh-main__titlebar-title fw-bold">{% trans "Settings" %}</h1>
+		<h1 class="oh-main__titlebar-title fw-bold">{% trans "Paramètres" %}</h1>
 	</div>
 	<div class="oh-main__titlebar oh-main__titlebar--right"></div>
 </section>
@@ -35,7 +35,7 @@
 					data-target="#mobileMenu"
 					data-class="oh-resp-hidden--lg"
 				>
-					<ion-icon class="me-2" name="menu-outline"></ion-icon>{% trans "All	Settings" %}
+					<ion-icon class="me-2" name="menu-outline"></ion-icon>{% trans "Tous les paramètres" %}
 				</button>
 				<div
 					class="oh-inner-sidebar oh-resp-hidden--lg"
@@ -47,7 +47,7 @@
 							<div class="oh-accordion ms-2">
 								<div class="oh-accordion-header" style="font-size:16px;">
 									<ion-icon name="settings-outline" class="me-2"></ion-icon>
-									{% trans "General" %}
+									{% trans "Général" %}
 									</div>
 									<div class="oh-accordion-body">
 										<div class="row">
@@ -57,7 +57,7 @@
 													id="generalSettings"
 													href="{% url 'general-settings' %}"
 													class="oh-inner-sidebar__link oh-dropdown__link"
-													>{% trans "General Settings" %}
+													>{% trans "Paramètres généraux" %}
 												</a>
 											</div>
 											<div class="oh-input-group">
@@ -66,7 +66,7 @@
 														id="employeePermission"
 														href="{% url 'employee-permission-assign' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Employee Permission" %}</a
+														>{% trans "Autorisation des employés" %}</a
 													>
 												{% endif %}
 											</div>
@@ -76,7 +76,7 @@
 														id="defaultAccessibility"
 														href="{% url 'user-accessibility' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Accessibility Restriction" %}</a
+														>{% trans "Restriction d'accessibilité" %}</a
 													>
 												{% endif %}
 											</div>
@@ -96,7 +96,7 @@
 														id="userGroup"
 														href="{% url 'user-group-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "User Group" %}</a
+														>{% trans "Groupe d'utilisateurs" %}</a
 													>
 												{% endif %}
 											</div>
@@ -106,7 +106,7 @@
 														id="date"
 														href="{% url 'date-settings' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Date & Time Format" %}</a
+														>{% trans "Format de date et heure" %}</a
 													>
 												{% endif %}
 											</div>
@@ -116,7 +116,7 @@
 														id="ticket_type"
 														href="{% url 'tag-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "History Tags" %}</a
+														>{% trans "Étiquettes d'historique" %}</a
 													>
 												{% endif %}
 											</div>
@@ -126,7 +126,7 @@
 														id="date"
 														href="{% url 'mail-server-conf' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Mail Server" %}</a
+														>{% trans "Serveur de messagerie" %}</a
 													>
 												{% endif %}
 											</div>
@@ -136,7 +136,7 @@
 														id="date"
 														{% comment %} href="{% url 'gdrive' %}" {% endcomment %}
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Gdrive Backup" %}</a
+														>{% trans "Sauvegarde Google Drive" %}</a
 													>
 												{% endif %}
 											</div>
@@ -162,7 +162,7 @@
 													id="department"
 													href="{% url 'department-view' %}"
 													class="oh-inner-sidebar__link oh-dropdown__link"
-													>{% trans "Department" %}</a
+													>{% trans "Département" %}</a
 												>
 												{% endif %}
 											</div>
@@ -172,7 +172,7 @@
 														id="jobPosition"
 														href="{% url 'job-position-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Job Positions" %}</a
+														>{% trans "Postes" %}</a
 													>
 												{% endif %}
 											</div>
@@ -182,7 +182,7 @@
 														id="jobRole"
 														href="{% url 'job-role-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Job Role" %}</a
+														>{% trans "Fonction" %}</a
 													>
 												{% endif %}
 											</div>
@@ -192,7 +192,7 @@
 														id="company"
 														href="{% url 'company-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Company" %}</a
+														>{% trans "Société" %}</a
 													>
 												{% endif %}
 											</div>
@@ -207,7 +207,7 @@
 							<div class="oh-accordion ms-2">
 								<div class="oh-accordion-header" style="font-size:16px;">
 									<ion-icon name="clipboard-outline" class="me-2"></ion-icon>
-									{% trans "Recruitment" %}
+									{% trans "Recrutement" %}
 								</div>
 									<div class="oh-accordion-body">
 										<div class="row">
@@ -219,7 +219,7 @@
 														id="skills"
 														href="{% url 'self-tracking-feature' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-													>{% trans "Candidate Self Tracking" %}</a
+													>{% trans "Suivi par le candidat" %}</a
 													>
 												</div>
 												{% endif %}
@@ -228,7 +228,7 @@
 														id="candidateRejectReasons"
 														href="{% url 'candidate-reject-reasons' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Candidate Reject Reason" %}</a
+														>{% trans "Motif de rejet du candidat" %}</a
 													>
 												{% endif %}
 											</div>
@@ -266,7 +266,7 @@
 														id="workType"
 														href="{% url 'work-type-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Work Type" %}</a
+														>{% trans "Type de travail" %}</a
 													>
 												{% endif %}
 											</div>
@@ -276,7 +276,7 @@
 														id="rotatingWorkType"
 														href="{% url 'rotating-work-type-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Rotating Work Type" %}</a
+														>{% trans "Type de travail rotatif" %}</a
 													>
 												{% endif %}
 											</div>
@@ -286,7 +286,7 @@
 														id="employeeShift"
 														href="{% url 'employee-shift-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Employee Shift" %}</a
+														>{% trans "Horaire de l'employé" %}</a
 													>
 												{% endif %}
 											</div>
@@ -296,7 +296,7 @@
 														id="rotatingShift"
 														href="{% url 'rotating-shift-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Rotating Shift" %}</a
+														>{% trans "Horaire rotatif" %}</a
 													>
 												{% endif %}
 											</div>
@@ -306,7 +306,7 @@
 														id="employeeShiftSchedule"
 														href="{% url 'employee-shift-schedule-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Employee Shift Schedule" %}</a
+														>{% trans "Planning des horaires" %}</a
 													>
 												{% endif %}
 											</div>
@@ -316,7 +316,7 @@
 														id="employeeType"
 														href="{% url 'employee-type-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Employee Type" %}</a
+														>{% trans "Type d'employé" %}</a
 													>
 												{% endif %}
 											</div>
@@ -326,7 +326,7 @@
 														id="date"
 														href="{% url 'action-type' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Disciplinary Action Type" %}</a
+														>{% trans "Type d'action disciplinaire" %}</a
 													>
 												{% endif %}
 											</div>
@@ -336,7 +336,7 @@
 														id="ticket_type"
 														href="{% url 'employee-tag-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Employee Tags" %}</a
+														>{% trans "Étiquettes d'employé" %}</a
 													>
 												{% endif %}
 											</div>
@@ -363,7 +363,7 @@
 														id="trackLateComeEalryOut"
 														href="{% url 'track-late-come-early-out' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Track Late Come & Early Out" %}</a
+														>{% trans "Suivi des retards et départs anticipés" %}</a
 														>
 												{% endif %}
 											</div>
@@ -373,7 +373,7 @@
 														id="condition"
 														href="{% url 'attendance-settings-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Attendance Break Point" %}</a
+														>{% trans "Seuil de présence" %}</a
 													>
 												{% endif %}
 											</div>
@@ -383,7 +383,7 @@
 														id="condition"
 														href="{% url 'check-in-check-out-setting' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Check In/Check Out" %}</a
+														>{% trans "Pointage entrée/sortie" %}</a
 													>
 												{% endif %}
 											</div>
@@ -393,7 +393,7 @@
 														id="condition"
 														href="{% url 'grace-settings-view' %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "Grace Time" %}</a
+														>{% trans "Délai de tolérance" %}</a
 													>
 												{% endif %}
 											</div>
@@ -404,7 +404,7 @@
 															id="condition"
 															href="{% url 'enable-biometric-attendance' %}"
 															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Biometric Attendance" %}
+															>{% trans "Présence biométrique" %}
 														</a>
 													</div>
 												{% endif %}
@@ -416,7 +416,7 @@
 														id="ip_resriction"
 														href="{% url "allowed-ips" %}"
 														class="oh-inner-sidebar__link oh-dropdown__link"
-														>{% trans "IP Restriction" %}
+														>{% trans "Restriction par IP" %}
 													</a>
 												</div>
 											{% endif %}
@@ -456,7 +456,7 @@
 																id="condition"
 																href="{% url 'compensatory-leave-settings-view' %}"
 																class="oh-inner-sidebar__link oh-dropdown__link"
-																>{% trans "Compensatory Leave" %}</a
+																>{% trans "Congé compensatoire" %}</a
 															>
 														{% endif %}
 													</div>
@@ -484,7 +484,7 @@
 															id="autoGeneratePayslip"
 															href="{% url 'auto-payslip-settings-view' %}"
 															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Payslip Auto Generation" %}</a
+															>{% trans "Génération automatique des bulletins" %}</a
 														>
 													{% endif %}
 												</div>
@@ -511,7 +511,7 @@
 															id="autoGeneratePayslip"
 															href="{% url 'bonus-point-setting' %}"
 															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Bonus Point Setting" %}</a
+															>{% trans "Paramètres des points bonus" %}</a
 														>
 													{% endif %}
 												</div>
@@ -527,7 +527,7 @@
 								<div class="oh-accordion ms-2">
 									<div class="oh-accordion-header" style="font-size:16px;">
 										<ion-icon name="headset" class="me-2"></ion-icon>
-										{% trans "Help Desk" %}
+										{% trans "Assistance" %}
 									</div>
 										<div class="oh-accordion-body">
 											<div class="row">
@@ -538,7 +538,7 @@
 															id="ticket_type"
 															href="{% url 'department-manager-view' %}"
 															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Department Managers" %}</a
+															>{% trans "Responsables de département" %}</a
 														>
 													{% endif %}
 												</div>
@@ -548,7 +548,7 @@
 															id="ticket_type"
 															href="{% url 'ticket-type-view' %}"
 															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Ticket Type" %}</a
+															>{% trans "Type de ticket" %}</a
 														>
 													{% endif %}
 												</div>
@@ -558,7 +558,7 @@
 															id="ticket_type"
 															href="{% url 'helpdesk-tag-view' %}"
 															class="oh-inner-sidebar__link oh-dropdown__link"
-															>{% trans "Helpdesk Tags" %}</a
+															>{% trans "Étiquettes d'assistance" %}</a
 														>
 													{% endif %}
 												</div>

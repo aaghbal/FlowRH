@@ -18,8 +18,8 @@
   }
 </style>
 <div class="oh-label__info" for="application_tracking">
-  <label class="oh-label fw-bold" for="application_tracking">{% trans "Compensatory Leave Type" %}</label>
-  <span class="oh-info mr-2" title="{% trans "This leave type will be used for assigning compensatory leaves." %}">
+  <label class="oh-label fw-bold" for="application_tracking">{% trans "Type de congé compensatoire" %}</label>
+  <span class="oh-info mr-2" title="{% trans "Ce type de congé sera utilisé pour affecter les congés compensatoires." %}">
   </span>
 </div>
 <div class="oh-layout--grid-3" >
@@ -37,11 +37,11 @@
               <span class="oh-card__title oh-card__title--sm fw-bold" style="font-size:18px;">{{leave_type.name}}</span>
               <div class="oh-timeoff-modal__stats-container mb-1">
                 <div class="oh-timeoff-modal__stat mt-1">
-                  <span class="oh-timeoff-modal__stat-title fw-bold text-dark ">{% trans "Payment" %}</span>
+                  <span class="oh-timeoff-modal__stat-title fw-bold text-dark ">{% trans "Paiement" %}</span>
                   <span class="oh-timeoff-modal__stat-title">{{leave_type.get_payment_display}}</span>
                 </div>
                 <div class="oh-timeoff-modal__stat mt-1">
-                  <span class="oh-timeoff-modal__stat-title fw-bold text-dark">{% trans "Total Days" %}</span>
+                  <span class="oh-timeoff-modal__stat-title fw-bold text-dark">{% trans "Nombre de jours" %}</span>
                   <span class="oh-timeoff-modal__stat-title">{{leave_type.total_days}}</span>
                 </div>
               </div>

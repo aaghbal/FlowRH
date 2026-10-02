@@ -32,14 +32,14 @@
   {% csrf_token %}
   <div class="oh-inner-sidebar-content__header mt-4">
     <h2 class="oh-inner-sidebar-content__title">
-      {% trans "Employee History Tracking" %}
+      {% trans "Suivi de l'historique des employés" %}
     </h2>
   </div>
   <div class="oh-label__info" for="defatul_expire">
     <label class="oh-label" for="defatul_expire"
-      >{% trans "Tracking Fields" %}</label
+      >{% trans "Champs suivis" %}</label
     >
-    <span class="oh-info mr-2" title="{% trans 'Employee history will be stored during updation of the fields that selected here.' %}"></span>
+    <span class="oh-info mr-2" title="{% trans "L'historique de l'employé sera conservé lors de la modification des champs sélectionnés ici." %}"></span>
   </div>
   <div style="display: flex">
     <div style="min-width: 273px">
@@ -51,14 +51,14 @@
       type="submit"
       class="oh-btn oh-btn--secondary mr-0 oh-btn--w-100-resp"
     >
-      {% trans "Save Changes" %}
+      {% trans "Sauvegarder Modifications" %}
     </button>
     {% endif %}
   </div>
 
   <div class="oh-label__info mt-3" for="work_info_track">
-    <label class="oh-label" for="work_info_track">{% trans "Work Information Tracking" %}</label>
-    <span class="oh-info mr-2" title="{% trans "By enabling this feature, you can save the history of employee work information during updates." %}">
+    <label class="oh-label" for="work_info_track">{% trans "Suivi des informations professionnelles" %}</label>
+    <span class="oh-info mr-2" title="{% trans "En activant cette option, l'historique des informations professionnelles est conservé lors des modifications." %}">
     </span>
   </div>
   <div class="oh-switch p-3">

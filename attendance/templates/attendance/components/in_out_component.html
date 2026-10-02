@@ -8,7 +8,7 @@
                 <!-- "CHEKING WETHER ITS IS THE CURRENT EMPLOYEES COMPANY OR ALL COMPANY, THEN ONLY SHOWS THE CHECK-IN, CHECK-OUT BUTTON" -->
                 {% if request.user|is_clocked_in and get_forecasted_at_work.has_attendance %}
                     <button class="oh-btn oh-btn--warning-outline mr-2" {% if enabled_timerunner and get_forecasted_at_work.has_attendance %} onmouseenter="$(this).find('span').show();$(this).find('.time-runner').hide();" onmouseleave="$(this).find('span').hide();$(this).find('.time-runner').show();" {% endif %} hx-get="{% url 'clock-out' %}"  hx-target='#attendance-activity-container' hx-swap='innerHTML'><ion-icon class="oh-navbar__clock-icon mr-2 text-warning" name="exit-outline"></ion-icon>
-                        <span class="hr-Check-In-out-text" {% if enabled_timerunner and get_forecasted_at_work.has_attendance %} style="display: none;" {% endif %}>{% trans "Check-Out" %}</span>
+                        <span class="hr-Check-In-out-text" {% if enabled_timerunner and get_forecasted_at_work.has_attendance %} style="display: none;" {% endif %}>{% trans "Sortie" %}</span>
                         {% if get_forecasted_at_work.has_attendance %}
                         <div class="time-runner"></div>
                         {% endif %}
@@ -21,7 +21,7 @@
                         class="oh-btn oh-btn--success-outline mr-2" hx-get="{% url 'clock-in' %}"  hx-target='#attendance-activity-container' hx-swap='innerHTML'
                         >
                             <ion-icon class="oh-navbar__clock-icon mr-2 text-success" name="enter-outline"></ion-icon>
-                        <span class="hr-Check-In-out-text" {% if enabled_timerunner %} style="display: none;" {% endif %}>{% trans "Check-In" %}</span>
+                        <span class="hr-Check-In-out-text" {% if enabled_timerunner %} style="display: none;" {% endif %}>{% trans "Entrée" %}</span>
                         <div class="at-work-seconds"></div>
                     </button>
                     {% if enabled_timerunner %}

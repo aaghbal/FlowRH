@@ -3,8 +3,8 @@
 	<div class="oh-sticky-table__table oh-table--sortable">
 		<div class="oh-sticky-table__thead">
 			<div class="oh-sticky-table__tr">
-				<div class="oh-sticky-table__th">{% trans "Department" %}</div>
-                <div class="oh-sticky-table__th">{% trans "Manager" %}</div>
+				<div class="oh-sticky-table__th">{% trans "Département" %}</div>
+                <div class="oh-sticky-table__th">{% trans "Responsable" %}</div>
 				{% if perms.helpdesk.change_departmentmanager or perms.helpdesk.delete_departmentmanager %}
 					<div class="oh-sticky-table__th">{% trans "Actions" %}</div>
 				{% endif %}
@@ -37,13 +37,13 @@
 							<form
 								action="{% url 'department-manager-delete' manager.id %}"
 								class="w-50"
-								onsubmit="return confirm('{% trans "Are you sure you want to remove this department manager?" %}');"
+								onsubmit="return confirm('{% trans "Voulez-vous vraiment retirer ce responsable de département ?" %}');"
 								method='post'>
 								{% csrf_token %}
 								<button
 									type="submit"
 									class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-									title="{% trans 'Remove' %}"
+									title="{% trans "Retirer" %}"
 								>
 									<ion-icon name="trash-outline"></ion-icon>
 								</button>

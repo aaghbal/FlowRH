@@ -1,12 +1,12 @@
 {% load i18n %}
 {% csrf_token %}
 <div class="oh-inner-sidebar-content__header mt-4">
-    <h2 class="oh-inner-sidebar-content__title">{% trans 'Time Runner' %}</h2>
+    <h2 class="oh-inner-sidebar-content__title">{% trans 'Compteur de temps' %}</h2>
 </div>
 <form  hx-get="{% url 'enable-timerunner' %}" hx-swap="none">
   <div class="oh-label__info" for="application_tracking">
-      <label class="oh-label" for="application_tracking">{% trans "At-Work Tracker" %}</label>
-      <span class="oh-info mr-2" title="{% trans "By enabling this feature user's will be able to see their current day worked hours in live on the navbar (inside the check in button)." %}">
+      <label class="oh-label" for="application_tracking">{% trans "Suivi du temps de travail" %}</label>
+      <span class="oh-info mr-2" title="{% trans "En activant cette option, les utilisateurs voient en direct leurs heures travaillées du jour dans la barre de navigation (dans le bouton de pointage)." %}">
       </span>
   </div>
   <div class="oh-switch p-3">

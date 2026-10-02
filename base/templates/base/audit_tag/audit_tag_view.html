@@ -3,8 +3,8 @@
 	<div class="oh-sticky-table__table oh-table--sortable">
 		<div class="oh-sticky-table__thead">
 			<div class="oh-sticky-table__tr">
-				<div class="oh-sticky-table__th">{% trans "Title" %}</div>
-				<div class="oh-sticky-table__th">{% trans "Highlight" %}</div>
+				<div class="oh-sticky-table__th">{% trans "Titre" %}</div>
+				<div class="oh-sticky-table__th">{% trans "Surligner" %}</div>
 				{% if perms.horilla_audit.delete_audittag or perms.horilla_audit.delete_audittag %}
 					<div class="oh-sticky-table__th">{% trans "Actions" %}</div>
 				{% endif %}
@@ -25,12 +25,12 @@
 										<ion-icon name="create-outline"></ion-icon></a>
 								{% endif %}
 								{% if perms.horilla_audit.delete_audittag %}
-									<form hx-confirm="{% trans 'Are you sure you want to delete this history tag ?' %}"
+									<form hx-confirm="{% trans "Voulez-vous vraiment supprimer cette étiquette d'historique ?" %}"
 										hx-post="{% url 'audit-tag-delete' tag.id %}" hx-swap="outerHTML"
 										hx-on-htmx-after-request="reloadMessage(this);" hx-target="#auditTagTr{{tag.id}}" class="w-50">
 										{% csrf_token %}
 										<button type="submit" class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
-											title="{% trans 'Remove' %}">
+											title="{% trans "Retirer" %}">
 											<ion-icon name="trash-outline"></ion-icon>
 										</button>
 									</form>

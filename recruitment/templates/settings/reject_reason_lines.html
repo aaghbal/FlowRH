@@ -32,10 +32,10 @@
 							></a>
 							{% endif %}
 							{% if perms.base.delete_deaprtment %}
-                            <a onclick="return confirm('{% trans "Are you sure want to delete this reason?" %}')"
+                            <a onclick="return confirm('{% trans "Voulez-vous vraiment supprimer ce motif ?" %}')"
                                 href="{% url 'delete-reject-reasons' %}?ids={{reason.id}}"
                                 class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-50"
-                                title="{% trans 'Remove' %}"
+                                title="{% trans "Retirer" %}"
                             >
                                 <ion-icon name="trash-outline"></ion-icon>
                             </a>

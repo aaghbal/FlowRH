@@ -28,31 +28,31 @@
 {% if employees.has_previous or employees.has_next %}
 <div class="oh-wrapper w-100">
   <div class="oh-pagination">
-    <span class="oh-pagination__page" data-toggle="modal" data-target="#addEmployeeModal">{% trans 'Page' %} {{ employees.number }} {% trans 'of' %} {{ employees.paginator.num_pages }}.</span>
+    <span class="oh-pagination__page" data-toggle="modal" data-target="#addEmployeeModal">{% trans "Page" %} {{ employees.number }} {% trans "sur" %} {{ employees.paginator.num_pages }}.</span>
 
     <nav class="oh-pagination__nav">
       <div class="oh-pagination__input-container me-3">
-        <span class="oh-pagination__label me-1">{% trans 'Page' %}</span>
+        <span class="oh-pagination__label me-1">{% trans "Page" %}</span>
 
         <input type="number" name="page" class="oh-pagination__input" value="{{ employees.number }}" hx-get="{% url 'permission-search' %}?{{ pd }}" hx-target="#permissionContainer" min="1" />
-        <span class="oh-pagination__label">{% trans 'of' %} {{ employees.paginator.num_pages }}</span>
+        <span class="oh-pagination__label">{% trans "sur" %} {{ employees.paginator.num_pages }}</span>
       </div>
 
       <ul class="oh-pagination__items">
         {% if employees.has_previous %}
           <li class="oh-pagination__item oh-pagination__item--wide">
-            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page=1" class="oh-pagination__link">{% trans 'First' %}</a>
+            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page=1" class="oh-pagination__link">{% trans "Premier" %}</a>
           </li>
           <li class="oh-pagination__item oh-pagination__item--wide">
-            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page={{ employees.previous_page_number }}" class="oh-pagination__link">{% trans 'Previous' %}</a>
+            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page={{ employees.previous_page_number }}" class="oh-pagination__link">{% trans "Précédent" %}</a>
           </li>
         {% endif %}
         {% if employees.has_next %}
           <li class="oh-pagination__item oh-pagination__item--wide">
-            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page={{ employees.next_page_number }}" class="oh-pagination__link">{% trans 'Next' %}</a>
+            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page={{ employees.next_page_number }}" class="oh-pagination__link">{% trans "Suivant" %}</a>
           </li>
           <li class="oh-pagination__item oh-pagination__item--wide">
-            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page={{ employees.paginator.num_pages }}" class="oh-pagination__link">{% trans 'Last' %}</a>
+            <a hx-target="#permissionContainer" hx-get="{% url 'permission-search' %}?{{ pd }}&page={{ employees.paginator.num_pages }}" class="oh-pagination__link">{% trans "Dernier" %}</a>
           </li>
         {% endif %}
       </ul>

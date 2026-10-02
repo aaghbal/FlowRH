@@ -5,7 +5,7 @@
         class="oh-inner-sidebar-content__header d-flex justify-content-between align-items-center"
     >
         <h2 class="oh-inner-sidebar-content__title">
-            {% trans "Restrict Past Leave" %}
+            {% trans "Restreindre les congés passés" %}
         </h2>
     </div>
     <form
@@ -14,9 +14,9 @@
         {% csrf_token %}
         <div class="oh-label__info" for="enabled">
             <label class="oh-label" for="enabled"
-                >{% trans "Restricts Past Date Leave Request Creation" %}</label
+                >{% trans "Empêche la création de demandes de congé pour des dates passées" %}</label
             >
-            <span class="oh-info mr-2" title="{% trans "By enabling this only admins and managers can create leave requests for the past dates" %}"> </span>
+            <span class="oh-info mr-2" title="{% trans "En activant cette option, seuls les administrateurs et responsables peuvent créer des demandes de congé pour des dates passées" %}"> </span>
         </div>
         <div class="oh-switch p-3"  style="margin-top:5px">
             <input

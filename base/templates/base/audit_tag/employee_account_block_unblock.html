@@ -1,7 +1,7 @@
 {% load i18n %} {% csrf_token %}
 <div class="oh-inner-sidebar-content__header mt-4">
     <h2 class="oh-inner-sidebar-content__title">
-        {% trans 'Employee Account Restrictions' %}
+        {% trans 'Restrictions des comptes employés' %}
     </h2>
 </div>
 <div class="d-flex">
@@ -15,11 +15,11 @@
             {% csrf_token %}
             <div class="oh-label__info" for="enable_block_unblock">
                 <label class="oh-label" for="enable_block_unblock"
-                    >{% trans "Restrict Login Account" %}</label
+                    >{% trans "Restreindre la connexion au compte" %}</label
                 >
                 <span
                     class="oh-info mr-2"
-                    title="{% trans 'By enabling this feature, you can block or unblock an employee account.' %}"
+                    title="{% trans 'En activant cette option, vous pouvez bloquer ou débloquer un compte employé.' %}"
                 >
                 </span>
             </div>
@@ -47,11 +47,11 @@
             {% csrf_token %}
             <div class="oh-label__info" for="enable_block_unblock">
                 <label class="oh-label" for="enable_block_unblock"
-                    >{% trans "Restrict Profile Edit" %}</label
+                    >{% trans "Restreindre la modification du profil" %}</label
                 >
                 <span
                     class="oh-info mr-2"
-                    title="{% trans 'By enabling this feature, you can restrict an employee from editing their profile.' %}"
+                    title="{% trans 'En activant cette option, vous empêchez un employé de modifier son profil.' %}"
                 >
                 </span>
             </div>

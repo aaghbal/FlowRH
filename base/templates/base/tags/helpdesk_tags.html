@@ -7,7 +7,7 @@
 <div class="oh-inner-sidebar-content">
     {% if perms.base.view_tags %}
         <div class="oh-inner-sidebar-content__header d-flex justify-content-between align-items-center">
-            <h2 class="oh-inner-sidebar-content__title">{% trans "Helpdesk Tags" %}</h2>
+            <h2 class="oh-inner-sidebar-content__title">{% trans "Étiquettes d'assistance" %}</h2>
 			{% if perms.base.add_tags %}
 				<button
 					class="oh-btn oh-btn--secondary oh-btn--shadow"
@@ -17,7 +17,7 @@
 					hx-target="#tagForm"
 				>
 					<ion-icon name="add-outline" class="me-1"></ion-icon>
-					{% trans "Create" %}
+					{% trans "Créer" %}
 				</button>
 			{% endif %}
         </div>
@@ -26,7 +26,7 @@
 		{% else %}
 			<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
 				<img style="display: block; width: 15%; margin: 20px auto; filter: opacity(0.5);" src="{% static 'images/ui/price-tag.png' %}" class="" alt="Page not found. 404." />
-				<h5 class="oh-404__subtitle">{% trans "There is no helpdesk tags at this moment." %}</h5>
+				<h5 class="oh-404__subtitle">{% trans "Aucune étiquette d'assistance pour le moment." %}</h5>
 			</div>
 		{% endif %}
     {% endif %}
@@ -45,7 +45,7 @@
 	<div class="oh-modal__dialog">
 		<div class="oh-modal__dialog-header">
 			<h2 class="oh-modal__dialog-title" id="createModalTitle">
-				{% trans "Create Helpdesk Tag" %}
+				{% trans "Créer une étiquette d'assistance" %}
 			</h2>
 			<button class="oh-modal__close" aria-label="Close">
 				<ion-icon name="close-outline"></ion-icon>
@@ -66,7 +66,7 @@
 	<div class="oh-modal__dialog">
 		<div class="oh-modal__dialog-header">
 			<h2 class="oh-modal__dialog-title" id="editModaltitle">
-				{% trans "Update Helpdesk Tag" %}
+				{% trans "Modifier l'étiquette d'assistance" %}
 			</h2>
 			<button class="oh-modal__close" aria-label="Close">
 				<ion-icon name="close-outline"></ion-icon>

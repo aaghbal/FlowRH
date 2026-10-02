@@ -5,7 +5,7 @@
 
     {% if perms.base.view_rotatingshift %}
     <div class="oh-inner-sidebar-content__header d-flex justify-content-between align-items-center">
-        <h2 class="oh-inner-sidebar-content__title">{% trans "Rotating Shift" %}</h2>
+        <h2 class="oh-inner-sidebar-content__title">{% trans "Horaire rotatif" %}</h2>
         {% if perms.base.add_rotatingshift %}
         <button
             class="oh-btn oh-btn--secondary oh-btn--shadow"
@@ -15,7 +15,7 @@
             hx-target="#objectCreateModalTarget"
         >
             <ion-icon name="add-outline" class="me-1"></ion-icon>
-            {% trans "Create" %}
+            {% trans "Créer" %}
         </button>
         {% endif %}
     </div>
@@ -24,7 +24,7 @@
         {% else %}
             <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
                 <img style="display: block; width: 15%; margin: 20px auto; filter: opacity(0.5);" src="{% static 'images/ui/employee_shift.png' %}" class="" alt="Page not found. 404." />
-                <h5 class="oh-404__subtitle">{% trans "There is no rotating shifts at this moment." %}</h5>
+                <h5 class="oh-404__subtitle">{% trans "Aucun horaire rotatif pour le moment." %}</h5>
             </div>
         {% endif %}
     {% endif %}
