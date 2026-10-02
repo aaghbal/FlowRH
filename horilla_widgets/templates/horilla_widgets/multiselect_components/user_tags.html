@@ -1,3 +1,4 @@
+{% load basefilters %}
 <div class="badge-container">
   <span
     class="tag-badge tag-badge--primary"
@@ -5,7 +6,7 @@
     <div class="user-info d-flex align-items-center">
       <div class="oh-profile__avatar" style="line-height: 0px">
         <img
-          src="https://ui-avatars.com/api/?name=Abigail+Lee&amp;background=random"
+          src="{{ "Abigail Lee"|initials_avatar }}"
           class="oh-profile__image oh-profile__image_custm"
           alt="Username"
         />
@@ -19,7 +20,7 @@
     <div class="user-info d-flex align-items-center">
       <div class="oh-profile__avatar" style="line-height: 0px">
         <img
-        src="https://ui-avatars.com/api/?name=Magdalene&background=random"
+        src="{{ "Magdalene"|initials_avatar }}"
           class="oh-profile__image oh-profile__image_custm"
           alt="Username"
         />

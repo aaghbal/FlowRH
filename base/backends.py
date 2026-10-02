@@ -66,7 +66,16 @@ class DefaultHorillaMailBackend(EmailBackend):
         request = getattr(_thread_locals, "request", None)
         company = None
         if request and not request.user.is_anonymous:
-            company = request.user.employee_get.get_company()
+            # A User does not necessarily have an Employee: accounts made with
+            # createsuperuser have none. Reaching through employee_get then
+            # raises RelatedObjectDoesNotExist, and because Django also routes
+            # unhandled errors through this backend to mail them out, the
+            # failure repeats inside the error handler and every error on the
+            # site turns into a bare 500. getattr is enough to avoid it, since
+            # RelatedObjectDoesNotExist subclasses AttributeError.
+            employee = getattr(request.user, "employee_get", None)
+            if employee is not None:
+                company = employee.get_company()
         configuration = DynamicEmailConfiguration.objects.filter(
             company_id=company
         ).first()

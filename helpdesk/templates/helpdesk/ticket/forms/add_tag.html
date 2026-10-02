@@ -118,7 +118,7 @@
                         <div class="oh-profile oh-profile--md">
                           <div class="oh-profile__avatar mr-1">
                             <img
-                              src="https://ui-avatars.com/api/?name={{ticket.employee_id}}&background=random"
+                              src="{{ ticket.employee_id|initials_avatar }}"
                               class="oh-profile__image"
                               alt="oh-link--secondary" />
                           </div>
@@ -144,7 +144,7 @@
                               <div class="oh-profile oh-profile--md">
                                 <div class="oh-profile__avatar mr-1">
                                   <img
-                                    src="https://ui-avatars.com/api/?name={{comment.employee_id}}&background=random"
+                                    src="{{ comment.employee_id|initials_avatar }}"
                                     class="oh-profile__image"
                                     alt="{{comment.employee_id}}" />
                                 </div>
@@ -205,7 +205,7 @@
                             <div class="oh-profile oh-profile--md">
                               <div class="oh-profile__avatar mr-1">
                                 <img
-                                  src="https://ui-avatars.com/api/?name={{comment.employee_id}}&background=random"
+                                  src="{{ comment.employee_id|initials_avatar }}"
                                   class="oh-profile__image"
                                   alt="{{comment.employee_id}}" />
                               </div>
@@ -388,7 +388,7 @@
                               <div class="oh-profile oh-profile--base">
                                 <div class="oh-profile__avatar mr-1">
                                   <img
-                                    src="https://ui-avatars.com/api/?name={{assigne}}&background=random"
+                                    src="{{ assigne|initials_avatar }}"
                                     class="oh-profile__image"
                                     alt="{{assigne}}" />
                                 </div>

@@ -16,18 +16,19 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .hr-error_container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     max-width: 1180px;
     margin-left: auto;
     margin-right: auto;
 
     width: 100%;
+    min-height: 100vh;
 
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -68,42 +69,13 @@
     border: 2px solid hsl(8deg, 77%, 45%);
 }
 
-.hr-error_img img {
-    width: 100%;
-    height: 100%;
-}
-
-.hr-error_bg {
-    position: relative;
-    background-color: #e54f38;
-    width: 340px;
-    height: 340px;
-    border-radius: 50%;
-    box-shadow: rgb(0 0 0 / 26%) 0px 4px 4px;
-}
-
-.hr-error_bg img {
-    position: absolute;
-    top: 40px;
-    left: 0;
-}
-.hr-bg-img--error{
-    position: relative;
-    max-width: 320px;
-}
-
 @media (max-width:768px) {
 
     .hr-error_container {
-        flex-direction: column-reverse;
+        flex-direction: column;
         text-align: center;
-    }
-
-    .hr-error_bg {
-        position: relative;
-        background-color: #e54f38;
-        width: 320px;
-        height: 320px;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
     .hr-error_content {
@@ -113,12 +85,12 @@
 </style>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>flowRH</title>
+    <title>FlowRH</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{% if white_label_company.icon %}{{white_label_company.icon.url}} {% else %}{% static 'favicons/logoorh.png' %}{% endif %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% if white_label_company.icon %}{{white_label_company.icon.url}} {% else %}{% static 'favicons/logoorh.png' %}{% endif %}">
 </head>
@@ -126,15 +98,12 @@
 <body>
     <section class="hr-error_container">
         <div class="hr-error">
-            <div class="hr-error_img hr-error_bg">
-                <img src="{% static "/images/ui/405_error_image.png" %}">
-            </div>
             <div>
                 <h1 class="hr-404">405</h1>
-                <p class="hr-error_msg">Method Not Allowed!</p>
-                <p>Oops! The request method is not allowed.<br>Please make sure you are sending a proper request.</p>
-                <a href="/" class="hr-error_btn"><ion-icon name="arrow-back-outline"></ion-icon>Return to the main
-                    page</a>
+                <p class="hr-error_msg">Méthode non autorisée !</p>
+                <p>Oups ! La méthode de la requête n'est pas autorisée.<br>Veuillez vérifier que votre requête est correcte.</p>
+                <a href="/" class="hr-error_btn"><ion-icon name="arrow-back-outline"></ion-icon>Retour à la page
+                    d'accueil</a>
             </div>
         </div>
     </section>

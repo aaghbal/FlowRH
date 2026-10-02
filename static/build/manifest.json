@@ -1,7 +1,7 @@
 {
-    "name": "Horilla",
-    "short_name": "Horilla",
-    "description": "Free and Open Source HR Software",
+    "name": "FlowRH",
+    "short_name": "FlowRH",
+    "description": "Logiciel de gestion des ressources humaines",
     "start_url": "/",
     "display": "standalone",
     "background_color": "orangered",

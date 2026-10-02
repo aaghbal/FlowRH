@@ -10,6 +10,7 @@ from django.db import models
 from django.shortcuts import render
 
 from horilla.decorators import apply_decorators
+from horilla.avatars import initials_avatar
 
 
 class Bot:
@@ -20,7 +21,7 @@ class Bot:
         return "FlowRH Bot"
 
     def get_avatar(self):
-        return "https://ui-avatars.com/api/?name=FlowRH+Bot&background=random"
+        return initials_avatar("FlowRH Bot")
 
 
 def _check_and_delete(entry1, entry2, dry_run=False):

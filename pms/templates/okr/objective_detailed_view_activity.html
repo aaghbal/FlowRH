@@ -1,4 +1,5 @@
 {% load i18n %} {% load pmsfilters %}
+{% load basefilters %}
 {% if messages %}
 <div class="oh-wrapper">
     {% for message in messages %}
@@ -42,7 +43,7 @@
         {% for comment in comments %}
         <div class="oh-activity-list__comment-title">
             <div class="oh-activity-list__photo oh-activity-list__photo--small me-2">
-                <img src="https://ui-avatars.com/api/?name={{comment.employee_id}}&background=random"
+                <img src="{{ comment.employee_id|initials_avatar }}"
                     class="oh-activity-list__image" alt="Simone de Beauvoir" />
             </div>
             <small class="oh-activity-list__description">
@@ -69,7 +70,7 @@
             <ul class="d-flex justify-content-between align-items-center pt-3 mb-3 border-top">
                 <li class="oh-activity-list__item align-items-center mb-0">
                     <div class="oh-activity-list__photo oh-activity-list__photo--small me-2">
-                        <img src="https://ui-avatars.com/api/?name={{activity.updated_by}}&background=random"
+                        <img src="{{ activity.updated_by|initials_avatar }}"
                             class="oh-activity-list__image" alt="Albert Camus" />
                     </div>
                     <small class="oh-activity-list__description"><strong>{{activity.updated_by}} </strong>
@@ -90,7 +91,7 @@
                 <ul class="d-flex justify-content-between align-items-center pt-3 mb-3 border-top">
                     <li class="oh-activity-list__item align-items-center mb-0">
                         <div class="oh-activity-list__photo oh-activity-list__photo--small me-2">
-                            <img src="https://ui-avatars.com/api/?name={{activity.key_result.changed_user}}&background=random"
+                            <img src="{{ activity.key_result.changed_user|initials_avatar }}"
                                 class="oh-activity-list__image" alt="Albert Camus" />
                         </div>
                         <small class="oh-activity-list__description"><strong>{{activity.key_result.changed_user}} </strong>
@@ -116,7 +117,7 @@
                 <div class="oh-activity-list__comment-title d-flex justify-content-between align-items-center">
                     <div class="oh-activity-list__item align-items-center mb-0">
                         <div class="oh-activity-list__photo oh-activity-list__photo--small me-2">
-                            <img src="https://ui-avatars.com/api/?name={{activity.comment.employee_id}}&background=random"
+                            <img src="{{ activity.comment.employee_id|initials_avatar }}"
                                 class="oh-activity-list__image" alt="Albert Camus" />
                         </div>
                         <small class="oh-activity-list__description">
@@ -141,7 +142,7 @@
             <ul class="d-flex justify-content-between align-items-center pt-3 mb-3 border-top">
                 <li class="oh-activity-list__item align-items-center mb-0">
                     <div class="oh-activity-list__photo oh-activity-list__photo--small me-2">
-                        <img src="https://ui-avatars.com/api/?name={{activity.updated_by}}&background=random"
+                        <img src="{{ activity.updated_by|initials_avatar }}"
                             class="oh-activity-list__image" alt="Albert Camus" />
                     </div>
                     <small class="oh-activity-list__description"><strong>{{activity.updated_by}} </strong>

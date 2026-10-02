@@ -1,4 +1,5 @@
 {% load static i18n %}
+{% load basefilters %}
 <div class="oh-modal__dialog oh-modal__dialog--navigation m-0 p-0">
     <button
         hx-get="{% url 'meeting-single-view' previous %}?requests_ids={{requests_ids}}" hx-target="#objectDetailsModalTarget"
@@ -30,7 +31,7 @@
         <div class="oh-profile mb-2">
           <div class="oh-profile__avatar">
             <img
-              src="https://ui-avatars.com/api/?name={{meeting.title}}&background=random"
+              src="{{ meeting.title|initials_avatar }}"
               class="oh-profile__image me-2"
               alt=""
             />

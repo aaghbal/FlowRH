@@ -114,7 +114,7 @@
                     <div class="oh-profile oh-profile--md">
                       <div class="oh-profile__avatar mr-1">
                         <img
-                          src="https://ui-avatars.com/api/?name={{manager.get_full_name}}&background=random"
+                          src="{{ manager.get_full_name|initials_avatar }}"
                           class="oh-profile__image"
                           alt="Baby C."
                         />

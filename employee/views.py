@@ -128,6 +128,7 @@ from horilla_documents.forms import (
 )
 from horilla_documents.models import Document, DocumentRequest
 from notifications.signals import notify
+from horilla.avatars import initials_avatar
 
 
 def return_none(a, b):
@@ -2799,13 +2800,14 @@ def get_employees_birthday(request):
     Render all upcoming birthday employee details for the dashboard.
     """
     employees = birthday()
-    default_avatar_url = "https://ui-avatars.com/api/?background=random&name="
     birthdays = [
         {
             "profile": (
                 emp.get_avatar()
                 if hasattr(emp, "get_avatar")
-                else f"{default_avatar_url}{emp.employee_first_name}+{emp.employee_last_name}"
+                else initials_avatar(
+                    f"{emp.employee_first_name} {emp.employee_last_name}"
+                )
             ),
             "name": f"{emp.employee_first_name} {emp.employee_last_name}",
             "dob": emp.dob.strftime("%d %b %Y"),

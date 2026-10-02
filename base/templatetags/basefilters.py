@@ -167,3 +167,17 @@ def role_allows(user, page_key):
     from base.role_access import can_access
 
     return can_access(user, {page_key})
+
+
+@register.filter(name="initials_avatar")
+def initials_avatar_filter(value):
+    """Avatar par initiales, généré localement.
+
+    Remplace les URL ui-avatars.com écrites en dur dans les gabarits : le nom
+    y était injecté sans encodage, donc toute valeur contenant une espace
+    produisait une requête rejetée et une vignette cassée, en plus d'envoyer
+    ce nom à un service tiers à chaque affichage.
+    """
+    from horilla.avatars import initials_avatar
+
+    return initials_avatar(str(value) if value is not None else "")

@@ -84,10 +84,9 @@ def notify_expiring_documents():
                 document.is_active = False
 
 
-if not any(
-    cmd in sys.argv
-    for cmd in ["makemigrations", "migrate", "compilemessages", "flush", "shell"]
-):
+from horilla.scheduler_guard import schedulers_enabled
+
+if schedulers_enabled():
     scheduler = BackgroundScheduler()
     scheduler.add_job(notify_expiring_assets, "interval", hours=4)
     scheduler.add_job(notify_expiring_documents, "interval", hours=4)

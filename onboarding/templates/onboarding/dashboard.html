@@ -2,6 +2,7 @@
 {% block content %}
 {% load static i18n %}
 {% load i18n %}
+{% load basefilters %}
 <style>
     .done-task{
         background-color: #9acd322e !important;
@@ -112,7 +113,7 @@
                                             <div class="oh-profile--md align-center d-flex mb-2">
                                                 <div class="oh-profile oh-profile__avatar me-2">
                                                     <img
-                                                        src="https://ui-avatars.com/api/?name={{cand}}&background=random"
+                                                        src="{{ cand|initials_avatar }}"
                                                         class="oh-profile__image"
                                                         alt=""
                                                     />

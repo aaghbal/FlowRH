@@ -93,7 +93,7 @@
                             <div class="col-6 col-sm-6 col-md-6 col-lg-6">
                                 <div class="oh-profile oh-profile--md float-end">
                                     <div class="oh-profile__avatar mr-1">
-                                        <img src="https://ui-avatars.com/api/?name={{employee_objective.employee_id}}&background=random"
+                                        <img src="{{ employee_objective.employee_id|initials_avatar }}"
                                             class="oh-profile__image" alt="Mary Magdalene" />
                                     </div>
                                     <span class="oh-profile__name oh-text--dark">{{employee_objective.employee_id}}</span>
@@ -229,7 +229,7 @@
                                         </div>
                                         <div class="oh-profile oh-profile--md">
                                             <div class="oh-profile__avatar mr-1">
-                                                <img src="https://ui-avatars.com/api/?name={{employee_key_result.employee_id}}&background=random"
+                                                <img src="{{ employee_key_result.employee_id|initials_avatar }}"
                                                     class="oh-profile__image" alt="Rosa Luxemburg" />
                                             </div>
                                             <span class="oh-profile__name oh-text--dark">{{employee_key_result.employee_id}}</span>

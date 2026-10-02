@@ -7,6 +7,7 @@ from base.models import HorillaMailTemplate
 from employee.models import Employee
 from horilla.models import HorillaModel
 from horilla_views.cbv_methods import render_template
+from horilla.avatars import initials_avatar
 
 MODEL_CHOICES = []
 
@@ -73,9 +74,7 @@ class MailAutomation(HorillaModel):
         """
         Method will retun the api to the avatar or path to the profile image
         """
-        url = f"https://ui-avatars.com/api/?name={self.title}&background=random"
-
-        return url
+        return initials_avatar(self.title)
 
     def get_mail_to_display(self):
         """

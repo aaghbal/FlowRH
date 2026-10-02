@@ -94,7 +94,7 @@
                 />
                 {% else %}
                 <img
-                  src="https://ui-avatars.com/api/?name={{user_leave.leave_type_id}}&background=random"
+                  src="{{ user_leave.leave_type_id|initials_avatar }}"
                   class="oh-kanban-card__profile-image"
                   alt="Leave Icon"
                 />
@@ -150,7 +150,7 @@
                 />
                 {% else %}
                 <img
-                  src="https://ui-avatars.com/api/?name={{employee_leave.leave_type_id}}&background=random"
+                  src="{{ employee_leave.leave_type_id|initials_avatar }}"
                   class="oh-kanban-card__profile-image"
                   alt="Leave Icon"
                 />
@@ -233,7 +233,7 @@
               />
               {% else%}
               <img
-                src="https://ui-avatars.com/api/?name={{leave_request.leave_type_id}}&background=random"
+                src="{{ leave_request.leave_type_id|initials_avatar }}"
                 class="oh-profile__image"
                 alt="Leave type icon"
               />

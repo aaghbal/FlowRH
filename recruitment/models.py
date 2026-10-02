@@ -28,6 +28,7 @@ from employee.models import Employee
 from horilla.models import HorillaModel
 from horilla_audit.methods import get_diff
 from horilla_audit.models import HorillaAuditInfo, HorillaAuditLog
+from horilla.avatars import initials_avatar
 
 # Create your models here.
 
@@ -553,16 +554,11 @@ class Candidate(HorillaModel):
         """
         Method will rerun the api to the avatar or path to the profile image
         """
-        url = (
-            f"https://ui-avatars.com/api/?name={self.get_full_name()}&background=random"
-        )
         if self.profile:
             full_filename = self.profile.name
-
             if default_storage.exists(full_filename):
-                url = self.profile.url
-
-        return url
+                return self.profile.url
+        return initials_avatar(self.get_full_name())
 
     def get_company(self):
         """

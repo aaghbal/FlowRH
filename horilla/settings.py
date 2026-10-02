@@ -35,8 +35,11 @@ env = environ.Env(
         str,
         r"django-insecure-j8op9)1q8\$1&0^s&p*_0%d#pr@w9qj@1o=3#@d=a(^@9@zd@%j",
     ),
-    ALLOWED_HOSTS=(list, ["flowrh.nextretail.ma"]),
-    CSRF_TRUSTED_ORIGINS=(list, ["https://flowrh.nextretail.ma"]),
+    ALLOWED_HOSTS=(list, ["flowrh.conexusitapps.ma", "conexusitapps.ma"]),
+    CSRF_TRUSTED_ORIGINS=(list, [
+        "https://flowrh.conexusitapps.ma",
+        "https://conexusitapps.ma",
+    ]),
 )
 
 env.read_env(os.path.join(BASE_DIR, ".env"), overwrite=True)

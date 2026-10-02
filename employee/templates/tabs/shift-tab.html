@@ -1,4 +1,5 @@
 {% load i18n static basefilters horillafilters %}
+{% load basefilters %}
 
 {% if messages %}
     <div class="oh-wrapper">
@@ -214,7 +215,7 @@
                                                         class="oh-profile__avatar mr-1"
                                                     >
                                                         <img
-                                                            src="https://ui-avatars.com/api/?name={{work_type_request.employee_id}}&amp;background=random"
+                                                            src="{{ work_type_request.employee_id|initials_avatar }}"
                                                             class="oh-profile__image"
                                                             alt="Username"
                                                         />
@@ -450,7 +451,7 @@
                                             <div class="oh-profile oh-profile--md">
                                                 <div class="oh-profile__avatar mr-1">
                                                     <img
-                                                        src="https://ui-avatars.com/api/?name={{rshift.employee_id.employee_first_name}}+{{rshift.employee_id.employee_last_name}}&background=random"
+                                                        src="{{ rshift.employee_id.get_full_name|initials_avatar }}"
                                                         class="oh-profile__image"
                                                         alt="Username"
                                                     />
@@ -681,7 +682,7 @@
                                             <div class="oh-profile oh-profile--md">
                                                 <div class="oh-profile__avatar mr-1">
                                                     <img
-                                                        src="https://ui-avatars.com/api/?name={{rwork_type.employee_id.employee_first_name}}+{{rwork_type.employee_id.employee_last_name}}&background=random"
+                                                        src="{{ rwork_type.employee_id.get_full_name|initials_avatar }}"
                                                         class="oh-profile__image"
                                                         alt="Username"
                                                     />
@@ -893,7 +894,7 @@
                                                 <div class="oh-profile oh-profile--md">
                                                     <div class="oh-profile__avatar mr-1">
                                                         <img
-                                                            src="https://ui-avatars.com/api/?name={{shift_request.employee_id}}&amp;background=random"
+                                                            src="{{ shift_request.employee_id|initials_avatar }}"
                                                             class="oh-profile__image"
                                                             alt="Username"
                                                         />

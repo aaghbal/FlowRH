@@ -1,3 +1,4 @@
+{% load basefilters %}
 {% extends 'index.html' %}
 
 {% block content %}
@@ -21,7 +22,7 @@
              hx-target="#objectDetailsModalTarget">
           <div class="oh-profile oh-profile--md">
             <div class="oh-profile__avatar mr-1">
-              <img src="https://ui-avatars.com/api/?name={{work_record.work_record_name}}&background=random" class="oh-profile__image"
+              <img src="{{ work_record.work_record_name|initials_avatar }}" class="oh-profile__image"
                 alt="Mary Magdalene" />
             </div>
             <span class="oh-profile__name oh-text--dark">{{work_record.work_record_name}}</span>

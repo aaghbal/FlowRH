@@ -1,4 +1,5 @@
 {% load i18n static %}
+{% load basefilters %}
 {% include 'filter_tags.html' %}
 {% if meetings %}
     <div class="oh-card p-4">
@@ -63,7 +64,7 @@
                                                 <span class="oh-user-panel oh-collapse-panel" data-type="user">
                                                     <div class="oh-profile oh-profile--md">
                                                         <div class="oh-profile__avatar mr-1">
-                                                            <img src="https://ui-avatars.com/api/?name={{employee.get_full_name}}&background=random"
+                                                            <img src="{{ employee.get_full_name|initials_avatar }}"
                                                                 class="oh-profile__image" alt="Baby C." />
                                                         </div>
                                                         <span class="oh-profile__name oh-text--dark"
@@ -91,7 +92,7 @@
                                                 <span class="oh-user-panel oh-collapse-panel" data-type="user">
                                                     <div class="oh-profile oh-profile--md">
                                                         <div class="oh-profile__avatar mr-1">
-                                                            <img src="https://ui-avatars.com/api/?name={{manager.get_full_name}}&background=random"
+                                                            <img src="{{ manager.get_full_name|initials_avatar }}"
                                                                 class="oh-profile__image" alt="Baby C." />
                                                         </div>
                                                         <span class="oh-profile__name oh-text--dark"

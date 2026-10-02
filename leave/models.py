@@ -39,6 +39,7 @@ from horilla_audit.methods import get_diff
 from horilla_audit.models import HorillaAuditInfo, HorillaAuditLog
 from leave.methods import calculate_requested_days
 from leave.threading import LeaveClashThread
+from horilla.avatars import initials_avatar
 
 logger = logging.getLogger(__name__)
 
@@ -233,13 +234,11 @@ class LeaveType(HorillaModel):
         """
         Method will retun the api to the avatar or path to the profile image
         """
-        url = f"https://ui-avatars.com/api/?name={self.name}&background=random"
         if self.icon:
             full_filename = self.icon.name
-
             if default_storage.exists(full_filename):
-                url = self.icon.url
-        return url
+                return self.icon.url
+        return initials_avatar(self.name)
 
     def leave_type_next_reset_date(self):
         today = datetime.now().date()

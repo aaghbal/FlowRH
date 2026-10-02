@@ -1,4 +1,5 @@
 {% load i18n %}{% load static %}
+{% load basefilters %}
 {% if templates %}
 <div class="oh-card">
   {% for grouper in templates %}
@@ -74,7 +75,7 @@
                   <div class="oh-profile oh-profile--md">
                     <div class="oh-profile__avatar mr-1">
                       <img
-                        src="https://ui-avatars.com/api/?name={{question.question}}&background=random"
+                        src="{{ question.question|initials_avatar }}"
                         class="oh-profile__image"
                       />
                     </div>

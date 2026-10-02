@@ -62,7 +62,7 @@
                                             <img src="{{comp_leave_request.employee_id.get_avatar}}" class="oh-profile__image"
                                                 alt="" />
                                             {% else %}
-                                            <img src="https://ui-avatars.com/api/?name={{comp_leave_request.employee_id}}&background=random"
+                                            <img src="{{ comp_leave_request.employee_id|initials_avatar }}"
                                                 class="oh-profile__image" alt="" />
                                             {% endif %}
                                         </div>

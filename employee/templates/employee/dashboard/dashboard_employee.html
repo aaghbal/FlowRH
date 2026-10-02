@@ -2,6 +2,7 @@
 {% block content %}
 {% load mathfilters %}
 {% load static %}
+{% load basefilters %}
 <div class="oh-wrapper">
   <div class="oh-dashboard row">
     <div class="oh-dashboard__left col-12 col-sm-12 col-md-12 col-lg-9">
@@ -134,7 +135,7 @@
             <li class="oh-card-dashboard__user-item">
               <div class="oh-profile oh-profile--md">
                 <div class="oh-profile__avatar mr-1">
-                  <img src="https://ui-avatars.com/api/?name=A B&background=random" class="oh-profile__image"
+                  <img src="{{ "A B"|initials_avatar }}" class="oh-profile__image"
                     alt="{{cand}}" />
                 </div>
                 <span class="oh-profile__name oh-text--dark">Aliza B</span>

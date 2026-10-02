@@ -47,10 +47,9 @@ def leave_reset():
             leave_type.save()
 
 
-if not any(
-    cmd in sys.argv
-    for cmd in ["makemigrations", "migrate", "compilemessages", "flush", "shell"]
-):
+from horilla.scheduler_guard import schedulers_enabled
+
+if schedulers_enabled():
     """
     Initializes and starts background tasks using APScheduler when the server is running.
     """

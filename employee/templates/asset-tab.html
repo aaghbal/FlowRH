@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load basefilters %}
     <!-- Sticky Table  for own objective-->
     <div class="oh-sticky-table">
       <div class="oh-sticky-table__table ">
@@ -19,7 +20,7 @@
                 <div class="oh-sticky-table__sd">
                 <div class="oh-profile oh-profile--md">
                     <div class="oh-profile__avatar mr-1">
-                    <img src="https://ui-avatars.com/api/?name={{asset.asset_id.asset_name}}&background=random" class="oh-profile__image"
+                    <img src="{{ asset.asset_id.asset_name|initials_avatar }}" class="oh-profile__image"
                         alt="" />
                     </div>
                     <span class="oh-profile__name oh-text--dark">{{asset.asset_id.asset_name}}

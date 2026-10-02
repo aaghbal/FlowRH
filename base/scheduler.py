@@ -430,10 +430,9 @@ def recurring_holiday():
         recurring_holiday.save()
 
 
-if not any(
-    cmd in sys.argv
-    for cmd in ["makemigrations", "migrate", "compilemessages", "flush", "shell"]
-):
+from horilla.scheduler_guard import schedulers_enabled
+
+if schedulers_enabled():
     scheduler = BackgroundScheduler()
 
     # Add jobs with next_run_time set to the end of the previous job

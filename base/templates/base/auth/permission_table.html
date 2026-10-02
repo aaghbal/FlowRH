@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load basefilters %}
 {% for perm in permissions %}
 <span type="button" class="perm-accordion w-100 p-2 oh-user_permission-list_item app-permissions" onclick="$(this).next().toggle();$(this).toggleClass('perm-accordion-active');">
 	<div class="d-flex flex-row bd-highlight">
@@ -63,7 +64,7 @@
                                 <div class="oh-profile oh-profile--md">
                                     <div class="oh-profile__avatar mr-1">
                                         <img
-                                            src="https://ui-avatars.com/api/?name={{model.verbose_name}}&background=random"
+                                            src="{{ model.verbose_name|initials_avatar }}"
                                             class="oh-profile__image"
                                         />
                                     </div>

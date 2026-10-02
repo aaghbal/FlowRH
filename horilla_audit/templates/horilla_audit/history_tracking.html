@@ -1,4 +1,5 @@
 {% load static %} {% load i18n %} {% load audit_filters %}
+{% load basefilters %}
 <div class="oh-activity-sidebar__header" style="position:sticky; top:0; background:#fff; z-index:10">
     <a
         style="cursor: pointer"
@@ -42,7 +43,7 @@
                     />
                     {% else %}
                     <img
-                        src="https://ui-avatars.com/api/?name=FlowRH+Bot&background=random"
+                        src="{{ "FlowRH Bot"|initials_avatar }}"
                         alt=""
                         class="oh-history_user-pic"
                     />

@@ -1,10 +1,11 @@
 {% load static i18n basefilters %}
+{% load basefilters %}
 {% if groups %}
 {% for group in groups %}
   <div class="oh-user_permission-list_item" onclick="$(this).next().toggle();$(this).toggleClass('perm-accordion-active');">
     <div class="oh-user_permission-list_profile">
         <div class="oh-navbar__user-photo oh-user_permission--profile">
-            <img src="https://ui-avatars.com/api/?name={{group}}&background=random"
+            <img src="{{ group|initials_avatar }}"
                 class="oh-navbar__user-image" loading="lazy">
         </div>
         <div class="oh-feedback-card__name-container ms-1">

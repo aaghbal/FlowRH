@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load basefilters %}
 <div class="row">
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="">
@@ -39,7 +40,7 @@
 												<span class="oh-user-panel oh-collapse-panel">
 													<div class="oh-profile oh-profile--md">
 														<div class="oh-profile__avatar mr-1">
-															<img src="https://ui-avatars.com/api/?name={{role}}&background=random"
+															<img src="{{ role|initials_avatar }}"
 																class="oh-profile__image" alt="Baby C." />
 														</div>
 														<span class="oh-profile__name oh-text--dark">{{role|capfirst}}</span>

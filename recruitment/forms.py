@@ -646,12 +646,6 @@ class ApplicationForm(RegistrationForm):
             errors["profile"] = _("This field is required")
         if errors:
             raise ValidationError(errors)
-        if (
-            not profile
-            and request
-            and request.user.has_perm("recruitment.add_candidate")
-        ):
-            cleaned_data["profile"] = f"https://ui-avatars.com/api/?name={name}"
         return cleaned_data
 
 

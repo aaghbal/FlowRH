@@ -23,6 +23,7 @@ from employee.models import (
 from horilla import horilla_apps
 from horilla.decorators import hx_request_required, login_required, permission_required
 from horilla.methods import get_horilla_model_class
+from horilla.avatars import initials_avatar
 
 
 class AllCompany:
@@ -31,7 +32,7 @@ class AllCompany:
     """
 
     class Urls:
-        url = "https://ui-avatars.com/api/?name=All+Company&background=random"
+        url = initials_avatar("All Company")
 
     company = "All Company"
     icon = Urls()
@@ -60,7 +61,7 @@ def get_companies(request):
         [
             "all",
             "All Company",
-            "https://ui-avatars.com/api/?name=All+Company&background=random",
+            initials_avatar("All Company"),
             False,
         ],
     ] + companies
