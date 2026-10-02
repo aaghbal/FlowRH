@@ -1,0 +1,2270 @@
+/*
+ * Fil d'actualité
+ *
+ * Loaded once by fil/fil_actualite.html. post.html and comment.html carry no
+ * styles of their own: post.html is included once per post and comment.html is
+ * also returned as an HTML fragment by the add-comment endpoint, so anything
+ * inline there was repeated for every post and every new comment.
+ *
+ * The page's JavaScript is not touched by this file but depends on parts of
+ * it. Those rules are marked "behaviour" and must keep their effect:
+ *   - modals are opened by JS setting style.display = 'block', which the
+ *     [style*="display: block"] rules upgrade to a centred flex layout;
+ *   - .show toggles the sites dropdown and the toast;
+ *   - body.modal-open locks page scroll while a modal is open;
+ *   - .file-preview, .reply-form and .edit-form start hidden;
+ *   - the edit modal's file inputs sit invisible over their labels.
+ */
+
+:root {
+    --fil-bg: #f5f4f8;
+    --fil-card: #ffffff;
+    --fil-ink: #1f1830;
+    --fil-ink-2: #3d3550;
+    --fil-muted: #6e6880;
+    --fil-faint: #a39fb0;
+    --fil-line: #ece9f2;
+    --fil-line-2: #ddd8e7;
+    --fil-soft: #f6f4fa;
+    --fil-soft-2: #efebf6;
+    --fil-brand: #2a1653;
+    --fil-brand-2: #5b3a9a;
+    --fil-brand-soft: #ede7f8;
+    --fil-accent: #e8492f;
+    --fil-accent-2: #cf3a22;
+    --fil-accent-soft: #fdece8;
+    --fil-danger: #d92d20;
+    --fil-radius: 16px;
+    --fil-radius-sm: 10px;
+    --fil-shadow: 0 1px 2px rgba(31, 24, 48, 0.04), 0 6px 20px rgba(31, 24, 48, 0.05);
+    --fil-shadow-hover: 0 2px 4px rgba(31, 24, 48, 0.05), 0 12px 32px rgba(31, 24, 48, 0.08);
+    --fil-shadow-pop: 0 24px 64px rgba(20, 12, 36, 0.24);
+    --fil-ring: 0 0 0 4px rgba(91, 58, 154, 0.12);
+    --fil-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ------------------------------------------------------------------ page */
+
+/*
+ * Page backdrop: two soft brand glows near the top and a faint dot grid.
+ * It is painted on body (the only ancestor tall enough to cover short pages)
+ * and fixed to the viewport, so cards scroll over it. Scoped with :has() so
+ * it can only ever apply on the feed page. Backgrounds do not create a
+ * containing block, so the post modals are unaffected.
+ */
+body:has(.feed-container) {
+    background-color: #f4f2f9;
+    background-image:
+        radial-gradient(900px 520px at 38% -12%, rgba(91, 58, 154, 0.16), transparent 62%),
+        radial-gradient(760px 460px at 96% 2%, rgba(232, 73, 47, 0.11), transparent 60%),
+        radial-gradient(rgba(42, 22, 83, 0.07) 1px, transparent 1.4px);
+    background-size: auto, auto, 22px 22px;
+    background-attachment: fixed;
+}
+
+.feed-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 28px 16px 72px;
+    color: var(--fil-ink);
+}
+
+.feed-container button,
+.feed-container input,
+.feed-container select,
+.feed-container textarea,
+#pollModal button,
+#pollModal input,
+#pollModal select,
+.likers-modal button {
+    font-family: inherit;
+}
+
+.feed-header {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.feed-header h1 {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--fil-brand);
+}
+
+.feed-header h1::after {
+    content: "";
+    display: block;
+    width: 36px;
+    height: 4px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--fil-accent), #f59e0b);
+}
+
+.feed-posts > p {
+    padding: 48px 24px;
+    margin: 0;
+    text-align: center;
+    color: var(--fil-muted);
+    background: var(--fil-card);
+    border: 1px dashed var(--fil-line-2);
+    border-radius: var(--fil-radius);
+}
+
+/* -------------------------------------------------------------- composer */
+
+.post-creation {
+    background: var(--fil-card);
+    border: 1px solid var(--fil-line);
+    border-radius: var(--fil-radius);
+    box-shadow: var(--fil-shadow);
+    padding: 18px 18px 14px;
+    margin-bottom: 24px;
+}
+
+.post-form #post_content {
+    display: block;
+    width: 100%;
+    min-height: 130px;
+    padding: 14px 16px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--fil-soft);
+    color: var(--fil-ink);
+    font-size: 16px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    margin: 0;
+    resize: vertical;
+    box-shadow: none;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.post-form #post_content::placeholder {
+    color: var(--fil-faint);
+}
+
+.post-form #post_content:focus {
+    outline: none;
+    background: var(--fil-card);
+    border-color: var(--fil-brand-2);
+    box-shadow: var(--fil-ring);
+}
+
+.post-creation .post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 12px;
+    margin: 12px 0 0;
+    padding: 0;
+    border: 0;
+}
+
+.post-attachments {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 4px;
+    width: auto;
+}
+
+.attach-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    height: 38px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--fil-radius-sm);
+    background: transparent;
+    color: var(--fil-ink-2);
+    font-size: 14.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.attach-btn:hover {
+    background: var(--fil-soft);
+}
+
+.attach-btn i {
+    font-size: 15px;
+}
+
+.attach-btn:nth-of-type(1) i { color: #16a34a; }
+.attach-btn:nth-of-type(2) i { color: #2563eb; }
+.attach-btn:nth-of-type(3) i { color: #d97706; }
+.attach-btn:nth-of-type(4) i { color: var(--fil-accent); }
+
+.post-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    height: 40px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--fil-accent);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(232, 73, 47, 0.28);
+    transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    flex-shrink: 0;
+}
+
+.post-btn:hover {
+    background: var(--fil-accent-2);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(232, 73, 47, 0.34);
+}
+
+.post-btn:active {
+    transform: translateY(0);
+}
+
+/* upload previews (behaviour: .file-preview starts hidden, JS reveals it) */
+
+#upload-previews {
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.file-preview {
+    display: none;
+    position: relative;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-soft);
+    color: var(--fil-brand-2);
+}
+
+#preview-image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.file-preview .file-name {
+    max-width: 220px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    color: var(--fil-ink-2);
+}
+
+.remove-file-btn,
+.remove-option-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--fil-card);
+    color: var(--fil-muted);
+    font-size: 11px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.remove-file-btn:hover,
+.remove-option-btn:hover {
+    background: var(--fil-accent-soft);
+    color: var(--fil-danger);
+}
+
+/* inline poll section of the composer */
+
+.poll-section {
+    margin: 12px 0 0;
+    padding: 14px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-soft);
+}
+
+.poll-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--fil-brand);
+}
+
+.poll-section .poll-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding: 0;
+}
+
+.poll-section .poll-option > i {
+    font-size: 8px;
+    color: var(--fil-faint);
+}
+
+.poll-option-input {
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid var(--fil-line-2);
+    border-radius: var(--fil-radius-sm);
+    background: var(--fil-card);
+}
+
+/* --------------------------------------- sites dropdown (composer + poll) */
+
+.site-selection-container {
+    padding-top: 4px;
+}
+
+.site-selection-container .form-group {
+    margin: 0;
+}
+
+.site-selection-container .form-label,
+#pollModal .form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fil-ink-2);
+}
+
+.site-selection-container .form-label i,
+#pollModal .form-label i {
+    color: var(--fil-accent);
+}
+
+.sites-dropdown {
+    position: relative;
+}
+
+.sites-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid var(--fil-line-2);
+    border-radius: var(--fil-radius-sm);
+    background: var(--fil-card);
+    color: var(--fil-ink);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.sites-dropdown-toggle:hover {
+    border-color: var(--fil-brand-2);
+}
+
+.sites-dropdown-toggle i {
+    font-size: 12px;
+    color: var(--fil-muted);
+}
+
+/* behaviour: hidden until JS adds .show */
+.sites-dropdown-content {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 6px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-card);
+    box-shadow: var(--fil-shadow-hover);
+}
+
+.sites-dropdown-content.show {
+    display: block;
+}
+
+.site-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.site-option:hover {
+    background: var(--fil-soft);
+}
+
+.site-option input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--fil-brand-2);
+}
+
+.site-option label {
+    flex: 1;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--fil-ink);
+    cursor: pointer;
+}
+
+/* ------------------------------------------------------------- post card */
+
+/*
+ * No transform, filter, opacity animation or will-change on .post: the post's
+ * comments, likers and edit modals are position: fixed elements *inside* the
+ * card, and any of those would make the card their containing block, trapping
+ * the modal inside the post instead of covering the viewport.
+ */
+
+.post {
+    position: relative;
+    margin-bottom: 18px;
+    padding: 20px 22px 12px;
+    background: var(--fil-card);
+    border: 1px solid var(--fil-line);
+    border-radius: var(--fil-radius);
+    box-shadow: var(--fil-shadow);
+    transition: box-shadow 0.25s var(--fil-ease);
+}
+
+.post:hover {
+    box-shadow: var(--fil-shadow-hover);
+}
+
+.post > .post-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* the post-type icon becomes a small badge on the author's avatar */
+.post > .post-header .post-type-icon {
+    position: absolute;
+    left: 27px;
+    top: 26px;
+    z-index: 1;
+    width: 26px;
+    height: 26px;
+    padding: 4px;
+    border-radius: 50%;
+    background: var(--fil-card);
+    box-shadow: 0 1px 4px rgba(31, 24, 48, 0.18);
+    object-fit: contain;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.post-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.post-info .user-name {
+    margin: 0;
+    font-size: 16.5px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--fil-ink);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.post-time {
+    font-size: 13.5px;
+    color: var(--fil-muted);
+}
+
+/* owner menu (behaviour: the menu's display is toggled inline by JS) */
+
+.post-actions-dropdown {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.post-actions-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--fil-muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.post-actions-trigger:hover {
+    background: var(--fil-soft);
+    color: var(--fil-ink);
+}
+
+.post-actions-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 4px);
+    z-index: 1000;
+    min-width: 170px;
+    overflow: hidden;
+    padding: 6px;
+    background: var(--fil-card);
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    box-shadow: var(--fil-shadow-hover);
+}
+
+.post-action-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--fil-ink);
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.post-action-item:hover {
+    background: var(--fil-soft);
+}
+
+.post-action-item i {
+    width: 16px;
+    color: var(--fil-muted);
+}
+
+/* content */
+
+.post-content {
+    margin: 0;
+    padding-top: 14px;
+}
+
+.post-content .post-text {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--fil-ink);
+    overflow-wrap: anywhere;
+}
+
+.post-content .post-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 720px;
+    margin: 14px 0 0;
+    object-fit: contain;
+    border-radius: 12px;
+    background: var(--fil-soft);
+}
+
+.document-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-card);
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.document-file:hover {
+    border-color: var(--fil-line-2);
+    background: var(--fil-soft);
+}
+
+.document-file i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #e8f0fe;
+    color: #2563eb;
+    font-size: 16px;
+}
+
+.document-file a {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fil-ink);
+    text-decoration: none;
+}
+
+.document-file a:hover {
+    color: var(--fil-brand-2);
+    text-decoration: underline;
+}
+
+.post-sites-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    padding: 6px 12px;
+    width: fit-content;
+    max-width: 100%;
+    border-radius: 999px;
+    background: var(--fil-accent-soft);
+    color: var(--fil-accent-2);
+    font-size: 12.5px;
+}
+
+.sites-label {
+    font-weight: 600;
+}
+
+/* ------------------------------------------------------- poll (in a post) */
+
+.post-content .poll-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: none;
+    margin: 16px 0 0;
+    font-family: inherit;
+}
+
+.post-content .poll-options h4 {
+    margin: 0 0 2px;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--fil-ink);
+}
+
+.post-content .poll-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    margin-bottom: 0 !important;
+    padding: 10px 14px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-card);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.post-content .poll-option:hover {
+    border-color: var(--fil-line-2);
+    background: var(--fil-soft);
+}
+
+.post-content .poll-option:has(input:checked) {
+    border-color: var(--fil-brand-2);
+    background: var(--fil-brand-soft);
+    box-shadow: inset 0 0 0 1px var(--fil-brand-2);
+}
+
+.post-content .poll-option > input {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--fil-brand-2);
+    cursor: pointer;
+}
+
+.barpoll {
+    flex: 1;
+    min-width: 0;
+}
+
+.barpoll label {
+    display: block;
+    min-width: 0;
+    margin: 0 0 6px;
+    font-size: 15.5px;
+    font-weight: 500;
+    color: var(--fil-ink);
+    cursor: pointer;
+}
+
+/* behaviour: the percentage label is positioned inside this box inline */
+.progress-container {
+    display: block;
+    position: relative;
+    flex: none;
+    width: 100%;
+    height: 22px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--fil-soft-2);
+}
+
+.progress-container .progress-bar {
+    height: 100%;
+    min-width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--fil-brand-2), #8b5cf6);
+    transition: width 0.6s var(--fil-ease);
+}
+
+.progress-container span {
+    font-weight: 600;
+    color: var(--fil-ink-2) !important;
+}
+
+.post-content .vote-count {
+    position: static;
+    flex-shrink: 0;
+    min-width: 58px;
+    text-align: right;
+    white-space: nowrap;
+    color: var(--fil-muted) !important;
+    font-size: 12.5px !important;
+}
+
+/* ----------------------------------------------------- likes / comments */
+
+.post-interactions {
+    margin-top: 16px;
+}
+
+.likes-count-display {
+    padding-bottom: 10px;
+}
+
+.likes-count-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--fil-muted);
+    cursor: pointer;
+}
+
+.likes-count-number:hover {
+    color: var(--fil-ink);
+    text-decoration: underline;
+}
+
+.likes-count-number i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fil-accent), #f97316);
+    color: #fff;
+    font-size: 10px;
+}
+
+.post .post-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin: 0;
+    padding: 8px 0 0;
+    border: 0;
+    border-top: 1px solid var(--fil-line);
+}
+
+.post .post-actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    margin: 0;
+    padding: 0 12px;
+    border: 0;
+    border-radius: var(--fil-radius-sm);
+    background: transparent;
+    color: var(--fil-muted);
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.post .post-actions button:hover {
+    background: var(--fil-soft);
+    color: var(--fil-ink);
+}
+
+.post .post-actions button i {
+    font-size: 16px;
+}
+
+.post .post-actions .like-btn.liked {
+    color: var(--fil-accent);
+}
+
+.post .post-actions .like-btn.liked i {
+    animation: fil-pop 0.35s var(--fil-ease);
+}
+
+@keyframes fil-pop {
+    40% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+.comment-count {
+    font-weight: 500;
+    color: var(--fil-faint);
+}
+
+/* ---------------------------------------------------------------- avatars */
+
+.profile-pic,
+.comment-profile-pic,
+.comment-form-avatar,
+.liker-avatar {
+    flex-shrink: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
+    border-radius: 0;
+    line-height: 0;
+}
+
+.user-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--fil-soft-2);
+    color: #fff;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    user-select: none;
+}
+
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-avatar.size-small { width: 34px; height: 34px; font-size: 12px; }
+.user-avatar.size-medium { width: 44px; height: 44px; font-size: 15px; }
+.user-avatar.size-large { width: 42px; height: 42px; font-size: 14px; }
+
+.user-avatar.color-1 { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.user-avatar.color-2 { background: linear-gradient(135deg, #ec4899, #be185d); }
+.user-avatar.color-3 { background: linear-gradient(135deg, #f97316, #c2410c); }
+.user-avatar.color-4 { background: linear-gradient(135deg, #06b6d4, #0e7490); }
+.user-avatar.color-5 { background: linear-gradient(135deg, #10b981, #047857); }
+.user-avatar.color-6 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.user-avatar.color-7 { background: linear-gradient(135deg, #a855f7, #7e22ce); }
+.user-avatar.color-8 { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.user-avatar.color-9 { background: linear-gradient(135deg, #14b8a6, #0f766e); }
+.user-avatar.color-10 { background: linear-gradient(135deg, #f43f5e, #be123c); }
+
+/* ------------------------------------------------- overlays (behaviour) */
+
+body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.comments-modal,
+.likers-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+.likers-modal {
+    z-index: 1001;
+}
+
+.comments-modal[style*="display: block"],
+.likers-modal[style*="display: block"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+.comments-modal-overlay,
+.likers-modal-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(20, 12, 36, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: fil-fade 0.2s ease both;
+}
+
+@keyframes fil-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fil-zoom {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------- comments modal */
+
+.comments-modal-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(680px, 100%);
+    max-height: min(88vh, 920px);
+    overflow: hidden;
+    background: var(--fil-card);
+    border-radius: 20px;
+    box-shadow: var(--fil-shadow-pop);
+    animation: fil-zoom 0.25s var(--fil-ease) both;
+}
+
+.comments-modal-close,
+.likers-modal-close,
+.post-edit-close,
+#pollModal .modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--fil-soft);
+    color: var(--fil-muted);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.comments-modal-close:hover,
+.likers-modal-close:hover,
+.post-edit-close:hover,
+#pollModal .modal-close:hover {
+    background: var(--fil-soft-2);
+    color: var(--fil-ink);
+}
+
+.comments-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 10;
+}
+
+.modal-main-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.modal-post-content {
+    padding: 24px 24px 16px;
+}
+
+.modal-post-content .post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 0 44px 0 0;
+}
+
+.post-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.modal-post-content .user-name {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--fil-ink);
+}
+
+.modal-post-content .post-time {
+    display: block;
+}
+
+.modal-post-content > .post-text {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fil-ink);
+    overflow-wrap: anywhere;
+}
+
+.post-image-container {
+    margin-top: 14px;
+}
+
+.modal-post-content .post-image {
+    display: block;
+    width: 100%;
+    max-height: 540px;
+    margin: 0;
+    object-fit: contain;
+    border-radius: 12px;
+    background: var(--fil-soft);
+}
+
+.modal-post-content .poll-options {
+    display: block;
+    max-width: none;
+    margin: 16px 0 0;
+    font-family: inherit;
+}
+
+.modal-post-content .poll-options h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.modal-post-content .poll-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--fil-soft);
+    font-size: 14px;
+}
+
+.modal-post-content .poll-option .vote-count {
+    font-size: 12.5px;
+    color: var(--fil-muted);
+    white-space: nowrap;
+}
+
+.comments-separator {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-top: 1px solid var(--fil-line);
+    border-bottom: 1px solid var(--fil-line);
+}
+
+.comments-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fil-ink);
+}
+
+.comments-section {
+    padding: 18px 24px 24px;
+}
+
+.comments-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.no-comments {
+    padding: 28px 16px;
+    text-align: center;
+    color: var(--fil-muted);
+}
+
+.no-comments i {
+    font-size: 30px;
+    color: var(--fil-line-2);
+}
+
+.no-comments p {
+    margin: 10px 0 0;
+    font-size: 14px;
+}
+
+/* comment composer pinned to the bottom of the modal */
+
+.comment-form-container {
+    padding: 14px 20px;
+    border-top: 1px solid var(--fil-line);
+    background: var(--fil-card);
+}
+
+.comment-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.comment-input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    padding: 5px 5px 5px 16px;
+    border: 1px solid transparent;
+    border-radius: 22px;
+    background: var(--fil-soft);
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.comment-input-wrapper:focus-within {
+    background: var(--fil-card);
+    border-color: var(--fil-brand-2);
+    box-shadow: var(--fil-ring);
+}
+
+.comment-input-wrapper textarea {
+    flex: 1;
+    min-width: 0;
+    min-height: 34px;
+    max-height: 140px;
+    padding: 7px 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--fil-ink);
+    font-size: 15px;
+    line-height: 1.45;
+    resize: none;
+}
+
+.comment-input-wrapper .submit-comment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--fil-accent);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+}
+
+.comment-input-wrapper .submit-comment:hover {
+    background: var(--fil-accent-2);
+    transform: scale(1.05);
+}
+
+/* After a comment is sent the page JS swaps the icon for the text
+   "Posting..." and then "Post"; let the circle widen into a pill for it. */
+.comment-input-wrapper .submit-comment:not(:has(i)) {
+    width: auto;
+    min-width: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.comment-input-wrapper .submit-comment:disabled {
+    opacity: 0.7;
+    cursor: default;
+    transform: none;
+}
+
+/* --------------------------------------------------------------- comments */
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0;
+}
+
+.comment-bubble {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-header {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+    margin-bottom: 4px;
+}
+
+.comment-author {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--fil-ink);
+}
+
+.comment-date {
+    font-size: 12px;
+    color: var(--fil-faint);
+}
+
+.comment-content {
+    flex: none;
+    align-self: flex-start;
+    max-width: 100%;
+    padding: 9px 14px;
+    border-radius: 4px 16px 16px 16px;
+    background: var(--fil-soft);
+    color: var(--fil-ink);
+    font-size: 15px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-top: 4px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0;
+    padding: 4px 8px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--fil-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.action-button:hover {
+    background: var(--fil-soft);
+    color: var(--fil-ink);
+    text-decoration: none;
+}
+
+.action-button i {
+    font-size: 12px;
+}
+
+.action-button.like-btn.liked {
+    color: var(--fil-accent);
+    font-weight: 600;
+}
+
+.action-button.delete-btn:hover {
+    background: var(--fil-accent-soft);
+    color: var(--fil-danger);
+}
+
+/* reply and edit forms (behaviour: hidden until JS shows them) */
+
+.reply-form,
+.edit-form {
+    display: none;
+    margin-top: 8px;
+}
+
+.reply-form textarea,
+.edit-form textarea {
+    display: block;
+    width: 100%;
+    min-height: 64px;
+    padding: 10px 12px;
+    border: 1px solid var(--fil-line-2);
+    border-radius: 12px;
+    background: var(--fil-card);
+    color: var(--fil-ink);
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.reply-form textarea:focus,
+.edit-form textarea:focus {
+    outline: none;
+    border-color: var(--fil-brand-2);
+    box-shadow: var(--fil-ring);
+}
+
+.edit-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.submit-reply,
+.submit-edit,
+.cancel-edit {
+    height: 32px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.submit-reply {
+    margin-top: 8px;
+    float: right;
+}
+
+.reply-form::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.submit-reply,
+.submit-edit {
+    background: var(--fil-accent);
+    color: #fff;
+}
+
+.submit-reply:hover,
+.submit-edit:hover {
+    background: var(--fil-accent-2);
+}
+
+.cancel-edit {
+    background: var(--fil-soft);
+    color: var(--fil-ink-2);
+}
+
+.cancel-edit:hover {
+    background: var(--fil-soft-2);
+}
+
+/* replies */
+
+.replies {
+    margin-top: 4px;
+}
+
+.show-more-replies {
+    display: inline-block;
+    margin-top: 2px;
+    padding: 4px 8px 4px 0;
+    color: var(--fil-brand-2);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.show-more-replies::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    margin-right: 8px;
+    vertical-align: middle;
+    background: var(--fil-line-2);
+}
+
+.show-more-replies:hover {
+    color: var(--fil-brand);
+}
+
+.all-replies,
+.sub-replies {
+    margin-top: 10px;
+    padding-left: 14px;
+    border-left: 2px solid var(--fil-line);
+}
+
+.reply,
+.sub-reply {
+    margin-bottom: 12px;
+}
+
+.reply:last-child,
+.sub-reply:last-child {
+    margin-bottom: 0;
+}
+
+.hidden-replies {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.hidden-replies[style*="display: block"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ----------------------------------------------------------- likers modal */
+
+.likers-modal-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(420px, 100%);
+    max-height: 70vh;
+    overflow: hidden;
+    background: var(--fil-card);
+    border-radius: 20px;
+    box-shadow: var(--fil-shadow-pop);
+    animation: fil-zoom 0.25s var(--fil-ease) both;
+}
+
+.likers-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 16px 14px 20px;
+    border-bottom: 1px solid var(--fil-line);
+}
+
+.likers-modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--fil-ink);
+}
+
+.likers-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.liker-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    transition: background 0.15s;
+}
+
+.liker-item:hover {
+    background: var(--fil-soft);
+}
+
+.liker-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.liker-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fil-ink);
+}
+
+.liker-time {
+    margin: 0;
+    font-size: 12px;
+    color: var(--fil-faint);
+}
+
+.liker-job-position {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--fil-muted);
+}
+
+.liker-action {
+    display: flex;
+}
+
+.no-likers {
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--fil-muted);
+}
+
+.no-likers i {
+    font-size: 28px;
+    color: var(--fil-line-2);
+}
+
+.no-likers p {
+    margin: 10px 0 0;
+    font-size: 14px;
+}
+
+/* ----------------------------------------------- edit post modal (behaviour) */
+
+.post-edit-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(20, 12, 36, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.post-edit-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    width: min(580px, calc(100% - 32px));
+    max-height: calc(100vh - 32px);
+    overflow: hidden;
+    padding: 0;
+    background: var(--fil-card);
+    border-radius: 20px;
+    box-shadow: var(--fil-shadow-pop);
+}
+
+.post-edit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 18px 16px 24px;
+    border-bottom: 1px solid var(--fil-line);
+}
+
+.post-edit-title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--fil-ink);
+}
+
+.post-edit-close {
+    font-size: 14px;
+}
+
+.post-edit-content {
+    padding: 0 24px !important;
+}
+
+.post-edit-container .form-group {
+    display: block;
+    margin-bottom: 18px;
+}
+
+.post-edit-container .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fil-ink-2);
+}
+
+.post-edit-textarea {
+    display: block;
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 14px;
+    border: 1px solid var(--fil-line-2);
+    border-radius: 12px;
+    background: var(--fil-card);
+    color: var(--fil-ink);
+    font-size: 14.5px;
+    line-height: 1.55;
+    resize: vertical;
+}
+
+.post-edit-textarea:focus {
+    outline: none;
+    border-color: var(--fil-brand-2);
+    box-shadow: var(--fil-ring);
+}
+
+.current-file {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-soft);
+}
+
+.current-file > i {
+    color: #2563eb;
+}
+
+.current-image-preview {
+    display: block;
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.current-document {
+    display: inline-flex;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--fil-ink);
+}
+
+.current-file .form-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 0 auto;
+    padding: 0;
+    font-size: 13px;
+    color: var(--fil-muted);
+}
+
+.current-file .form-check-label {
+    display: inline;
+    margin: 0;
+    font-weight: 400;
+    color: var(--fil-muted);
+}
+
+.current-file .form-check-input {
+    float: none;
+    margin: 0;
+    accent-color: var(--fil-danger);
+}
+
+/* behaviour: the real file input sits invisible over its label */
+.file-upload {
+    display: inline-block;
+    position: relative;
+}
+
+.file-upload-input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.post-edit-container .file-upload-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px dashed var(--fil-line-2);
+    border-radius: var(--fil-radius-sm);
+    background: var(--fil-card);
+    color: var(--fil-brand-2);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.file-upload:hover .file-upload-label {
+    border-color: var(--fil-brand-2);
+    background: var(--fil-brand-soft);
+}
+
+.post-edit-container .file-name {
+    display: block;
+    overflow: hidden;
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--fil-muted);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.poll-edit-options {
+    padding: 14px;
+    border: 1px solid var(--fil-line);
+    border-radius: 12px;
+    background: var(--fil-soft);
+}
+
+.poll-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.poll-edit-option {
+    display: flex;
+    gap: 6px;
+}
+
+.poll-edit-options .form-control {
+    border-color: var(--fil-line-2);
+    border-radius: 8px;
+}
+
+.poll-edit-option-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The poll editor uses Bootstrap utility classes (form-control-sm, btn-link)
+   that the app's CSS only partly provides; give its controls a full style. */
+.poll-edit-options input[type="text"],
+.poll-edit-options input[type="number"] {
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--fil-line-2);
+    border-radius: 8px;
+    background: var(--fil-card);
+    color: var(--fil-ink);
+    font-size: 13.5px;
+    box-shadow: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.poll-edit-options input[type="text"] {
+    width: 100%;
+}
+
+.poll-edit-options input[type="text"]:focus,
+.poll-edit-options input[type="number"]:focus {
+    outline: none;
+    border-color: var(--fil-brand-2);
+    box-shadow: var(--fil-ring);
+}
+
+.poll-edit-options input[type="number"] {
+    width: 64px !important;
+    height: 30px !important;
+    text-align: center;
+}
+
+.poll-edit-options .form-check-input {
+    width: 16px;
+    height: 16px;
+    margin: 0 6px 0 0;
+    accent-color: var(--fil-brand-2);
+}
+
+.poll-edit-options .form-check-label,
+.poll-edit-options .text-muted {
+    font-size: 12.5px;
+    color: var(--fil-muted) !important;
+}
+
+.poll-edit-options .btn-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px !important;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--fil-brand-2);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.poll-edit-options .btn-link:hover {
+    background: var(--fil-brand-soft);
+}
+
+.poll-edit-option {
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.poll-edit-options .poll-edit-option-remove {
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0;
+    padding: 0 !important;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--fil-muted) !important;
+}
+
+.poll-edit-options .poll-edit-option-remove:hover {
+    background: var(--fil-accent-soft);
+    color: var(--fil-danger) !important;
+}
+
+.post-edit-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px !important;
+    border-top: 1px solid var(--fil-line) !important;
+    background: #fbfafd;
+}
+
+.post-edit-btn {
+    height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.post-edit-cancel {
+    background: var(--fil-soft-2);
+    color: var(--fil-ink-2);
+}
+
+.post-edit-cancel:hover {
+    background: var(--fil-line-2);
+}
+
+.post-edit-save {
+    background: var(--fil-accent);
+    color: #fff;
+}
+
+.post-edit-save:hover {
+    background: var(--fil-accent-2);
+}
+
+/* ------------------------------------------------- poll creation modal */
+
+/* behaviour: the modal itself is the backdrop; JS sets display: block */
+#pollModal.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+    overflow: auto;
+    background: rgba(20, 12, 36, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+#pollModal.modal[style*="display: block"] {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+}
+
+#pollModal .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(560px, 100%);
+    height: auto;
+    max-height: calc(100vh - 48px);
+    margin: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 20px;
+    background: var(--fil-card);
+    box-shadow: var(--fil-shadow-pop);
+    animation: fil-zoom 0.25s var(--fil-ease) both;
+}
+
+#pollModal .modal-header {
+    display: block;
+    padding: 20px 64px 18px 24px;
+    border-bottom: 1px solid var(--fil-line);
+}
+
+#pollModal .modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--fil-brand);
+}
+
+#pollModal .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}
+
+#pollModal .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+}
+
+#pollModal .poll-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#pollModal .form-group {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+#pollModal .form-input {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid var(--fil-line-2);
+    border-radius: var(--fil-radius-sm);
+    background: var(--fil-card);
+    color: var(--fil-ink);
+    font-size: 14px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+#pollModal input[type="file"].form-input {
+    height: auto;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--fil-muted);
+}
+
+#pollModal .form-input:focus {
+    outline: none;
+    border-color: var(--fil-brand-2);
+    box-shadow: var(--fil-ring);
+}
+
+#pollModal .choices-section {
+    margin: 0;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--fil-line);
+    border-radius: 0;
+    background: none;
+}
+
+#pollModal .choices-title {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fil-ink-2);
+}
+
+#pollOptions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#pollOptions .poll-option {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+#pollOptions .poll-option .form-input {
+    padding-right: 44px;
+}
+
+/* behaviour: absolutely positioned inside its option row */
+#pollModal .remove-option {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--fil-soft);
+    color: var(--fil-muted);
+    cursor: pointer;
+}
+
+#pollModal .remove-option:hover {
+    background: var(--fil-accent-soft);
+    color: var(--fil-danger);
+}
+
+#pollModal .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+#pollModal .btn-primary {
+    background: var(--fil-accent);
+    color: #fff;
+}
+
+#pollModal .btn-primary:hover {
+    background: var(--fil-accent-2);
+}
+
+#pollModal .btn-secondary {
+    background: var(--fil-soft-2);
+    color: var(--fil-ink-2);
+}
+
+#pollModal .btn-secondary:hover {
+    background: var(--fil-line-2);
+}
+
+#pollModal #addOption {
+    width: 100%;
+    margin-top: 10px;
+    border: 1px dashed var(--fil-line-2);
+    border-radius: var(--fil-radius-sm);
+    background: transparent;
+    color: var(--fil-brand-2);
+}
+
+#pollModal #addOption:hover {
+    border-color: var(--fil-brand-2);
+    background: var(--fil-brand-soft);
+}
+
+#pollModal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 24px;
+    border-top: 1px solid var(--fil-line);
+    background: #fbfafd;
+}
+
+/* ------------------------------------------------------- toast (behaviour) */
+
+#toast.toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1100;
+    width: auto;
+    max-width: calc(100vw - 48px);
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--fil-ink);
+    color: #fff;
+    font-size: 14px;
+    box-shadow: var(--fil-shadow-pop);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100px);
+    transition: transform 0.3s var(--fil-ease), opacity 0.3s;
+}
+
+#toast.toast i {
+    color: #4ade80;
+}
+
+#toast.toast.error {
+    background: #b42318;
+}
+
+#toast.toast.error i {
+    color: #fff;
+}
+
+#toast.toast.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------- mobile */
+
+@media (max-width: 600px) {
+    .feed-container {
+        padding: 18px 10px 64px;
+    }
+
+    .feed-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .post-creation,
+    .post {
+        border-radius: 14px;
+    }
+
+    .post {
+        padding: 16px 16px 10px;
+    }
+
+    .attach-btn {
+        padding: 0 10px;
+    }
+
+    .attach-btn span {
+        display: none;
+    }
+
+    .post-creation .post-actions {
+        flex-wrap: wrap;
+    }
+
+    .post-attachments {
+        flex-wrap: nowrap;
+    }
+
+    .post-btn {
+        flex: 1 1 100%;
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    .post .post-actions button {
+        gap: 6px;
+        padding: 0 6px;
+        font-size: 13px;
+    }
+
+    .comments-modal[style*="display: block"],
+    .likers-modal[style*="display: block"],
+    #pollModal.modal[style*="display: block"] {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .comments-modal-content,
+    .likers-modal-content,
+    #pollModal .modal-content {
+        width: 100%;
+        max-height: 92vh;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-post-content,
+    .comments-section {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .comments-separator {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .comment-form-container {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    /* icon + count is enough when the half-width button gets this narrow */
+    .post .post-actions .comment-text {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .comments-modal-content,
+    .likers-modal-content,
+    #pollModal .modal-content,
+    .comments-modal-overlay,
+    .likers-modal-overlay,
+    .post .post-actions .like-btn.liked i {
+        animation: none;
+    }
+}
