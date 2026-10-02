@@ -278,6 +278,52 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Django's built-in logging config puts a require_debug_true filter on its
+# console handler, so with DEBUG=False a 500 writes nothing to stderr: the
+# traceback goes only to the mail_admins handler. That handler builds the
+# dynamic email backend, which queries the database, so any error that comes
+# from a broken connection fails again inside the error handler and the real
+# traceback is lost. Log to a file instead, independently of DEBUG.
+#
+# ERROR_LOG defaults outside BASE_DIR because BASE_DIR is the document root on
+# the current host: a log written inside it is publicly fetchable whenever the
+# .htaccess that hands requests to Passenger goes missing.
+ERROR_LOG = env(
+    "ERROR_LOG", default=str(Path(BASE_DIR).parent / "private" / "django-errors.log")
+)
+os.makedirs(os.path.dirname(ERROR_LOG), exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "errorfile": {
+            "level": "ERROR",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": ERROR_LOG,
+            "maxBytes": 5 * 1024 * 1024,
+            "backupCount": 3,
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        # propagate=False keeps django.request off the default mail_admins
+        # handler. Mailing an error report opens an SMTP connection inside the
+        # request, which is what makes a 500 take ~25 seconds to come back.
+        "django.request": {
+            "handlers": ["errorfile"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
+
 # Production settings
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
