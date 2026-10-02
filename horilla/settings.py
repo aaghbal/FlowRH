@@ -310,6 +310,10 @@ LOGGING = {
             "maxBytes": 5 * 1024 * 1024,
             "backupCount": 3,
             "formatter": "verbose",
+            # Explicit, because the handler otherwise picks up the process
+            # locale. Under Passenger that is ascii, and a log line holding an
+            # accented name raises UnicodeEncodeError inside the log handler.
+            "encoding": "utf-8",
         },
     },
     "loggers": {

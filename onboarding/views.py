@@ -1166,7 +1166,7 @@ def employee_creation(request, token):
             instance=existing_employee_post,
         )
         if form.is_valid():
-            print("✅ Form is valid, proceeding...")
+            logger.debug("Employee creation form is valid, proceeding")
             user.save()
             login(request, user)
             
@@ -1180,40 +1180,50 @@ def employee_creation(request, token):
             
             # Force update if we have an instance (existing employee)
             if form.instance and form.instance.pk:
-                print("� Updating existing employee...")
+                logger.debug("Updating existing employee")
                 employee_personal_info.save()
             else:
-                print("➕ Creating new employee...")
+                logger.debug("Creating new employee")
                 try:
                     employee_personal_info.save()
                 except IntegrityError as e:
-                    print(f"IntegrityError: {str(e)}")
-                    print(f"Looking for employees with user_id={user.id} or email={candidate.email}")
+                    logger.warning(
+                        "IntegrityError saving employee for user_id=%s email=%s: %s",
+                        user.id,
+                        candidate.email,
+                        e,
+                    )
                     
                     # Let's also check what's actually in the database using raw SQL to bypass any model managers
                     from django.db import connection
                     with connection.cursor() as cursor:
                         cursor.execute("SELECT id, email, employee_user_id_id, is_active FROM employee_employee WHERE employee_user_id_id = %s", [user.id])
                         raw_results = cursor.fetchall()
-                        print(f"Raw DB query for user_id={user.id}: {raw_results}")
+                        logger.debug(
+                            "Raw DB rows for user_id=%s: %s", user.id, raw_results
+                        )
                     
                     # Check ALL employees with this user_id (including inactive ones)
                     # Use get_all() to bypass the company manager filtering
                     all_user_employees = Employee.objects.get_all().filter(employee_user_id=user)
-                    print(f"Found {all_user_employees.count()} employees with user_id={user.id} (including inactive):")
-                    for emp in all_user_employees:
-                        print(f"  - Employee ID: {emp.id}, Email: {emp.email}, User ID: {emp.employee_user_id_id}, Active: {emp.is_active}")
+                    logger.debug(
+                        "Employees with user_id=%s (including inactive): %s",
+                        user.id,
+                        [(e.id, e.email, e.is_active) for e in all_user_employees],
+                    )
                     
                     # Check ALL employees with this email (including inactive ones)
                     all_email_employees = Employee.objects.get_all().filter(email=candidate.email)
-                    print(f"Found {all_email_employees.count()} employees with email={candidate.email} (including inactive):")
-                    for emp in all_email_employees:
-                        print(f"  - Employee ID: {emp.id}, Email: {emp.email}, User ID: {emp.employee_user_id_id}, Active: {emp.is_active}")
+                    logger.debug(
+                        "Employees with email=%s (including inactive): %s",
+                        candidate.email,
+                        [(e.id, e.email, e.is_active) for e in all_email_employees],
+                    )
                     
                     # Use the first employee we find (prefer by user_id), even if inactive
                     existing_emp = all_user_employees.first() or all_email_employees.first()
                     if existing_emp:
-                        print("🔄 Found existing employee, updating...")
+                        logger.debug("Found existing employee, updating")
                         # Update all the fields
                         for field_name in ['employee_first_name', 'employee_last_name', 'phone', 'dob', 'gender', 'qualification']:
                             if field_name in form.cleaned_data:
@@ -1226,9 +1236,13 @@ def employee_creation(request, token):
                         existing_emp.is_active = True
                         existing_emp.save()
                         employee_personal_info = existing_emp
-                        print("✅ Existing employee updated successfully")
+                        logger.debug("Existing employee updated successfully")
                     else:
-                        print(f"No existing employee found to update for user_id={user.id} or email={candidate.email}")
+                        logger.error(
+                            "No existing employee to update for user_id=%s email=%s",
+                            user.id,
+                            candidate.email,
+                        )
                         messages.error(request, _("Database error occurred. Please try again."))
                         return render(
                             request,
@@ -1252,22 +1266,22 @@ def employee_creation(request, token):
 
             try:
                 work_info.save()
-                print("Work info saved successfully")
+                logger.debug("Work info saved successfully")
             except IntegrityError as e:
-                print(f"Work info IntegrityError: {str(e)}")
+                logger.warning("IntegrityError saving work info: %s", e)
                 # If there's still a constraint error, find and update the existing record
                 existing_work_info = EmployeeWorkInformation.objects.filter(
                     employee_id=employee_personal_info
                 ).first()
                 if existing_work_info:
-                    print("Found existing work info, updating it...")
+                    logger.debug("Found existing work info, updating it")
                     existing_work_info.job_position_id = job_position
                     existing_work_info.date_joining = candidate.joining_date
                     existing_work_info.email = candidate.email
                     existing_work_info.company_id = candidate.recruitment_id.company_id
                     existing_work_info.location = candidate.recruitment_id.site
                     existing_work_info.save()
-                    print("Existing work info updated successfully")
+                    logger.debug("Existing work info updated successfully")
             onboarding_portal.count = 3
             onboarding_portal.save()
             messages.success(
@@ -1276,9 +1290,11 @@ def employee_creation(request, token):
             return redirect("employee-bank-details", token)
         else:
             # Add error message if form is not valid
-            print("❌ Form is NOT valid:")
-            print("Form errors:", form.errors)
-            print("Non-field errors:", form.non_field_errors())
+            logger.debug(
+                "Employee creation form invalid: %s / %s",
+                form.errors,
+                form.non_field_errors(),
+            )
             messages.error(request, _("Please correct the errors below."))
     return render(
         request,
