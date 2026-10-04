@@ -17,20 +17,20 @@
                         <div class="centered-div">
                             <input
                             type="checkbox"
-                            title='{% trans "Select All" %}'
+                            title='{% trans "Tout sélectionner" %}'
                             class="oh-input oh-input__checkbox myTicketsAll"
                             onchange="$(this).closest('.oh-sticky-table').find('.my-tickets-row').prop('checked',$(this).is(':checked')).change();addingTicketsIds()"
                             />
                         </div>
                     </div>
-                    <div class="oh-sticky-table__th">{% trans "Title" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "Start Value" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "Current Value" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "Target Value" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "Progress Percentage" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "Start Date" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "End Date" %}</div>
-                    <div class="oh-sticky-table__th">{% trans "Status" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Titre" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Valeur de départ" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Valeur actuelle" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Valeur cible" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Pourcentage de progression" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Date de début" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Date de fin" %}</div>
+                    <div class="oh-sticky-table__th">{% trans "Statut" %}</div>
                     {% if perms.pms.change_employeeobjective or emp_objective|is_manager:request.user %}
                         <div class="oh-sticky-table__th oh-sticky-table__right">{% trans "Actions" %}</div>
                     {% endif %}
@@ -118,13 +118,13 @@
                                     <form
                                         action='{% url "delete-employee-keyresult" kr.id %}'
                                         class="w-50"
-                                        onsubmit="return confirm('{% trans 'Are you sure you want to delete	this Key result?' %}');"
+                                        onsubmit="return confirm('{% trans 'Êtes-vous sûr de vouloir supprimer ce résultat clé ?' %}');"
                                         method='post' onclick="event.stopPropagation()" >
                                         {% csrf_token %}
                                         <button
                                             type="submit"
                                             class="oh-btn oh-btn--light-bkg w-100"
-                                            title="{% trans 'Delete' %}"
+                                            title="{% trans 'Supprimer' %}"
                                         >
                                             <ion-icon
                                                 class="me-1 md hydrated"
@@ -163,7 +163,7 @@
                     min="1"
                 />
                 <span class="oh-pagination__label"
-                    >{% trans "of" %}
+                    >{% trans "sur" %}
                     {{krs.paginator.num_pages}}</span
                 >
             </div>
@@ -176,7 +176,7 @@
                         hx-target="#krData{{emp_objective.id}}"
                         hx-get="{% url 'kr-table-view' emp_objective.id %}?{{pd}}&krs_page=1"
                         class="oh-pagination__link"
-                        >{% trans "First" %}</a
+                        >{% trans "Première" %}</a
                     >
                 </li>
                 <li
@@ -186,7 +186,7 @@
                         hx-target="#krData{{emp_objective.id}}"
                         hx-get="{% url 'kr-table-view' emp_objective.id  %}?{{pd}}&krs_page={{ krs.previous_page_number }}"
                         class="oh-pagination__link"
-                        >{% trans "Previous" %}</a
+                        >{% trans "Précédente" %}</a
                     >
                 </li>
                 {% endif %} {% if krs.has_next %}
@@ -197,7 +197,7 @@
                         hx-target="#krData{{emp_objective.id}}"
                         hx-get="{% url 'kr-table-view' emp_objective.id  %}?{{pd}}&krs_page={{ krs.next_page_number }}"
                         class="oh-pagination__link"
-                        >{% trans "Next" %}</a
+                        >{% trans "Suivante" %}</a
                     >
                 </li>
                 <li
@@ -207,7 +207,7 @@
                         hx-target="#krData{{emp_objective.id}}"
                         hx-get="{% url 'kr-table-view' emp_objective.id  %}?{{pd}}&krs_page={{ krs.paginator.num_pages }}"
                         class="oh-pagination__link"
-                        >{% trans "Last" %}</a
+                        >{% trans "Dernière" %}</a
                     >
                 </li>
                 {% endif %}
@@ -218,7 +218,7 @@
 {% else %}
     <!-- start of empty page -->
         <h5 class="oh-404__subtitle" style="padding: 30px;">
-        {% trans "No valid key result assigned!" %}
+        {% trans "Aucun résultat clé valide assigné !" %}
         </h5>
     <!-- end of empty page -->
 {% endif %}

@@ -128,7 +128,7 @@ def obj_form_save(request, objective_form):
     start_date = objective_form.cleaned_data["start_date"]
     default_krs = objective_form.cleaned_data["key_result_id"]
 
-    messages.success(request, _("Objective created"))
+    messages.success(request, _("Objectif créé"))
     if assignees:
         for emp in assignees:
             emp_objective = EmployeeObjective(
@@ -265,7 +265,7 @@ def objective_update(request, obj_id):
                 )
             messages.success(
                 request,
-                _("Objective %(objective)s Updated") % {"objective": instance},
+                _("Objectif %(objective)s modifié") % {"objective": instance},
             )
             return HttpResponse("<script>window.location.reload()</script>")
     context = {"objective_form": objective_form, "k_form": KRForm(), "update": True}
@@ -337,7 +337,7 @@ def key_result_create(request):
             instance = form.save()
             messages.success(
                 request,
-                _("Key result %(key_result)s created successfully")
+                _("Résultat clé %(key_result)s créé avec succès")
                 % {"key_result": instance},
             )
             mutable_get = request.GET.copy()
@@ -393,7 +393,7 @@ def kr_create_or_update(request, kr_id=None):
                 instance = form.save()
                 messages.success(
                     request,
-                    _("Key result %(key_result)s updated successfully")
+                    _("Résultat clé %(key_result)s modifié avec succès")
                     % {"key_result": instance},
                 )
                 return HttpResponse("<script>window.location.reload()</script>")
@@ -404,7 +404,7 @@ def kr_create_or_update(request, kr_id=None):
                 instance = form.save()
                 messages.success(
                     request,
-                    _("Key result %(key_result)s created successfully")
+                    _("Résultat clé %(key_result)s créé avec succès")
                     % {"key_result": instance},
                 )
                 return HttpResponse("<script>window.location.reload()</script>")
@@ -468,7 +468,7 @@ def add_assignees(request, obj_id):
             objective.save()
             messages.success(
                 request,
-                _("Objective %(objective)s Updated") % {"objective": objective},
+                _("Objectif %(objective)s modifié") % {"objective": objective},
             )
             return HttpResponse("<script>window.location.reload()</script>")
 
@@ -495,16 +495,16 @@ def objective_delete(request, obj_id):
             objective.delete()
             messages.success(
                 request,
-                _("Objective %(objective)s deleted") % {"objective": objective},
+                _("Objectif %(objective)s supprimé") % {"objective": objective},
             )
         else:
             messages.warning(
                 request,
-                _("You can't delete objective %(objective)s,related entries exists")
+                _("Impossible de supprimer l'objectif %(objective)s, des entrées liées existent")
                 % {"objective": objective},
             )
     except EmployeeObjective.DoesNotExist:
-        messages.error(request, _("Objective not found."))
+        messages.error(request, _("Objectif introuvable."))
     return redirect(objective_list_view)
 
 
@@ -793,7 +793,7 @@ def objective_detailed_view_activity(request, id):
         }
         return render(request, "okr/objective_detailed_view_activity.html", context)
     else:
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("Vous n'avez pas la permission."))
         return HttpResponse("<script>window.location.reload();</script>")
 
 
@@ -902,7 +902,7 @@ def objective_detailed_view_objective_status(request, id):
     objective.save()
     messages.info(
         request,
-        _("Objective %(objective)s status updated")
+        _("Statut de l'objectif %(objective)s mis à jour")
         % {"objective": objective.objective},
     )
     return redirect(objective_detailed_view_activity, id)
@@ -932,7 +932,7 @@ def objective_detailed_view_key_result_status(request, obj_id, kr_id):
     else:
         employee_key_result.status = status
     employee_key_result.save()
-    messages.info(request, _("Status has been updated"))
+    messages.info(request, _("Le statut a été mis à jour"))
     # return redirect(objective_detailed_view_activity, id=obj_id)
     response = redirect(objective_detailed_view_activity, id=obj_id)
     return HttpResponse(
@@ -960,7 +960,7 @@ def objective_detailed_view_current_value(request, kr_id):
             employee_key_result.save()
             messages.info(
                 request,
-                _("Current value of %(employee_key_result)s updated")
+                _("Valeur actuelle de %(employee_key_result)s mise à jour")
                 % {"employee_key_result": employee_key_result},
             )
             return redirect(objective_detailed_view_activity, objective_id)
@@ -971,7 +971,7 @@ def objective_detailed_view_current_value(request, kr_id):
             employee_key_result.save()
             messages.info(
                 request,
-                _("Current value of %(employee_key_result)s updated")
+                _("Valeur actuelle de %(employee_key_result)s mise à jour")
                 % {"employee_key_result": employee_key_result},
             )
             # return redirect(objective_detailed_view_activity, objective_id)
@@ -981,9 +981,9 @@ def objective_detailed_view_current_value(request, kr_id):
             )
 
         elif int(current_value) > target_value:
-            messages.warning(request, _("Current value is greater than target value"))
+            messages.warning(request, _("La valeur actuelle est supérieure à la valeur cible"))
             return redirect(objective_detailed_view_activity, objective_id)
-        messages.error(request, _("Error occurred during current value updation"))
+        messages.error(request, _("Erreur lors de la mise à jour de la valeur actuelle"))
         return redirect(objective_detailed_view_activity, objective_id)
 
 
@@ -1000,11 +1000,11 @@ def objective_archive(request, id):
     if objective.archive:
         objective.archive = False
         objective.save()
-        messages.info(request, _("Objective un-archived successfully!."))
+        messages.info(request, _("Objectif désarchivé avec succès !"))
     elif not objective.archive:
         objective.archive = True
         objective.save()
-        messages.info(request, _("Objective archived successfully!."))
+        messages.info(request, _("Objectif archivé avec succès !"))
     return redirect(f"/pms/objective-list-view?{request.environ['QUERY_STRING']}")
 
 
@@ -1069,7 +1069,7 @@ def create_employee_objective(request):
                         target_value=kr.target_value,
                         start_date=emp_obj.start_date,
                     )
-            messages.success(request, _("Employee objective created successfully"))
+            messages.success(request, _("Objectif de l'employé créé avec succès"))
             return HttpResponse("<script>window.location.reload()</script>")
     context = {"form": form, "k_form": KRForm(), "emp_obj": True}
     return render(
@@ -1099,12 +1099,12 @@ def update_employee_objective(request, emp_obj_id):
             if form.is_valid():
                 emp_obj = form.save(commit=False)
                 emp_obj.save()
-                messages.success(request, _("Employee objective Updated successfully"))
+                messages.success(request, _("Objectif de l'employé modifié avec succès"))
                 return HttpResponse("<script>window.location.reload()</script>")
         context = {"form": form, "k_form": KRForm()}
         return render(request, "okr/emp_objective_form.html", context=context)
     else:
-        messages.info(request, _("You don't have permission."))
+        messages.info(request, _("Vous n'avez pas la permission."))
         return HttpResponse("<script>window.location.reload()</script>")
 
 
@@ -1124,11 +1124,11 @@ def archive_employee_objective(request, emp_obj_id):
     if emp_objective.archive:
         emp_objective.archive = False
         emp_objective.save()
-        messages.success(request, _("Objective un-archived successfully!."))
+        messages.success(request, _("Objectif désarchivé avec succès !"))
     elif not emp_objective.archive:
         emp_objective.archive = True
         emp_objective.save()
-        messages.success(request, _("Objective archived successfully!."))
+        messages.success(request, _("Objectif archivé avec succès !"))
     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
 
@@ -1146,14 +1146,14 @@ def delete_employee_objective(request, emp_obj_id):
     single_view = request.GET.get("single_view")
     if emp_objective.employee_key_result.exists():
         messages.warning(
-            request, _("You can't delete this objective,related entries exists")
+            request, _("Impossible de supprimer cet objectif, des entrées liées existent")
         )
     else:
         employee = emp_objective.employee_id
         objective = emp_objective.objective_id
         emp_objective.delete()
         objective.assignees.remove(employee)
-        messages.success(request, _("Objective deleted successfully!."))
+        messages.success(request, _("Objectif supprimé avec succès !"))
     if not single_view:
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
     else:
@@ -1208,11 +1208,11 @@ def change_employee_objective_status(request):
             )
         else:
             messages.info(
-                request, _("The status of the objective is the same as selected.")
+                request, _("Le statut de l'objectif est déjà celui sélectionné.")
             )
 
     else:
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("Vous n'avez pas la permission."))
     return HttpResponse("<script>$('#reloadMessagesButton').click();</script>")
 
 
@@ -1289,7 +1289,7 @@ def key_result_creation(request, obj_id, obj_type):
                 form.start_value = form.current_value
                 form.employee_objective_id = employee_objective_id
                 form.save()
-                messages.success(request, _("Key result created"))
+                messages.success(request, _("Résultat clé créé"))
                 return redirect(objective_detailed_view, obj_id)
             else:
                 context["key_result_form"] = form_key_result
@@ -1314,7 +1314,7 @@ def key_result_creation(request, obj_id, obj_type):
                     return render(
                         request, "okr/key_result/key_result_creation.html", context
                     )
-            messages.success(request, _("Key results created"))
+            messages.success(request, _("Résultats clés créés"))
             return redirect(objective_list_view)
     return render(request, "okr/key_result/key_result_creation.html", context)
 
@@ -1350,7 +1350,7 @@ def key_result_creation_htmx(request, id):
             form.start_value = form.current_value
             form.employee_objective_id = objective
             form.save()
-            messages.success(request, _("Key result created"))
+            messages.success(request, _("Résultat clé créé"))
             response = render(
                 request, "okr/key_result/key_result_creation_htmx.html", context
             )
@@ -1383,7 +1383,7 @@ def key_result_update(request, id):
         )  # adding intial objective value to the form
         if key_result_form.is_valid():
             key_result_form.save()
-            messages.info(request, _("Key result updated"))
+            messages.info(request, _("Résultat clé modifié"))
             response = render(request, "okr/key_result/key_result_update.html", context)
             return HttpResponse(
                 response.content.decode("utf-8") + "<script>location.reload();</script>"
@@ -2522,7 +2522,7 @@ def period_create(request):
         form = PeriodForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Period creation was Successful "))
+            messages.success(request, _("Période créée avec succès"))
         else:
             context["form"] = form
     return render(request, "period/period_create.html", context)
@@ -2546,7 +2546,7 @@ def period_update(request, period_id):
         form = PeriodForm(request.POST, instance=period)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Period updated  Successfully. "))
+            messages.success(request, _("Période modifiée avec succès."))
         else:
             context["form"] = form
     return render(request, "period/period_update.html", context)
@@ -2565,11 +2565,11 @@ def period_delete(request, period_id):
     try:
         obj_period = Period.objects.get(id=period_id)
         obj_period.delete()
-        messages.success(request, _("Period deleted successfully."))
+        messages.success(request, _("Période supprimée avec succès."))
     except Period.DoesNotExist:
-        messages.error(request, _("Period not found."))
+        messages.error(request, _("Période introuvable."))
     except ProtectedError:
-        messages.error(request, _("Related entries exists"))
+        messages.error(request, _("Des entrées liées existent"))
     return redirect("period-hx-view")
 
 
@@ -2754,17 +2754,17 @@ def objective_bulk_archive(request):
     ids = request.POST["ids"]
     ids = json.loads(ids)
     is_active = False
-    message = _("un-archived")
+    message = _("désarchivé")
     if request.GET.get("is_active") == "False":
         is_active = True
-        message = _("archived")
+        message = _("archivé")
     for objective_id in ids:
         objective_obj = EmployeeObjective.objects.get(id=objective_id)
         objective_obj.archive = is_active
         objective_obj.save()
         messages.success(
             request,
-            _("{objective} is {message}").format(
+            _("{objective} est {message}").format(
                 objective=objective_obj, message=message
             ),
         )
@@ -2786,7 +2786,7 @@ def objective_bulk_delete(request):
                 objective.delete()
                 messages.success(
                     request,
-                    _("%(employee)s's %(objective)s deleted")
+                    _("Objectif %(objective)s de %(employee)s supprimé")
                     % {
                         "objective": objective.objective,
                         "employee": objective.employee_id,
@@ -2795,11 +2795,11 @@ def objective_bulk_delete(request):
             else:
                 messages.warning(
                     request,
-                    _("You can't delete objective %(objective)s with status %(status)s")
+                    _("Impossible de supprimer l'objectif %(objective)s avec le statut %(status)s")
                     % {"objective": objective.objective, "status": objective.status},
                 )
         except EmployeeObjective.DoesNotExist:
-            messages.error(request, _("Objective not found."))
+            messages.error(request, _("Objectif introuvable."))
 
     return JsonResponse({"message": "Success"})
 

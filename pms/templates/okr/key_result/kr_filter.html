@@ -5,18 +5,18 @@
 <input type="hidden" name="view" id="filterView" value="">
   <div class="oh-dropdown__filter-body">
     <div class="oh-accordion">
-      <div class="oh-accordion-header">{% trans "Key Result" %}</div>
+      <div class="oh-accordion-header">{% trans "Résultat clé" %}</div>
       <div class="oh-accordion-body">
         <div class="row">
           <div class="col-sm-6">
             <div class="oh-input-group">
-              <label class="oh-label">{% trans "Progress Type" %}</label>
+              <label class="oh-label">{% trans "Type de progression" %}</label>
               {{ f.form.progress_type }}
             </div>
           </div>
           <div class="col-sm-6">
             <div class="oh-input-group">
-              <label class="oh-label">{% trans "Target Value" %}</label>
+              <label class="oh-label">{% trans "Valeur cible" %}</label>
               {{ f.form.target_value }}
             </div>
           </div>
@@ -24,13 +24,13 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="oh-input-group">
-              <label class="oh-label">{% trans "Duration" %}</label>
+              <label class="oh-label">{% trans "Durée" %}</label>
               {{ f.form.duration }}
             </div>
           </div>
           <div class="col-sm-6">
             <div class="oh-input-group">
-              <label class="oh-label">{% trans "Company" %}</label>
+              <label class="oh-label">{% trans "Entreprise" %}</label>
               {{ f.form.company_id }}
             </div>
           </div>
@@ -40,7 +40,7 @@
   </div>
   <div class="oh-dropdown__filter-footer">
     <button type="submit" class="oh-btn oh-btn--secondary oh-btn--small w-100 filterButton" id="filterSubmit">
-      {% trans "Filter" %}
+      {% trans "Filtrer" %}
     </button>
   </div>
 

@@ -6,7 +6,7 @@
 <div class="d-flex flex-row-reverse mb-2">
   <span class="me-3 review_ongoing" onclick="$('[name=status]').val('At Risk');$('[name=status]').first().change();$('.filterButton').click()" style="cursor: pointer">
       <span class="oh-dot oh-dot--small me-1" style="background-color:red"></span>
-      {% trans "At Risk" %}
+      {% trans "À risque" %}
     </span>
   <span class="me-3 review_ongoing" onclick="$('[name=status]').val('Not Started');$('[name=status]').first().change();$('.filterButton').click()" style="cursor: pointer">
     <span class="oh-dot oh-dot--small me-1" style="background-color:grey"></span>
@@ -14,15 +14,15 @@
   </span>
   <span class="me-3 paid" onclick="$('[name=status]').val('Behind');$('[name=status]').first().change();$('.filterButton').click()" style="cursor: pointer">
     <span class="oh-dot oh-dot--small me-1" style="background-color:orange"></span>
-    {% trans "Behind" %}
+    {% trans "En retard" %}
   </span>
   <span class="me-3 confirmed" onclick="$('[name=status]').val('Closed');$('[name=status]').first().change();$('.filterButton').click()" style="cursor: pointer">
     <span class="oh-dot oh-dot--small me-1" style="background-color:rgb(103, 171, 238)"></span>
-    {% trans "Closed" %}
+    {% trans "Clôturé" %}
   </span>
   <span class="me-3 paid" onclick="$('[name=status]').val('On Track');$('[name=status]').first().change();$('.filterButton').click()" style="cursor: pointer">
     <span class="oh-dot oh-dot--small me-1" style="background-color:yellowgreen"></span>
-    {% trans "On Track" %}
+    {% trans "En bonne voie" %}
   </span>
 </div>
 {% if not request.GET.dashboard %}
@@ -32,21 +32,21 @@
       id="selectAllObjectives"
       style="cursor: pointer"
     >
-      {% trans "Select All Objectives" %}
+      {% trans "Sélectionner tous les objectifs" %}
     </div>
     <div
       class="oh-checkpoint-badge text-secondary mb-2"
       id="unselectAllObjectives"
       style="cursor: pointer"
     >
-      {% trans "Unselect All Objectives" %}
+      {% trans "Désélectionner tous les objectifs" %}
     </div>
     {% comment %} <div
       class="oh-checkpoint-badge text-info mb-2"
       id="exportObjectives"
       style="cursor: pointer; display: none"
     >
-      {% trans "Export Objectives" %}
+      {% trans "Exporter les objectifs" %}
     </div> {% endcomment %}
     <div class="oh-checkpoint-badge text-danger mb-2" id="selectedShowObjectives" style="display: none"></div>
     <!-- end of selection buttons -->
@@ -56,14 +56,14 @@
 
 <ul class="oh-tabs__tablist" >
   <li class="oh-tabs__tab " data-target="#tab_1">
-    {% trans "Self Objective" %}
-    <span class="oh-badge oh-badge--secondary oh-badge--small oh-badge--round ms-2 mr-2" id="" data-category-id="1" title="{{own_objectives|length}} objective" onclick="event.stopPropagation()">{{own_objectives|length}}</span>
+    {% trans "Mes objectifs" %}
+    <span class="oh-badge oh-badge--secondary oh-badge--small oh-badge--round ms-2 mr-2" id="" data-category-id="1" title="{{own_objectives|length}} objectif(s)" onclick="event.stopPropagation()">{{own_objectives|length}}</span>
   </li>
   <!-- normal user can't view all objective  -->
   {% if perms.pms.view_employeeobjective or request.user|filtersubordinates %}
   <li class="oh-tabs__tab" data-target="#tab_2">
-    {% trans "All Objective" %}
-    <span class="oh-badge oh-badge--secondary oh-badge--small oh-badge--round ms-2 mr-2" id="" data-category-id="1" title="{{all_objectives|length}} objective" onclick="event.stopPropagation()">{{all_objectives|length}}</span>
+    {% trans "Tous les objectifs" %}
+    <span class="oh-badge oh-badge--secondary oh-badge--small oh-badge--round ms-2 mr-2" id="" data-category-id="1" title="{{all_objectives|length}} objectif(s)" onclick="event.stopPropagation()">{{all_objectives|length}}</span>
   </li>
   {% endif %}
 </ul>
@@ -82,14 +82,14 @@
                     type="checkbox"
                     class="own-objects oh-input oh-input__checkbox"
                     id = "Ownobjectives"
-                    title='{% trans "Select All" %}'
+                    title='{% trans "Tout sélectionner" %}'
                   />
                 </div>
               </div>
-              <div class="oh-sticky-table__th">{% trans "Owner" %}</div>
-              <div class="oh-sticky-table__th">{% trans "Objective" %}</div>
-              <div class="oh-sticky-table__th">{% trans "Due In" %}</div>
-              <div class="oh-sticky-table__th">{% trans "Status" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Propriétaire" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Objectif" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Échéance dans" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Statut" %}</div>
               <div class="oh-sticky-table__th"></div>
             </div>
           </div>
@@ -151,14 +151,14 @@
                   {% if own_objective.archive %}
                   <form
                     action="{%url 'objective-archive' id=own_objective.id %}?{{pg}}"
-                    onsubmit="return confirm('{% trans "Do you want un-archive this OKR ?" %}')"
+                    onsubmit="return confirm('{% trans "Voulez-vous désarchiver cet OKR ?" %}')"
                     method="post"
                     style="display: contents"
                   >
                     {% csrf_token %}
                     <button
                       class="oh-btn oh-btn--danger-outline w-100"
-                      title="{% trans 'Un-archive' %}"
+                      title="{% trans 'Désarchiver' %}"
                     >
                       <ion-icon
                         name="archive-sharp"
@@ -171,7 +171,7 @@
                   {% else %}
                   <form
                     action="{%url 'objective-archive' id=own_objective.id %}?{{pg}}"
-                    onsubmit="return confirm('{% trans "Do you want archive this OKR ?" %}')"
+                    onsubmit="return confirm('{% trans "Voulez-vous archiver cet OKR ?" %}')"
                     method="post"
                     style="display: contents"
                   >
@@ -191,14 +191,14 @@
                   {% endif %} {% if perms.pms.delete_employeeobjective %}
                   <form
                     action="{% url 'objective-delete' obj_id=own_objective.id %}"
-                    onsubmit="return confirm('{% trans "Do you want Delete this OKR ?" %}')"
+                    onsubmit="return confirm('{% trans "Voulez-vous supprimer cet OKR ?" %}')"
                     method="post"
                     style="display: contents"
                   >
                     {% csrf_token %}
                     <button
                       class="oh-btn oh-btn--danger-outline w-100"
-                      title="{% trans 'Delete' %}"
+                      title="{% trans 'Supprimer' %}"
                     >
                       <ion-icon
                         name="trash-outline"
@@ -236,7 +236,7 @@
               hx-target="#objective_list"
             />
             <span class="oh-pagination__label"
-              >{% trans "of" %} {{ own_objectives.paginator.num_pages }}</span
+              >{% trans "sur" %} {{ own_objectives.paginator.num_pages }}</span
             >
           </div>
           <ul class="oh-pagination__items">
@@ -246,7 +246,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page=1"
                 class="oh-pagination__link"
                 hx-target="#objective_list"
-                >{% trans "First" %}</a
+                >{% trans "Première" %}</a
               >
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
@@ -254,7 +254,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page={{ own_objectives.previous_page_number }}"
                 class="oh-pagination__link"
                 hx-target="#objective_list"
-                >{% trans "Previous" %}</a
+                >{% trans "Précédente" %}</a
               >
             </li>
             {%endif %} {% if own_objectives.has_next %}
@@ -263,7 +263,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page={{ own_objectives.next_page_number }}"
                 class="btn btn-outline-secondary"
                 hx-target="#objective_list"
-                >{% trans "Next" %}</a
+                >{% trans "Suivante" %}</a
               >
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
@@ -271,7 +271,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page={{ own_objectives.paginator.num_pages }}"
                 hx-target="#objective_list"
                 class="oh-pagination__link"
-                >{% trans "Last" %}</a
+                >{% trans "Dernière" %}</a
               >
             </li>
             {% endif %}
@@ -283,7 +283,7 @@
       {% else %}
         <div class="d-flex flex-column justify-content-center align-items-center" style="height:60vh; text-align: center;">
           <img style="display: block; width: 100px; margin: 20px auto;" src="{% static 'images/ui/goal.png' %}" class="" alt="Page not found. 404." /><br>
-          <h5 class="oh-404__subtitle">{% trans "There are no Objectives available." %}</h5>
+          <h5 class="oh-404__subtitle">{% trans "Aucun objectif n'est disponible." %}</h5>
         </div>
       {% endif %}
     </div>
@@ -301,14 +301,14 @@
                     type="checkbox"
                     class="all-objects oh-input oh-input__checkbox"
                     id = "Allobjectives"
-                    title='{% trans "Select All" %}'
+                    title='{% trans "Tout sélectionner" %}'
                   />
                 </div>
               </div>
-              <div class="oh-sticky-table__th">{% trans "Owner" %}</div>
-              <div class="oh-sticky-table__th">{% trans "Objective" %}</div>
-              <div class="oh-sticky-table__th">{% trans "Due In" %}</div>
-              <div class="oh-sticky-table__th">{% trans "Status" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Propriétaire" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Objectif" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Échéance dans" %}</div>
+              <div class="oh-sticky-table__th">{% trans "Statut" %}</div>
               <div class="oh-sticky-table__th"></div>
             </div>
           </div>
@@ -370,14 +370,14 @@
                   {% if all_objective.archive %}
                   <form
                     action="{%url 'objective-archive' id=all_objective.id %}?{{pg}}"
-                    onsubmit="return confirm('{% trans "Do you want un-archive this OKR ?" %}')"
+                    onsubmit="return confirm('{% trans "Voulez-vous désarchiver cet OKR ?" %}')"
                     method="post"
                     style="display: contents"
                   >
                     {% csrf_token %}
                     <button
                       class="oh-btn oh-btn--danger-outline w-100"
-                      title="{% trans 'Un-archive' %}"
+                      title="{% trans 'Désarchiver' %}"
                     >
                       <ion-icon
                         name="archive-sharp"
@@ -390,7 +390,7 @@
                   {% else %}
                   <form
                     action="{%url 'objective-archive' id=all_objective.id %}?{{pg}}"
-                    onsubmit="return confirm('{% trans "Do you want archive this OKR ?" %}')"
+                    onsubmit="return confirm('{% trans "Voulez-vous archiver cet OKR ?" %}')"
                     method="post"
                     style="display: contents"
                   >
@@ -410,14 +410,14 @@
                   {% endif %} {% if perms.pms.delete_employeeobjective %}
                   <form
                     action="{% url 'objective-delete' obj_id=all_objective.id %}"
-                    onsubmit="return confirm('{% trans "Do you want delete this OKR ?" %}')"
+                    onsubmit="return confirm('{% trans "Voulez-vous supprimer cet OKR ?" %}')"
                     method="post"
                     style="display: contents"
                   >
                     {% csrf_token %}
                     <button
                       class="oh-btn oh-btn--danger-outline w-100"
-                      title="{% trans 'Delete' %}"
+                      title="{% trans 'Supprimer' %}"
                     >
                       <ion-icon
                         name="trash-outline"
@@ -455,7 +455,7 @@
               hx-target="#objective_list"
             />
             <span class="oh-pagination__label"
-              >{% trans "of" %} {{ all_objectives.paginator.num_pages }}</span
+              >{% trans "sur" %} {{ all_objectives.paginator.num_pages }}</span
             >
           </div>
           <ul class="oh-pagination__items">
@@ -465,7 +465,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page=1"
                 class="oh-pagination__link"
                 hx-target="#objective_list"
-                >{% trans "First" %}</a
+                >{% trans "Première" %}</a
               >
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
@@ -473,7 +473,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page={{ all_objectives.previous_page_number }}"
                 class="oh-pagination__link"
                 hx-target="#objective_list"
-                >{% trans "Previous" %}</a
+                >{% trans "Précédente" %}</a
               >
             </li>
             {%endif %} {% if all_objectives.has_next %}
@@ -482,7 +482,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page={{ all_objectives.next_page_number }}"
                 class="btn btn-outline-secondary"
                 hx-target="#objective_list"
-                >{% trans "Next" %}</a
+                >{% trans "Suivante" %}</a
               >
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
@@ -490,7 +490,7 @@
                 hx-get="{% url 'objective-list-search' %}?{{pg}}&page={{ all_objectives.paginator.num_pages }}"
                 hx-target="#objective_list"
                 class="oh-pagination__link"
-                >{% trans "Last" %}</a
+                >{% trans "Dernière" %}</a
               >
             </li>
             {% endif %}
@@ -502,7 +502,7 @@
       {% else %}
         <div class="d-flex flex-column justify-content-center align-items-center" style="height:60vh; text-align: center;">
           <img style="display: block; width: 100px; margin: 20px auto;" src="{% static 'images/ui/goal.png' %}" class="" alt="Page not found. 404." /><br>
-          <h5 class="oh-404__subtitle">{% trans "There are no Objectives available." %}</h5>
+          <h5 class="oh-404__subtitle">{% trans "Aucun objectif n'est disponible." %}</h5>
         </div>
 
       {% endif %}

@@ -6,7 +6,7 @@
 	<section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
 		<div class="oh-main__titlebar oh-main__titlebar--left">
 			<h1 class="oh-main__titlebar-title fw-bold">
-				{% trans "Objective Key Results (OKR)" %}
+				{% trans "Objectifs et résultats clés (OKR)" %}
 			</h1>
 			<a
 				class="oh-main__titlebar-search-toggle"
@@ -53,7 +53,7 @@
 								@click="open = !open"
 								onclick="event.preventDefault()"
 							>
-								<ion-icon name="filter" class="mr-1"></ion-icon>{% trans "Filter" %}
+								<ion-icon name="filter" class="mr-1"></ion-icon>{% trans "Filtrer" %}
 								<div id="filterCount"></div>
 							</button>
 							<div
@@ -64,18 +64,18 @@
 							>
 								<div class="oh-dropdown__filter-body">
 									<div class="oh-accordion">
-										<div class="oh-accordion-header">{% trans "Objective" %}</div>
+										<div class="oh-accordion-header">{% trans "Objectif" %}</div>
 										<div class="oh-accordion-body">
 											<div class="row">
 												<div class="col-sm-12 col-md-12 col-lg-6">
 													<div class="oh-input-group">
 														<label class="oh-label" for="{{objective_filer_form.objective.id_for_label}}"
-															>{% trans "Objective" %}</label
+															>{% trans "Objectif" %}</label
 														>
 														{{objective_filer_form.objective}}
 													</div>
 													<div class="oh-input-group">
-														<label class="oh-label" for="{{objective_filer_form.status.id_for_label}}">{% trans "Status" %}</label>
+														<label class="oh-label" for="{{objective_filer_form.status.id_for_label}}">{% trans "Statut" %}</label>
 														{{objective_filer_form.status}}
 													</div>
 												</div>
@@ -85,27 +85,27 @@
 														{{objective_filer_form.employee_id}}
 													</div>
 													<div class="oh-input-group">
-														<label class="oh-label" for="{{objective_filer_form.created_at.id_for_label}}">{% trans "Created" %} </label>
+														<label class="oh-label" for="{{objective_filer_form.created_at.id_for_label}}">{% trans "Créé" %} </label>
 														{{objective_filer_form.created_at}}
 													</div>
 												</div>
 												<div class="col-sm-12 col-md-12 col-lg-6">
 													<div class="oh-input-group">
 														<label class="oh-label" for="{{objective_filer_form.start_date.id_for_label}}"
-															>{% trans "Start Date" %}</label
+															>{% trans "Date de début" %}</label
 														>
 														{{objective_filer_form.start_date}}
 													</div>
 													<div class="oh-input-group">
 														<label class="oh-label" for="{{objective_filer_form.updated_at.id_for_label}}"
-															>{% trans "Updated At" %}</label
+															>{% trans "Modifié le" %}</label
 														>
 														{{objective_filer_form.updated_at}}
 													</div>
 												</div>
 												<div class="col-sm-12 col-md-12 col-lg-6">
 													<div class="oh-input-group">
-														<label class="oh-label" for="{{objective_filer_form.end_date.id_for_label}}">{% trans "End Date" %}</label>
+														<label class="oh-label" for="{{objective_filer_form.end_date.id_for_label}}">{% trans "Date de fin" %}</label>
 														{{objective_filer_form.end_date}}
 													</div>
 													<div class="oh-input-group">
@@ -114,14 +114,14 @@
 													</div>
 												</div>
 												<div class="oh-input-group">
-													<label class="oh-label" for="{{objective_filer_form.emp_obj_id.id_for_label}}">{% trans "Key Result" %}</label>
+													<label class="oh-label" for="{{objective_filer_form.emp_obj_id.id_for_label}}">{% trans "Résultat clé" %}</label>
 													{{ objective_filer_form.emp_obj_id }}
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="oh-accordion">
-										<div class="oh-accordion-header">{% trans "Advanced" %}</div>
+										<div class="oh-accordion-header">{% trans "Avancé" %}</div>
 										<div class="oh-accordion-body">
 											<div class="row">
 												<div class="col-sm-12 col-md-12 col-lg-6">
@@ -130,7 +130,7 @@
 															hx-get="{%url 'objective-list-search' %}?created_at_date_range=today"
 															hx-target="#objective_list"
 															class="oh-btn oh-btn--secondary oh-btn--small w-100"
-															>{% trans "Today" %}</a
+															>{% trans "Aujourd'hui" %}</a
 														>
 													</div>
 												</div>
@@ -140,7 +140,7 @@
 															hx-get="{%url 'objective-list-search' %}?created_at_date_range=yesterday"
 															hx-target="#objective_list"
 															class="oh-btn oh-btn--secondary oh-btn--small w-100"
-															>{% trans "Yesterday" %}</a
+															>{% trans "Hier" %}</a
 														>
 													</div>
 												</div>
@@ -150,7 +150,7 @@
 															hx-get="{%url 'objective-list-search' %}?created_at_date_range=week"
 															hx-target="#objective_list"
 															class="oh-btn oh-btn--secondary oh-btn--small w-100"
-															>{% trans "This Week" %}</a
+															>{% trans "Cette semaine" %}</a
 														>
 													</div>
 												</div>
@@ -160,7 +160,7 @@
 															hx-get="{%url 'objective-list-search' %}?created_at_date_range=month"
 															hx-target="#objective_list"
 															class="oh-btn oh-btn--secondary oh-btn--small w-100"
-															>{% trans "This Month" %}</a
+															>{% trans "Ce mois-ci" %}</a
 														>
 													</div>
 												</div>
@@ -173,7 +173,7 @@
 										class="oh-btn oh-btn--secondary oh-btn--small w-100 filterButton"
 										id="objective-filter-form-submit"
 									>
-										{% trans "Filter" %}
+										{% trans "Filtrer" %}
 									</button>
 								</div>
 							</div>
@@ -185,7 +185,7 @@
 							onclick="event.preventDefault()"
 						>
 							<button class="oh-btn ml-2" @click="open = !open">
-								<ion-icon name="library-outline" class="mr-1"></ion-icon>{% trans "Group By" %}
+								<ion-icon name="library-outline" class="mr-1"></ion-icon>{% trans "Grouper par" %}
 							</button>
 							<div
 								class="oh-dropdown__menu oh-dropdown__menu--right oh-dropdown__filter p-4"
@@ -194,11 +194,11 @@
 								style="display: none"
 							>
 								<div class="oh-accordion">
-									<label for="id_field">{% trans "Group By" %}</label>
+									<label for="id_field">{% trans "Grouper par" %}</label>
 									<div class="row">
 										<div class="col-sm-12 col-md-12 col-lg-6">
 											<div class="oh-input-group">
-												<label class="oh-label" for="id_field">{% trans "Field" %}</label>
+												<label class="oh-label" for="id_field">{% trans "Champ" %}</label>
 											</div>
 										</div>
 										<div class="col-sm-12 col-md-12 col-lg-6">
@@ -249,7 +249,7 @@
 												href="#"
 												class="oh-dropdown__link"
 												id="unArchiveObjectives"
-												>{% trans "Un-Archive" %}</a
+												>{% trans "Désarchiver" %}</a
 											>
 										</li>
 
@@ -259,7 +259,7 @@
 												href="#"
 												class="oh-dropdown__link oh-dropdown__link--danger"
 												id="deleteObjectives"
-												>{% trans "Delete" %}</a
+												>{% trans "Supprimer" %}</a
 											>
 										</li>
 										{% endif %}
@@ -278,7 +278,7 @@
 										style="text-decoration: none"
 									>
 										<ion-icon name="add-outline"></ion-icon>
-										{% trans "Create" %}
+										{% trans "Créer" %}
 									</a>
 								</div>
 							</div>
@@ -288,7 +288,7 @@
 			</form>
 	</section>
 	<div class="oh-checkpoint-badge mb-2" id="selectedObjectives" data-ids="[]" data-clicked="" style="display:none;" >
-		{% trans "Selected Objectives" %}
+		{% trans "Objectifs sélectionnés" %}
 	</div>
 	<div class="oh-wrapper" id="objective_list">
 		{% include 'okr/objective_list.html' %}

@@ -29,7 +29,7 @@
                 <!-- start of filter -->
                 <div class="oh-dropdown" x-data="{open: false}">
                     <button class="oh-btn ml-2" @click="open = !open">
-                        <ion-icon name="filter" class="mr-1"></ion-icon>{% trans "Filter" %}
+                        <ion-icon name="filter" class="mr-1"></ion-icon>{% trans "Filtrer" %}
                         <div id="filterCount"></div>
                     </button>
                     {% include "leave/restrict/restrict_filter.html" %}
@@ -46,7 +46,7 @@
                                 {% if perms.leave.delete_restrictleave %}
                                     <li class="oh-dropdown__item">
                                         <a href="#" id="bulkRestrictedDaysDelete" data-action="delete"
-                                            class="oh-dropdown__link oh-dropdown__link--danger">{% trans "Delete" %}</a>
+                                            class="oh-dropdown__link oh-dropdown__link--danger">{% trans "Supprimer" %}</a>
                                     </li>
                                 {% endif %}
                             </ul>
@@ -64,7 +64,7 @@
                             data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
                             hx-get="{% url 'restrict-creation' %}" hx-target="#objectCreateModalTarget">
                             <ion-icon name="add-outline" class="me-1"></ion-icon>
-                            {% trans "Create" %}
+                            {% trans "Créer" %}
                         </button>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
 <!-- end of nav bar -->
 
 <div class="oh-checkpoint-badge mb-2" id="selectedRestrictDays" data-ids="[]" data-clicked="" style="display: none">
-    {% trans "Selected Holidays" %}
+    {% trans "Jours sélectionnés" %}
 </div>
 
 <!--start of holiday display  -->
@@ -94,7 +94,7 @@
                 <img style="display: block; width: 150px; height: 150px; margin: 10px auto"
                     src="{% static 'images/ui/restrict.png' %}" class="mb-4" alt="" />
                 <h3 style="font-size: 20px" class="oh-404__subtitle">
-                    {% trans "No restricted date available." %}
+                    {% trans "Aucun jour restreint disponible." %}
                 </h3>
             </div>
         </div>

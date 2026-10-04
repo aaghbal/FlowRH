@@ -102,7 +102,7 @@
                 data-toggle="oh-modal-toggle"
                 data-target="#objectDetailsModal"
                 class="oh-btn oh-btn--light-bkg w-100"
-                title="Add assignees"
+                title="Ajouter des assignés"
                 ><ion-icon name="add-outline"></ion-icon
               ></a>
               {% endif %}
@@ -112,7 +112,7 @@
 
         <ul class="helpdesk__card-items">
           <li class="helpdesk__card-item">
-            <span class="helpdesk__card-label">{% trans "Managers:" %}</span>
+            <span class="helpdesk__card-label">{% trans "Responsables :" %}</span>
             <span class="helpdesk__card-value" name="" id="">
               <div class="d-flex justify-content-between custom-scroll">
                 <div class="avatars" id="avatarsContainer">
@@ -129,14 +129,14 @@
             </span>
           </li>
           <li class="helpdesk__card-item">
-            <span class="helpdesk__card-label">{% trans "Duration:" %}</span>
+            <span class="helpdesk__card-label">{% trans "Durée :" %}</span>
             <span class="helpdesk__card-value" name="" id=""
               >{{objective.duration}}
               {{objective.get_duration_unit_display}}</span
             >
           </li>
           <li class="helpdesk__card-item">
-            <span class="helpdesk__card-label">{% trans "Description:" %}</span>
+            <span class="helpdesk__card-label">{% trans "Description :" %}</span>
             <span class="helpdesk__card-value" name="" id=""
               >{{objective.description}}</span
             >
@@ -175,7 +175,7 @@
         alt="Page not found. 404."
       />
       <h5 class="oh-404__subtitle">
-        {% trans "There are no assignees for this objective at the moment." %}
+        {% trans "Aucun assigné pour cet objectif pour le moment." %}
       </h5>
     </div>
     <!-- end of empty page-->
@@ -282,7 +282,7 @@
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Current Value cannot exceed target value!",
+          text: "La valeur actuelle ne peut pas dépasser la valeur cible !",
           timer: 3000, // Display the alert for 3 seconds
           timerProgressBar: true, // Show the progress bar
           showConfirmButton: false, // Hide the "OK" button

@@ -14,10 +14,10 @@
 {% if krs %}
     <!-- start of select all -->
     {% comment %} <div class="oh-checkpoint-badge text-success mb-2" id="selectAllInstances" style="cursor: pointer;">
-        {% trans "Select All" %}
+        {% trans "Tout sélectionner" %}
     </div>
     <div class="oh-checkpoint-badge text-secondary mb-2" id="unselectAllInstances" style="cursor: pointer;display: none;">
-        {% trans "Unselect All" %}
+        {% trans "Tout désélectionner" %}
     </div>
     <div class="oh-checkpoint-badge text-danger mb-2" id="selectedCandidate" style="display: none">
     </div> {% endcomment %}
@@ -48,7 +48,7 @@
                                 type="checkbox"
                                 class="all-contract oh-input oh-input__checkbox"
                                 id = "Allcontract"
-                                title='{% trans "Select All" %}'
+                                title='{% trans "Tout sélectionner" %}'
                             />
                         </div>
                     </div>
@@ -57,13 +57,13 @@
                         hx-get="{% url 'filter-key-result' %}?{{pd}}&sortby=title"
                         hx-target="#krs-container"
                     >
-                        {% trans "Key Results" %}
+                        {% trans "Résultats clés" %}
                     </div>
-                    <div data-cell-index="1" data-cell-title="{% trans 'Progress Type' %}" class="oh-sticky-table__th">{% trans "Progress Type" %}</div>
-                    <div data-cell-index="2" data-cell-title="{% trans 'Target Value' %}" class="oh-sticky-table__th">{% trans "Target Value" %}</div>
-                    <div data-cell-index="3" data-cell-title="{% trans 'Duration' %}" class="oh-sticky-table__th">{% trans "Duration" %}</div>
-                    <div data-cell-index="4" data-cell-title="{% trans 'Descrption' %}" class="oh-sticky-table__th">{% trans "Descrption" %}</div>
-                    <div data-cell-index="5" data-cell-title="{% trans 'Company' %}" class="oh-sticky-table__th">{% trans "Company" %}</div>
+                    <div data-cell-index="1" data-cell-title="{% trans 'Type de progression' %}" class="oh-sticky-table__th">{% trans "Type de progression" %}</div>
+                    <div data-cell-index="2" data-cell-title="{% trans 'Valeur cible' %}" class="oh-sticky-table__th">{% trans "Valeur cible" %}</div>
+                    <div data-cell-index="3" data-cell-title="{% trans 'Durée' %}" class="oh-sticky-table__th">{% trans "Durée" %}</div>
+                    <div data-cell-index="4" data-cell-title="{% trans 'Description' %}" class="oh-sticky-table__th">{% trans "Description" %}</div>
+                    <div data-cell-index="5" data-cell-title="{% trans 'Entreprise' %}" class="oh-sticky-table__th">{% trans "Entreprise" %}</div>
                     {% comment %} <div data-cell-index="5" data-cell-title="{% trans 'Est active' %}" class="oh-sticky-table__th">{% trans "Est active" %}</div> {% endcomment %}
 
                     <div class="oh-sticky-table__th oh-sticky-table__right">{% trans "Actions" %}</div>
@@ -94,7 +94,7 @@
                     {{kr.target_value}}
                 </div>
                 <div data-cell-index="3" class="oh-sticky-table__td">
-                {{kr.duration}}{% trans " Days" %}
+                {{kr.duration}} {% trans "Jours" %}
                 </div>
                 <div data-cell-index="4" class="oh-sticky-table__td">
                 {{kr.description}}
@@ -124,10 +124,10 @@
                     <a
                     class="oh-btn oh-btn--danger-outline oh-btn--light-bkg w-100"
                     onclick = "event.preventDefault();event.stopPropagation();"
-                    hx-confirm="{% trans 'Do you want to delete this Key result?' %}"
+                    hx-confirm="{% trans 'Voulez-vous supprimer ce résultat clé ?' %}"
                     hx-post="{% url 'delete-key-result' kr.id %}?{{pd}}"
                     hx-target="#krs-container"
-                    title="{% trans 'Delete' %}"
+                    title="{% trans 'Supprimer' %}"
                     >
                     <ion-icon
                         name="trash-outline"
@@ -150,7 +150,7 @@
         <span
             class="oh-pagination__page"
             >
-            {% trans "Page" %} {{ krs.number }} {% trans "of" %} {{ krs.paginator.num_pages }}.
+            {% trans "Page" %} {{ krs.number }} {% trans "sur" %} {{ krs.paginator.num_pages }}.
             </span
         >
         <nav class="oh-pagination__nav">
@@ -165,23 +165,23 @@
                 hx-target="#krs-container"
                 min="1"
             />
-            <span class="oh-pagination__label">{% trans "of" %} {{krs.paginator.num_pages}}</span>
+            <span class="oh-pagination__label">{% trans "sur" %} {{krs.paginator.num_pages}}</span>
             </div>
             <ul class="oh-pagination__items">
             {% if krs.has_previous %}
             <li class="oh-pagination__item oh-pagination__item--wide">
-                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page=1" class="oh-pagination__link">{% trans "First" %}</a>
+                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page=1" class="oh-pagination__link">{% trans "Première" %}</a>
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
-                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page={{ krs.previous_page_number }}" class="oh-pagination__link">{% trans "Previous" %}</a>
+                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page={{ krs.previous_page_number }}" class="oh-pagination__link">{% trans "Précédente" %}</a>
             </li>
             {% endif %}
             {% if krs.has_next %}
             <li class="oh-pagination__item oh-pagination__item--wide">
-                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page={{ krs.next_page_number }}" class="oh-pagination__link">{% trans "Next" %}</a>
+                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page={{ krs.next_page_number }}" class="oh-pagination__link">{% trans "Suivante" %}</a>
             </li>
             <li class="oh-pagination__item oh-pagination__item--wide">
-                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page={{ krs.paginator.num_pages }}" class="oh-pagination__link">{% trans "Last" %}</a>
+                <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=list&page={{ krs.paginator.num_pages }}" class="oh-pagination__link">{% trans "Dernière" %}</a>
             </li>
             {% endif %}
 

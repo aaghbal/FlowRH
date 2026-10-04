@@ -21,7 +21,7 @@
     data-target="#leaveactivitySidebar"
     ></ion-icon>
     </a>
-    <span class="oh-activity-sidebar__title"> {% trans "Activities" %} </span>
+    <span class="oh-activity-sidebar__title"> {% trans "Activités" %} </span>
 </div>
 <form method="post"
     hx-target="#activityContainer"
@@ -31,7 +31,7 @@
     <div>
         <input type="text" name="comment" id="commentInput" class="oh-input w-100" placeholder="Comment here">
         <button type="submit" id="commentButton" class="oh-btn oh-btn--secondary mt-2 mr-0 oh-btn--w-100-resp" style="display: none;">
-            {% trans "Comment" %}
+            {% trans "Commentaire" %}
         </button>
     </div>
 
@@ -47,7 +47,7 @@
                     class="oh-activity-list__image" alt="Simone de Beauvoir" />
             </div>
             <small class="oh-activity-list__description">
-                <span><strong>{{comment.employee_id}}</strong> {% trans "added a comment" %}</span>
+                <span><strong>{{comment.employee_id}}</strong> {% trans "a ajouté un commentaire" %}</span>
                 <div class="oh-activity-list__comment-timestamp mt-1">
                     <span class="dateformat_changer">{{ comment.created_at|date:"M. d, Y" }}</span>&nbsp,&nbsp
                     <span class="timeformat_changer">{{ comment.created_at|date:"g:i a" }}</span>
@@ -74,8 +74,8 @@
                             class="oh-activity-list__image" alt="Albert Camus" />
                     </div>
                     <small class="oh-activity-list__description"><strong>{{activity.updated_by}} </strong>
-                        {% trans "updated" %}
-                        <strong> {{activity.changes.0.field |title|cut:'_'}}</strong> {% trans "from" %}
+                        {% trans "a modifié" %}
+                        <strong> {{activity.changes.0.field |title|cut:'_'}}</strong> {% trans "de" %}
                         <strong>{{activity.changes.0.old}}</strong> to <strong>{{activity.changes.0.new}}</strong>
                     </small>
                 </li>
@@ -95,12 +95,12 @@
                                 class="oh-activity-list__image" alt="Albert Camus" />
                         </div>
                         <small class="oh-activity-list__description"><strong>{{activity.key_result.changed_user}} </strong>
-                            {% trans "updated" %}
-                            <strong>{{history.field|replace|title}}</strong> {% trans "field of " %}
-                            <strong>{{activity.key_result.k_r}} </strong> {% trans "key result" %},
-                            {% trans "from" %}
-                            <strong>{{history.old}}</strong> {% trans "to" %} <strong>{{history.new}}</strong>
-                            {% comment %} <strong> {{activity.changes.0.field |title|cut:'_'}}</strong> {% trans "from" %}
+                            {% trans "a modifié" %}
+                            <strong>{{history.field|replace|title}}</strong> {% trans "champ de" %} 
+                            <strong>{{activity.key_result.k_r}} </strong> {% trans "résultat clé" %},
+                            {% trans "de" %}
+                            <strong>{{history.old}}</strong> {% trans "à" %} <strong>{{history.new}}</strong>
+                            {% comment %} <strong> {{activity.changes.0.field |title|cut:'_'}}</strong> {% trans "de" %}
                             <strong>{{activity.changes.0.old}}</strong> to <strong>{{activity.changes.0.new}}</strong> {% endcomment %}
                         </small>
                     </li>
@@ -121,7 +121,7 @@
                                 class="oh-activity-list__image" alt="Albert Camus" />
                         </div>
                         <small class="oh-activity-list__description">
-                            <span><strong>{{activity.comment.employee_id}}</strong> {% trans "added a comment" %}</span>
+                            <span><strong>{{activity.comment.employee_id}}</strong> {% trans "a ajouté un commentaire" %}</span>
                         </small>
                     </div>
                     <div>
@@ -146,7 +146,7 @@
                             class="oh-activity-list__image" alt="Albert Camus" />
                     </div>
                     <small class="oh-activity-list__description"><strong>{{activity.updated_by}} </strong>
-                        {% trans "Created Objective" %}
+                        {% trans "a créé l'objectif" %}
                     </small>
                 </li>
                 <li>

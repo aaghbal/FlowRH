@@ -30,14 +30,14 @@
         <span class="oh-card__title oh-card__title--sm fw-bold" style="font-size:18px;">{{kr}}</span>
         <div class="oh-timeoff-modal__stats-container mb-1">
           <div class="oh-timeoff-modal__stat mt-2">
-            <span class="oh-timeoff-modal__stat-title fw-bold text-dark" style="width:135px;">{% trans "Target Value" %}</span>
+            <span class="oh-timeoff-modal__stat-title fw-bold text-dark" style="width:135px;">{% trans "Valeur cible" %}</span>
               <span class="oh-timeoff-modal__stat-title">
                 {{kr.target_value}} {{kr.progress_type}}
               </span>
           </div>
           <div class="oh-timeoff-modal__stat mt-2">
-            <span class="oh-timeoff-modal__stat-title fw-bold text-dark">{% trans "Duration" %}</span>
-            <span class="oh-timeoff-modal__stat-title">{{kr.duration}}{% trans " Days" %}</span>
+            <span class="oh-timeoff-modal__stat-title fw-bold text-dark">{% trans "Durée" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{{kr.duration}} {% trans "Jours" %}</span>
           </div>
         </div>
 
@@ -67,12 +67,12 @@
                 <li class="oh-dropdown__item">
                 <a class="text-danger"
                   onclick = "event.preventDefault();event.stopPropagation();"
-                  hx-confirm="{% trans 'Do you want to delete this Key result?' %}"
+                  hx-confirm="{% trans 'Voulez-vous supprimer ce résultat clé ?' %}"
                   hx-post="{% url 'delete-key-result' kr.id %}?{{pd}}"
                   hx-target="#krs-container"
-                  title="{% trans 'Delete' %}"
+                  title="{% trans 'Supprimer' %}"
 
-                >{% trans "Delete" %}</a
+                >{% trans "Supprimer" %}</a
                 >
                 </li>
             </ul>
@@ -87,7 +87,7 @@
     <span
       class="oh-pagination__page"
       >
-      {% trans "Page" %} {{ krs.number }} {% trans "of" %} {{ krs.paginator.num_pages }}.
+      {% trans "Page" %} {{ krs.number }} {% trans "sur" %} {{ krs.paginator.num_pages }}.
       </span
     >
     <nav class="oh-pagination__nav">
@@ -102,23 +102,23 @@
           hx-target="#krs-container"
           min="1"
         />
-        <span class="oh-pagination__label">{% trans "of" %} {{krs.paginator.num_pages}}</span>
+        <span class="oh-pagination__label">{% trans "sur" %} {{krs.paginator.num_pages}}</span>
       </div>
       <ul class="oh-pagination__items">
         {% if krs.has_previous %}
         <li class="oh-pagination__item oh-pagination__item--wide">
-          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page=1" class="oh-pagination__link">{% trans "First" %}</a>
+          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page=1" class="oh-pagination__link">{% trans "Première" %}</a>
         </li>
         <li class="oh-pagination__item oh-pagination__item--wide">
-          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page={{ krs.previous_page_number }}" class="oh-pagination__link">{% trans "Previous" %}</a>
+          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page={{ krs.previous_page_number }}" class="oh-pagination__link">{% trans "Précédente" %}</a>
         </li>
         {% endif %}
         {% if krs.has_next %}
         <li class="oh-pagination__item oh-pagination__item--wide">
-          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page={{ krs.next_page_number }}" class="oh-pagination__link">{% trans "Next" %}</a>
+          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page={{ krs.next_page_number }}" class="oh-pagination__link">{% trans "Suivante" %}</a>
         </li>
         <li class="oh-pagination__item oh-pagination__item--wide">
-          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page={{ krs.paginator.num_pages }}" class="oh-pagination__link">{% trans "Last" %}</a>
+          <a hx-target='#krs-container' hx-get="{% url 'filter-key-result' %}?{{pd}}&view=card&page={{ krs.paginator.num_pages }}" class="oh-pagination__link">{% trans "Dernière" %}</a>
         </li>
         {% endif %}
 

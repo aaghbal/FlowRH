@@ -1318,7 +1318,7 @@ class RestrictLeaveForm(ModelForm):
 
         if start_date and end_date and end_date < start_date:
             raise ValidationError(
-                _("End date should not be earlier than the start date.")
+                _("La date de fin ne doit pas être antérieure à la date de début.")
             )
 
         return end_date
@@ -1328,7 +1328,17 @@ class RestrictLeaveForm(ModelForm):
         fields = "__all__"
         exclude = ["is_active"]
         labels = {
-            "title": _("Title"),
+            "title": _("Titre"),
+        }
+        help_texts = {
+            "job_position": _(
+                "Si aucun poste n'est sélectionné, tous les postes du département choisi sont pris en compte."
+            ),
+            "include_all": _("Activer pour sélectionner tous les types de congé."),
+            "spesific_leave_types": _("Choisissez les types de congé à restreindre."),
+            "exclued_leave_types": _(
+                "Choisissez les types de congé à exclure de la restriction."
+            ),
         }
 
     def __init__(self, *args, **kwargs):

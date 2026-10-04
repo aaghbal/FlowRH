@@ -16,7 +16,7 @@
       class="oh-modal__dialog-title"
       id=""
     >
-      {% trans "Details" %}
+      {% trans "Détails" %}
     </h2>
     <button class="oh-modal__close" aria-label="Close" >
       <ion-icon name="close-outline"></ion-icon>
@@ -62,7 +62,7 @@
         </div>
     </a>
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title me-3">{% trans "Status" %}</span>
+            <span class="oh-timeoff-modal__stat-title me-3">{% trans "Statut" %}</span>
                 {% if perms.pms.change_employeeobjective or instance|is_manager_or_owner:request.user %}
 
                     <select name="status" id="{{instance.id}}" class="oh-table__editable-input p-3"
@@ -82,7 +82,7 @@
 <div class="" style="padding-top: 5px;">
     <div class="oh-timeoff-modal__stats-container">
         <div class="oh-timeoff-modal__stat" >
-            <span class="oh-timeoff-modal__stat-title">{% trans "Title" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{% trans "Titre" %}</span>
             <span class="oh-timeoff-modal__stat-count">{{instance.objective_id}}</span>
         </div>
         <div class="oh-timeoff-modal__stat" >
@@ -94,7 +94,7 @@
     </div>
     {% comment %} <div class="oh-timeoff-modal__stats-container mt-3 mb-3">
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title me-3">{% trans "Status" %}</span>
+            <span class="oh-timeoff-modal__stat-title me-3">{% trans "Statut" %}</span>
                 <select name="status" id="{{instance.id}}" class="oh-table__editable-input oh-select p-3"
                     hx-trigger="change" hx-post="{% url 'change-employee-objective-status' instance.id %}" hx-target="#objectDetailsModalTarget"
                 >
@@ -107,13 +107,13 @@
     </div> {% endcomment %}
     <div class="oh-timeoff-modal__stats-container mt-3 mb-3">
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title">{% trans "Start Date" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{% trans "Date de début" %}</span>
             <span class="oh-timeoff-modal__stat-count dateformat_changer">
                 {{instance.start_date}}
             </span>
         </div>
         <div class="oh-timeoff-modal__stat">
-            <span class="oh-timeoff-modal__stat-title">{% trans "End Date" %}</span>
+            <span class="oh-timeoff-modal__stat-title">{% trans "Date de fin" %}</span>
             <span class="oh-timeoff-modal__stat-count dateformat_changer">{{instance.end_date}}</span>
         </div>
     </div>
@@ -129,7 +129,7 @@
                 {% if perms.pms.delete_employeeobjective or instance|is_manager:request.user %}
 
                     {% if instance.archive %}
-                        <form  class="oh-btn oh-btn--primary" style="width: 50%;" onsubmit="return confirm('Do you want to Unarchive this Employee objective?')"  action='{% url "archive-employee-objective" instance.id %}'>
+                        <form  class="oh-btn oh-btn--primary" style="width: 50%;" onsubmit="return confirm('Voulez-vous désarchiver cet objectif d\'employé ?')"  action='{% url "archive-employee-objective" instance.id %}'>
                             <input type="hidden" name="archive" value="False" id="">
                             <input type="hidden" name="single_view" value="True">
                             <button style="background: none;
@@ -140,11 +140,11 @@
                                 cursor: pointer;
                                 outline: inherit;">
                                 <ion-icon name="archive-outline"></ion-icon>
-                                {% trans "Unarchive" %}
+                                {% trans "Désarchiver" %}
                             </button>
                         </form>
                     {% else %}
-                        <form  class="oh-btn oh-btn--primary" style="width: 50%;" onsubmit="return confirm('Do you want to archive this Employee objective?')"  action='{% url "archive-employee-objective" instance.id %}'>
+                        <form  class="oh-btn oh-btn--primary" style="width: 50%;" onsubmit="return confirm('Voulez-vous archiver cet objectif d\'employé ?')"  action='{% url "archive-employee-objective" instance.id %}'>
                             <input type="hidden" name="archive" value="False" id="">
                             <input type="hidden" name="single_view" value="True">
                             <button style="background: none;
@@ -159,7 +159,7 @@
                             </button>
                         </form>
                     {% endif %}
-                    <form  class="oh-btn oh-btn--secondary" method="post" style="width: 50%;" onsubmit="return confirm('Do you Want to delete this employee objective?')"  action='{% url "delete-employee-objective" instance.id %}'>
+                    <form  class="oh-btn oh-btn--secondary" method="post" style="width: 50%;" onsubmit="return confirm('Voulez-vous supprimer cet objectif d\'employé ?')"  action='{% url "delete-employee-objective" instance.id %}'>
                         {% csrf_token %}
                         <button style="background: none;
                             color: inherit;
@@ -169,7 +169,7 @@
                             cursor: pointer;
                             outline: inherit;">
                             <ion-icon name="trash-outline">
-                            </ion-icon>{% trans "Delete" %}
+                            </ion-icon>{% trans "Supprimer" %}
                         </button>
                     </form>
                 {% endif %}

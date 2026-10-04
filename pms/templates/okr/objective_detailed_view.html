@@ -8,18 +8,18 @@
 <main :class="sidebarOpen ? 'oh-main__sidebar-visible' : ''">
     <section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
         <div class="oh-main__titlebar oh-main__titlebar--left">
-            <h1 class="oh-main__titlebar-title fw-bold">{% trans "Objectives" %}</h1>
+            <h1 class="oh-main__titlebar-title fw-bold">{% trans "Objectifs" %}</h1>
         </div>
         {% if perms.pms.view_employeeobjective or request.user|filtersubordinates %}
         <div class="oh-btn-group">
-            <form action="{% url 'objective-archive' id=employee_objective.id %}" onsubmit="return confirmSubmit('{% trans "Do you want archive this Objective ?" %}')" method="post">
+            <form action="{% url 'objective-archive' id=employee_objective.id %}" onsubmit="return confirmSubmit('{% trans "Voulez-vous archiver cet objectif ?" %}')" method="post">
                 {% csrf_token %}
                 <button class="oh-btn  w-100 "style="background-color: white;!important" title="{% trans 'Archiver' %}" ><ion-icon name="archive-sharp"></ion-icon></button>
             </form>
             {% if perms.pms.delete_employeeobjective %}
-                <form action="{% url 'objective-delete' obj_id=employee_objective.id %}" onsubmit="return confirmSubmit('{% trans "Do you want Delete this Objective ?" %}')" method="post">
+                <form action="{% url 'objective-delete' obj_id=employee_objective.id %}" onsubmit="return confirmSubmit('{% trans "Voulez-vous supprimer cet objectif ?" %}')" method="post">
                     {% csrf_token %}
-                    <button  class="oh-btn oh-btn--danger-outline  w-100" title="{% trans 'Delete' %}" style="background-color: white;!important">
+                    <button  class="oh-btn oh-btn--danger-outline  w-100" title="{% trans 'Supprimer' %}" style="background-color: white;!important">
                         <ion-icon name="trash-outline" role="img" class="md hydrated" aria-label="trash outline"></ion-icon>
                     </button>
                 </form>
@@ -46,7 +46,7 @@
                             <div class="col-sm-12 col-md-12 col-lg-3">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                   <small class="oh-text--light">
-                                    <label class="fw-bold oh-text--dark">{% trans "Due" %}:</label>
+                                    <label class="fw-bold oh-text--dark">{% trans "Échéance" %}:</label>
                                     {{ current_date|timesince:employee_objective.end_date }}
                                   </small>
                                   <!-- checking userlevel   -->
@@ -75,7 +75,7 @@
                         </div>
                         <div class="row mt-4">
                             <div class="col-6 col-sm-6 col-md-6 col-lg-6">
-                                <label class="oh-label my-2 my-2 me-2" for="objectiveStatus">{% trans "Status" %}</label>
+                                <label class="oh-label my-2 my-2 me-2" for="objectiveStatus">{% trans "Statut" %}</label>
                                 <select
                                     id="objectiveStatus" class="oh-select oh-select--sm" name="objective_status"
                                     hx-post="{%url 'objective-detailed-view-objective-status'  id=employee_objective.id %}"
@@ -109,7 +109,7 @@
                 <div class="oh-card my-4">
                     <div class="oh-card__header d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
-                            <span class="oh-card__title oh-card__title--sm fw-bold me-1">{% trans "Key Results" %} </span>
+                            <span class="oh-card__title oh-card__title--sm fw-bold me-1">{% trans "Résultats clés" %} </span>
                             <span class="oh-badge oh-badge--small oh-badge--round oh-badge--danger">{{employee_objective.emp_obj_id.all.count}}</span>
                         </div>
                         <!-- checking userlevel   -->
@@ -120,7 +120,7 @@
                             data-target="#objectiveModalpopup"
                             hx-get="{% url 'key-result-creation-htmx' id=employee_objective.id %}"
                             hx-target="#ObjectiveModalFormTarget">
-                            <ion-icon name="add-circle-outline" class="me-1"></ion-icon>{% trans "Add New" %}
+                            <ion-icon name="add-circle-outline" class="me-1"></ion-icon>{% trans "Ajouter" %}
                             </a>
                         </div>
                         {% endif %}
@@ -135,7 +135,7 @@
                                         <div class="col-sm-12 col-md-12 col-lg-3">
                                             <div class="d-flex align-items-center justify-content-between mb-2">
                                                 <small class="oh-text--light">
-                                                    <label class="fw-bold oh-text--dark">{% trans "Due" %}:</label>
+                                                    <label class="fw-bold oh-text--dark">{% trans "Échéance" %}:</label>
                                                     {{ current_date|timesince:employee_key_result.end_date }}
                                                 </small>
                                                 <!-- checking userlevel   -->
@@ -167,7 +167,7 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                                 <div class="oh-container oh-container--outline">
                                                     <label class="oh-input__label oh-text--secondary fw-bold oh-text--xs mb-0 mt-1" for="startValue">
-                                                        {% trans "Start Value" %}
+                                                        {% trans "Valeur de départ" %}
                                                     </label>
                                                     <input
                                                         id="startValue"
@@ -179,7 +179,7 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                                 <div class="oh-container oh-container--outline ">
                                                     <label class="oh-input__label oh-text--secondary fw-bold oh-text--xs mb-0 mt-1" for="{{employee_key_result.id}}">
-                                                        {% trans "Current Value" %}
+                                                        {% trans "Valeur actuelle" %}
                                                     </label>
                                                     <input
                                                     id = {{employee_key_result.id}}
@@ -197,7 +197,7 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                                 <div class="oh-container oh-container--outline">
                                                     <label class="oh-input__label oh-text--secondary fw-bold oh-text--xs mb-0 mt-1" for="targetValue">
-                                                        {% trans "Target Value" %}
+                                                        {% trans "Valeur cible" %}
                                                     </label>
                                                     <input
                                                         id="targetValue"
@@ -211,7 +211,7 @@
                                     </div>
                                     <div class="oh-list-card__footer d-flex align-items-center justify-content-between flex-wrap">
                                         <div class="oh-input-group">
-                                            <label class="oh-label my-2 my-2 me-2" for="keyResultStatus">{% trans "Status" %}</label>
+                                            <label class="oh-label my-2 my-2 me-2" for="keyResultStatus">{% trans "Statut" %}</label>
                                             <select
                                                 id="keyResultStatus" name="key_result_status"
                                                 hx-post="{%url 'objective-detailed-view-key-result-status'  obj_id=employee_objective.id kr_id=employee_key_result.id %}"
@@ -246,7 +246,7 @@
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="oh-card">
                     <div class="oh-card__header">
-                        <span class="oh-card__title oh-card__title--sm fw-bold me-2">{% trans "Activity" %}</span>
+                        <span class="oh-card__title oh-card__title--sm fw-bold me-2">{% trans "Activité" %}</span>
                     </div>
                     <div class="oh-card__body mt-2">
                         <div id="objective_detailed_view_activity">
@@ -259,7 +259,7 @@
 
                                 {{comment_form.comment}}
                                 <button type="submit" class="oh-btn oh-btn--small oh-btn--secondary ms-auto" >
-                                    <ion-icon name="chatbox-outline" class="me-2" ></ion-icon>{% trans "Comment" %}
+                                    <ion-icon name="chatbox-outline" class="me-2" ></ion-icon>{% trans "Commentaire" %}
                                 </button>
                             </form>
                         </div>

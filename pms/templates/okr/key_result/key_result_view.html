@@ -8,7 +8,7 @@
 <main :class="sidebarOpen ? 'oh-main__sidebar-visible' : ''">
     <section class="oh-wrapper oh-main__topbar p-0" x-data="{searchShow: false}">
         <div class="oh-main__titlebar oh-main__titlebar--left">
-            <h1 class="oh-main__titlebar-title fw-bold">{% trans "Key Results" %}</h1>
+            <h1 class="oh-main__titlebar-title fw-bold">{% trans "Résultats clés" %}</h1>
         </div>
 
     </section>
@@ -25,7 +25,7 @@
                                         <span class="oh-list-card__title">{{employee_key_result.employee_objective_id.objective_id}} / {{employee_key_result.key_result}}</span>
                                         <div class="d-flex align-items-center justify-content-between mb-2">
                                             <small class="oh-text--light">
-                                                <label class="fw-bold oh-text--dark">{% trans "Due" %}:</label>
+                                                <label class="fw-bold oh-text--dark">{% trans "Échéance" %}:</label>
                                                 {{ current_date|timesince:employee_key_result.end_date }}
                                             </small>
                                             <!-- checking userlevel   -->
@@ -51,7 +51,7 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                                 <div class="oh-container oh-container--outline">
                                                     <label class="oh-input__label oh-text--secondary fw-bold oh-text--xs mb-0 mt-1">
-                                                        {% trans "Start Value" %}
+                                                        {% trans "Valeur de départ" %}
                                                     </label>
                                                     <input
                                                         class="oh-input oh-input--small oh-input--block px-0" min="0"
@@ -62,7 +62,7 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                                 <div class="oh-container oh-container--outline ">
                                                     <label class="oh-input__label oh-text--secondary fw-bold oh-text--xs mb-0 mt-1">
-                                                        {% trans "Current Value" %}
+                                                        {% trans "Valeur actuelle" %}
                                                     </label>
                                                     <input
                                                     type="number" class=""  min="0"
@@ -78,7 +78,7 @@
                                             <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                                                 <div class="oh-container oh-container--outline">
                                                     <label class="oh-input__label oh-text--secondary fw-bold oh-text--xs mb-0 mt-1">
-                                                        {% trans "Target Value" %}
+                                                        {% trans "Valeur cible" %}
                                                     </label>
                                                     <input
                                                         class="oh-input oh-input--small oh-input--block px-0" min="0"
@@ -90,7 +90,7 @@
                                     </div>
                                     <div class="oh-list-card__footer d-flex align-items-center justify-content-between flex-wrap">
                                         <div class="oh-input-group">
-                                            <label class="oh-label my-2 my-2 me-2" for="status">{% trans "Status" %}</label>
+                                            <label class="oh-label my-2 my-2 me-2" for="status">{% trans "Statut" %}</label>
                                             <select
                                                 id="status" name="key_result_status"
                                                 hx-post="{%url 'objective-detailed-view-key-result-status'  obj_id=employee_key_result.employee_objective_id.id kr_id=employee_key_result.id %}"

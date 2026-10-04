@@ -52,7 +52,7 @@ SUBMENUS = [
         "accessibility": "leave.sidebar.company_leave_accessibility",
     },
     {
-        "menu": trans("Restrict Leaves"),
+        "menu": trans("Congés restreints"),
         "redirect": reverse("restrict-view"),
         "accessibility": "leave.sidebar.restrict_leave_accessibility",
     },

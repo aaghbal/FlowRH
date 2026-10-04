@@ -41,12 +41,12 @@ class KeyResult(HorillaModel):
     """model used to create key results"""
 
     PROGRESS_CHOICES = (
-        ("%", _("Percentage")),
-        ("#", _("Number")),
+        ("%", _("Pourcentage")),
+        ("#", _("Nombre")),
         ("Currency", (("$", "USD$"), ("₹", "INR"), ("€", "EUR"))),
     )
     title = models.CharField(
-        max_length=60, null=True, blank=False, verbose_name="Title"
+        max_length=60, null=True, blank=False, verbose_name="Titre"
     )
     description = models.TextField(
         blank=False, null=False, max_length=255, verbose_name="Description"
@@ -62,7 +62,7 @@ class KeyResult(HorillaModel):
         Company,
         null=True,
         blank=True,
-        verbose_name=_("Company"),
+        verbose_name=_("Entreprise"),
         on_delete=models.CASCADE,
     )
     objects = HorillaCompanyManager()
@@ -84,30 +84,30 @@ class Objective(HorillaModel):
     """Model used for creating objectives"""
 
     DURATION_UNIT = (
-        ("days", _("Days")),
-        ("months", _("Months")),
-        ("years", _("Years")),
+        ("days", _("Jours")),
+        ("months", _("Mois")),
+        ("years", _("Années")),
     )
     title = models.CharField(
-        null=False, blank=False, max_length=100, verbose_name="Title"
+        null=False, blank=False, max_length=100, verbose_name="Titre"
     )
     description = models.TextField(
         blank=False, null=False, max_length=255, verbose_name="Description"
     )
     managers = models.ManyToManyField(
-        Employee, related_name="objective", blank=True, verbose_name="Managers"
+        Employee, related_name="objective", blank=True, verbose_name="Responsables"
     )
     assignees = models.ManyToManyField(
         Employee,
         related_name="assignees_objective",
         blank=True,
-        verbose_name="Assignees",
+        verbose_name="Assignés",
     )
     key_result_id = models.ManyToManyField(
         KeyResult,
         blank=True,
         related_name="objective",
-        verbose_name="Default Key results",
+        verbose_name="Résultats clés par défaut",
     )
     duration_unit = models.CharField(
         max_length=20,
@@ -115,7 +115,7 @@ class Objective(HorillaModel):
         null=True,
         blank=True,
         default="days",
-        verbose_name="Duration Unit",
+        verbose_name="Unité de durée",
     )
     duration = models.IntegerField(default=1, validators=[MinValueValidator(0)])
     add_assignees = models.BooleanField(default=False)
@@ -125,7 +125,7 @@ class Objective(HorillaModel):
         Company,
         null=True,
         blank=True,
-        verbose_name=_("Company"),
+        verbose_name=_("Entreprise"),
         on_delete=models.CASCADE,
     )
     objects = HorillaCompanyManager("employee_id__employee_work_info__company_id")
@@ -147,17 +147,17 @@ class EmployeeObjective(HorillaModel):
     """this is a EmployObjective model used for creating Employee objectives"""
 
     STATUS_CHOICES = (
-        ("On Track", _("On Track")),
-        ("Behind", _("Behind")),
-        ("Closed", _("Closed")),
-        ("At Risk", _("At Risk")),
-        ("Not Started", _("Not Started")),
+        ("On Track", _("En bonne voie")),
+        ("Behind", _("En retard")),
+        ("Closed", _("Clôturé")),
+        ("At Risk", _("À risque")),
+        ("Not Started", _("Non commencé")),
     )
     objective = models.CharField(
         null=True,
         blank=True,
         max_length=100,
-        verbose_name="Title",
+        verbose_name="Titre",
     )
     objective_description = models.TextField(
         blank=True,
@@ -171,7 +171,7 @@ class EmployeeObjective(HorillaModel):
         null=True,
         blank=True,
         related_name="employee_objective",
-        verbose_name="Objective",
+        verbose_name="Objectif",
         on_delete=models.PROTECT,
     )
     employee_id = models.ForeignKey(
@@ -180,13 +180,13 @@ class EmployeeObjective(HorillaModel):
         blank=True,
         related_name="employee_objective",
         on_delete=models.PROTECT,
-        verbose_name="Employee",
+        verbose_name="Employé",
     )
     key_result_id = models.ManyToManyField(
         KeyResult,
         blank=True,
         related_name="employee_objective",
-        verbose_name="Key results",
+        verbose_name="Résultats clés",
     )
     updated_at = models.DateField(auto_now=True)
     start_date = models.DateField(null=False, blank=False)
@@ -277,16 +277,16 @@ class EmployeeKeyResult(models.Model):
     """employee key result creation"""
 
     PROGRESS_CHOICES = (
-        ("%", _("Percentage")),
-        ("#", _("Number")),
+        ("%", _("Pourcentage")),
+        ("#", _("Nombre")),
         ("Currency", (("$", "USD$"), ("₹", "INR"), ("€", "EUR"))),
     )
     STATUS_CHOICES = (
-        ("On Track", _("On Track")),
-        ("Behind", _("Behind")),
-        ("Closed", _("Closed")),
-        ("At Risk", _("At Risk")),
-        ("Not Started", _("Not Started")),
+        ("On Track", _("En bonne voie")),
+        ("Behind", _("En retard")),
+        ("Closed", _("Clôturé")),
+        ("At Risk", _("À risque")),
+        ("Not Started", _("Non commencé")),
     )
 
     key_result = models.CharField(max_length=60, null=True, blank=True)
@@ -303,7 +303,7 @@ class EmployeeKeyResult(models.Model):
         null=True,
         blank=True,
         related_name="employee_key_result",
-        verbose_name="Key result",
+        verbose_name="Résultat clé",
         on_delete=models.PROTECT,
     )
     progress_type = models.CharField(
@@ -377,7 +377,7 @@ class EmployeeKeyResult(models.Model):
                 )
         if target_value == 0:
             raise ValidationError(
-                {"target_value": _("The target value can't be zero.")}
+                {"target_value": _("La valeur cible ne peut pas être zéro.")}
             )
         if self.key_result_id.progress_type == "%" and target_value > 100:
             raise ValidationError(

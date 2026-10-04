@@ -2024,7 +2024,7 @@ def restrict_creation(request):
         if form.is_valid():
             form.save()
             form = RestrictLeaveForm()
-            messages.success(request, _("Restricted day created successfully.."))
+            messages.success(request, _("Jour restreint créé avec succès."))
             if RestrictLeave.objects.filter().count() == 1:
                 return HttpResponse("<script>window.location.reload();</script>")
     return render(
@@ -2115,7 +2115,7 @@ def restrict_update(request, id):
         form = RestrictLeaveForm(request.POST, instance=restrictday)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Restricted day updated successfully.."))
+            messages.success(request, _("Jour restreint modifié avec succès."))
     return render(
         request,
         "leave/restrict/restrict_update_form.html",
@@ -2140,11 +2140,11 @@ def restrict_delete(request, id):
     query_string = request.GET.urlencode()
     try:
         RestrictLeave.objects.get(id=id).delete()
-        messages.success(request, _("Restricted day deleted successfully.."))
+        messages.success(request, _("Jour restreint supprimé avec succès."))
     except RestrictLeave.DoesNotExist:
-        messages.error(request, _("Restricted day not found."))
+        messages.error(request, _("Jour restreint introuvable."))
     except ProtectedError:
-        messages.error(request, _("Related entries exists"))
+        messages.error(request, _("Des entrées liées existent"))
     if not RestrictLeave.objects.filter():
         return HttpResponse("<script>window.location.reload();</script>")
     return redirect(f"/leave/restrict-filter?{query_string}")
@@ -2173,12 +2173,12 @@ def restrict_days_bulk_delete(request):
             count = len(restrict_day_ids)
             messages.success(
                 request,
-                _("{} Leave restricted days deleted successfully").format(count),
+                _("{} jour(s) restreint(s) supprimé(s) avec succès").format(count),
             )
         except (OverflowError, ValueError):
-            messages.error(request, _("Restricted Days not found"))
+            messages.error(request, _("Jours restreints introuvables"))
         except:
-            messages.error(request, _("Something went wrong"))
+            messages.error(request, _("Une erreur s'est produite"))
     return redirect(f"/leave/restrict-filter?{pd}")
 
 

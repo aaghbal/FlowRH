@@ -55,6 +55,35 @@ def validate_date(start_date, end_date):
         raise forms.ValidationError("The start date must be before the end date.")
 
 
+# French labels for the Objectives (OKR) forms. Model fields without a
+# verbose_name would otherwise show their English field name.
+FRENCH_LABELS = {
+    "title": "Titre",
+    "description": "Description",
+    "duration": "Durée",
+    "duration_unit": "Unité de durée",
+    "add_assignees": "Ajouter des assignés",
+    "start_date": "Date de début",
+    "end_date": "Date de fin",
+    "status": "Statut",
+    "archive": "Archivé",
+    "start_value": "Valeur de départ",
+    "current_value": "Valeur actuelle",
+    "target_value": "Valeur cible",
+    "progress_type": "Type de progression",
+    "comment": "Commentaire",
+    "period_name": "Nom de la période",
+    "company_id": "Entreprise",
+}
+
+
+def set_french_labels(form):
+    """Apply FRENCH_LABELS to the fields the form has."""
+    for name, label in FRENCH_LABELS.items():
+        if name in form.fields:
+            form.fields[name].label = label
+
+
 def set_date_field_initial(instance):
     """this is used to update change the date value format"""
     initial = {}
@@ -78,7 +107,7 @@ class ObjectiveForm(BaseForm):
     archive = forms.BooleanField(required=False)
     key_result_id = forms.ModelMultipleChoiceField(
         queryset=KeyResult.objects.all().exclude(archive=True),
-        label=_("Key result"),
+        label=_("Résultat clé"),
         widget=forms.SelectMultiple(
             attrs={
                 "class": "oh-select oh-select-2 select2-hidden-accessible",
@@ -116,6 +145,7 @@ class ObjectiveForm(BaseForm):
             "employee", None
         )  # access the logged-in user's information
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         self.fields["assignees"] = HorillaMultiSelectField(
             queryset=Employee.objects.all(),
             widget=HorillaMultiSelectWidget(
@@ -126,7 +156,7 @@ class ObjectiveForm(BaseForm):
                 required=False,
                 instance=self.instance,
             ),
-            label="Assignees",
+            label="Assignés",
         )
 
         self.fields["managers"] = HorillaMultiSelectField(
@@ -139,7 +169,7 @@ class ObjectiveForm(BaseForm):
                 required=False,
                 instance=self.instance,
             ),
-            label="Managers",
+            label="Responsables",
         )
 
         reload_queryset(self.fields)
@@ -147,7 +177,7 @@ class ObjectiveForm(BaseForm):
             self.fields["key_result_id"].choices
         )
         self.fields["key_result_id"].choices.append(
-            ("create_new_key_result", "Create new Key result")
+            ("create_new_key_result", "Créer un nouveau résultat clé")
         )
 
     def clean(self):
@@ -225,6 +255,7 @@ class AddAssigneesForm(BaseForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         if self.instance:
             self.fields["assignees"].queryset = self.fields[
                 "assignees"
@@ -234,7 +265,7 @@ class AddAssigneesForm(BaseForm):
         cleaned_data = super().clean()
         assignees = cleaned_data.get("assignees")
         if len(assignees) == 0:
-            raise forms.ValidationError({"assignees": _("This field is required.")})
+            raise forms.ValidationError({"assignees": _("Ce champ est obligatoire.")})
         return cleaned_data
 
 
@@ -245,7 +276,7 @@ class EmployeeObjectiveForm(BaseForm):
 
     key_result_id = forms.ModelChoiceField(
         queryset=KeyResult.objects.all(),
-        label=_("Key result"),
+        label=_("Résultat clé"),
         widget=forms.Select(
             attrs={
                 "class": "oh-select oh-select-2 select2-hidden-accessible",
@@ -280,6 +311,7 @@ class EmployeeObjectiveForm(BaseForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         reload_queryset(self.fields)
         try:
             del self.fields["key_result_id"]
@@ -302,7 +334,7 @@ class EmployeeObjectiveCreateForm(BaseForm):
 
     key_result_id = forms.ModelMultipleChoiceField(
         queryset=KeyResult.objects.all().exclude(archive=True),
-        label=_("Key result"),
+        label=_("Résultat clé"),
         required=False,
         widget=forms.SelectMultiple(
             attrs={
@@ -314,7 +346,7 @@ class EmployeeObjectiveCreateForm(BaseForm):
     objective_id = forms.ModelChoiceField(
         queryset=Objective.objects.all().exclude(archive=True),
         required=True,
-        label=_("Objective"),
+        label=_("Objectif"),
     )
 
     class Meta:
@@ -339,6 +371,7 @@ class EmployeeObjectiveCreateForm(BaseForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         request = getattr(horilla_middlewares._thread_locals, "request", None)
 
         if request.user.has_perm("pms.add_keyresult") or is_reportingmanager(request):
@@ -346,7 +379,7 @@ class EmployeeObjectiveCreateForm(BaseForm):
                 self.fields["key_result_id"].choices
             )
             self.fields["key_result_id"].choices.append(
-                ("create_new_key_result", "Create new Key result")
+                ("create_new_key_result", "Créer un nouveau résultat clé")
             )
         if request.user.has_perm("pms.add_employeeobjective") or is_reportingmanager(
             request
@@ -376,7 +409,7 @@ class EmployeeKeyResultForm(BaseForm):
 
     key_result_id = forms.ModelChoiceField(
         queryset=KeyResult.objects.all().exclude(archive=True),
-        label=_("Key result"),
+        label=_("Résultat clé"),
         widget=forms.Select(
             attrs={
                 "class": "oh-select oh-select-2 select2-hidden-accessible",
@@ -425,6 +458,7 @@ class EmployeeKeyResultForm(BaseForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         request = getattr(horilla_middlewares._thread_locals, "request", None)
         if self.initial.get("employee_objective_id"):
             if (
@@ -443,7 +477,7 @@ class EmployeeKeyResultForm(BaseForm):
                 self.fields["key_result_id"].choices
             )
             self.fields["key_result_id"].choices.append(
-                ("create_new_key_result", "Create new Key result")
+                ("create_new_key_result", "Créer un nouveau résultat clé")
             )
 
 
@@ -454,6 +488,10 @@ class KRForm(MF):
     """
     A form used for creating KeyResult object
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        set_french_labels(self)
 
     class Meta:
         """
@@ -546,14 +584,14 @@ class KeyResultForm(ModelForm):
         widgets = {
             "key_result": forms.TextInput(
                 attrs={
-                    "placeholder": _("Enter a title"),
+                    "placeholder": _("Saisir un titre"),
                     "class": "oh-input w-100",
                     "required": True,
                 }
             ),
             "key_result_description": forms.Textarea(
                 attrs={
-                    "placeholder": _("Enter a description"),
+                    "placeholder": _("Saisir une description"),
                     "class": "oh-input oh-input--textarea w-100",
                     "required": True,
                     "rows": 3,
@@ -594,6 +632,7 @@ class KeyResultForm(ModelForm):
             "employee", None
         )  # access the logged-in user's information
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         reload_queryset(self.fields)
         employees = Employee.objects.filter(
             is_active=True, employee_work_info__reporting_manager_id=employee
@@ -975,13 +1014,14 @@ class ObjectiveCommentForm(ModelForm):
                 attrs={
                     "class": "oh-input oh-input--small oh-input--textarea",
                     "rows": "4",
-                    "placeholder": _("Add a comment..."),
+                    "placeholder": _("Ajouter un commentaire..."),
                 }
             ),
         }
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        set_french_labels(self)
         reload_queryset(self.fields)
 
 
@@ -1019,6 +1059,7 @@ class PeriodForm(ModelForm):
             kwargs["initial"] = set_date_field_initial(instance)
         super().__init__(*args, **kwargs)
         reload_queryset(self.fields)
+        set_french_labels(self)
         self.fields["company_id"].required = True
         self.fields["company_id"].widget.attrs.update(
             {

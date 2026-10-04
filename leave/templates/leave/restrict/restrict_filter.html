@@ -4,18 +4,18 @@
         @click.outside="open = false" style="display: none">
         <div class="oh-dropdown__filter-body">
             <div class="oh-accordion">
-                <div class="oh-accordion-header">{% trans "Restrict Leaves" %}</div>
+                <div class="oh-accordion-header">{% trans "Congés restreints" %}</div>
                 <div class="oh-accordion-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="oh-input-group">
-                                <label class="oh-label" for="{{ form.from_date.id_for_label }}">{% trans "From Date" %}</label>
+                                <label class="oh-label" for="{{ form.from_date.id_for_label }}">{% trans "Date de début" %}</label>
                                 {{form.from_date}}
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="oh-input-group">
-                                <label class="oh-label" for="{{ form.to_date.id_for_label }}">{% trans "To Date" %}</label>
+                                <label class="oh-label" for="{{ form.to_date.id_for_label }}">{% trans "Date de fin" %}</label>
                                 {{form.to_date}}
                             </div>
                         </div>
@@ -25,19 +25,19 @@
             <div class="oh-accordion">
                 <div class="oh-accordion-header"
                     onclick="event.stopImmediatePropagation();$(this).parent().toggleClass('oh-accordion--show');">
-                    {% trans "Contract details" %}
+                    {% trans "Détails du contrat" %}
                 </div>
                 <div class="oh-accordion-body">
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="oh-input-group">
-                                <label class="oh-label" for="{{ form.department.id_for_label }}">{% trans "Department" %}</label>
+                                <label class="oh-label" for="{{ form.department.id_for_label }}">{% trans "Département" %}</label>
                                 {{form.department}}
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-6">
                             <div class="oh-input-group">
-                                <label class="oh-label" for="{{ form.job_position.id_for_label }}">{% trans "Job Position" %}</label>
+                                <label class="oh-label" for="{{ form.job_position.id_for_label }}">{% trans "Poste" %}</label>
                                 {{form.job_position}}
                             </div>
                         </div>
@@ -47,7 +47,7 @@
         </div>
         <div class="oh-dropdown__filter-footer">
             <button class="oh-btn oh-btn--secondary oh-btn--small w-100 filterButton" type="submit">
-                {% trans "Filter" %}
+                {% trans "Filtrer" %}
             </button>
         </div>
     </div>

@@ -12048,7 +12048,7 @@ msgstr "Dashboard"
 
 #: base/translator.py:231
 msgid "objective-list-view"
-msgstr "Objectives"
+msgstr "Objectifs"
 
 #: base/translator.py:232
 msgid "feedback-view"
@@ -12056,7 +12056,7 @@ msgstr "360 Feedbacks"
 
 #: base/translator.py:233
 msgid "period-view"
-msgstr "Periods"
+msgstr "Périodes"
 
 #: base/translator.py:234
 msgid "question-template-view"
@@ -12432,7 +12432,7 @@ msgstr "Meetings"
 
 #: base/translator.py:331
 msgid "view-key-result"
-msgstr "Key Results"
+msgstr "Résultats clés"
 
 #: base/translator.py:332
 msgid "asset-history"

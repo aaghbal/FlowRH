@@ -11,7 +11,7 @@
 <main :class="sidebarOpen ? 'oh-main__sidebar-visible' : ''">
   <section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
     <div class="oh-main__titlebar oh-main__titlebar--left">
-      <h1 class="oh-main__titlebar-title fw-bold">{% trans "Objectives" %} </h1>
+      <h1 class="oh-main__titlebar-title fw-bold">{% trans "Objectifs" %} </h1>
       <a class="oh-main__titlebar-search-toggle" role="button" aria-label="Toggle Search"
         @click="searchShow = !searchShow">
         <ion-icon name="search-outline" class="oh-main__titlebar-serach-icon"></ion-icon>
@@ -25,7 +25,7 @@
           <div>
             <a href="{%url 'objective-creation' %}" class="oh-btn  oh-btn--secondary oh-btn--shadow" style="text-decoration: none;">
               <ion-icon name="add-outline"></ion-icon>
-              {% trans "Create" %}
+              {% trans "Créer" %}
             </a>
           </div>
         </div>

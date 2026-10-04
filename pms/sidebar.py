@@ -17,7 +17,7 @@ SUBMENUS = [
         "redirect": reverse("dashboard-view"),
     },
     {
-        "menu": trans("Objectives"),
+        "menu": trans("Objectifs"),
         "redirect": reverse("objective-list-view"),
     },
     {
