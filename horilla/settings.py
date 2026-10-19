@@ -314,7 +314,7 @@ LOGGING = {
     "handlers": {
         "errorfile": {
             "level": "ERROR",
-            "class": "logging.handlers.RotatingFileHandler",
+            "class": "horilla.log_handlers.WatchedRotatingFileHandler",
             "filename": ERROR_LOG,
             "maxBytes": 5 * 1024 * 1024,
             "backupCount": 3,
@@ -326,7 +326,7 @@ LOGGING = {
         },
         "activityfile": {
             "level": "INFO",
-            "class": "logging.handlers.RotatingFileHandler",
+            "class": "horilla.log_handlers.WatchedRotatingFileHandler",
             "filename": ACTIVITY_LOG,
             "maxBytes": 10 * 1024 * 1024,
             "backupCount": 10,
