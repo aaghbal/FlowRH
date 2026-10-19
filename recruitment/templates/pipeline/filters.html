@@ -51,6 +51,14 @@
           <div class="oh-input-group">
             <label
               class="oh-label"
+              for="{{rec_filter_obj.form.site.id_for_label}}"
+              >{% trans 'Site' %}</label
+            >
+            {{ rec_filter_obj.form.site }}
+          </div>
+          <div class="oh-input-group">
+            <label
+              class="oh-label"
               for="{{rec_filter_obj.form.end_date.id_for_label}}"
               >{% trans 'End Date' %}</label
             >

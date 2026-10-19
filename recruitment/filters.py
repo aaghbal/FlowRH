@@ -234,6 +234,7 @@ class RecruitmentFilter(FilterSet):
         fields = [
             "recruitment_managers",
             "company_id",
+            "site",
             "title",
             "is_event_based",
             "start_date",

@@ -5,7 +5,7 @@
     {% if request.user|stage_manages:rec or perms.recruitment.view_recruitment %}
 
     <li class="oh-tabs__tab" onclick="switchTab(event)" style="{% if rec.closed %}text-decoration: line-through{% endif %};padding-right: 0;{% if request.user|recruitment_manages:rec %} background-color: hsl(38.08deg 100% 50% / 8%); {% endif %}" data-target="#tab_rec_{{rec.id}}">
-      {{rec}}
+      {{rec}}{% if rec.site %} ({{rec.site.site_name}}){% endif %}
       <div class="d-flex">
       <div class="oh-tabs__input-badge-container">
         <span
