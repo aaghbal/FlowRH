@@ -819,6 +819,22 @@ class Workinfo:
         pass
 
 
+def get_employee_charts(employee):
+    """
+    Return the employee's DashboardEmployeeCharts row, creating it if missing.
+
+    The employee field is not unique and concurrent dashboard requests have
+    created duplicate rows in production, which made get_or_create raise
+    MultipleObjectsReturned and the home page return a 500. Use the oldest row.
+    """
+    employee_charts = (
+        DashboardEmployeeCharts.objects.filter(employee=employee).order_by("id").first()
+    )
+    if employee_charts is None:
+        employee_charts = DashboardEmployeeCharts.objects.create(employee=employee)
+    return employee_charts
+
+
 @login_required
 def home(request):
     """
@@ -830,9 +846,7 @@ def home(request):
     first_day_of_week = today - timedelta(days=today_weekday)
     last_day_of_week = first_day_of_week + timedelta(days=6)
 
-    employee_charts = DashboardEmployeeCharts.objects.get_or_create(
-        employee=request.user.employee_get
-    )[0]
+    employee_charts = get_employee_charts(request.user.employee_get)
 
     user = request.user
     today = timezone.now().date()  # Get today's date
@@ -6372,9 +6386,7 @@ def dashboard_components_toggle(request):
     """
     This function is used to create personalized dashboard charts for employees
     """
-    employee_charts = DashboardEmployeeCharts.objects.get_or_create(
-        employee=request.user.employee_get
-    )[0]
+    employee_charts = get_employee_charts(request.user.employee_get)
     charts = employee_charts.charts or []
     chart_id = request.GET.get("chart_id")
     if chart_id and chart_id not in charts:
@@ -6488,9 +6500,7 @@ def employee_chart_show(request):
     """
     This function is used to choose which chart to show in the dashboard
     """
-    employee_charts = DashboardEmployeeCharts.objects.get_or_create(
-        employee=request.user.employee_get
-    )[0]
+    employee_charts = get_employee_charts(request.user.employee_get)
     charts = [
         ("offline_employees", _("Offline Employees")),
         ("online_employees", _("Online Employees")),
