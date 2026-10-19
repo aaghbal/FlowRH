@@ -293,6 +293,15 @@ ERROR_LOG = env(
 )
 os.makedirs(os.path.dirname(ERROR_LOG), exist_ok=True)
 
+# One line per request (user, IP, method, path, status, duration), written by
+# horilla.horilla_middlewares.ActivityLogMiddleware. Same privacy reasoning as
+# ERROR_LOG for the default location.
+ACTIVITY_LOG = env(
+    "ACTIVITY_LOG",
+    default=str(Path(BASE_DIR).parent / "private" / "django-activity.log"),
+)
+os.makedirs(os.path.dirname(ACTIVITY_LOG), exist_ok=True)
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -315,8 +324,22 @@ LOGGING = {
             # accented name raises UnicodeEncodeError inside the log handler.
             "encoding": "utf-8",
         },
+        "activityfile": {
+            "level": "INFO",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": ACTIVITY_LOG,
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 10,
+            "formatter": "verbose",
+            "encoding": "utf-8",
+        },
     },
     "loggers": {
+        "flowrh.activity": {
+            "handlers": ["activityfile"],
+            "level": "INFO",
+            "propagate": False,
+        },
         # propagate=False keeps django.request off the default mail_admins
         # handler. Mailing an error report opens an SMTP connection inside the
         # request, which is what makes a 500 take ~25 seconds to come back.
