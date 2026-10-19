@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 
-from employee.models import Employee
+from recruitment.department_heads import DEPARTMENT_HEAD_PERMS, is_department_head
 from recruitment.models import Recruitment, Stage
 
 
@@ -87,12 +87,17 @@ def manager_can_enter(function, perm):
 
         """
         user = request.user
-        employee = Employee.objects.filter(employee_user_id=user).first()
-        is_manager = (
+        # employee_get, not the company filtered Employee.objects: a None
+        # employee would match every stage/recruitment without manager
+        employee = getattr(user, "employee_get", None)
+        is_manager = employee is not None and (
             Stage.objects.filter(stage_managers=employee).exists()
             or Recruitment.objects.filter(recruitment_managers=employee).exists()
         )
         if user.has_perm(perm) or is_manager:
+            return function(request, *args, **kwargs)
+        # Department heads only get in for consultation (view permissions)
+        if perm in DEPARTMENT_HEAD_PERMS and is_department_head(user):
             return function(request, *args, **kwargs)
         messages.info(request, "You dont have permission.")
         previous_url = request.META.get("HTTP_REFERER", "/")
@@ -134,8 +139,11 @@ def recruitment_manager_can_enter(function, perm):
             HttpResponse: The response from the decorated function.
         """
         user = request.user
-        employee = Employee.objects.filter(employee_user_id=user).first()
-        is_manager = Recruitment.objects.filter(recruitment_managers=employee).exists()
+        employee = getattr(user, "employee_get", None)
+        is_manager = (
+            employee is not None
+            and Recruitment.objects.filter(recruitment_managers=employee).exists()
+        )
         if user.has_perm(perm) or is_manager:
             return function(request, *args, **kwargs)
         messages.info(request, "You dont have permission.")
@@ -144,6 +152,31 @@ def recruitment_manager_can_enter(function, perm):
         key = "HTTP_HX_REQUEST"
         if key in request.META.keys():
             return render(request, "decorator_404.html")
+        return HttpResponse(script)
+
+    return _function
+
+
+@decorator_with_arguments
+def view_permission_or_department_head(function, perm):
+    """
+    Like permission_required, but also lets department heads consult the
+    recruitment pages (view permissions only); the view itself restricts the
+    data to the recruitments of their departments.
+    """
+
+    def _function(request, *args, **kwargs):
+        user = request.user
+        if user.has_perm(perm) or (
+            perm in DEPARTMENT_HEAD_PERMS and is_department_head(user)
+        ):
+            return function(request, *args, **kwargs)
+        messages.info(request, "You dont have permission.")
+        previous_url = request.META.get("HTTP_REFERER", "/")
+        key = "HTTP_HX_REQUEST"
+        if key in request.META.keys():
+            return render(request, "decorator_404.html")
+        script = f'<script>window.location.href = "{previous_url}"</script>'
         return HttpResponse(script)
 
     return _function

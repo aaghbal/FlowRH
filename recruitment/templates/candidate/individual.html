@@ -245,7 +245,7 @@
               >{% trans "Documents" %}</a
             >
           </li>
-          {% if request.user|stage_manages:candidate.recruitment_id or perms.recruitment.view_candidate %}
+          {% if request.user|stage_manages:candidate.recruitment_id or perms.recruitment.view_candidate or request.user|heads_department_of:candidate.recruitment_id %}
           <li class="oh-general__tab">
             <a
               href="#"

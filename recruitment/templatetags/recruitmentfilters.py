@@ -61,6 +61,30 @@ def stage_manages(user, recruitment):
         return False
 
 
+@register.filter(name="heads_department_of")
+def heads_department_of(user, recruitment):
+    """
+    This method is used to check the employee is head of the department of the
+    recruitment (read-only access)
+    """
+    from recruitment.department_heads import responsible_department_ids
+
+    try:
+        return recruitment.department_id_id in responsible_department_ids(user)
+    except Exception:
+        return False
+
+
+@register.filter(name="is_department_head")
+def is_department_head(user):
+    """
+    This method is used to check the employee heads at least one department
+    """
+    from recruitment.department_heads import is_department_head as _is_head
+
+    return _is_head(user)
+
+
 @register.filter(name="recruitment_manages")
 def recruitment_manages(user, recruitment):
     """

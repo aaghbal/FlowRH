@@ -75,6 +75,7 @@ from employee.forms import (
     EmployeeBankDetailsForm,
     EmployeeBankDetailsUpdateForm,
     EmployeeExportExcelForm,
+    DepartmentHeadForm,
     EmployeeForm,
     EmployeeGeneralSettingPrefixForm,
     EmployeeNoteForm,
@@ -176,9 +177,26 @@ filter_mapping = {
 }
 
 
-def _check_reporting_manager(request):
-    employee = request.user.employee_get
-    return employee.reporting_manager.exists()
+def own_profile_or_permission(perm):
+    """
+    Only users with the permission (admins) open any employee profile; the
+    others only their own. Deliberately not based on the accessibility
+    settings: a feature without accessibility rule is open to everyone.
+    """
+
+    def decorator(function):
+        def _function(request, *args, **kwargs):
+            employee = getattr(request.user, "employee_get", None)
+            if request.user.has_perm(perm) or (
+                employee is not None and kwargs.get("obj_id") == employee.id
+            ):
+                return function(request, *args, **kwargs)
+            messages.info(request, _("You dont have access to the feature"))
+            return redirect("employee-profile")
+
+        return _function
+
+    return decorator
 
 
 # Create your views here.
@@ -281,11 +299,7 @@ def profile_edit_access(request, emp_id):
 
 
 @login_required
-@enter_if_accessible(
-    feature="employee_detailed_view",
-    perm="employee.view_employee",
-    method=_check_reporting_manager,
-)
+@own_profile_or_permission("employee.view_employee")
 def employee_view_individual(request, obj_id, **kwargs):
     """
     This method is used to view profile of an employee.
@@ -953,11 +967,7 @@ def paginator_qry(qryset, page_number):
 
 
 @login_required
-@enter_if_accessible(
-    feature="employee_view",
-    perm="employee.view_employee",
-    method=_check_reporting_manager,
-)
+@permission_required("employee.view_employee")
 def employee_view(request):
     """
     This method is used to render template for view all employee
@@ -1324,6 +1334,24 @@ def employee_account_block_unblock(request, emp_id):
     return redirect(employee_view_individual, obj_id=emp_id)
 
 
+def save_department_head_section(request, employee):
+    """
+    Save the "Responsable département" section of the employee form. Only for
+    users allowed to create/update employees, and only when the section was
+    actually part of the submitted form.
+    """
+    if not request.POST.get("department_head_section"):
+        return
+    if not (
+        request.user.has_perm("employee.change_employee")
+        or request.user.has_perm("employee.add_employee")
+    ):
+        return
+    form = DepartmentHeadForm(request.POST)
+    if form.is_valid():
+        form.save(employee)
+
+
 @login_required
 @permission_required("employee.add_employee")
 def employee_view_new(request):
@@ -1337,12 +1365,18 @@ def employee_view_new(request):
     return render(
         request,
         "employee/create_form/form_view.html",
-        {"form": form, "work_form": work_form, "bank_form": bank_form, "f": filter_obj},
+        {
+            "form": form,
+            "work_form": work_form,
+            "bank_form": bank_form,
+            "f": filter_obj,
+            "department_head_form": DepartmentHeadForm(),
+        },
     )
 
 
 @login_required
-@manager_can_enter("employee.change_employee")
+@permission_required("employee.change_employee")
 def employee_view_update(request, obj_id, **kwargs):
     """
     This method is used to render update form for employee.
@@ -1386,6 +1420,7 @@ def employee_view_update(request, obj_id, **kwargs):
                 form = EmployeeForm(request.POST, instance=employee)
                 if form.is_valid():
                     form.save()
+                    save_department_head_section(request, employee)
                     messages.success(
                         request, _("Employee personal information updated.")
                     )
@@ -1439,6 +1474,11 @@ def employee_view_update(request, obj_id, **kwargs):
                 "work_form": work_form,
                 "bank_form": bank_form,
                 "work_info_history": work_info_history,
+                "department_head_form": (
+                    DepartmentHeadForm(employee=employee)
+                    if request.user.has_perm("employee.change_employee")
+                    else None
+                ),
             },
         )
     return HttpResponseRedirect(
@@ -1556,7 +1596,7 @@ def remove_own_profile_image(request):
 
 
 @login_required
-@manager_can_enter("employee.change_employee")
+@permission_required("employee.change_employee")
 @require_http_methods(["POST"])
 def employee_create_update_personal_info(request, obj_id=None):
     """
@@ -1566,6 +1606,7 @@ def employee_create_update_personal_info(request, obj_id=None):
     form = EmployeeForm(request.POST, instance=employee)
     if form.is_valid():
         form.save()
+        save_department_head_section(request, form.instance)
         if obj_id is None:
             messages.success(request, _("New Employee Added."))
             form = EmployeeForm(request.POST, instance=form.instance)
@@ -1599,6 +1640,7 @@ def employee_create_update_personal_info(request, obj_id=None):
             "employee/create_form/form_view.html",
             {
                 "form": form,
+                "department_head_form": DepartmentHeadForm(request.POST),
             },
         )
     errors = "\n".join(
@@ -1611,7 +1653,7 @@ def employee_create_update_personal_info(request, obj_id=None):
 
 
 @login_required
-@manager_can_enter("employee.change_employeeworkinformation")
+@permission_required("employee.change_employeeworkinformation")
 @require_http_methods(["POST"])
 def employee_update_work_info(request, obj_id=None):
     """
@@ -1649,7 +1691,7 @@ def employee_update_work_info(request, obj_id=None):
 
 
 @login_required
-@manager_can_enter("employee.change_employeebankdetails")
+@permission_required("employee.change_employeebankdetails")
 @require_http_methods(["POST"])
 def employee_update_bank_details(request, obj_id=None):
     """
@@ -1684,11 +1726,7 @@ def employee_update_bank_details(request, obj_id=None):
 
 @login_required
 @hx_request_required
-@enter_if_accessible(
-    feature="employee_view",
-    perm="employee.view_employee",
-    method=_check_reporting_manager,
-)
+@permission_required("employee.view_employee")
 def employee_filter_view(request):
     """
     This method is used to filter employee.
@@ -1736,7 +1774,7 @@ def employee_filter_view(request):
 
 
 @login_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 @hx_request_required
 def employee_card(request):
     """
@@ -1780,7 +1818,7 @@ def employee_card(request):
 
 
 @login_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 @hx_request_required
 def employee_list(request):
     """
@@ -1830,7 +1868,7 @@ def employee_list(request):
 
 @login_required
 @hx_request_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 def employee_update(request, obj_id):
     """
     This method is used to update employee if the form is valid
@@ -2165,11 +2203,7 @@ def get_manager_in(request):
 
 
 @login_required
-@enter_if_accessible(
-    feature="employee_view",
-    perm="employee.view_employee",
-    method=_check_reporting_manager,
-)
+@permission_required("employee.view_employee")
 def employee_search(request):
     """
     This method is used to search employee
@@ -2202,7 +2236,7 @@ def employee_search(request):
 
 
 @login_required
-@manager_can_enter("employee.add_employeeworkinformation")
+@permission_required("employee.add_employeeworkinformation")
 @require_http_methods(["POST"])
 def employee_work_info_view_create(request, obj_id):
     """
@@ -2238,7 +2272,7 @@ def employee_work_info_view_create(request, obj_id):
 
 
 @login_required
-@manager_can_enter("employee.change_employeeworkinformation")
+@permission_required("employee.change_employeeworkinformation")
 @require_http_methods(["POST"])
 def employee_work_info_view_update(request, obj_id):
     """
@@ -2267,7 +2301,7 @@ def employee_work_info_view_update(request, obj_id):
 
 
 @login_required
-@manager_can_enter("employee.add_employeebankdetails")
+@permission_required("employee.add_employeebankdetails")
 @require_http_methods(["POST"])
 def employee_bank_details_view_create(request, obj_id):
     """
@@ -2297,7 +2331,7 @@ def employee_bank_details_view_create(request, obj_id):
 
 
 @login_required
-@manager_can_enter("employee.change_employeebankdetails")
+@permission_required("employee.change_employeebankdetails")
 @require_http_methods(["POST"])
 def employee_bank_details_view_update(request, obj_id):
     """
@@ -2696,7 +2730,7 @@ def work_info_import(request):
 
 
 @login_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 def work_info_export(request):
     """
     This method is used to export employee data to xlsx
@@ -2833,7 +2867,7 @@ def get_employees_birthday(request):
 
 
 @login_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 def dashboard(request):
     """
     This method is used to render individual dashboard for employee module
@@ -3005,7 +3039,7 @@ def employee_select(request):
 
 
 @login_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 def employee_select_filter(request):
     """
     This method is used to return all the ids of the filtered employees
@@ -3030,7 +3064,7 @@ def employee_select_filter(request):
 
 @login_required
 @hx_request_required
-@manager_can_enter(perm="employee.view_employeenote")
+@permission_required(perm="employee.view_employeenote")
 def note_tab(request, emp_id):
     """
     This function is used to view note tab of an employee in employee individual
@@ -3055,7 +3089,7 @@ def note_tab(request, emp_id):
 
 @login_required
 @hx_request_required
-@manager_can_enter(perm="employee.add_employeenote")
+@permission_required(perm="employee.add_employeenote")
 def add_note(request, emp_id=None):
     """
     This method renders template component to add candidate remark
@@ -3091,7 +3125,7 @@ def add_note(request, emp_id=None):
 
 
 @login_required
-@manager_can_enter(perm="employee.change_employeenote")
+@permission_required(perm="employee.change_employeenote")
 def employee_note_update(request, note_id):
     """
     This method is used to update the note
@@ -3125,7 +3159,7 @@ def employee_note_update(request, note_id):
 
 
 @login_required
-@manager_can_enter(perm="employee.delete_employeenote")
+@permission_required(perm="employee.delete_employeenote")
 def employee_note_delete(request, note_id):
     """
     This method is used to delete the note
@@ -3141,7 +3175,7 @@ def employee_note_delete(request, note_id):
 
 @login_required
 @hx_request_required
-@manager_can_enter(perm="employee.add_notefiles")
+@permission_required(perm="employee.add_notefiles")
 def add_more_employee_files(request, note_id):
     """
     This method is used to Add more files to the Employee note.
@@ -3163,7 +3197,7 @@ def add_more_employee_files(request, note_id):
 
 @login_required
 @hx_request_required
-@manager_can_enter(perm="employee.delete_notefiles")
+@permission_required(perm="employee.delete_notefiles")
 def delete_employee_note_file(request, note_file_id):
     """
     This method is used to delete the stage note file
@@ -3241,7 +3275,7 @@ def bonus_points_tab(request, emp_id):
 
 
 @login_required
-@manager_can_enter(perm="employee.add_bonuspoint")
+@permission_required(perm="employee.add_bonuspoint")
 def add_bonus_points(request, emp_id):
     """
     This function is used to add bonus points to an employee
@@ -3525,7 +3559,7 @@ def initial_prefix(request):
 
 
 @login_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 def first_last_badge(request):
     """
     This method is used to return the first last badge ids in grouped and ordere
@@ -3541,7 +3575,7 @@ def first_last_badge(request):
 
 @login_required
 @hx_request_required
-@manager_can_enter("employee.view_employee")
+@permission_required("employee.view_employee")
 def employee_get_mail_log(request):
     """
     This method is used to track mails sent along with the status

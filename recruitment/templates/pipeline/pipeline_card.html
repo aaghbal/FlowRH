@@ -28,7 +28,7 @@
 
 <div id="update-message"></div>
 {% for rec in recruitment %}
-{% if request.user|stage_manages:rec or perms.recruitment.view_recruitment %}
+{% if request.user|stage_manages:rec or perms.recruitment.view_recruitment or request.user|heads_department_of:rec %}
 <div class="oh-tabs__content " id="tab_rec_{{rec.id}}">
   <div class="ui-sortable">
     <div class="oh-kanban ui-sortable drop-target">

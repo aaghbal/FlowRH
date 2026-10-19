@@ -35,7 +35,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy as trans
 
 from base.methods import eval_validate, reload_queryset
-from base.models import Site
+from base.models import Department, Site
 from employee.models import (
     Actiontype,
     BonusPoint,
@@ -151,6 +151,52 @@ class UserPermissionForm(ModelForm):
 
         fields = ("groups", "user_permissions")
         model = User
+
+
+class DepartmentHeadForm(forms.Form):
+    """
+    "Responsable département" section of the employee create/update form.
+    A department head consults (read only) the recruitments of these departments.
+    """
+
+    is_department_head = forms.BooleanField(
+        required=False,
+        label=trans("Responsable département"),
+        widget=forms.CheckboxInput(
+            attrs={"class": "oh-switch__checkbox", "id": "id_is_department_head"}
+        ),
+    )
+    responsible_departments = forms.ModelMultipleChoiceField(
+        queryset=Department.objects.all(),
+        required=False,
+        label=trans("Départements"),
+        widget=forms.SelectMultiple(
+            attrs={
+                "class": "oh-select oh-select-2 w-100",
+                "id": "id_responsible_departments",
+            }
+        ),
+    )
+
+    def __init__(self, *args, employee=None, **kwargs):
+        if employee is not None and not args and "initial" not in kwargs:
+            departments = list(employee.responsible_departments.all())
+            kwargs["initial"] = {
+                "is_department_head": bool(departments),
+                "responsible_departments": departments,
+            }
+        super().__init__(*args, **kwargs)
+
+    def save(self, employee):
+        """
+        Store the departments headed by the employee (none when unchecked).
+        """
+        departments = (
+            self.cleaned_data["responsible_departments"]
+            if self.cleaned_data["is_department_head"]
+            else []
+        )
+        employee.responsible_departments.set(departments)
 
 
 class EmployeeForm(ModelForm):

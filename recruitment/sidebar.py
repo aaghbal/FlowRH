@@ -8,6 +8,7 @@ from django.contrib.auth.context_processors import PermWrapper
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from recruitment.department_heads import is_department_head
 from recruitment.models import InterviewSchedule
 from recruitment.templatetags.recruitmentfilters import (
     is_recruitmentmangers,
@@ -69,22 +70,30 @@ SUBMENUS = [
 def menu_accessibilty(
     request, _menu: str = "", user_perms: PermWrapper = [], *args, **kwargs
 ) -> bool:
-    return is_stagemanager(request.user) or "recruitment" in user_perms
+    return (
+        is_stagemanager(request.user)
+        or "recruitment" in user_perms
+        or is_department_head(request.user)
+    )
 
 
 def pipeline_accessibility(
     request, _submenu: dict = {}, user_perms: PermWrapper = [], *args, **kwargs
 ) -> bool:
     _submenu["redirect"] = _submenu["redirect"] + "?closed=false"
-    return is_stagemanager(request.user) or request.user.has_perm(
-        "recruitment.view_recruitment"
+    return (
+        is_stagemanager(request.user)
+        or request.user.has_perm("recruitment.view_recruitment")
+        or is_department_head(request.user)
     )
 
 
 def candidates_accessibility(
     request, _submenu: dict = {}, user_perms: PermWrapper = [], *args, **kwargs
 ) -> bool:
-    return request.user.has_perm("recruitment.view_candidate")
+    return request.user.has_perm("recruitment.view_candidate") or is_department_head(
+        request.user
+    )
 
 
 def survey_accessibility(
@@ -99,7 +108,9 @@ def survey_accessibility(
 def recruitment_accessibility(
     request, _submenu: dict = {}, user_perms: PermWrapper = [], *args, **kwargs
 ) -> bool:
-    return request.user.has_perm("recruitment.view_recruitment")
+    return request.user.has_perm("recruitment.view_recruitment") or is_department_head(
+        request.user
+    )
 
 
 def interview_accessibility(
@@ -118,7 +129,11 @@ def interview_accessibility(
     else:
         view_interview = False
 
-    return request.user.has_perm("recruitment.view_interviewschedule") or view_interview
+    return (
+        request.user.has_perm("recruitment.view_interviewschedule")
+        or view_interview
+        or is_department_head(request.user)
+    )
 
 
 def stage_accessibility(
@@ -136,4 +151,8 @@ def skill_zone_accessibility(
 
 
 def dashboard_accessibility(request, submenu, user_perms, *args, **kwargs):
-    return is_stagemanager(request.user) or "recruitment" in user_perms
+    return (
+        is_stagemanager(request.user)
+        or "recruitment" in user_perms
+        or is_department_head(request.user)
+    )

@@ -68,6 +68,13 @@ from recruitment.decorators import (
     candidate_login_required,
     manager_can_enter,
     recruitment_manager_can_enter,
+    view_permission_or_department_head,
+)
+from recruitment.department_heads import (
+    department_head_denied,
+    responsible_department_ids,
+    viewable_candidates,
+    viewable_recruitments,
 )
 from recruitment.filters import (
     CandidateFilter,
@@ -284,14 +291,16 @@ def recruitment(request):
 
 
 @login_required
-@permission_required(perm="recruitment.view_recruitment")
+@view_permission_or_department_head(perm="recruitment.view_recruitment")
 def recruitment_view(request):
     """
     This method is used to  render all recruitment to view
     """
     if not request.GET:
         request.GET.copy().update({"is_active": "on"})
-    queryset = Recruitment.objects.filter(is_active=True)
+    queryset = viewable_recruitments(
+        request.user, Recruitment.objects.filter(is_active=True)
+    )
     if Recruitment.objects.all():
         template = "recruitment/recruitment_view.html"
     else:
@@ -406,6 +415,7 @@ def recruitment_pipeline(request):
     """
     filter_obj = RecruitmentFilter(
         request.GET,
+        queryset=viewable_recruitments(request.user, Recruitment.objects.all()),
     )
     if filter_obj.qs.exists():
         template = "pipeline/pipeline.html"
@@ -454,6 +464,12 @@ def filter_pipeline(request):
             .distinct()
         )
         recruitments = recruitments | filter_obj.qs.filter(id__in=stage_recruitment_ids)
+        # department heads consult the recruitments of their departments
+        department_ids = responsible_department_ids(request.user)
+        if department_ids:
+            recruitments = recruitments | filter_obj.qs.filter(
+                department_id__in=department_ids
+            )
         recruitments = recruitments.filter(is_active=True).distinct()
 
     closed = request.GET.get("closed")
@@ -507,6 +523,8 @@ def get_stage_badge_count(request):
     """
     stage_id = request.GET["stage_id"]
     stage = Stage.objects.get(id=stage_id)
+    if department_head_denied(request.user, stage.recruitment_id):
+        return HttpResponse(0)
     count = stage.candidate_set.filter(is_active=True).count()
     return HttpResponse(count)
 
@@ -533,6 +551,8 @@ def stage_component(request, view: str = "list"):
 
     recruitment_id = request.GET["rec_id"]
     recruitment = Recruitment.objects.select_related("job_position_id").get(id=recruitment_id)
+    if department_head_denied(request.user, recruitment):
+        return render(request, "decorator_404.html")
 
     # Try to get stages from cache first
     pipeline_cache = CACHE.get(request.session.session_key + "pipeline")
@@ -640,6 +660,8 @@ def candidate_component(request):
     stage_id = request.GET.get("stage_id")
 
     stage = Stage.objects.filter(id=stage_id).first()
+    if stage and department_head_denied(request.user, stage.recruitment_id):
+        return render(request, "decorator_404.html")
 
     candidates = Candidate.objects.select_related(
         "recruitment_id", "stage_id", "job_position_id"
@@ -953,6 +975,10 @@ def view_note(request, cand_id):
         id : candidate instance id
     """
     candidate_obj = Candidate.objects.get(id=cand_id)
+    if not request.user.has_perm(
+        "recruitment.view_stagenote"
+    ) and department_head_denied(request.user, candidate_obj.recruitment_id):
+        return render(request, "decorator_404.html")
     notes = candidate_obj.stagenote_set.all().order_by("-id")
     return render(
         request,
@@ -1396,15 +1422,19 @@ def recruitment_stage_get(_, rec_id):
 
 
 @login_required
-@permission_required(perm="recruitment.view_candidate")
+@view_permission_or_department_head(perm="recruitment.view_candidate")
 def candidate_view(request):
     """
     This method render all candidate to the template
     """
     view_type = request.GET.get("view")
     previous_data = request.GET.urlencode()
-    candidates = Candidate.objects.filter(is_active=True)
-    recruitments = Recruitment.objects.filter(closed=False, is_active=True)
+    candidates = viewable_candidates(
+        request.user, Candidate.objects.filter(is_active=True)
+    )
+    recruitments = viewable_recruitments(
+        request.user, Recruitment.objects.filter(closed=False, is_active=True)
+    )
 
     mails = list(Candidate.objects.values_list("email", flat=True))
     # Query the User model to check if any email is present
@@ -1452,8 +1482,13 @@ def interview_filter_view(request):
         interviews = InterviewSchedule.objects.all().order_by("-interview_date")
     else:
         interviews = InterviewSchedule.objects.filter(
-            employee_id=request.user.employee_get.id
-        ).order_by("-interview_date")
+            Q(employee_id=request.user.employee_get.id)
+            | Q(
+                candidate_id__recruitment_id__department_id__in=responsible_department_ids(
+                    request.user
+                )
+            )
+        ).distinct().order_by("-interview_date")
 
     if request.GET.get("sortby"):
         interviews = sortby(request, interviews, "sortby")
@@ -1488,8 +1523,13 @@ def interview_view(request):
         interviews = InterviewSchedule.objects.all().order_by("-interview_date")
     else:
         interviews = InterviewSchedule.objects.filter(
-            employee_id=request.user.employee_get.id
-        ).order_by("-interview_date")
+            Q(employee_id=request.user.employee_get.id)
+            | Q(
+                candidate_id__recruitment_id__department_id__in=responsible_department_ids(
+                    request.user
+                )
+            )
+        ).distinct().order_by("-interview_date")
 
     form = InterviewFilter(request.GET, queryset=interviews)
     page_number = request.GET.get("page")
@@ -1549,7 +1589,7 @@ def candidate_export(request):
 
 
 @login_required
-@permission_required(perm="recruitment.view_candidate")
+@view_permission_or_department_head(perm="recruitment.view_candidate")
 def candidate_view_list(request):
     """
     This method renders all candidate on candidate_list.html template
@@ -1562,6 +1602,7 @@ def candidate_view_list(request):
     ).prefetch_related("candidate_rating")
     if request.GET.get("is_active") is None:
         candidates = candidates.filter(is_active=True)
+    candidates = viewable_candidates(request.user, candidates)
     candidates = CandidateFilter(request.GET, queryset=candidates).qs
     return render(
         request,
@@ -1575,13 +1616,13 @@ def candidate_view_list(request):
 
 @login_required
 @hx_request_required
-@permission_required(perm="recruitment.view_candidate")
+@view_permission_or_department_head(perm="recruitment.view_candidate")
 def candidate_view_card(request):
     """
     This method renders all candidate on candidate_card.html template
     """
     previous_data = request.GET.urlencode()
-    candidates = Candidate.objects.all()
+    candidates = viewable_candidates(request.user, Candidate.objects.all())
     if request.GET.get("is_active") is None:
         candidates = candidates.filter(is_active=True)
     candidates = CandidateFilter(request.GET, queryset=candidates).qs
@@ -1604,6 +1645,11 @@ def candidate_view_individual(request, cand_id, **kwargs):
     candidate_obj = Candidate.find(cand_id)
     if not candidate_obj:
         messages.error(request, _("Candidate not found"))
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+    if not request.user.has_perm(
+        "recruitment.view_candidate"
+    ) and department_head_denied(request.user, candidate_obj.recruitment_id):
+        messages.info(request, "You dont have permission.")
         return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
 
     mails = list(Candidate.objects.values_list("email", flat=True))
@@ -2727,6 +2773,10 @@ def get_mail_log(request):
     """
     candidate_id = request.GET["candidate_id"]
     candidate = Candidate.objects.get(id=candidate_id)
+    if not request.user.has_perm(
+        "recruitment.view_candidate"
+    ) and department_head_denied(request.user, candidate.recruitment_id):
+        return render(request, "decorator_404.html")
     tracked_mails = EmailLog.objects.filter(to__icontains=candidate.email).order_by(
         "-created_at"
     )

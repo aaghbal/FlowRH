@@ -113,6 +113,17 @@ class Employee(models.Model):
     is_directly_converted = models.BooleanField(
         default=False, null=True, blank=True, editable=False
     )
+    # Departments this employee heads: gives read-only access to the
+    # recruitments of these departments. Not editable so the generic employee
+    # forms (self profile edit included) never expose it; it is set from the
+    # dedicated "Responsable département" section of the employee form.
+    responsible_departments = models.ManyToManyField(
+        Department,
+        blank=True,
+        editable=False,
+        related_name="department_heads",
+        verbose_name=trans("Départements sous responsabilité"),
+    )
     objects = HorillaCompanyManager(
         related_company_field="employee_work_info__company_id"
     )

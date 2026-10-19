@@ -7,7 +7,6 @@ To set Horilla sidebar for employee
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as trans
 
-from accessibility.methods import check_is_accessible
 from base.templatetags.basefilters import is_reportingmanager
 
 MENU = trans("Employee")
@@ -98,10 +97,7 @@ def employee_accessibility(request, submenu, user_perms, *args, **kwargs):
     """
     Employee accessibility method
     """
-    cache_key = request.session.session_key + "accessibility_filter"
-    employee = getattr(request.user, "employee_get", None)
-    return (
-        is_reportingmanager(request.user)
-        or request.user.has_perm("employee.view_employee")
-        or check_is_accessible("employee_view", cache_key, employee)
-    )
+    # only admins (employee view permission) see the employee list; reporting
+    # managers and employees only have their own profile. Not based on the
+    # accessibility settings: without rule, that feature is open to everyone.
+    return request.user.has_perm("employee.view_employee")

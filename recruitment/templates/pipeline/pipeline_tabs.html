@@ -2,7 +2,7 @@
 {% load recruitmentfilters %}
 <ul class="oh-tabs__tablist">
     {% for rec in recruitment %}
-    {% if request.user|stage_manages:rec or perms.recruitment.view_recruitment %}
+    {% if request.user|stage_manages:rec or perms.recruitment.view_recruitment or request.user|heads_department_of:rec %}
 
     <li class="oh-tabs__tab" onclick="switchTab(event)" style="{% if rec.closed %}text-decoration: line-through{% endif %};padding-right: 0;{% if request.user|recruitment_manages:rec %} background-color: hsl(38.08deg 100% 50% / 8%); {% endif %}" data-target="#tab_rec_{{rec.id}}">
       {{rec}}{% if rec.site %} ({{rec.site.site_name}}){% endif %}

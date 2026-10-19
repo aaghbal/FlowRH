@@ -17,7 +17,25 @@ from base.models import Department, JobPosition
 from employee.models import EmployeeWorkInformation
 from horilla.decorators import login_required
 from recruitment.decorators import manager_can_enter
+from recruitment.department_heads import (
+    is_department_head_only,
+    responsible_department_ids,
+    viewable_recruitments,
+)
 from recruitment.models import Candidate, Recruitment, SkillZone, Stage
+
+
+def _dashboard_scope(user):
+    """
+    Recruitments and candidates the dashboard reports on: all of them, or only
+    the ones of their departments for a department head.
+    """
+    recruitments = Recruitment.objects.all()
+    candidates = Candidate.objects.all()
+    if is_department_head_only(user):
+        recruitments = viewable_recruitments(user, recruitments)
+        candidates = candidates.filter(recruitment_id__in=recruitments)
+    return recruitments, candidates
 
 
 @login_required
@@ -26,23 +44,26 @@ def dashboard(request):
     """
     This method is used to render dashboard for recruitment module
     """
+    recruitments, candidates = _dashboard_scope(request.user)
     # Single query per stat instead of loading all objects into Python
-    total_candidates = Candidate.objects.count()
-    total_hired_candidates = Candidate.objects.filter(hired=True).count()
-    onboarding_count = Candidate.objects.filter(start_onboard=True).count()
-    onboard_candidates = Candidate.objects.filter(hired=True, start_onboard=True)
+    total_candidates = candidates.count()
+    total_hired_candidates = candidates.filter(hired=True).count()
+    onboarding_count = candidates.filter(start_onboard=True).count()
+    onboard_candidates = candidates.filter(hired=True, start_onboard=True)
 
     joining = EmployeeWorkInformation.objects.filter(
         date_joining__isnull=False
     ).exists()
 
-    vacancy_chart = Recruitment.objects.filter(closed=False, is_event_based=False)
+    vacancy_chart = recruitments.filter(closed=False, is_event_based=False)
     dep_vacancy = 1 if vacancy_chart.exists() else 0
 
     # Job chart: 1 query instead of 5 × 217 = 1,085 queries
     jobs = JobPosition.objects.all()
+    if is_department_head_only(request.user):
+        jobs = jobs.filter(department_id__in=responsible_department_ids(request.user))
     stage_counts = (
-        Candidate.objects.filter(job_position_id__in=jobs)
+        candidates.filter(job_position_id__in=jobs)
         .values("job_position_id", "stage_id__stage_type")
         .annotate(count=Count("id"))
     )
@@ -67,7 +88,7 @@ def dashboard(request):
     stages_qs = Stage.objects.prefetch_related(
         Prefetch("candidate_set", queryset=active_candidates_qs)
     )
-    recruitment_obj = Recruitment.objects.filter(closed=False).prefetch_related(
+    recruitment_obj = recruitments.filter(closed=False).prefetch_related(
         "recruitment_managers",
         Prefetch("stage_set", queryset=stages_qs),
     )
@@ -138,7 +159,8 @@ def dashboard_pipeline(request):
     stages_qs = Stage.objects.prefetch_related(
         Prefetch("candidate_set", queryset=active_candidates_qs)
     )
-    recruitment_obj = Recruitment.objects.filter(closed=False).prefetch_related(
+    recruitments, _candidates = _dashboard_scope(request.user)
+    recruitment_obj = recruitments.filter(closed=False).prefetch_related(
         Prefetch("stage_set", queryset=stages_qs),
         "candidate",
     )
@@ -185,8 +207,13 @@ def dashboard_hiring(request):
 
     # One aggregation query instead of loading all rows into Python
     employee_count_per_month = [0] * 12
+    work_infos = EmployeeWorkInformation.objects.all()
+    if is_department_head_only(request.user):
+        work_infos = work_infos.filter(
+            department_id__in=responsible_department_ids(request.user)
+        )
     result = (
-        EmployeeWorkInformation.objects.filter(
+        work_infos.filter(
             date_joining__year=selected_year,
             date_joining__isnull=False,
         )
@@ -215,11 +242,12 @@ def dashboard_hiring(request):
 
 @login_required
 @manager_can_enter(perm="recruitment.view_recruitment")
-def dashboard_vacancy(_request):
+def dashboard_vacancy(request):
     """
     This method is used to generate a recruitment vacancy chart for the dashboard
     """
-    recruitment_obj = Recruitment.objects.filter(closed=False, is_event_based=False)
+    recruitments, _candidates = _dashboard_scope(request.user)
+    recruitment_obj = recruitments.filter(closed=False, is_event_based=False)
     department = Department.objects.all()
 
     # Aggregate vacancies per department in one query
@@ -264,7 +292,7 @@ def get_open_position(request):
 
 @login_required
 @manager_can_enter(perm="recruitment.view_recruitment")
-def candidate_status(_request):
+def candidate_status(request):
     """
     This method is used to generate a Candidate status chart for the dashboard
     """
@@ -274,7 +302,9 @@ def candidate_status(_request):
 
     counts = {
         row["offer_letter_status"]: row["count"]
-        for row in Candidate.objects.values("offer_letter_status").annotate(
+        for row in _dashboard_scope(request.user)[1]
+        .values("offer_letter_status")
+        .annotate(
             count=Count("id")
         )
     }

@@ -20,6 +20,8 @@ from horilla.decorators import (
 )
 from horilla.group_by import group_by_queryset
 from horilla.group_by import group_by_queryset as general_group_by
+from recruitment.decorators import view_permission_or_department_head
+from recruitment.department_heads import viewable_candidates, viewable_recruitments
 from recruitment.filters import (
     CandidateFilter,
     RecruitmentFilter,
@@ -39,7 +41,7 @@ from recruitment.views.paginator_qry import paginator_qry
 
 @login_required
 @hx_request_required
-@permission_required(perm="recruitment.view_recruitment")
+@view_permission_or_department_head(perm="recruitment.view_recruitment")
 def recruitment_search(request):
     """
     This method is used to search recruitment
@@ -49,6 +51,7 @@ def recruitment_search(request):
     queryset = Recruitment.objects.all()
     if not request.GET.get("is_active"):
         queryset = Recruitment.objects.filter(is_active=True)
+    queryset = viewable_recruitments(request.user, queryset)
     filter_obj = RecruitmentFilter(request.GET, queryset)
     previous_data = request.GET.urlencode()
     recruitment_obj = sortby(request, filter_obj.qs, "orderby")
@@ -97,7 +100,7 @@ def stage_search(request):
 
 @login_required
 @hx_request_required
-@permission_required(perm="recruitment.view_candidate")
+@view_permission_or_department_head(perm="recruitment.view_candidate")
 def candidate_search(request):
     """
     This method is used to search candidate model and return matching objects
@@ -107,6 +110,7 @@ def candidate_search(request):
     if search is None:
         search = ""
     candidates = Candidate.objects.filter(name__icontains=search)
+    candidates = viewable_candidates(request.user, candidates)
     candidates = CandidateFilter(request.GET, queryset=candidates).qs
     data_dict = []
     if not request.GET.get("dashboard"):
@@ -153,12 +157,14 @@ def candidate_search(request):
 
 @login_required
 @hx_request_required
-@permission_required(perm="recruitment.view_candidate")
+@view_permission_or_department_head(perm="recruitment.view_candidate")
 def candidate_filter_view(request):
     """
     This method is used for filter,pagination and search candidate.
     """
-    candidates = Candidate.objects.filter(is_active=True)
+    candidates = viewable_candidates(
+        request.user, Candidate.objects.filter(is_active=True)
+    )
     template = "candidate/candidate_card.html"
     if request.GET.get("view") == "list":
         template = "candidate/candidate_list.html"

@@ -1,0 +1,30 @@
+{% load i18n %}
+{% if department_head_form %}
+<input type="hidden" name="department_head_section" value="1">
+<div class="row mt-3">
+  <div class="col-lg-6">
+    <div class="oh-input__group">
+      <label class="oh-label" for="id_is_department_head"
+        title="{% trans 'Consultation (lecture seule) des recrutements des départements sélectionnés' %}">
+        {% trans "Responsable département" %}
+      </label>
+      <div class="oh-switch" style="width: 30px;">{{ department_head_form.is_department_head }}</div>
+    </div>
+  </div>
+  <div class="col-lg-6" id="responsibleDepartmentsContainer"
+    {% if not department_head_form.is_department_head.value %}style="display: none;"{% endif %}>
+    <div class="oh-input__group">
+      <label class="oh-label" for="id_responsible_departments">{% trans "Départements" %}</label>
+      {{ department_head_form.responsible_departments }}
+      {{ department_head_form.responsible_departments.errors }}
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    $("#id_is_department_head").on("change", function () {
+      $("#responsibleDepartmentsContainer").toggle(this.checked);
+    });
+  });
+</script>
+{% endif %}
