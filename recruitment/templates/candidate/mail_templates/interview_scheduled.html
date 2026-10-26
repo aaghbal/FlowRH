@@ -1,0 +1,123 @@
+{% load i18n %}<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ subject }}</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f4f1f8; font-family:Arial, Helvetica, sans-serif; color:#1d1530;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f1f8; padding:32px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background-color:#ffffff; border-radius:14px; overflow:hidden;">
+            <!-- Header -->
+            <tr>
+              <td style="background-color:#290054; padding:26px 32px;" align="left">
+                <img src="{{ logo_url }}" alt="M-Automotiv" height="24" style="display:block; height:24px; width:auto; border:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="height:4px; background-color:#F2674A; line-height:4px; font-size:0;">&nbsp;</td>
+            </tr>
+
+            <!-- Body -->
+            <tr>
+              <td style="padding:36px 32px 8px; font-size:15px; line-height:1.65; color:#1d1530;">
+                {% if for_interviewer %}
+                <p style="margin:0 0 18px;">Bonjour {{ recipient_name }},</p>
+                <p style="margin:0 0 22px;">Un entretien a été planifié pour vous :</p>
+                {% else %}
+                <p style="margin:0 0 18px;">Bonjour {{ candidate.name }},</p>
+                <p style="margin:0 0 22px;">
+                  Suite à votre candidature{% if position %} au poste de <strong style="color:#290054;">{{ position }}</strong>{% endif %},
+                  nous avons le plaisir de vous inviter à un entretien.
+                </p>
+                {% endif %}
+
+                <!-- Details card -->
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f8f6fb; border:1px solid #e7e3ef; border-radius:12px;">
+                  <tr>
+                    <td style="padding:18px 22px; font-size:14.5px; line-height:1.9; color:#1d1530;">
+                      {% if for_interviewer %}
+                      👤 <strong>Candidat :</strong> {{ candidate.name }}<br />
+                      {% if position %}💼 <strong>Poste :</strong> {{ position }}<br />{% endif %}
+                      {% endif %}
+                      📅 <strong>Date :</strong> {{ interview_date }}<br />
+                      🕘 <strong>Heure :</strong> {{ interview_time }}<br />
+                      {% if interview.interview_mode == "online" %}
+                      💻 <strong>Format :</strong> Entretien en ligne<br />
+                      🔗 <strong>Lien :</strong> <a href="{{ interview.meeting_link }}" style="color:#F2674A; font-weight:bold; word-break:break-all;">{{ interview.meeting_link }}</a><br />
+                      {% else %}
+                      📍 <strong>Lieu :</strong> {{ interview.location }}<br />
+                      {% endif %}
+                      {% if for_interviewer %}
+                        {% if other_interviewers %}👥 <strong>Autres participants :</strong> {{ other_interviewers|join:", " }}<br />{% endif %}
+                      {% else %}
+                      👤 <strong>Avec :</strong> {{ interviewers|join:", " }}
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
+
+                {% if interview.interview_mode == "online" and not for_interviewer %}
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:22px 0 0;">
+                  <tr>
+                    <td style="background-color:#F2674A; border-radius:10px;">
+                      <a href="{{ interview.meeting_link }}" style="display:inline-block; padding:12px 26px; font-size:14.5px; font-weight:bold; color:#ffffff; text-decoration:none;">Rejoindre l'entretien</a>
+                    </td>
+                  </tr>
+                </table>
+                {% endif %}
+
+                {% if interview.description %}
+                <p style="margin:22px 0 0;"><strong>{% if for_interviewer %}Description{% else %}Informations complémentaires{% endif %} :</strong><br />{{ interview.description|linebreaksbr }}</p>
+                {% endif %}
+
+                {% if for_interviewer %}
+                <p style="margin:22px 0 0;">Vous pouvez consulter le profil et le CV du candidat dans M-Community.</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:18px 0 0;">
+                  <tr>
+                    <td style="background-color:#F2674A; border-radius:10px;">
+                      <a href="{{ candidate_url }}" style="display:inline-block; padding:12px 26px; font-size:14.5px; font-weight:bold; color:#ffffff; text-decoration:none;">Voir le candidat</a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:26px 0 0;">
+                  Cordialement,<br />
+                  <strong>M-Community – Ressources Humaines</strong>
+                </p>
+                {% else %}
+                <p style="margin:22px 0 0;">
+                  Merci de nous confirmer votre présence en répondant à cet email. En cas d'empêchement,
+                  n'hésitez pas à nous contacter afin de convenir d'un autre créneau.
+                </p>
+                <p style="margin:22px 0 0;">
+                  Cordialement,<br />
+                  <strong>L'équipe Ressources Humaines – M-Automotiv</strong>
+                </p>
+                {% endif %}
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding:28px 32px 30px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e7e3ef;">
+                  <tr>
+                    <td style="padding-top:18px; font-size:12px; line-height:1.5; color:#6b6480;">
+                      {% if for_interviewer %}
+                      Cet email vous a été envoyé automatiquement par M-Community.
+                      {% else %}
+                      Cet email vous a été envoyé par l'équipe RH de M-Automotiv suite à votre candidature.
+                      {% endif %}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

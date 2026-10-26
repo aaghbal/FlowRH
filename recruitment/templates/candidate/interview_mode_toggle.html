@@ -1,0 +1,16 @@
+<script>
+    // Show "Lieu" for on-site interviews and "Lien de l'entretien" for online ones
+    (function () {
+        var $form = $("#skillform");
+        var $mode = $form.find("[name=interview_mode]");
+        function toggleInterviewMode() {
+            var online = $mode.val() === "online";
+            $form.find("#id_location_parent_div").toggle(!online);
+            $form.find("#id_meeting_link_parent_div").toggle(online);
+            $form.find("#id_location_parent_div label").addClass("required-star");
+            $form.find("#id_meeting_link_parent_div label").addClass("required-star");
+        }
+        $mode.on("change", toggleInterviewMode);
+        toggleInterviewMode();
+    })();
+</script>

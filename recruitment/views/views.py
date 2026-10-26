@@ -123,6 +123,7 @@ from recruitment.models import (
     StageFiles,
     StageNote,
 )
+from recruitment.threading import InterviewScheduledMailThread
 from recruitment.views.paginator_qry import paginator_qry
 
 
@@ -1903,7 +1904,8 @@ def interview_schedule(request, cand_id):
     if request.method == "POST":
         form = ScheduleInterviewForm(request.POST)
         if form.is_valid():
-            form.save()
+            interview = form.save()
+            InterviewScheduledMailThread(request, interview).start()
             emp_ids = form.cleaned_data["employee_id"]
             cand_id = form.cleaned_data["candidate_id"]
             interview_date = form.cleaned_data["interview_date"]
@@ -1942,7 +1944,8 @@ def create_interview_schedule(request):
     if request.method == "POST":
         form = ScheduleInterviewForm(request.POST)
         if form.is_valid():
-            form.save()
+            interview = form.save()
+            InterviewScheduledMailThread(request, interview).start()
             emp_ids = form.cleaned_data["employee_id"]
             cand_id = form.cleaned_data["candidate_id"]
             interview_date = form.cleaned_data["interview_date"]

@@ -47,7 +47,7 @@ SIDEBARS = [
     "recruitment",
     "onboarding",
     # "attendance",
-    "leave",
+    # "leave",
     "employee",
     "pms",
 ]

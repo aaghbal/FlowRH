@@ -1302,7 +1302,13 @@ class ScheduleInterviewForm(ModelForm):
             },
             format="%H:%M"
         )
-        
+        self.fields["location"].widget.attrs.update(
+            {"placeholder": _("Ex : Showroom M-Automotiv, Bd Zerktouni, Casablanca")}
+        )
+        self.fields["meeting_link"].widget.attrs.update(
+            {"placeholder": "https://meet.google.com/abc-defg-hij"}
+        )
+
         # Set initial values for date and time if instance exists
         if self.instance and self.instance.pk:
             if self.instance.interview_date:
@@ -1316,7 +1322,17 @@ class ScheduleInterviewForm(ModelForm):
         interview_date = cleaned_data.get("interview_date")
         interview_time = cleaned_data.get("interview_time")
         managers = cleaned_data.get("employee_id")
-        
+        interview_mode = cleaned_data.get("interview_mode")
+
+        if interview_mode == "online":
+            cleaned_data["location"] = ""
+            if not cleaned_data.get("meeting_link"):
+                self.add_error("meeting_link", _("Veuillez saisir le lien de l'entretien."))
+        else:
+            cleaned_data["meeting_link"] = ""
+            if not cleaned_data.get("location"):
+                self.add_error("location", _("Veuillez saisir le lieu de l'entretien."))
+
         if not instance.pk and interview_date and interview_date < date.today():
             self.add_error("interview_date", _("Interview date cannot be in the past."))
 

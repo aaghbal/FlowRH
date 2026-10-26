@@ -1042,6 +1042,18 @@ class InterviewSchedule(HorillaModel):
     employee_id = models.ManyToManyField(Employee, verbose_name=_("Interviewer"))
     interview_date = models.DateField(verbose_name=_("Date d'entretien"))
     interview_time = models.TimeField(verbose_name=_("Heure d'entretien"))
+    interview_mode = models.CharField(
+        max_length=10,
+        choices=[("onsite", _("Sur place")), ("online", _("En ligne"))],
+        default="onsite",
+        verbose_name=_("Type d'entretien"),
+    )
+    location = models.CharField(
+        max_length=255, blank=True, verbose_name=_("Lieu")
+    )
+    meeting_link = models.URLField(
+        max_length=500, blank=True, verbose_name=_("Lien de l'entretien")
+    )
     description = models.TextField(
         verbose_name=_("Description"), blank=True, max_length=255
     )

@@ -24,10 +24,10 @@ SUBMENUS = [
         "menu": trans("Enquête de performance"),
         "redirect": reverse("view-meetings"),
     },
-    {
-        "menu": trans("Points de Bonus des Employés"),
-        "redirect": reverse("employee-bonus-point"),
-    },
+    # {
+    #     "menu": trans("Points de Bonus des Employés"),
+    #     "redirect": reverse("employee-bonus-point"),
+    # },
     {
         "menu": trans("Question Template"),
         "redirect": reverse("question-template-view"),

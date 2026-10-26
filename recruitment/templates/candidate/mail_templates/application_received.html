@@ -25,8 +25,8 @@
               <td style="padding:36px 32px 12px; font-size:15px; line-height:1.65; color:#1d1530;">
                 <p style="margin:0 0 18px;">Bonjour {{ candidate.name }},</p>
                 <p style="margin:0 0 18px;">
-                  Nous vous confirmons la bonne réception de votre candidature au poste de
-                  <strong style="color:#290054;">{{ position }}</strong> chez M-Automotiv.
+                  Nous vous confirmons la bonne réception de votre candidature{% if position %} au poste de
+                  <strong style="color:#290054;">{{ position }}</strong>{% endif %} chez M-Automotiv.
                 </p>
                 <p style="margin:0 0 18px;">
                   Notre équipe RH va étudier votre profil avec attention. Si votre candidature est retenue,
