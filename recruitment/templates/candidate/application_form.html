@@ -1,383 +1,426 @@
-{% extends 'candidate/application_form_component.html' %} {% block content %}
-{% load static %} {% load i18n %} {{form.load}}
-<div id="main">
-  <div class="oh-wrapper mt-5">
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-6">
-        <div class="oh-onboarding-card oh-onboarding-card--top-bar w-100">
-          <div
-            class="oh-onboarding-card__container oh-onboarding-card__container--wide"
-          >
-            <form action="" method="post" enctype="multipart/form-data">
-              {% if messages %}
-              <div class="oh-alert-container">
-                {% for message in messages %}
-                <div class="oh-alert oh-alert--animated {{message.tags}}">
-                  {{ message }}
-                </div>
-                {% endfor %}
-              </div>
-              {% endif %} {% csrf_token %}
-              <div class="row">
-                <div
-                  class="oh-modal"
-                  id="uploadPhotoModal"
-                  role="dialog"
-                  aria-labelledby="uploadPhotoModal"
-                  aria-hidden="true"
-                >
-                  <div class="oh-modal__dialog">
-                    <div class="oh-modal__dialog-header">
-                      <span
-                        class="oh-modal__dialog-title"
-                        id="uploadPhotoModalLabel"
-                        >Upload Photo</span
-                      >
-                      <button
-                        type="button"
-                        onclick="event.stopPropagation()"
-                        class="oh-modal__close"
-                        aria-label="Close"
-                      >
-                        <ion-icon name="close-outline"></ion-icon>
-                      </button>
-                    </div>
-                    <div class="oh-modal__dialog-body">
-                      <div class="oh-profile-section__image-container">
-                        <div class="oh-profile-section__modal-avatar">
-                          <img
-                            src="{% static "/images/ui/user.jpg" %}"
-                            class="oh-profile-section__modal-image oh-upload-photo"
-                            alt="User Photo"
-                          />
-                        </div>
-                        <input
-                          type="file"
-                          id="photo"
-                          name="profile"
-                          class="oh-input oh-input--file oh-input--file-sm mt-4 oh-upload-input"
-                          accept=".jpg, .jpeg, .png"
-                          data-target=".oh-upload-photo"
-                        />
-                        <div
-                          class="d-flex justify-content-between w-100 align-items-center mt-4"
-                        >
-                          <button
-                            class="oh-btn oh-btn--light-danger mr-1 oh-remove-image"
-                            data-target=".oh-upload-photo"
-                          >
-                            <ion-icon
-                              class="me-1"
-                              name="trash-outline"
-                            ></ion-icon
-                            >{% trans "Delete image" %}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-2 col-lg-2">
-                  <div
-                    class="oh-profile-section__edit-photo me-4 mb-3"
-                    data-toggle="oh-modal-toggle"
-                    data-target="#uploadPhotoModal"
-                  >
-                    <img
-                      src="{% static "/images/ui/user.jpg" %}"
-                      class="oh-profile-section__avatar oh-upload-photo"
-                      alt=""
-                    />
-                  </div>
-                </div>
-                {{form.profile.errors}}
-                {% comment %} <ul id="error-list" class="errorlist" style="display: none">
-                  <li>{% trans "Please select profile image" %}.</li>
-                </ul> {% endcomment %}
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="name"
-                      >{% trans "Name" %}</label
-                    >
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      required
-                      class="oh-input w-100"
-                      placeholder="Name"
-                    />
-                    {{form.name.errrors}}
-                  </div>
-                </div>
+{% extends 'candidate/application_form_component.html' %}
+{% load static %} {% load i18n %}
+{% block title %}{% if recruitment %}{{ recruitment.title|default:recruitment }} - {% endif %}Candidature M-Automotiv{% endblock title %}
+{% block extra_head %}
+<style>
+  :root {
+    --mc-purple: #290054;
+    --mc-purple-2: #3b0a72;
+    --mc-mauve: #b6507b;
+    --mc-orange: #F2674A;
+    --mc-ink: #1d1530;
+    --mc-muted: #6b6480;
+    --mc-line: #e7e3ef;
+    --mc-soft: #f6f4fa;
+    --mc-radius: 14px;
+  }
+  html, body { height: 100%; }
+  body {
+    margin: 0; color: var(--mc-ink);
+    background:
+      radial-gradient(1000px 600px at 85% 110%, rgba(242, 103, 74, .22), transparent 60%),
+      radial-gradient(900px 600px at 10% -10%, rgba(255, 255, 255, .08), transparent 60%),
+      linear-gradient(160deg, #290054 0%, #3b0a72 100%);
+    background-attachment: fixed;
+  }
+  .mc-page { min-height: 100vh; display: flex; flex-direction: column; position: relative; z-index: 1; }
 
-                {% if not request.GET.recruitmentId %}
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="recuitment"
-                      > {% trans "Open Recruitment" %}
-                    </label>
-                    {{form.recruitment_id}} {{form.recruitment_id.errors}}
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="recuitment"
-                      >{% trans "Choose Open Position" %}
-                    </label>
-                    {{form.job_position_id}} {{form.job_position_id.errors}}
-                  </div>
-                </div>
-                {% else %}
-                <input
-                  type="text"
-                  name="recruitment_id"
-                  hidden
-                  value="{{recruitment.id}}"
-                />
-                <div class="oh-input-group">
-                  <label class="oh-label" for="recuitment"
-                    >{% trans "Choose Job Position" %}
-                  </label>
 
-                  <select
-                    name="job_position_id"
-                    class="oh-select oh-select2 w-100"
-                    style="height: 50px"
-                  >
-                    {% for job in recruitment.open_positions.all %}
-                    <option value="{{job.id}}">{{job.job_position}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                {% endif %}
+  /* ── Top bar ── */
+  .mc-topbar {
+    background: #fff; border-bottom: 0; flex: none; box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .mc-topbar__inner {
+    max-width: 1280px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .mc-topbar__logo { height: 22px; width: auto; display: block; }
+  .mc-topbar__brand { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--mc-muted); }
+  .mc-topbar__brand img { height: 30px; width: auto; }
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="email"
-                      >{% trans "Email" %}</label
-                    >
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      class="oh-input w-100"
-                      required
-                      placeholder="Email"
-                    />
-                  </div>
-                  {{form.email.errors}}
-                </div>
+  /* ── Layout ── */
+  .mc-layout {
+    flex: 1; width: 100%; max-width: 1280px; margin: 0 auto; padding: 14px 24px;
+    display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px;
+    align-items: stretch; align-content: center;
+  }
+  .mc-card {
+    background: #fff; border-radius: var(--mc-radius); border: 1px solid var(--mc-line);
+    border: 0; box-shadow: 0 24px 60px rgba(10, 0, 30, .35);
+  }
+  .mc-form { padding: 18px 26px; margin: 0; display: flex; flex-direction: column; }
+  .mc-aside { padding: 20px 24px; display: flex; flex-direction: column; min-height: 0; }
+  @media (min-width: 992px) {
+    .mc-aside { max-height: calc(100vh - 85px); overflow: hidden; }
+  }
+  @media (max-width: 991px) {
+    .mc-layout { grid-template-columns: 1fr; }
+    .mc-aside { order: -1; }
+  }
+  @media (max-width: 575px) {
+    .mc-layout { padding: 16px; }
+    .mc-form, .mc-aside { padding: 18px; }
+  }
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="phone"
-                      >{% trans "Phone" %}</label
-                    >
-                    <input
-                      type="text"
-                      id="phone"
-                      class="oh-input w-100"
-                      name="mobile"
-                      placeholder="Phone"
-                    />
-                    {{form.mobile.errors}}
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label" for="portfolio"
-                      >{% trans "Portfolio" %}</label
-                    >
-                    <input
-                      type="text"
-                      id="portfolio"
-                      name="portfolio"
-                      class="oh-input w-100"
-                      placeholder="e.g. https://www.linktoportfolio.com/"
-                    />
-                    {{form.portfolio.errors}}
-                  </div>
-                </div>
+  /* ── Sections ── */
+  .mc-section + .mc-section { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--mc-line); }
+  .mc-section__head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .mc-section__num {
+    width: 24px; height: 24px; border-radius: 50%; flex: none;
+    display: grid; place-items: center; font-size: 12px; font-weight: 700;
+    background: #fff1ec; color: var(--mc-orange);
+  }
+  .mc-section__title { font-size: 15px; font-weight: 600; margin: 0; color: var(--mc-ink); }
 
-                <div class="col-sm-12 col-md-12 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label" for="resume"
-                      >{% trans "CV" %}</label
-                    >
-                    {% if resume.file %}
-                        <p>Currently: <a href="{{ resume.file.url }}" target="_blank">{{ resume.file.name }}</a></p>
-                        <p>Change: </p>
-                        <input type="hidden" id="matching_resume" data-value = "{{ resume.file.url }}" data-id="{{resume.id}}" name="initial_resume" value="{{ resume.file.url }}">
-                        {% endif %}
-                    <input
-                      type="file"
-                      id="id_resume"
-                      name="resume"
-                      accept=".pdf"
-                      class="oh-input w-100 px-0"
-                    />
-                    {{form.resume.errors}}
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="gender"
-                      >{% trans "Gender" %}</label
-                    >
-                    {{form.gender}} {{form.gender.errros}}
-                  </div>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-12">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="address"
-                      >{% trans "Address" %}</label
-                    >
-                    <textarea
-                      id="address"
-                      name="address"
-                      required
-                      class="oh-input oh-input--textarea w-100"
-                    ></textarea>
-                    {{form.address.errors}}
-                  </div>
-                </div>
+  .mc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 14px; }
+  .mc-grid .mc-span-2 { grid-column: span 2; }
+  @media (max-width: 767px) {
+    .mc-grid { grid-template-columns: 1fr; }
+    .mc-grid .mc-span-2 { grid-column: auto; }
+  }
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="id_country"
-                      >{% trans "Country" %}</label
-                    >
-                    <select
-                      name="country"
-                      id="id_country"
-                      required
-                      class="oh-select oh-select-2"
-                    ></select>
-                    {{form.country.errors}}
-                  </div>
-                </div>
+  /* ── Fields ── */
+  .mc-field label { display: block; font-size: 12.5px; font-weight: 500; color: var(--mc-ink); margin-bottom: 5px; }
+  .mc-req { color: var(--mc-orange); margin-left: 2px; }
+  .mc-field input[type=text], .mc-field input[type=email], .mc-field input[type=tel], .mc-field select {
+    width: 100%; height: 40px; padding: 0 12px; font-size: 13.5px; color: var(--mc-ink);
+    background: #fbfafd; border: 1px solid var(--mc-line); border-radius: 9px;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+  .mc-field input:focus, .mc-field select:focus {
+    outline: none; background: #fff; border-color: var(--mc-orange) !important;
+    box-shadow: 0 0 0 4px rgba(242, 103, 74, .12);
+  }
+  .mc-field input::placeholder { color: #a9a3b8; }
+  .mc-field .select2-container { width: 100% !important; }
+  .mc-form .mc-field .select2-container .select2-selection--single {
+    height: 40px !important; border: 1px solid var(--mc-line) !important; border-radius: 9px !important;
+    background: #fbfafd !important; padding: 0 !important;
+  }
+  .mc-form .mc-field .select2-container .select2-selection__rendered { line-height: 38px !important; padding-left: 12px !important; font-size: 13.5px; }
+  .mc-form .mc-field .select2-container .select2-selection__arrow { height: 38px !important; right: 6px; }
+  .mc-form .mc-field .select2-container--open .select2-selection--single { border-color: var(--mc-orange) !important; }
+  .select2-container--default .select2-results__option--highlighted[aria-selected],
+  .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background: var(--mc-orange) !important; color: #fff !important;
+  }
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="id_state"
-                      >{% trans "State" %}</label
-                    >
-                    <select
-                      name="state"
-                      required
-                      id="id_state"
-                      class="oh-select oh-select-2"
-                    ></select>
-                    {{form.state.errors}}
-                  </div>
-                </div>
+  /* ── Profile row: avatar + fields ── */
+  .mc-profile { display: flex; gap: 18px; align-items: flex-start; }
+  .mc-profile .mc-grid { flex: 1; }
+  .mc-avatar { flex: none; text-align: center; width: 92px; }
+  .mc-avatar__pic {
+    width: 84px; height: 84px; margin: 0 auto; border-radius: 50%; cursor: pointer; position: relative;
+    background: #efeaf8 center/cover no-repeat; border: 3px solid #fff;
+    box-shadow: 0 0 0 2px var(--mc-line); display: grid; place-items: center; color: var(--mc-purple);
+    transition: box-shadow .15s;
+  }
+  .mc-avatar__pic:hover { box-shadow: 0 0 0 2px var(--mc-orange); }
+  .mc-avatar__pic > ion-icon { font-size: 32px; opacity: .6; }
+  .mc-avatar__pic.has-image > ion-icon { display: none; }
+  .mc-avatar__badge {
+    position: absolute; right: -2px; bottom: -2px; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--mc-orange); color: #fff; display: grid; place-items: center; border: 2px solid #fff;
+  }
+  .mc-avatar__badge ion-icon { font-size: 13px; }
+  .mc-avatar__label { display: block; font-size: 11.5px; color: var(--mc-muted); margin-top: 6px; line-height: 1.3; }
+  .mc-avatar__remove { background: none; border: 0; padding: 0; font-size: 11.5px; color: var(--mc-orange); cursor: pointer; display: none; }
+  .mc-avatar__remove.is-visible { display: inline; }
+  @media (max-width: 767px) { .mc-profile { flex-direction: column; align-items: center; } .mc-profile .mc-grid { width: 100%; } }
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="city"
-                      >{% trans "City" %}</label
-                    >
-                    <input
-                      type="text"
-                      id="city"
-                      required
-                      name="city"
-                      class="oh-input w-100"
-                      placeholder="ville"
-                    />
-                    {{form.city.errors}}
-                  </div>
-                </div>
+  /* ── CV dropzone ── */
+  .mc-drop {
+    display: flex; align-items: center; gap: 14px; padding: 12px 16px; cursor: pointer; margin: 0;
+    border: 2px dashed #d9d2e8; border-radius: 12px; background: #fbfafd; transition: all .15s;
+  }
+  .mc-drop:hover, .mc-drop.is-dragover { border-color: var(--mc-orange); background: #fff7f4; }
+  .mc-drop.has-file { border-style: solid; border-color: #c9e9d3; background: #f3fbf6; }
+  .mc-drop__icon {
+    width: 40px; height: 40px; border-radius: 10px; flex: none; display: grid; place-items: center;
+    background: #fff1ec; color: var(--mc-orange); font-size: 20px;
+  }
+  .mc-drop.has-file .mc-drop__icon { background: #e1f5e8; color: #1f9254; }
+  .mc-drop__title { font-size: 13.5px; font-weight: 600; margin: 0; overflow-wrap: anywhere; }
+  .mc-drop__hint { font-size: 12px; color: var(--mc-muted); margin: 1px 0 0; }
+  .mc-drop input[type=file] { display: none; }
+  .mc-current-cv { font-size: 12.5px; margin: 0 0 8px; color: var(--mc-muted); }
+  .mc-current-cv a { color: var(--mc-orange); font-weight: 500; }
 
-                <div class="col-sm-12 col-md-6 col-lg-6">
-                  <div class="oh-input-group">
-                    <label class="oh-label required-star" for="zip"
-                      >{% trans "Zip Code" %}</label
-                    >
-                    <input
-                      type="text"
-                      id="zip"
-                      required
-                      name="zip"
-                      class="oh-input w-100"
-                      placeholder="Zip"
-                    />
-                    {{form.zip.errors}}
-                  </div>
-                </div>
+  /* ── Submit ── */
+  .mc-actions { padding-top: 16px; }
+  .mc-submit {
+    width: 100%; height: 48px; border: 0; border-radius: 12px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-size: 15px; font-weight: 600; color: #fff;
+    background: linear-gradient(90deg, var(--mc-orange) 0%, #f5845f 100%);
+    box-shadow: 0 8px 20px rgba(242, 103, 74, .28); transition: transform .12s, box-shadow .12s;
+  }
+  .mc-submit:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(242, 103, 74, .35); }
+  .mc-privacy { font-size: 11.5px; color: var(--mc-muted); text-align: center; margin: 8px 0 0; }
+  .mc-privacy ion-icon { vertical-align: -2px; }
 
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                  <button
-                    type="submit"
-                    class="oh-btn mt-4 oh-btn--secondary w-100 mb-4"
-                    onclick="validateForm(event)"
-                  >
-                    <ion-icon name="checkmark-outline" class="me-2"></ion-icon>
-                    {% trans "Apply" %}
-                  </button>
-                </div>
+  /* ── Aside ── */
+  .mc-aside__label { font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mc-orange); }
+  .mc-aside__title { font-size: 19px; font-weight: 700; margin: 4px 0 14px; color: var(--mc-ink); }
+  .mc-facts { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 10px; }
+  .mc-facts li { display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--mc-ink); }
+  .mc-facts ion-icon {
+    font-size: 15px; color: var(--mc-purple); background: #efeaf8; padding: 7px; border-radius: 8px; flex: none;
+  }
+  .mc-facts span { color: var(--mc-muted); margin-right: 4px; }
+  .mc-desc {
+    flex: 1; min-height: 0; overflow-y: auto; font-size: 13.5px; line-height: 1.6; color: #3d3650;
+    border-top: 1px solid var(--mc-line); padding-top: 14px;
+  }
+  .mc-desc * { font-family: inherit !important; color: inherit !important; }
+  .mc-desc h1, .mc-desc h2, .mc-desc h3, .mc-desc h4, .mc-desc h5 { font-size: 14px; font-weight: 600; margin: 10px 0 6px; }
+  .mc-cv-frame { flex: 1; width: 100%; min-height: 60vh; border: 0; border-radius: 10px; margin-top: 10px; }
 
-                <div class="col-sm-12 col-md-12 col-lg-12">
-                  <p class="small text-muted text-center">
-                    &copy; {% now 'Y' %} {{white_label_company_name}}. All rights resevered.
-                  </p>
-                </div>
-              </div>
-            </form>
+  /* ── Errors & alerts ── */
+  ul.errorlist { margin: 4px 0 0; padding: 6px 10px; font-size: 12px; border-radius: 8px; }
+  .mc-form .oh-alert-container { position: static; margin-bottom: 12px; }
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+{{form.load}}
+<div class="mc-page">
+<header class="mc-topbar">
+  <div class="mc-topbar__inner">
+    <img src="{% static 'images/ui/m-automotiv-logo.png' %}" alt="M-Automotiv" class="mc-topbar__logo" />
+    <span class="mc-topbar__brand">
+      {% trans "Propulsé par" %}
+      <img src="{% static 'images/ui/m-community-logo.png' %}" alt="M-Community" />
+    </span>
+  </div>
+</header>
+
+<main class="mc-layout">
+  <form action="" method="post" enctype="multipart/form-data" class="mc-card mc-form">
+    {% csrf_token %}
+    {% if messages %}
+    <div class="oh-alert-container">
+      {% for message in messages %}
+      <div class="oh-alert oh-alert--animated {{message.tags}}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- 1. Profile -->
+    <div class="mc-section">
+      <div class="mc-section__head">
+        <div class="mc-section__num">1</div>
+        <h2 class="mc-section__title">{% trans "Votre profil" %}</h2>
+      </div>
+      <div class="mc-profile">
+        <div class="mc-avatar">
+          <label class="mc-avatar__pic" for="photo" id="avatarPreview" title="{% trans 'Ajouter une photo' %}">
+            <ion-icon name="person-outline"></ion-icon>
+            <span class="mc-avatar__badge"><ion-icon name="camera-outline"></ion-icon></span>
+          </label>
+          <input type="file" id="photo" name="profile" accept=".jpg, .jpeg, .png" hidden />
+          <span class="mc-avatar__label">
+            {% trans "Photo" %}{% if recruitment and not recruitment.optional_profile_image %}<span class="mc-req">*</span>{% else %} ({% trans "facultatif" %}){% endif %}
+          </span>
+          <button type="button" class="mc-avatar__remove" id="avatarRemove">{% trans "Supprimer" %}</button>
+        </div>
+
+        <div class="mc-grid">
+          <div class="mc-field mc-span-2">
+            <label for="name">{% trans "Nom complet" %}<span class="mc-req">*</span></label>
+            <input type="text" id="name" name="name" required placeholder="{% trans 'Prénom et nom' %}" />
+            {{form.name.errors}}
           </div>
-        </div>
-      </div>
-      {% if resume %}
-      <div class="col-12 col-md-6 col-lg-6 sticky">
-        <iframe style="width: 100%;height:90vh" height="100" src="{{ resume.file.url }}" frameborder="0"></iframe>
+          <div class="mc-field">
+            <label for="id_gender">{% trans "Genre" %}<span class="mc-req">*</span></label>
+            {{form.gender}} {{form.gender.errors}}
+          </div>
 
-      </div>
-      {% else %}
-      <div class="col-12 col-md-6 col-lg-6">
-        <div class="oh-onboarding-preview oh-onboarding-card--top-bar w-100">
-          {{recruitment.description|safe}}
-          <div
-            class="oh-onboarding-preview__content"
-            id="recruitmentInfoBody"
-            style="border-bottom: solid rgba(128, 128, 128, 0.281) 1px"
-          ></div>
+          {% if not request.GET.recruitmentId %}
+          <div class="mc-field">
+            <label for="id_recruitment_id">{% trans "Recrutement" %}<span class="mc-req">*</span></label>
+            {{form.recruitment_id}} {{form.recruitment_id.errors}}
+          </div>
+          <div class="mc-field mc-span-2">
+            <label for="id_job_position_id">{% trans "Poste" %}<span class="mc-req">*</span></label>
+            {{form.job_position_id}} {{form.job_position_id.errors}}
+          </div>
+          {% else %}
+          <input type="text" name="recruitment_id" hidden value="{{recruitment.id}}" />
+          <div class="mc-field mc-span-2">
+            <label for="job_position_id">{% trans "Poste souhaité" %}</label>
+            <select name="job_position_id" id="job_position_id">
+              {% for job in recruitment.open_positions.all %}
+              <option value="{{job.id}}">{{job.job_position}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endif %}
         </div>
+      </div>
+      {{form.profile.errors}}
+    </div>
+
+    <!-- 2. Contact -->
+    <div class="mc-section">
+      <div class="mc-section__head">
+        <div class="mc-section__num">2</div>
+        <h2 class="mc-section__title">{% trans "Coordonnées" %}</h2>
+      </div>
+      <div class="mc-grid">
+        <div class="mc-field">
+          <label for="email">{% trans "Email" %}<span class="mc-req">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="nom@exemple.com" />
+          {{form.email.errors}}
+        </div>
+        <div class="mc-field">
+          <label for="phone">{% trans "Téléphone" %}<span class="mc-req">*</span></label>
+          <input type="tel" id="phone" name="mobile" placeholder="06 00 00 00 00" />
+          {{form.mobile.errors}}
+        </div>
+        <div class="mc-field">
+          <label for="id_country">{% trans "Pays" %}<span class="mc-req">*</span></label>
+          <select name="country" id="id_country" required></select>
+          {{form.country.errors}}
+        </div>
+        <div class="mc-field mc-span-2">
+          <label for="address">{% trans "Adresse" %}<span class="mc-req">*</span></label>
+          <input type="text" id="address" name="address" required placeholder="{% trans 'Rue, quartier...' %}" />
+          {{form.address.errors}}
+        </div>
+        <div class="mc-field">
+          <label for="city">{% trans "Ville" %}<span class="mc-req">*</span></label>
+          <input type="text" id="city" name="city" required placeholder="Casablanca" />
+          {{form.city.errors}}
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CV -->
+    <div class="mc-section">
+      <div class="mc-section__head">
+        <div class="mc-section__num">3</div>
+        <h2 class="mc-section__title">{% trans "Votre CV" %}{% if recruitment and not recruitment.optional_resume %}<span class="mc-req">*</span>{% endif %}</h2>
+      </div>
+      {% if resume.file %}
+      <p class="mc-current-cv">
+        {% trans "CV actuel" %} : <a href="{{ resume.file.url }}" target="_blank">{{ resume.file.name }}</a>
+      </p>
+      <input type="hidden" id="matching_resume" data-value="{{ resume.file.url }}" data-id="{{resume.id}}" name="initial_resume" value="{{ resume.file.url }}">
+      {% endif %}
+      <label class="mc-drop" for="id_resume" id="cvDrop">
+        <div class="mc-drop__icon"><ion-icon name="document-text-outline"></ion-icon></div>
+        <div>
+          <p class="mc-drop__title" id="cvTitle">{% trans "Glissez votre CV ici ou cliquez pour parcourir" %}</p>
+          <p class="mc-drop__hint" id="cvHint">{% trans "PDF uniquement — certains champs seront remplis automatiquement" %}</p>
+        </div>
+        <input type="file" id="id_resume" name="resume" accept=".pdf" />
+      </label>
+      {{form.resume.errors}}
+    </div>
+
+    <div class="mc-actions">
+      <button type="submit" class="mc-submit">
+        <ion-icon name="paper-plane-outline"></ion-icon>
+        {% trans "Envoyer ma candidature" %}
+      </button>
+      <p class="mc-privacy">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        {% trans "Vos données sont traitées de manière confidentielle par l'équipe RH de M-Automotiv." %}
+      </p>
+    </div>
+  </form>
+
+  <aside class="mc-card mc-aside">
+    {% if resume %}
+      <div class="mc-aside__label">{% trans "Aperçu du CV" %}</div>
+      <iframe class="mc-cv-frame" src="{{ resume.file.url }}"></iframe>
+    {% else %}
+      <div class="mc-aside__label">{% trans "L'offre" %}</div>
+      <h3 class="mc-aside__title">{% if recruitment %}{{ recruitment.title|default:recruitment }}{% else %}{% trans "Nos offres d'emploi" %}{% endif %}</h3>
+      {% if recruitment %}
+      <ul class="mc-facts">
+        {% with positions=recruitment.open_positions.all %}
+        {% if positions %}
+        <li><ion-icon name="briefcase-outline"></ion-icon><div><span>{% trans "Poste" %} :</span>{{ positions|join:", " }}</div></li>
+        {% endif %}
+        {% endwith %}
+        {% if recruitment.company_id %}<li><ion-icon name="business-outline"></ion-icon><div><span>{% trans "Entreprise" %} :</span>{{ recruitment.company_id }}</div></li>{% endif %}
+        {% if recruitment.site %}<li><ion-icon name="location-outline"></ion-icon><div><span>{% trans "Site" %} :</span>{{ recruitment.site }}</div></li>{% endif %}
+        {% if recruitment.end_date %}<li><ion-icon name="time-outline"></ion-icon><div><span>{% trans "Date limite" %} :</span>{{ recruitment.end_date|date:"d/m/Y" }}</div></li>{% endif %}
+      </ul>
+      {% if recruitment.description %}
+      <div class="mc-desc">
+        {% if "<" in recruitment.description %}{{ recruitment.description|safe }}{% else %}{{ recruitment.description|linebreaksbr }}{% endif %}
       </div>
       {% endif %}
-    </div>
-  </div>
+      {% else %}
+      <p class="mc-desc">{% trans "Choisissez un recrutement et un poste, puis remplissez le formulaire pour postuler." %}</p>
+      {% endif %}
+    {% endif %}
+  </aside>
+</main>
 </div>
+
 <script>
   {% include 'country.js' %}
   {% include 'select2.js' %}
-  var resume = "{{resume.file.url}}"
-  {% if resume %}
-    $("#resume").val(resume)
-  {% endif %}
-  var description = `{{form.instance.recruitment_id.description|safe}}`
-  var formattedDescription = description.replace(/\n/g, "<br>");
-  $("#recruitmentInfoBody").html(formattedDescription);
 
-  $('form label').each(function() {
-    var text = $(this).text();
-    if (text.startsWith('*')) {
-        $(this).html('<strong>' + text + '</strong>');
+  // Profile photo preview
+  (function () {
+    var input = document.getElementById("photo");
+    var pic = document.getElementById("avatarPreview");
+    var removeBtn = document.getElementById("avatarRemove");
+    input.addEventListener("change", function () {
+      var file = this.files && this.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        pic.style.backgroundImage = "url('" + e.target.result + "')";
+        pic.classList.add("has-image");
+        removeBtn.classList.add("is-visible");
+      };
+      reader.readAsDataURL(file);
+    });
+    removeBtn.addEventListener("click", function () {
+      input.value = "";
+      pic.style.backgroundImage = "";
+      pic.classList.remove("has-image");
+      removeBtn.classList.remove("is-visible");
+    });
+  })();
+
+  // CV dropzone
+  (function () {
+    var drop = document.getElementById("cvDrop");
+    var input = document.getElementById("id_resume");
+    function showFile() {
+      var file = input.files && input.files[0];
+      if (!file) return;
+      drop.classList.add("has-file");
+      document.getElementById("cvTitle").textContent = file.name;
+      document.getElementById("cvHint").textContent = (file.size / 1024 / 1024).toFixed(2) + " Mo — {% trans 'cliquez pour changer' %}";
+    }
+    ["dragenter", "dragover"].forEach(function (evt) {
+      drop.addEventListener(evt, function (e) { e.preventDefault(); drop.classList.add("is-dragover"); });
+    });
+    ["dragleave", "drop"].forEach(function (evt) {
+      drop.addEventListener(evt, function (e) { e.preventDefault(); drop.classList.remove("is-dragover"); });
+    });
+    drop.addEventListener("drop", function (e) {
+      if (e.dataTransfer.files.length) {
+        input.files = e.dataTransfer.files;
+        $(input).trigger("change");
       }
-  });
-  function validateForm(event) {
-    var fileInput = document.getElementById("photo");
-    var errorList = document.getElementById("error-list");
-    {% if not perms.recruitment.add_candidate %}
-      if (!fileInput.value) {
-        errorList.scrollIntoView({ behavior: "smooth", block: "center" });
-        errorList.style.display = "block"; // Show error message
-      } else {
-        errorList.style.display = "none"; // Hide error message
-      }
-    {% endif %}
-  }
+    });
+    input.addEventListener("change", showFile);
+  })();
+
   $(document).ready(function(){
+    if (!$("#id_country").val() || $("#id_country").val() === "-1") { $("#id_country").val("Morocco"); }
+    $("#id_country").select2({ width: "100%" });
+
     function getCookie(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== "") {
@@ -395,47 +438,29 @@
     }
 
     function setIfEmpty(selector, value) {
-      if ($(selector).val() === "" ){
-        $(selector).val(value);
-        $(selector).change();
-
-        $("[name=country]").parent().find("span").remove()
-        $("[name=country]").select2()
+      if ($(selector).val() === "" || $(selector).val() === "-1") {
+        $(selector).val(value).trigger("change");
       }
     }
 
+    function fillFromResume(response) {
+      setIfEmpty("[name='name']", response.full_name);
+      setIfEmpty("[name='email']", response.email_id);
+      setIfEmpty("[name='mobile']", response.phone_number);
+      setIfEmpty("[name='address']", response.address);
+      setIfEmpty("[name='country']", response.country);
+      $("[name='dob']").val(response.dob);
+    }
 
     $("#matching_resume").on("click", function(){
-      var file = $(this).data("value");
-      var resume_id = $(this).data("id");
-
       $.ajax({
         url: "{% url 'matching-resume-completion' %}",
         type: 'GET',
         data: {
-          "resume_id": resume_id,
-          "file":file
+          "resume_id": $(this).data("id"),
+          "file": $(this).data("value")
         },
-        success: function(response) {
-          var full_name = response.full_name;
-          var address = response.address;
-          var country = response.country;
-          var state = response.state;
-          var phone = response.phone_number;
-          var dob = response.dob;
-          var email = response.email_id;
-          var zip = response.zip;
-
-          setIfEmpty("[name='name']", full_name);
-          setIfEmpty("[name='email']", email);
-          setIfEmpty("[name='mobile']", phone);
-          setIfEmpty("[name='address']", address);
-          setIfEmpty("[name='country']", country);
-          setIfEmpty("[name='state']", state);
-          setIfEmpty("[name='zip']", zip);
-          $("[name='dob']").val(dob);
-
-        },
+        success: fillFromResume,
         error: function(xhr, status, error) {
             console.error('File upload failed: ', status, error);
         }
@@ -445,8 +470,9 @@
     $("#matching_resume").click()
 
     $("[name='resume']").on("change", function(){
-      var formData = new FormData();
       var file = this.files[0];
+      if (!file) return;
+      var formData = new FormData();
       formData.append('resume', file);
 
       $.ajax({
@@ -458,27 +484,7 @@
         headers: {
             'X-CSRFToken': getCookie("csrftoken")
         },
-        success: function(response) {
-
-          var full_name = response.full_name;
-          var address = response.address;
-          var country = response.country;
-          var state = response.state;
-          var phone = response.phone_number;
-          var dob = response.dob;
-          var email = response.email_id;
-          var zip = response.zip;
-
-          setIfEmpty("[name='name']", full_name);
-          setIfEmpty("[name='email']", email);
-          setIfEmpty("[name='mobile']", phone);
-          setIfEmpty("[name='address']", address);
-          setIfEmpty("[name='country']", country);
-          setIfEmpty("[name='state']", state);
-          setIfEmpty("[name='zip']", zip);
-          $("[name='dob']").val(dob);
-
-        },
+        success: fillFromResume,
         error: function(xhr, status, error) {
             console.error('File upload failed: ', status, error);
         }
@@ -486,5 +492,4 @@
     })
   })
 </script>
-
 {% endblock content %}

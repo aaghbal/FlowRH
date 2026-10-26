@@ -4,7 +4,7 @@ const driver = window.driver.js.driver;
 
 
 var steps = [
-    { popover: { title: 'Tableau de bord', description: 'Section tableau de bord FlowRH' } },
+    { popover: { title: 'Tableau de bord', description: 'Section tableau de bord M-Community' } },
     { element: '#attendance-activity-container', popover: { title: 'Pointer la présence', description: 'Utilisé pour pointer votre présence' } },
 ];
 
@@ -26,7 +26,7 @@ if ($('#mainNavProfile').length) {
     steps.push({ element: '#mainNavProfile', popover: { title: 'Profil', description: 'Options de profil et de changement de mot de passe' } });
 }
 if ($('.oh-card-dashboard').length) {
-    steps.push({ element: '#tileContainer .oh-card-dashboard:nth-child(1)', popover: { title: 'Tuiles du tableau de bord', description: 'Tuiles du tableau de bord FlowRH' } });
+    steps.push({ element: '#tileContainer .oh-card-dashboard:nth-child(1)', popover: { title: 'Tuiles du tableau de bord', description: 'Tuiles du tableau de bord M-Community' } });
 }
 setTimeout(() => {
     if ($('.oh-btn-group').length) {
@@ -42,7 +42,7 @@ setTimeout(() => {
         steps.push({ element: '.oh-sidebar__company:nth-child(1)', popover: { title: 'Entreprise', description: 'Votre accès à l\'entreprise actuelle' } });
     }
     if ($('[data-id="dashboardNav"]').length) {
-        steps.push({ element: '[data-id="dashboardNav"]', popover: { title: 'Application', description: 'Applications RH FlowRH. ex : Tableau de bord' } });
+        steps.push({ element: '[data-id="dashboardNav"]', popover: { title: 'Application', description: 'Applications RH M-Community. ex : Tableau de bord' } });
     }
 }, 1000);
 driverObj = driver(

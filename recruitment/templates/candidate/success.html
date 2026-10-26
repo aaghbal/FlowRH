@@ -1,126 +1,106 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inscription réussie - Tableau de bord</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/logoorh.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/logoorh.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/logoorh.png' %}">
+{% extends 'candidate/application_form_component.html' %}
+{% load static %} {% load i18n %}
+{% block title %}Candidature envoyée - M-Automotiv{% endblock title %}
+{% block extra_head %}
+<style>
+  :root {
+    --mc-purple: #290054;
+    --mc-orange: #F2674A;
+    --mc-ink: #1d1530;
+    --mc-muted: #6b6480;
+    --mc-line: #e7e3ef;
+  }
+  body {
+    margin: 0; min-height: 100vh; color: var(--mc-ink); display: flex; flex-direction: column;
+    background:
+      radial-gradient(1000px 600px at 85% 110%, rgba(242, 103, 74, .22), transparent 60%),
+      radial-gradient(900px 600px at 10% -10%, rgba(255, 255, 255, .08), transparent 60%),
+      linear-gradient(160deg, #290054 0%, #3b0a72 100%);
+    background-attachment: fixed;
+  }
 
-    <link rel="stylesheet" href="{% static '/build/css/style.min.css' %}" />
-  </head>
-  <body>
-    <div id="main">
-      {% if messages %}
-    <div class="oh-alert-container">
-        {% for message in messages %}
-        <div class="oh-alert oh-alert--animated {{message.tags}}">
-              {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-      <main class="oh-onboarding">
-        <div class="oh-onboarding-card oh-onboarding-card--top-bar">
-          <div
-            class="oh-onboarding-card__container oh-onboarding-card__container--wide"
-          >
-            <div class="oh-onboarding__info-container">
-              <svg
-                width="48"
-                height="48"
-                fill="none"
-                stroke="#e54f38"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M21 12c0-4.969-4.031-9-9-9s-9 4.031-9 9 4.031 9 9 9 9-4.031 9-9Z"
-                ></path>
-                <path d="m16.5 8.25-6.3 7.5-2.7-3"></path>
-              </svg>
-              <div class="oh-onboarding__title-container">
-                <h1 class="oh-onboarding__title">Inscription réussie</h1>
-                <p class="oh-onboarding__content">
-                  Vos informations ont été enregistrées avec succès. Vous
-                  pouvez fermer cette fenêtre.
-                </p>
-                <!-- <a href="#" class="oh-btn oh-btn--secondary">Return home</a> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+  /* ── Top bar ── */
+  .mc-topbar { background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, .12); }
+  .mc-topbar__inner {
+    max-width: 1280px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .mc-topbar__logo { height: 22px; width: auto; display: block; }
+  .mc-topbar__brand { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--mc-muted); }
+  .mc-topbar__brand img { height: 30px; width: auto; }
 
-    <!-- Upload Photo Modal -->
-    <div
-      class="oh-modal"
-      id="uploadPhotoModal"
-      role="dialog"
-      aria-labelledby="uploadPhotoModal"
-      aria-hidden="true"
-    >
-      <div class="oh-modal__dialog">
-        <div class="oh-modal__dialog-header">
-          <span class="oh-modal__dialog-title" id="uploadPhotoModalLabel"
-            >Upload Photo</span
-          >
-          <button class="oh-modal__close" aria-label="Close">
-            <ion-icon name="close-outline"></ion-icon>
-          </button>
-        </div>
-        <div class="oh-modal__dialog-body">
-          <div class="oh-profile-section__image-container">
-            <div class="oh-profile-section__modal-avatar">
-              <img
-                src="{% static "/images/ui/user.jpg" %}"
-                class="oh-profile-section__modal-image oh-upload-photo"
-                alt="User Photo"
-              />
-            </div>
-            <input
-              type="file"
-              class="oh-input oh-input--file oh-input--file-sm mt-4 oh-upload-input"
-              data-target=".oh-upload-photo"
-            />
-            <div
-              class="d-flex justify-content-between w-100 align-items-center mt-4"
-            >
-              <button
-                class="oh-btn oh-btn--light-danger mr-1 oh-remove-image"
-                data-target=".oh-upload-photo"
-              >
-                <ion-icon class="me-1" name="trash-outline"></ion-icon>Delete
-                image
-              </button>
-              <button
-                type="submit"
-                class="oh-btn oh-btn--secondary oh-btn--shadow"
-              >
-                Update Image
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+  /* ── Card ── */
+  .mc-wrap { flex: 1; display: grid; place-items: center; padding: 32px 24px; }
+  .mc-card {
+    width: 100%; max-width: 560px; background: #fff; border-radius: 18px; text-align: center;
+    box-shadow: 0 24px 60px rgba(10, 0, 30, .35); padding: 44px 40px 36px;
+    animation: mc-pop .45s cubic-bezier(.2, .9, .3, 1.2) both;
+  }
+  @media (max-width: 575px) { .mc-wrap { padding: 20px 16px; } .mc-card { padding: 32px 22px 26px; } }
+
+  .mc-check {
+    width: 84px; height: 84px; margin: 0 auto 22px; border-radius: 50%; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--mc-orange), #f5845f); color: #fff;
+    box-shadow: 0 0 0 10px rgba(242, 103, 74, .12), 0 12px 28px rgba(242, 103, 74, .35);
+  }
+  .mc-check svg { width: 40px; height: 40px; }
+  .mc-check path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: mc-draw .5s .3s ease-out forwards; }
+  .mc-title { font-size: 26px; font-weight: 700; margin: 0 0 8px; color: var(--mc-ink); }
+  .mc-text { font-size: 14.5px; color: var(--mc-muted); margin: 0 auto; max-width: 420px; line-height: 1.6; }
+
+  .mc-next { text-align: left; margin: 28px 0 0; padding: 20px 22px; background: #fbfafd; border: 1px solid var(--mc-line); border-radius: 14px; }
+  .mc-next__label { font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mc-orange); margin-bottom: 12px; }
+  .mc-next ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: mcn; }
+  .mc-next li { display: flex; gap: 12px; align-items: flex-start; font-size: 13.5px; color: var(--mc-ink); line-height: 1.5; counter-increment: mcn; }
+  .mc-next li::before {
+    content: counter(mcn); flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; background: #f0e9fb; color: var(--mc-purple);
+  }
+  .mc-close { font-size: 12.5px; color: var(--mc-muted); margin: 22px 0 0; }
+
+  @keyframes mc-pop { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes mc-draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) {
+    .mc-card { animation: none; }
+    .mc-check path { animation: none; stroke-dashoffset: 0; }
+  }
+</style>
+{% endblock extra_head %}
+
+{% block content %}
+{% for message in messages %}{% endfor %}
+<header class="mc-topbar">
+  <div class="mc-topbar__inner">
+    <img src="{% static 'images/ui/m-automotiv-logo.png' %}" alt="M-Automotiv" class="mc-topbar__logo" />
+    <span class="mc-topbar__brand">
+      {% trans "Propulsé par" %}
+      <img src="{% static 'images/ui/m-community-logo.png' %}" alt="M-Community" />
+    </span>
+  </div>
+</header>
+
+<main class="mc-wrap">
+  <div class="mc-card">
+    <div class="mc-check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12.5l4.5 4.5L19 7.5"></path>
+      </svg>
+    </div>
+    <h1 class="mc-title">{% trans "Candidature envoyée !" %}</h1>
+    <p class="mc-text">
+      {% trans "Merci pour l'intérêt que vous portez à M-Automotiv. Vos informations ont bien été enregistrées." %}
+    </p>
+
+    <div class="mc-next">
+      <div class="mc-next__label">{% trans "Et maintenant ?" %}</div>
+      <ol>
+        <li>{% trans "Notre équipe RH étudie attentivement votre profil." %}</li>
+        <li>{% trans "Si votre candidature est retenue, nous vous contacterons par email ou par téléphone." %}</li>
+        <li>{% trans "Pensez à vérifier régulièrement votre boîte mail, y compris les spams." %}</li>
+      </ol>
     </div>
 
-    <script src="{% static '/build/js/web.frontend.min.js' %}"></script>
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
-    <script></script>
-  </body>
-</html>
+    <p class="mc-close">{% trans "Vous pouvez maintenant fermer cette fenêtre." %}</p>
+  </div>
+</main>
+{% endblock content %}

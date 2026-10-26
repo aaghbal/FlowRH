@@ -173,12 +173,12 @@ def white_labelling_company(request):
             company = hq
 
         return {
-            "white_label_company_name": company.company if company else "FlowRH",
+            "white_label_company_name": company.company if company else "M-Community",
             "white_label_company": company,
         }
     else:
         return {
-            "white_label_company_name": "FlowRH",
+            "white_label_company_name": "M-Community",
             "white_label_company": None,
         }
 

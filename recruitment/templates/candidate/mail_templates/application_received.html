@@ -1,0 +1,60 @@
+{% load i18n %}<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ subject }}</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f4f1f8; font-family:Arial, Helvetica, sans-serif; color:#1d1530;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f1f8; padding:32px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background-color:#ffffff; border-radius:14px; overflow:hidden;">
+            <!-- Header -->
+            <tr>
+              <td style="background-color:#290054; padding:26px 32px;" align="left">
+                <img src="{{ logo_url }}" alt="M-Automotiv" height="24" style="display:block; height:24px; width:auto; border:0;" />
+              </td>
+            </tr>
+            <tr>
+              <td style="height:4px; background-color:#F2674A; line-height:4px; font-size:0;">&nbsp;</td>
+            </tr>
+
+            <!-- Body -->
+            <tr>
+              <td style="padding:36px 32px 12px; font-size:15px; line-height:1.65; color:#1d1530;">
+                <p style="margin:0 0 18px;">Bonjour {{ candidate.name }},</p>
+                <p style="margin:0 0 18px;">
+                  Nous vous confirmons la bonne réception de votre candidature au poste de
+                  <strong style="color:#290054;">{{ position }}</strong> chez M-Automotiv.
+                </p>
+                <p style="margin:0 0 18px;">
+                  Notre équipe RH va étudier votre profil avec attention. Si votre candidature est retenue,
+                  nous vous contacterons par email ou par téléphone.
+                </p>
+                <p style="margin:0 0 26px;">Merci pour l'intérêt que vous portez à M-Automotiv.</p>
+                <p style="margin:0;">
+                  Cordialement,<br />
+                  <strong>L'équipe Ressources Humaines – M-Automotiv</strong>
+                </p>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding:28px 32px 30px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e7e3ef;">
+                  <tr>
+                    <td style="padding-top:18px; font-size:12px; line-height:1.5; color:#6b6480;">
+                      Cet email vous a été envoyé automatiquement suite à votre candidature. Merci de ne pas y répondre.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

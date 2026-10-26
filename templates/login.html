@@ -29,6 +29,9 @@
         </div>
         <main class="oh-auth">
             <div class="oh-auth-card mb-4">
+                <div class="text-center">
+                    <img src="{% static 'images/ui/m-community-logo.png' %}" alt="M-Community" style="height: 80px; width: auto;" />
+                </div>
                 <h1 class="oh-onboarding-card__title oh-onboarding-card__title--h2 text-center my-3">
                     {% trans "Connexion" %}
                 </h1>
@@ -103,9 +106,9 @@
                         alt="{{white_label_company_name}}"
                         style=" opacity:.90; 200px; height: 140px;"
                     {% else %}
-                        "{% static 'images/ui/logo.png' %}"
-                            alt="flowRH"
-                            style="width: 180px; height: 30px;"
+                        "{% static 'images/ui/m-automotiv-logo.png' %}"
+                            alt="M-Automotiv"
+                            style="height: 22px; width: auto;"
                     {% endif %}
                 />
                 {% if white_label_company %}

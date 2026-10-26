@@ -1643,6 +1643,26 @@ def create_mail_templates(request):
 
 
 @login_required
+@require_http_methods(["POST"])
+@permission_required("base.add_horillamailtemplate")
+def quick_create_mail_template(request):
+    """
+    Create a mail template from the send-mail modal and return it as JSON
+    """
+    form = MailTemplateForm(
+        {
+            "title": request.POST.get("title", "").strip(),
+            "body": request.POST.get("body", ""),
+        }
+    )
+    if form.is_valid():
+        instance = form.save()
+        return JsonResponse({"id": instance.id, "title": instance.title})
+    errors = [error for field_errors in form.errors.values() for error in field_errors]
+    return JsonResponse({"errors": errors}, status=400)
+
+
+@login_required
 @permission_required("base.delete_horillamailtemplate")
 def delete_mail_templates(request):
     ids = request.GET.getlist("ids")

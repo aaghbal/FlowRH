@@ -1,26 +1,232 @@
 {% extends 'candidate/application_form_component.html' %}
+{% load static %} {% load i18n %}
+{% block title %}Questionnaire - M-Automotiv{% endblock title %}
+{% block extra_head %}
+<style>
+  :root {
+    --mc-purple: #290054;
+    --mc-orange: #F2674A;
+    --mc-ink: #1d1530;
+    --mc-muted: #6b6480;
+    --mc-line: #e7e3ef;
+  }
+  body {
+    margin: 0; min-height: 100vh; color: var(--mc-ink);
+    background:
+      radial-gradient(1000px 600px at 85% 110%, rgba(242, 103, 74, .22), transparent 60%),
+      radial-gradient(900px 600px at 10% -10%, rgba(255, 255, 255, .08), transparent 60%),
+      linear-gradient(160deg, #290054 0%, #3b0a72 100%);
+    background-attachment: fixed;
+  }
+
+  /* ── Top bar ── */
+  .mc-topbar { background: #fff; box-shadow: 0 2px 12px rgba(0, 0, 0, .12); }
+  .mc-topbar__inner {
+    max-width: 1280px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .mc-topbar__logo { height: 22px; width: auto; display: block; }
+  .mc-topbar__brand { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--mc-muted); }
+  .mc-topbar__brand img { height: 30px; width: auto; }
+
+  /* ── Card ── */
+  .mc-wrap { max-width: 860px; margin: 0 auto; padding: 28px 24px 40px; }
+  .mc-card { background: #fff; border-radius: 16px; box-shadow: 0 24px 60px rgba(10, 0, 30, .35); padding: 28px 32px; }
+  @media (max-width: 575px) { .mc-wrap { padding: 16px; } .mc-card { padding: 20px; } }
+
+  /* ── Header + steps ── */
+  .mc-eyebrow { font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mc-orange); }
+  .mc-title { font-size: 24px; font-weight: 700; margin: 4px 0 6px; color: var(--mc-ink); }
+  .mc-sub { font-size: 14px; color: var(--mc-muted); margin: 0; }
+  .mc-steps { display: flex; align-items: center; gap: 10px; margin: 20px 0 22px; padding-bottom: 22px; border-bottom: 1px solid var(--mc-line); }
+  .mc-step { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mc-muted); white-space: nowrap; }
+  .mc-step__dot {
+    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 12px; font-weight: 700; background: #f1eef6; color: var(--mc-muted);
+  }
+  .mc-step--done .mc-step__dot { background: #e1f5e8; color: #1f9254; }
+  .mc-step--active { color: var(--mc-ink); font-weight: 600; }
+  .mc-step--active .mc-step__dot { background: var(--mc-orange); color: #fff; box-shadow: 0 0 0 4px rgba(242, 103, 74, .18); }
+  .mc-step__line { flex: 1; height: 2px; background: var(--mc-line); min-width: 20px; }
+  .mc-step--done + .mc-step__line { background: #bfe6cc; }
+  @media (max-width: 575px) { .mc-step span:not(.mc-step__dot) { display: none; } }
+
+  /* ── Questions (markup comes from survey_form.html) ── */
+  .mc-survey .oh-wrapper, .mc-survey .oh-general__tab-target { padding: 0 !important; margin: 0 !important; max-width: none !important; }
+  .mc-survey .row { margin: 0 !important; padding: 0 !important; }
+  .mc-survey .row > * { padding: 0; }
+  .mc-survey .oh-survey-ques { counter-reset: mcq; }
+  .mc-survey .oh-card {
+    display: block !important; position: relative; counter-increment: mcq;
+    margin: 0 0 14px !important; padding: 18px 20px 18px 62px !important;
+    background: #fbfafd; border: 1px solid var(--mc-line) !important; border-radius: 12px !important;
+    box-shadow: none !important; transition: border-color .15s, box-shadow .15s;
+  }
+  .mc-survey .oh-card:focus-within { border-color: var(--mc-orange) !important; background: #fff; box-shadow: 0 0 0 4px rgba(242, 103, 74, .10) !important; }
+  .mc-survey .oh-card::before {
+    content: counter(mcq); position: absolute; left: 18px; top: 17px;
+    width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+    font-size: 12.5px; font-weight: 700; background: #f0e9fb; color: var(--mc-purple);
+  }
+  .mc-survey .oh-label--question {
+    display: block; font-size: 14.5px; font-weight: 600; color: var(--mc-ink);
+    margin: 4px 0 12px; line-height: 1.45;
+  }
+  .mc-survey .oh-label--question .text-danger {
+    display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; vertical-align: 1px;
+    font-size: 11px; font-weight: 600; color: var(--mc-orange) !important; background: #fff1ec;
+  }
+  .mc-survey input[type=text], .mc-survey input[type=date], .mc-survey input[type=number],
+  .mc-survey input[type=email], .mc-survey input[type=url], .mc-survey textarea:not(.select2-search__field), .mc-survey select {
+    width: 100%; min-height: 44px; padding: 10px 14px; font-size: 14px; color: var(--mc-ink);
+    background: #fff; border: 1px solid var(--mc-line) !important; border-radius: 10px !important;
+  }
+  .mc-survey textarea:not(.select2-search__field) { min-height: 110px; resize: vertical; }
+  .mc-survey input:focus, .mc-survey textarea:focus, .mc-survey select:focus {
+    outline: none; border-color: var(--mc-orange) !important; box-shadow: none;
+  }
+  .mc-survey input[type=file] { font-size: 13px; }
+  .mc-survey .select2-container { width: 100% !important; }
+  .mc-survey .select2-container .select2-selection {
+    min-height: 46px !important; height: auto !important; border: 1px solid var(--mc-line) !important;
+    border-radius: 10px !important; background: #fff !important;
+  }
+  .mc-survey .select2-container--focus .select2-selection,
+  .mc-survey .select2-container--open .select2-selection { border-color: var(--mc-orange) !important; }
+  .mc-survey .select2-selection--single .select2-selection__rendered { line-height: 44px !important; padding-left: 14px !important; font-size: 14px; }
+  .mc-survey .select2-selection--single .select2-selection__arrow { height: 44px !important; right: 8px !important; }
+  /* Multiple choice: coral chips + clean inline search */
+  .mc-survey .select2-selection--multiple { padding: 5px 10px !important; display: flex !important; align-items: center; cursor: text; }
+  .mc-survey .select2-selection--multiple .select2-selection__rendered {
+    display: flex !important; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 !important; padding: 0 !important;
+  }
+  .mc-survey .select2-selection--multiple .select2-selection__choice {
+    display: inline-flex !important; align-items: center; gap: 4px; margin: 0 !important; padding: 4px 10px 4px 8px !important;
+    background: #fff1ec !important; border: 1px solid #fbd3c8 !important; border-radius: 999px !important;
+    color: var(--mc-orange) !important; font-size: 13px; font-weight: 500; line-height: 1.4;
+  }
+  .mc-survey .select2-selection--multiple .select2-selection__choice__remove {
+    position: static !important; border: 0 !important; background: none !important; padding: 0 2px 0 0 !important;
+    color: var(--mc-orange) !important; font-size: 15px; line-height: 1;
+  }
+  .mc-survey .select2-selection--multiple .select2-selection__choice__display { padding: 0 !important; }
+  .mc-survey .select2-search--inline, .mc-survey .select2-search--inline .select2-search__field {
+    margin: 0 !important; height: 30px !important; min-height: 0 !important; line-height: 30px !important;
+    padding: 0 4px !important; border: 0 !important; box-shadow: none !important; resize: none !important;
+    font-size: 14px; background: transparent !important; overflow: hidden;
+  }
+  .mc-survey .select2-selection--multiple .select2-selection__clear { display: none; }
+  .mc-survey .select2-selection__placeholder { color: #a9a3b8 !important; }
+  .select2-hidden-accessible {
+    border: 0 !important; clip: rect(0 0 0 0) !important; height: 1px !important; width: 1px !important;
+    min-height: 0 !important; margin: -1px !important; overflow: hidden !important; padding: 0 !important;
+    position: absolute !important; white-space: nowrap !important;
+  }
+  .mc-survey .select2-search--inline { flex: 1; min-width: 160px; }
+  .mc-survey .select2-search--inline .select2-search__field { width: 100% !important; }
+  .mc-survey .select2-search--inline .select2-search__field::placeholder { color: #a9a3b8; }
+  .select2-container--default .select2-results__option--highlighted[aria-selected],
+  .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background: var(--mc-orange) !important; color: #fff !important;
+  }
+  .mc-survey .oh-rate { padding-right: 0 !important; margin-bottom: 0 !important; display: inline-block; }
+  .mc-survey .oh-rate input:checked ~ label,
+  .mc-survey .oh-rate label:hover, .mc-survey .oh-rate label:hover ~ label { color: var(--mc-orange) !important; }
+
+  /* Yes / No picker */
+  .mc-survey .oh-input-picker-group { gap: 10px; }
+  .mc-survey .oh-input-picker {
+    width: auto !important; min-width: 110px; height: 44px !important; padding: 0 18px !important;
+    border: 1px solid var(--mc-line) !important; border-radius: 10px !important; background: #fff !important;
+    color: var(--mc-muted) !important; font-size: 14px; font-weight: 500; transition: all .15s;
+  }
+  .mc-survey .oh-input-picker:hover { border-color: #d9d2e8 !important; color: var(--mc-ink) !important; }
+  .mc-survey .oh-input-picker span { display: inline-flex; align-items: center; gap: 6px; }
+  .mc-survey .oh-input-picker ion-icon { font-size: 18px; }
+  .mc-survey .oh-input-picker--selected {
+    background: #fff1ec !important; border-color: var(--mc-orange) !important; color: var(--mc-orange) !important;
+    box-shadow: 0 0 0 3px rgba(242, 103, 74, .12);
+  }
+
+  /* Submit button + footer from survey_form.html */
+  .mc-survey .d-flex.justify-content-end { justify-content: stretch !important; margin-top: 8px !important; }
+  .mc-survey button[type=submit] {
+    width: 100%; height: 50px; border: 0 !important; border-radius: 12px !important; cursor: pointer;
+    font-size: 15px; font-weight: 600; color: #fff !important;
+    background: linear-gradient(90deg, var(--mc-orange) 0%, #f5845f 100%) !important;
+    box-shadow: 0 8px 20px rgba(242, 103, 74, .28); transition: transform .12s, box-shadow .12s;
+  }
+  .mc-survey button[type=submit]:hover { transform: translateY(-1px); box-shadow: 0 12px 26px rgba(242, 103, 74, .35); }
+  .mc-survey p.small.text-muted { display: none; }
+  .mc-privacy { font-size: 12px; color: rgba(255, 255, 255, .7); text-align: center; margin: 16px 0 0; }
+  .mc-privacy ion-icon { vertical-align: -2px; }
+  .mc-card .oh-alert-container { position: static; margin-bottom: 14px; }
+</style>
+{% endblock extra_head %}
+
 {% block content %}
-{% load i18n %}
-{% if messages %}
+<header class="mc-topbar">
+  <div class="mc-topbar__inner">
+    <img src="{% static 'images/ui/m-automotiv-logo.png' %}" alt="M-Automotiv" class="mc-topbar__logo" />
+    <span class="mc-topbar__brand">
+      {% trans "Propulsé par" %}
+      <img src="{% static 'images/ui/m-community-logo.png' %}" alt="M-Community" />
+    </span>
+  </div>
+</header>
+
+<main class="mc-wrap">
+  <div class="mc-card">
+    {% if messages %}
     <div class="oh-alert-container">
-        {% for message in messages %}
-        <div class="oh-alert oh-alert--animated {{message.tags}}">
-              {{ message }}
-        </div>
-        {% endfor %}
+      {% for message in messages %}
+      <div class="oh-alert oh-alert--animated {{message.tags}}">{{ message }}</div>
+      {% endfor %}
     </div>
-{% endif %}
-<div class="oh-survey_page">
-    <form action="" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <section class="oh-wrapper oh-main__topbar" x-data="{searchShow: false}">
-            <div class="oh-main__titlebar oh-main__titlebar--left">
-                <h1 class="oh-main__titlebar-title fw-bold">
-                    Questionnaire de candidature: {{candidate.name}}
-                </h1>
-            </div>
-        </section>
-        {{form}}
+    {% endif %}
+
+    <div class="mc-eyebrow">{% trans "Dernière étape" %}</div>
+    <h1 class="mc-title">{% trans "Questionnaire de candidature" %}</h1>
+    <p class="mc-sub">
+      {% trans "Bonjour" %} <strong>{{ candidate.name }}</strong>,
+      {% trans "merci de répondre à ces quelques questions pour finaliser votre candidature" %}{% if candidate.job_position_id %} {% trans "au poste de" %} <strong>{{ candidate.job_position_id }}</strong>{% endif %}.
+    </p>
+
+    <div class="mc-steps">
+      <div class="mc-step mc-step--done"><span class="mc-step__dot"><ion-icon name="checkmark-outline"></ion-icon></span><span>{% trans "Candidature" %}</span></div>
+      <div class="mc-step__line"></div>
+      <div class="mc-step mc-step--active"><span class="mc-step__dot">2</span><span>{% trans "Questionnaire" %}</span></div>
+      <div class="mc-step__line"></div>
+      <div class="mc-step"><span class="mc-step__dot">3</span><span>{% trans "Terminé" %}</span></div>
+    </div>
+
+    <form action="" method="post" enctype="multipart/form-data" class="mc-survey" autocomplete="off">
+      {% csrf_token %}
+      {{form}}
     </form>
-</div>
+  </div>
+  <p class="mc-privacy">
+    <ion-icon name="lock-closed-outline"></ion-icon>
+    {% trans "Vos réponses sont traitées de manière confidentielle par l'équipe RH de M-Automotiv." %}
+  </p>
+</main>
+<script>
+  {% include 'select2.js' %}
+  // web.frontend.min.js (loaded after this script) bundles its own Select2 and
+  // initialises every .oh-select-2; drop that class so only ours is built.
+  $(".mc-survey select").removeClass("oh-select oh-select-2 oh-select-2--large select2-hidden-accessible");
+  $(function () {
+    $(".mc-survey select").each(function () {
+      var $select = $(this);
+      var multiple = $select.prop("multiple");
+      if (!multiple) { $select.find("option[value='']").text(""); }
+      $select.select2({
+        width: "100%",
+        placeholder: multiple ? "{% trans 'Sélectionnez une ou plusieurs réponses' %}" : "{% trans 'Sélectionnez une réponse' %}",
+        minimumResultsForSearch: multiple ? 0 : Infinity,
+        closeOnSelect: !multiple
+      });
+    });
+  });
+</script>
 {% endblock content %}

@@ -179,6 +179,11 @@ urlpatterns = [
         name="create-mail-template",
     ),
     path(
+        "quick-create-mail-template/",
+        views.quick_create_mail_template,
+        name="quick-create-mail-template",
+    ),
+    path(
         "duplicate-mail-template/<int:obj_id>/",
         views.object_duplicate,
         name="duplicate-mail-template",

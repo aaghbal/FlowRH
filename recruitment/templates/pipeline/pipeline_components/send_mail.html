@@ -74,10 +74,17 @@
       <textarea hidden name="body" {% if not cand %} data-summernote {% endif %} required class="oh-input w-100" id="body" cols="30"
         rows="2"></textarea>
     </div>
-    {% if cand %}
-      <div class="form-hint" style="margin-top: 10px; font-size: 14px; color: #888;">
-        {% trans "Hint: Type '{' to get sender or receiver data" %}
+    {% if perms.base.add_horillamailtemplate %}
+    <div class="form-group mt-2">
+      <div class="d-flex gap-2 align-items-center">
+        <input type="text" maxlength="25" class="oh-input w-100" id="new-template-title-{{cand.id}}"
+          placeholder="{% trans 'Titre du nouveau modèle' %}">
+        <button type="button" class="oh-btn oh-btn--light-bkg" style="white-space: nowrap;"
+          onclick="saveAsMailTemplate('{{cand.id}}')">
+          <ion-icon name="add-outline" class="me-1"></ion-icon>{% trans "Enregistrer comme modèle" %}
+        </button>
       </div>
+    </div>
     {% endif %}
     <div class="form-group mt-2">
       <label for="template_attachments">
@@ -156,6 +163,33 @@
       });
     }
   };
+  function saveAsMailTemplate(formId) {
+    var form = $(`#ack-form-${formId}`);
+    var title = $(`#new-template-title-${formId}`).val().trim();
+    var body = form.find(".note-editable").html() || form.find('[name="body"]').val();
+    if (!title.length || !$("<div>").html(body).text().trim().length) {
+      Swal.fire({ icon: "warning", text: "{% trans 'Le titre et le corps du message sont requis' %}" });
+      return;
+    }
+    $.ajax({
+      type: "post",
+      url: "{% url 'quick-create-mail-template' %}",
+      data: { title: title, body: body, csrfmiddlewaretoken: "{{ csrf_token }}" },
+      dataType: "json",
+      success: function (response) {
+        var option = new Option(response.title, response.id);
+        form.find("#template").append(option).val(response.id);
+        form.find("#template_attachments").append(new Option(response.title, response.id));
+        $(`#new-template-title-${formId}`).val("");
+        Swal.fire({ icon: "success", text: "{% trans 'Modèle créé' %}", timer: 1500, showConfirmButton: false });
+      },
+      error: function (xhr) {
+        var errors = (xhr.responseJSON && xhr.responseJSON.errors) || ["{% trans 'Erreur lors de la création du modèle' %}"];
+        Swal.fire({ icon: "error", text: errors.join("\n") });
+      }
+    });
+  }
+
   $(document).ready(function () {
     $("#template").change(function (e) {
       var id = $(this).val();

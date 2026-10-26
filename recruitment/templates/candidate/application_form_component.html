@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registration Form</title>
+    <title>{% block title %}Candidature - M-Automotiv{% endblock title %}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicons/logoorh.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicons/logoorh.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicons/logoorh.png' %}">
 
     <link rel="stylesheet" href="{% static 'build/css/style.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/brand.css' %}" />
+    {% block extra_head %}{% endblock extra_head %}
     <style>
       ul.errorlist {
         color: #d9534f;
@@ -44,9 +46,5 @@
       nomodule
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
     ></script>
-    <script></script>
-  </body>
-</html>
-
   </body>
 </html>

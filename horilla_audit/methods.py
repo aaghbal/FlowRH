@@ -18,10 +18,10 @@ class Bot:
         self.__str__()
 
     def __str__(self) -> str:
-        return "FlowRH Bot"
+        return "M-Community Bot"
 
     def get_avatar(self):
-        return initials_avatar("FlowRH Bot")
+        return initials_avatar("M-Community Bot")
 
 
 def _check_and_delete(entry1, entry2, dry_run=False):

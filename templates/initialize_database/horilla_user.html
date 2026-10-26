@@ -64,7 +64,7 @@
           id="ohAuthCard"
           >
           <div class="oh-onboarding-card__header">
-            <span class="oh-onboarding-card__company-name">FlowRH</span>
+            <span class="oh-onboarding-card__company-name">M-Community</span>
             <ul class="oh-onboarding-card__steps">
               <li
                 class="oh-onboarding-card__step oh-onboarding-card__step--active"
@@ -96,7 +96,7 @@
             {% trans "Database Authentication" %}
           </h1>
           <p class="text-muted text-center">
-            {% trans "Authentifiez-vous avec votre mot de passe pour initialiser la base de données FlowRH HRMS." %}
+            {% trans "Authentifiez-vous avec votre mot de passe pour initialiser la base de données M-Community." %}
           </p>
           <form
             hx-post="{% url 'initialize-database' %}"
@@ -150,7 +150,7 @@
             </div>
           </form>
         </div>
-        <img src={% if white_label_company.icon %} "{{white_label_company.icon.url}}" {% else %} "{% static 'images/ui/flowrhlogo.png' %}" style="width: 200px; height: 60px;" {% endif %} alt="FlowRH" />
+        <img src={% if white_label_company.icon %} "{{white_label_company.icon.url}}" {% else %} "{% static 'images/ui/flowrhlogo.png' %}" style="height: 120px; width: auto;" {% endif %} alt="M-Community" />
       </main>
     </div>
     <script src="{% static '/build/js/web.frontend.min.js' %}"></script>

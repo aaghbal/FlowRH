@@ -45,6 +45,7 @@ from recruitment.models import (
     SurveyTemplate,
 )
 from recruitment.pipeline_grouper import group_by_queryset
+from recruitment.threading import ApplicationReceivedMailThread
 from recruitment.views.paginator_qry import paginator_qry
 
 
@@ -181,6 +182,7 @@ def candidate_survey(request):
             answer_data[key] = [attachment_path]
         answer.answer_json = json.dumps(answer_data)
         answer.save()
+        ApplicationReceivedMailThread(request, candidate).start()
         messages.success(request, _("Vos réponses ont été soumises."))
         return render(request, "candidate/success.html")
     return render(
@@ -406,6 +408,7 @@ def application_form(request):
                 except:
                     return redirect(candidate_survey)
             candidate_obj.save()
+            ApplicationReceivedMailThread(request, candidate_obj).start()
 
             if resume_obj:
                 resume_obj.is_candidate = True

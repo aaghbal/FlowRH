@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="oh-onboarding-card__header">
-    <span class="oh-onboarding-card__company-name">FlowRH HRMS</span>
+    <span class="oh-onboarding-card__company-name">M-Community</span>
     <ul class="oh-onboarding-card__step">
         <li class="oh-onboarding-card__step">
             <div class="oh-onboarding-card__count">1</div>
@@ -28,7 +28,7 @@
     {% trans "S'inscrire" %}
 </h1>
 <p class="text-muted text-center">
-    {% trans "Veuillez vous inscrire pour accéder au FlowRH." %}
+    {% trans "Veuillez vous inscrire pour accéder à M-Community." %}
 </p>
 <form hx-post="{% url 'initialize-database-user' %}" hx-target="#ohAuthCard" class="oh-form-group">
     {% csrf_token %}
