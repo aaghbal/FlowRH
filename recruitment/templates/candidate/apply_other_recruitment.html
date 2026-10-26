@@ -1,0 +1,32 @@
+{% load i18n %}
+<div class="oh-modal__dialog-header">
+  <span class="oh-modal__dialog-title">{% trans "Postuler à un autre recrutement" %}</span>
+  <button type="button" class="oh-modal__close" aria-label="Close" onclick="$(this).closest('.oh-modal').removeClass('oh-modal--show')">
+    <ion-icon name="close-outline"></ion-icon>
+  </button>
+</div>
+<div class="oh-modal__dialog-body">
+  <p style="font-size: 13px; color: #6b6480; margin-bottom: 14px;">
+    {% blocktrans with name=candidate.name %}Une nouvelle candidature sera créée pour <b>{{ name }}</b> avec les mêmes informations et le même CV, dans la première étape du recrutement choisi.{% endblocktrans %}
+  </p>
+  {% if choices %}
+  <form hx-post="{% url 'candidate-apply-other' candidate.id %}" hx-target="#objectCreateModalTarget">
+    {% csrf_token %}
+    <label class="oh-label" for="applyOtherSelect">{% trans "Recrutement et poste" %}</label>
+    <select name="application" id="applyOtherSelect" class="oh-select w-100" required>
+      <option value="">{% trans "Choisir…" %}</option>
+      {% for value, rec, position in choices %}
+      <option value="{{ value }}">{{ rec }} — {{ position }}</option>
+      {% endfor %}
+    </select>
+    {% if error %}<div class="errorlist" style="color: #e3342f; font-size: 13px; margin-top: 6px;">{{ error }}</div>{% endif %}
+    <div class="d-flex justify-content-end mt-4">
+      <button type="submit" class="oh-btn oh-btn--secondary">{% trans "Ajouter la candidature" %}</button>
+    </div>
+  </form>
+  {% else %}
+  <div class="oh-alert oh-alert--info" style="margin: 0;">
+    {% trans "Aucun autre recrutement ouvert disponible pour ce candidat." %}
+  </div>
+  {% endif %}
+</div>

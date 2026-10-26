@@ -434,7 +434,6 @@ class Candidate(HorillaModel):
     )
     email = models.EmailField(
         max_length=254,
-        unique=True,
         null=True,
         blank=True,
         verbose_name=_("Email"),
@@ -685,7 +684,40 @@ class Candidate(HorillaModel):
             self.hired = False
             self.canceled = False
 
+        newly_hired = (
+            self.hired
+            and not Candidate.objects.get_all()
+            .filter(pk=self.pk, hired=True)
+            .exists()
+        )
         super().save(*args, **kwargs)
+        if newly_hired:
+            self.close_other_applications()
+
+    def other_applications(self):
+        """
+        Applications of the same person (same email) to other recruitments
+        """
+        if not self.email:
+            return Candidate.objects.none()
+        return (
+            Candidate.objects.get_all()
+            .filter(email__iexact=self.email)
+            .exclude(pk=self.pk)
+            .select_related("recruitment_id", "stage_id")
+            .order_by("-created_at")
+        )
+
+    def close_other_applications(self):
+        """
+        Once hired, the person's other open applications are closed (moved to
+        the cancelled stage of their recruitment)
+        """
+        for application in self.other_applications().filter(
+            hired=False, canceled=False, converted=False
+        ):
+            application.canceled = True
+            application.save()
 
     class Meta:
         """

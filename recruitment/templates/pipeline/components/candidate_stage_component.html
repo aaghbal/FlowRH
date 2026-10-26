@@ -144,7 +144,7 @@
                         <div class="oh-profile__avatar mr-1">
                             <img src="{{cand.get_avatar}}" class="oh-profile__image" alt="User" />
                         </div>
-                        <span title="{{cand}}">{{cand|truncatechars:15}} </span>
+                        <span title="{{cand}}">{{cand|truncatechars:15}} </span>{% if cand.application_count > 1 %}<a href="{% url 'candidate-view-individual' cand.id %}" title="{% trans 'Cette personne a postulé à plusieurs recrutements' %}" style="display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#fff0ec;color:#c94a30;font-size:11px;font-weight:600;white-space:nowrap;text-decoration:none;vertical-align:middle;" onclick="event.stopPropagation()">{{ cand.application_count }} {% trans "candidatures" %}</a>{% endif %}
                     </div>
                 </div>
 

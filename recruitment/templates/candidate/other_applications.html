@@ -1,0 +1,51 @@
+{% load i18n %}
+<style>
+  .oa-list { list-style: none; margin: 0; padding: 0; }
+  .oa-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid #ece8f3; border-radius: 10px; margin-bottom: 8px; color: inherit; text-decoration: none; transition: border-color .15s, background .15s; }
+  .oa-item:hover { border-color: #290054; background: #faf8fd; color: inherit; text-decoration: none; }
+  .oa-item b { display: block; color: #290054; font-size: 14px; }
+  .oa-item small { color: #6b6480; font-size: 12px; }
+  .oa-pill { flex-shrink: 0; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: #f1edf7; color: #290054; white-space: nowrap; }
+  .oa-pill--hired { background: #e3f6ea; color: #1b7a43; }
+  .oa-pill--closed { background: #fdecea; color: #b23b2a; }
+</style>
+<div class="oh-card oh-card--margin">
+  <div class="oh-card__header d-flex align-items-center justify-content-between">
+    <span class="oh-card__title oh-card__title--sm fw-bold me-2">
+      {% trans "Autres candidatures" %}{% if other_applications %} ({{ other_applications|length }}){% endif %}
+    </span>
+    {% if perms.recruitment.add_candidate %}
+    <button type="button" class="oh-btn oh-btn--secondary oh-btn--small"
+            hx-get="{% url 'candidate-apply-other' candidate.id %}" hx-target="#objectCreateModalTarget"
+            data-toggle="oh-modal-toggle" data-target="#objectCreateModal"
+            style="display: inline-flex; align-items: center; gap: 6px;">
+      <ion-icon name="add-outline"></ion-icon> {% trans "Postuler à un autre recrutement" %}
+    </button>
+    {% endif %}
+  </div>
+  <div class="oh-card__body mt-3">
+    {% if other_applications %}
+    <ul class="oa-list">
+      {% for application in other_applications %}
+      <li>
+        <a class="oa-item" href="{% url 'candidate-view-individual' application.id %}">
+          <span>
+            <b>{{ application.recruitment_id|default:_("Sans recrutement") }}</b>
+            <small>{{ application.job_position_id|default:"" }}{% if application.created_at %} · {% trans "le" %} {{ application.created_at|date:"d/m/Y" }}{% endif %}</small>
+          </span>
+          {% if application.hired %}
+            <span class="oa-pill oa-pill--hired">{% trans "Embauché(e)" %}</span>
+          {% elif application.canceled %}
+            <span class="oa-pill oa-pill--closed">{% trans "Clôturée" %}</span>
+          {% else %}
+            <span class="oa-pill">{{ application.stage_id|default:"—" }}</span>
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color: #6b6480; font-size: 13px; margin: 0;">{% trans "Aucune autre candidature pour cette personne." %}</p>
+    {% endif %}
+  </div>
+</div>

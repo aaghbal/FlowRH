@@ -65,6 +65,25 @@ from recruitment.models import (
 logger = logging.getLogger(__name__)
 
 
+def already_applied(email, recruitment, exclude_id=None):
+    """
+    A person may apply to several recruitments, but only once to each one.
+    """
+    if not email or not recruitment:
+        return False
+    applications = Candidate.objects.get_all().filter(
+        email__iexact=email, recruitment_id=recruitment
+    )
+    if exclude_id:
+        applications = applications.exclude(id=exclude_id)
+    return applications.exists()
+
+
+DUPLICATE_APPLICATION_MESSAGE = _(
+    "Une candidature avec cet email existe déjà pour ce recrutement."
+)
+
+
 class ModelForm(forms.ModelForm):
     """
     Overriding django default model form to apply some styles
@@ -560,7 +579,10 @@ class CandidateCreationForm(ModelForm):
                     self.instance.job_position_id = job_position
             except (ValueError, JobPosition.DoesNotExist):
                 errors["job_position_id"] = _("Choose a valid choice")
-                
+
+        if already_applied(cleaned_data.get("email"), recruitment, self.instance.pk):
+            errors["email"] = DUPLICATE_APPLICATION_MESSAGE
+
         if errors:
             raise ValidationError(errors)
             
@@ -644,6 +666,8 @@ class ApplicationForm(RegistrationForm):
             errors["resume"] = _("This field is required")
         if not profile and not recruitment.optional_profile_image:
             errors["profile"] = _("This field is required")
+        if already_applied(cleaned_data.get("email"), recruitment):
+            errors["email"] = _("Vous avez déjà postulé à cette offre.")
         if errors:
             raise ValidationError(errors)
         return cleaned_data
@@ -718,6 +742,12 @@ class AddCandidateForm(ModelForm):
         self.fields["gender"].empty_label = None
         self.fields["job_position_id"].empty_label = None
         self.fields["stage_id"].empty_label = None
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if already_applied(email, self.instance.recruitment_id, self.instance.pk):
+            raise ValidationError(DUPLICATE_APPLICATION_MESSAGE)
+        return email
 
     def as_p(self, *args, **kwargs):
         """

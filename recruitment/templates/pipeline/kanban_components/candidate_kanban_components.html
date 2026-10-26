@@ -27,7 +27,7 @@
             <span
             class="oh-profile__name oh-text--dark"
             data-type="label"
-            >{{cand}}
+            >{{cand}}{% if cand.application_count > 1 %}<a href="{% url 'candidate-view-individual' cand.id %}" title="{% trans 'Cette personne a postulé à plusieurs recrutements' %}" style="display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#fff0ec;color:#c94a30;font-size:11px;font-weight:600;white-space:nowrap;text-decoration:none;vertical-align:middle;" onclick="event.stopPropagation()">{{ cand.application_count }} {% trans "candidatures" %}</a>{% endif %}
             <input type="text" name="order" value="{{cand.id}}" hidden>
             <select name="stage_id" id="" hidden>
                 {% for stage in cand.recruitment_id.stage_set.all %}

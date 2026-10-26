@@ -241,6 +241,11 @@ urlpatterns = [
         kwargs={"model": Candidate},
     ),
     path(
+        "candidate-apply-other/<int:cand_id>/",
+        views.candidate_apply_other,
+        name="candidate-apply-other",
+    ),
+    path(
         "candidate-update/<int:cand_id>/",
         views.candidate_update,
         name="rec-candidate-update",

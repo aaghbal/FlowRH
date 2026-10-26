@@ -31,7 +31,19 @@ from django.core import serializers
 from django.core.cache import cache as CACHE
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
-from django.db.models import Case, Count, IntegerField, Prefetch, ProtectedError, Q, When
+from django.db.models import (
+    Case,
+    Count,
+    F,
+    Func,
+    IntegerField,
+    OuterRef,
+    Prefetch,
+    ProtectedError,
+    Q,
+    Subquery,
+    When,
+)
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -86,6 +98,8 @@ from recruitment.filters import (
     StageFilter,
 )
 from recruitment.forms import (
+    DUPLICATE_APPLICATION_MESSAGE,
+    already_applied,
     AddCandidateForm,
     CandidateCreationForm,
     CandidateDocumentForm,
@@ -664,6 +678,10 @@ def update_candidate_stage_and_sequence(request):
         candidate = candidates.filter(id=cand_id)
         candidate.update(sequence=index, stage_id=stage)
     if stage.stage_type == "hired":
+        # update() skips Candidate.save(): save the newly hired ones so they are
+        # flagged hired and their other applications get closed
+        for candidate in candidates.filter(id__in=order_list, hired=False):
+            candidate.save()
         if stage.recruitment_id.is_vacancy_filled():
             context["message"] = _("Le poste est pourvu.")
             context["vacancy"] = stage.recruitment_id.vacancy
@@ -710,9 +728,21 @@ def candidate_component(request):
     if stage and department_head_denied(request.user, stage.recruitment_id):
         return render(request, "decorator_404.html")
 
-    candidates = Candidate.objects.select_related(
-        "recruitment_id", "stage_id", "job_position_id"
-    ).filter(stage_id=stage, is_active=True)
+    # number of applications of the same person (same email), all recruitments
+    applications = (
+        Candidate.objects.get_all()
+        .filter(email__iexact=OuterRef("email"))
+        .order_by()
+        .annotate(total=Func(F("id"), function="COUNT"))
+        .values("total")
+    )
+    candidates = (
+        Candidate.objects.select_related(
+            "recruitment_id", "stage_id", "job_position_id"
+        )
+        .filter(stage_id=stage, is_active=True)
+        .annotate(application_count=Subquery(applications))
+    )
 
     template = "pipeline/components/candidate_stage_component.html"
     if request.GET.get("view") == "card":
@@ -1753,7 +1783,90 @@ def candidate_view_individual(request, cand_id, **kwargs):
             "average_rate": avg_rate,
             "documents": documents,
             "now": now,
+            "other_applications": candidate_obj.other_applications(),
         },
+    )
+
+
+@login_required
+@manager_can_enter(perm="recruitment.add_candidate")
+def candidate_apply_other(request, cand_id):
+    """
+    Add an existing candidate to another recruitment: a new application is
+    created with the same personal information and CV, in the first stage.
+    """
+    candidate_obj = Candidate.find(cand_id)
+    if not candidate_obj:
+        messages.error(request, _("Candidate not found"))
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+
+    applied_recruitments = candidate_obj.other_applications().values_list(
+        "recruitment_id", flat=True
+    )
+    recruitments = (
+        Recruitment.objects.filter(is_active=True, closed=False)
+        .exclude(id=candidate_obj.recruitment_id_id)
+        .exclude(id__in=list(applied_recruitments))
+        .prefetch_related("open_positions")
+        .order_by("title")
+    )
+    choices = [
+        (f"{rec.id}:{position.id}", rec, position)
+        for rec in recruitments
+        for position in rec.open_positions.all()
+    ]
+
+    error = None
+    if request.method == "POST":
+        try:
+            rec_id, job_id = request.POST.get("application", "").split(":")
+            recruitment = recruitments.get(id=rec_id)
+            job_position = recruitment.open_positions.get(id=job_id)
+        except (ValueError, Recruitment.DoesNotExist, JobPosition.DoesNotExist):
+            recruitment = job_position = None
+            error = _("Choisissez un recrutement valide.")
+        if recruitment and already_applied(candidate_obj.email, recruitment):
+            error = DUPLICATE_APPLICATION_MESSAGE
+        if not error:
+            stages = recruitment.stage_set.all()
+            stage = (
+                stages.filter(stage_type="applied").first()
+                or stages.filter(stage_type="initial").first()
+                or stages.order_by("sequence").first()
+            )
+            application = Candidate.objects.create(
+                name=candidate_obj.name,
+                email=candidate_obj.email,
+                mobile=candidate_obj.mobile,
+                profile=candidate_obj.profile,
+                portfolio=candidate_obj.portfolio,
+                resume=candidate_obj.resume,
+                address=candidate_obj.address,
+                country=candidate_obj.country,
+                dob=candidate_obj.dob,
+                state=candidate_obj.state,
+                city=candidate_obj.city,
+                zip=candidate_obj.zip,
+                gender=candidate_obj.gender,
+                referral=candidate_obj.referral,
+                source="software",
+                recruitment_id=recruitment,
+                job_position_id=job_position,
+                stage_id=stage,
+            )
+            messages.success(
+                request,
+                _("Candidature ajoutée au recrutement %(rec)s.") % {"rec": recruitment},
+            )
+            return HttpResponse(
+                "<script>window.location.href='%s'</script>"
+                % reverse("candidate-view-individual", args=[application.id])
+            )
+
+    return render(
+        request,
+        "candidate/apply_other_recruitment.html",
+        {"candidate": candidate_obj, "choices": choices, "error": error},
     )
 
 
