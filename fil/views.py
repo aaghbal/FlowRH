@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
 import json
 from django.db import transaction
+from django.utils.dateparse import parse_date
 
 from horilla.decorators import (
     delete_permission,
@@ -14,22 +15,63 @@ from horilla.decorators import (
     permission_required,
 )
 
-from .models import Post, Poll, PollOption, PollVote, Like, Comment
+from .models import Post, PostMedia, Poll, PollOption, PollVote, Like, Comment
 from .forms import PollForm
 from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 
+MAX_POST_IMAGES = 10
+MAX_POST_DOCUMENTS = 5
+ALLOWED_DOC_TYPES = [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'text/plain',
+]
+
+def likes_summary(post, likes, viewer_id):
+    """"Salma Raji et 23 autres aiment" line shown under a post."""
+    total = len(likes)
+    if not total:
+        return ""
+    if post.category == 'newcomer':
+        verb = "ont" if total > 1 else "a"
+        return f"{total} personne{'s' if total > 1 else ''} {verb} souhaité la bienvenue"
+    others = [like.user for like in likes if like.user_id != viewer_id]
+    first = "Vous" if len(others) < total else others[0].get_full_name()
+    rest = total - 1
+    if not rest:
+        return "Vous aimez" if first == "Vous" else f"{first} aime"
+    return f"{first} et {rest} autre{'s' if rest > 1 else ''} aiment"
+
+
+def comments_summary(count):
+    return f"{count} commentaire{'s' if count > 1 else ''}" if count else ""
+
+
 @login_required
 def fil_actualite_view(request):
+    from datetime import date as date_cls
+
+    from base.models import Department
+    from employee.models import Employee, EmployeeWorkInformation
+
     # Get all posts initially
-    posts = Post.objects.filter(is_active=True).select_related('author').prefetch_related('media_files', 'comments', 'poll', 'poll__options', 'likes')
-    
+    posts = Post.objects.filter(is_active=True).select_related(
+        'author', 'newcomer', 'newcomer__employee_work_info__job_position_id',
+        'newcomer__employee_work_info__location',
+    ).prefetch_related(
+        'media_files', 'comments__author', 'poll', 'poll__options', 'likes__user'
+    )
+
     # Check if user is admin (superuser or has admin permissions)
     is_admin = request.user.is_superuser or request.user.groups.filter(name__icontains='admin').exists()
-    
+
     user = request.user.employee_get
-    
+
     if is_admin:
         # Admin users can see all posts
         user_visible_posts = list(posts)
@@ -39,26 +81,67 @@ def fil_actualite_view(request):
         for post in posts:
             if post.is_visible_to_user(request.user):
                 user_visible_posts.append(post)
-    
-    liked_post_ids = set(post.id for post in user_visible_posts if post.likes.filter(user=user).exists())
-    
+
+    liked_post_ids = set()
+    for post in user_visible_posts:
+        likes = list(post.likes.all())
+        if any(like.user_id == user.id for like in likes):
+            liked_post_ids.add(post.id)
+        post.likes_summary = likes_summary(post, likes, user.id)
+        top_level = [c for c in post.comments.all() if c.parent_comment_id is None]
+        post.latest_comment = top_level[-1] if top_level else None
+        post.comments_summary = comments_summary(len(post.comments.all()))
+
     # Get all comments for filtered posts to determine which ones are liked by the current user
-    all_comments = Comment.objects.filter(post__in=user_visible_posts)
-    liked_comment_ids = set(c.id for c in all_comments if c.likes.filter(user=user).exists())
-    
+    liked_comment_ids = set(
+        Like.objects.filter(user=user, comment__post__in=user_visible_posts).values_list('comment_id', flat=True)
+    )
+
+    user_poll_votes = {}
+    for poll_id, option_id in PollVote.objects.filter(
+        voter=user, poll_option__poll__post__in=user_visible_posts
+    ).values_list('poll_option__poll_id', 'poll_option_id'):
+        user_poll_votes.setdefault(poll_id, []).append(option_id)
+
     # Get all unique sites for the site selection dropdown
-    from employee.models import EmployeeWorkInformation
     available_sites = list(EmployeeWorkInformation.objects.exclude(
         location__isnull=True
     ).values_list(
         'location__site_name', flat=True
     ).distinct().order_by('location__site_name'))
-    
+    available_departments = list(
+        Department.objects.order_by('department').values_list('department', flat=True).distinct()
+    )
+
+    # Right column: recent arrivals and upcoming events
+    today = date_cls.today()
+    newcomers = Employee.objects.filter(
+        is_active=True,
+        employee_work_info__date_joining__isnull=False,
+        employee_work_info__date_joining__lte=today,
+    ).select_related(
+        'employee_work_info__job_position_id', 'employee_work_info__location'
+    ).order_by('-employee_work_info__date_joining')[:4]
+    upcoming_events = sorted(
+        (p for p in user_visible_posts
+         if p.category == 'event' and p.event_date and (p.event_end_date or p.event_date) >= today),
+        key=lambda p: p.event_date,
+    )[:5]
+    employees = Employee.objects.filter(is_active=True).order_by(
+        'employee_first_name', 'employee_last_name'
+    ).only('id', 'employee_first_name', 'employee_last_name')
+
     return render(request, "fil/fil_actualite.html", {
-        "posts": user_visible_posts, 
+        "posts": user_visible_posts,
         "liked_post_ids": liked_post_ids,
         "liked_comment_ids": liked_comment_ids,
+        "user_poll_votes": user_poll_votes,
         "available_sites": available_sites,
+        "available_departments": available_departments,
+        "newcomers": newcomers,
+        "upcoming_events": upcoming_events,
+        "employees": employees,
+        "current_employee": user,
         "is_admin": is_admin
     })
 
@@ -139,43 +222,77 @@ def create_poll(request):
 @require_POST
 def create_post(request):
     content = request.POST.get('content', '').strip()
-    image = request.FILES.get('image')
-    document = request.FILES.get('document')
+    # Several photos / documents per post ("image" / "document" kept for older clients)
+    images = request.FILES.getlist('images') + request.FILES.getlist('image')
+    documents = request.FILES.getlist('documents') + request.FILES.getlist('document')
     
     # Handle site selection
     selected_sites = request.POST.getlist('sites[]') if 'sites[]' in request.POST else request.POST.getlist('sites')
 
     # Validate content
-    if not content and not image and not document:
+    if not content and not images and not documents and request.POST.get('category') != 'newcomer':
         return JsonResponse({'success': False, 'error': 'Content, image, or document is required.'})
 
     # Validate file types and sizes
-    if image:
+    if len(images) > MAX_POST_IMAGES:
+        return JsonResponse({'success': False, 'error': f'Maximum {MAX_POST_IMAGES} photos par publication.'})
+    if len(documents) > MAX_POST_DOCUMENTS:
+        return JsonResponse({'success': False, 'error': f'Maximum {MAX_POST_DOCUMENTS} documents par publication.'})
+    for image in images:
         if not image.content_type.startswith('image/'):
-            return JsonResponse({'success': False, 'error': 'Invalid image file type.'})
+            return JsonResponse({'success': False, 'error': f'{image.name} : type d\'image non valide.'})
         if image.size > 5 * 1024 * 1024:  # 5MB limit
-            return JsonResponse({'success': False, 'error': 'Image file size must be less than 5MB.'})
+            return JsonResponse({'success': False, 'error': f'{image.name} : chaque image doit faire moins de 5 Mo.'})
 
-    if document:
-        allowed_doc_types = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain']
-        if document.content_type not in allowed_doc_types:
-            return JsonResponse({'success': False, 'error': 'Invalid document file type. Allowed types: PDF, DOC, DOCX, TXT'})
+    for document in documents:
+        if document.content_type not in ALLOWED_DOC_TYPES:
+            return JsonResponse({'success': False, 'error': f'{document.name} : type non autorisé (PDF, DOC, DOCX, XLS, XLSX, TXT).'})
         if document.size > 10 * 1024 * 1024:  # 10MB limit
-            return JsonResponse({'success': False, 'error': 'Document file size must be less than 10MB.'})
+            return JsonResponse({'success': False, 'error': f'{document.name} : chaque document doit faire moins de 10 Mo.'})
+
+    category = request.POST.get('category', 'general')
+    if category not in dict(Post.CATEGORY_CHOICES):
+        category = 'general'
+    is_admin = request.user.is_superuser or request.user.groups.filter(name__icontains='admin').exists()
+    selected_departments = request.POST.getlist('departments[]')
+    extra = {}
+    if category == 'newcomer':
+        newcomer_id = request.POST.get('newcomer')
+        if not newcomer_id:
+            return JsonResponse({'success': False, 'error': "Veuillez choisir le nouvel arrivant."})
+        extra['newcomer_id'] = newcomer_id
+        extra['welcome_note'] = request.POST.get('welcome_note', '').strip()[:200]
+    elif category == 'result':
+        for field, size in (('kpi1_value', 20), ('kpi1_label', 100), ('kpi2_value', 20), ('kpi2_label', 100)):
+            extra[field] = request.POST.get(field, '').strip()[:size]
+    elif category == 'event':
+        event_date = parse_date(request.POST.get('event_date') or '')
+        if not event_date:
+            return JsonResponse({'success': False, 'error': "Veuillez indiquer la date de l'événement."})
+        extra['event_date'] = event_date
+        extra['event_end_date'] = parse_date(request.POST.get('event_end_date') or '')
 
     try:
         post = Post.objects.create(
             author=request.user.employee_get,
             content=content,
             post_type='text',
+            category=category,
+            is_pinned=is_admin and request.POST.get('is_pinned') == 'true',
             is_active=True,
-            image=image if image else None,
-            document=document if document else None
+            **extra
         )
+        for media_type, files in (('photo', images), ('document', documents)):
+            for upload in files:
+                PostMedia.objects.create(
+                    post=post, media_type=media_type, file=upload,
+                    file_name=upload.name[:255], file_size=upload.size,
+                )
         
-        # Set sites if selected
-        if selected_sites:
+        # Set sites and departments if selected
+        if selected_sites or selected_departments:
             post.set_sites_list(selected_sites)
+            post.set_departments_list(selected_departments)
             post.save()
             
         return JsonResponse({'success': True, 'post_id': post.id})
@@ -238,8 +355,13 @@ def toggle_like(request):
             liked = False
         else:
             liked = True
-        like_count = post.get_likes_count()
-        return JsonResponse({'success': True, 'liked': liked, 'like_count': like_count})
+        likes = list(post.likes.select_related('user'))
+        return JsonResponse({
+            'success': True,
+            'liked': liked,
+            'like_count': len(likes),
+            'summary': likes_summary(post, likes, user.id),
+        })
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
 
@@ -655,6 +777,18 @@ def delete_post(request, post_id):
             {'error': f'Une erreur est survenue lors de la suppression du post: {str(e)}'}, 
             status=500
         )
+
+@login_required
+@require_POST
+def toggle_pin(request, post_id):
+    """Pin or unpin a post at the top of the feed (admins only)"""
+    is_admin = request.user.is_superuser or request.user.groups.filter(name__icontains='admin').exists()
+    if not is_admin:
+        return JsonResponse({'success': False, 'error': 'Permission denied.'}, status=403)
+    post = get_object_or_404(Post, id=post_id, is_active=True)
+    post.is_pinned = not post.is_pinned
+    post.save(update_fields=['is_pinned'])
+    return JsonResponse({'success': True, 'is_pinned': post.is_pinned})
 
 @login_required
 def get_likers(request):

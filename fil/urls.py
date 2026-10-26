@@ -15,4 +15,5 @@ urlpatterns = [
     path("delete-comment/", views.delete_comment, name="delete_comment"),
     path("update-post/<int:post_id>/", views.update_post, name="update_post"),
     path("delete-post/<int:post_id>/", views.delete_post, name="delete_post"),
+    path("toggle-pin/<int:post_id>/", views.toggle_pin, name="toggle_pin"),
 ]

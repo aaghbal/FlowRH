@@ -28,12 +28,53 @@ class Post(models.Model):
         default='text',
         verbose_name=_("Post Type")
     )
+    CATEGORY_CHOICES = [
+        ('general', _('Publication')),
+        ('announcement', _('Annonce')),
+        ('newcomer', _('Nouvel arrivant')),
+        ('result', _('Résultats')),
+        ('event', _('Événement')),
+    ]
+
     sites = models.TextField(
         blank=True,
         null=True,
         verbose_name=_("Sites"),
         help_text=_("Comma-separated list of sites where this post should be displayed")
     )
+    departments = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Départements"),
+        help_text=_("Comma-separated list of departments where this post should be displayed")
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default='general',
+        verbose_name=_("Catégorie")
+    )
+    is_pinned = models.BooleanField(default=False, verbose_name=_("Épinglé"))
+    # Nouvel arrivant
+    newcomer = models.ForeignKey(
+        Employee,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='welcome_posts',
+        verbose_name=_("Nouvel arrivant")
+    )
+    welcome_note = models.CharField(
+        max_length=200, blank=True, verbose_name=_("Note de bienvenue")
+    )
+    # Résultats: up to two highlighted figures
+    kpi1_value = models.CharField(max_length=20, blank=True, verbose_name=_("Chiffre 1"))
+    kpi1_label = models.CharField(max_length=100, blank=True, verbose_name=_("Libellé 1"))
+    kpi2_value = models.CharField(max_length=20, blank=True, verbose_name=_("Chiffre 2"))
+    kpi2_label = models.CharField(max_length=100, blank=True, verbose_name=_("Libellé 2"))
+    # Événement
+    event_date = models.DateField(null=True, blank=True, verbose_name=_("Date de l'événement"))
+    event_end_date = models.DateField(null=True, blank=True, verbose_name=_("Fin de l'événement"))
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,7 +93,7 @@ class Post(models.Model):
     )
     
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-is_pinned', '-created_at']
         verbose_name = _("Post")
         verbose_name_plural = _("Posts")
     
@@ -77,6 +118,30 @@ class Post(models.Model):
             self.sites = ', '.join(sites_list)
         else:
             self.sites = None
+
+    def gallery_photos(self):
+        """All photo URLs: the legacy single image first, then the attached photos"""
+        urls = [self.image.url] if self.image else []
+        urls += [m.file.url for m in self.media_files.all() if m.media_type == 'photo']
+        return urls
+
+    def attached_documents(self):
+        """All documents as (url, name): the legacy single document, then the attached ones"""
+        docs = []
+        if self.document:
+            docs.append((self.document.url, self.document.name.split('/')[-1]))
+        docs += [(m.file.url, m.file_name) for m in self.media_files.all() if m.media_type == 'document']
+        return docs
+
+    def get_departments_list(self):
+        """Return a list of departments from the comma-separated string"""
+        if self.departments:
+            return [dep.strip() for dep in self.departments.split(',') if dep.strip()]
+        return []
+
+    def set_departments_list(self, departments_list):
+        """Set the departments from a list of department names"""
+        self.departments = ', '.join(departments_list) if departments_list else None
     
     def is_visible_to_user(self, user):
         """Check if this post should be visible to a specific user based on their location"""
@@ -84,20 +149,24 @@ class Post(models.Model):
         if user.is_superuser or user.groups.filter(name__icontains='admin').exists():
             return True
             
-        if not self.sites:
-            # If no specific sites are set, the post is visible to all
+        if not self.sites and not self.departments:
+            # If no specific sites or departments are set, the post is visible to all
             return True
-        
+
         try:
-            # Get the user's work location
-            if hasattr(user, 'employee_get') and hasattr(user.employee_get, 'employee_work_info'):
-                user_location = user.employee_get.employee_work_info.location
-                if user_location and user_location.site_name in self.get_sites_list():
-                    return True
-            return False
-        except:
+            work_info = user.employee_get.employee_work_info
+        except Exception:
             # If there's any error getting user location, show the post
             return True
+        if self.sites:
+            user_location = work_info.location
+            if not user_location or user_location.site_name not in self.get_sites_list():
+                return False
+        if self.departments:
+            user_department = work_info.department_id
+            if not user_department or user_department.department not in self.get_departments_list():
+                return False
+        return True
 
 
 class PostMedia(models.Model):

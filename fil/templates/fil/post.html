@@ -1,87 +1,129 @@
 {% load static %}
 {% load get_item %}
+{% load fil_extras %}
 <!-- templates/fil/post.html -->
-<div class="post" id="post-{{ post.id }}">
-    <div class="post-header">
-        {% if post.post_type == 'poll' %}
-            <img src="{% static 'images/ui/poll.png' %}" alt="Poll" class="post-type-icon" width="40" height="40">
-        {% else %}
-            <img src="{% static 'images/ui/write.png' %}" alt="Text" class="post-type-icon" width="30" height="30">
-        {% endif %}
-        <div class="user-section">
-            <div data-user-name="{{ post.author.get_full_name }}" 
-                 data-user-firstname="{{ post.author.employee_first_name }}" 
-                 data-user-lastname="{{ post.author.employee_last_name }}" 
-                 data-user-avatar="{{ post.author.get_avatar }}" 
-                 data-avatar-size="medium" 
-                 class="profile-pic"></div>
-            <div class="post-info">
-                <h3 class="user-name">{{ post.author.get_full_name }}</h3>
-                <span class="post-time">{{ post.created_at|timesince }} ago</span>
-            </div>
-            {% if post.author.id == request.user.id %}
-            <div class="post-actions-dropdown">
-                <button class="post-actions-trigger" onclick="togglePostActions('{{ post.id }}')">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
-                <div class="post-actions-menu" id="post-actions-{{ post.id }}" style="display: none;">
-                    <button class="post-action-item" onclick="showEditPost('{{ post.id }}'); hidePostActions('{{ post.id }}');">
-                        <i class="fas fa-edit"></i> Modifier
-                    </button>
-                    <button type="button" class="post-action-item" style="color: #dc2626;" onclick="event.stopPropagation(); confirmDelete('{{ post.id }}'); hidePostActions('{{ post.id }}'); return false;">
-                        <i class="fas fa-trash" style="color: #dc2626;"></i> Supprimer
-                    </button>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-
+<div class="post fd-post" id="post-{{ post.id }}"
+     data-category="{% if post.post_type == 'poll' %}poll{% else %}{{ post.category }}{% endif %}"
+     data-sites="{{ post.sites|default:'' }}">
+    {% if post.is_pinned or post.category != 'general' or post.post_type == 'poll' %}
+    <div class="fd-post__label">
+        {% if post.is_pinned %}Épinglé{% if post.category != 'general' or post.post_type == 'poll' %} · {% endif %}{% endif %}
+        {% if post.post_type == 'poll' %}Sondage{% elif post.category != 'general' %}{{ post.get_category_display }}{% endif %}
     </div>
-    <div class="post-content">
-        <div class="post-text" style="white-space: pre-wrap;">{{ post.content }}</div>
-        {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Image de la publication" class="post-image">
-        {% endif %}
-        {% if post.document %}
-            <div class="document-file">
-                <i class="fas fa-file-alt"></i>
-                <a href="{{ post.document.url }}" target="_blank">{{ post.document.name|cut:'fil/documents/' }}</a>
+    {% endif %}
+
+    <div class="fd-post__head">
+        {% with photo=post.author|photo_url name=post.author.get_full_name %}
+        <div class="fd-avatar fd-avatar--tone-{{ name|avatar_tone }}">
+            {% if photo %}<img src="{{ photo }}" alt="{{ name }}">{% else %}{{ name|initials }}{% endif %}
+        </div>
+        {% endwith %}
+        <div class="fd-post__who">
+            <p class="fd-post__name">{{ post.author.get_full_name }}</p>
+            <div class="fd-post__meta">
+                {{ post.created_at|il_y_a }} ·
+                {% if post.sites %}{{ post.get_sites_list|join:", " }}{% else %}Tous les sites{% endif %}{% if post.departments %} · {{ post.get_departments_list|join:", " }}{% endif %}
             </div>
-        {% endif %}
-        
-        <!-- Site Information - Only visible to admins -->
-        {% if post.sites and is_admin %}
-            <div class="post-sites-info">
-                <i class="fas fa-map-marker-alt"></i>
-                <span class="sites-label">Sites:</span>
-                <span class="sites-list">{{ post.sites }}</span>
+        </div>
+        {% if post.author.employee_user_id_id == request.user.id or is_admin %}
+        <div class="post-actions-dropdown">
+            <button class="fd-post__menu-btn post-actions-trigger" onclick="togglePostActions('{{ post.id }}')" aria-label="Actions">
+                <i class="fas fa-ellipsis-h"></i>
+            </button>
+            <div class="post-actions-menu" id="post-actions-{{ post.id }}" style="display: none;">
+                {% if is_admin %}
+                <button type="button" class="post-action-item" onclick="togglePin('{{ post.id }}'); hidePostActions('{{ post.id }}');">
+                    <i class="fas fa-thumbtack"></i> {% if post.is_pinned %}Désépingler{% else %}Épingler en haut{% endif %}
+                </button>
+                {% endif %}
+                {% if post.author.employee_user_id_id == request.user.id %}
+                <button type="button" class="post-action-item" onclick="showEditPost('{{ post.id }}'); hidePostActions('{{ post.id }}');">
+                    <i class="fas fa-edit"></i> Modifier
+                </button>
+                <button type="button" class="post-action-item" style="color: #dc2626;" onclick="event.stopPropagation(); confirmDelete('{{ post.id }}'); hidePostActions('{{ post.id }}'); return false;">
+                    <i class="fas fa-trash" style="color: #dc2626;"></i> Supprimer
+                </button>
+                {% endif %}
             </div>
+        </div>
         {% endif %}
-        
-        {% if post.post_type == 'poll' and post.poll %}
-            <div class="poll-options" id="poll-options-{{ post.poll.id }}">
-                <h4>{{ post.poll.question }}</h4>
-                {% for option in post.poll.options.all %}
-                    {% with percent=option.get_vote_percentage|floatformat:0 %}
-                    <div class="poll-option" style="margin-bottom: 12px;">
-                        {% if post.poll.is_multiple_choice %}
-                            <input type="checkbox" name="poll-{{ post.poll.id }}" id="option-{{ option.id }}" value="{{ option.id }}" {% if user_poll_votes|get_item:post.poll.id and option.id in user_poll_votes|get_item:post.poll.id %}checked{% endif %}>
-                        {% else %}
-                            <input type="radio" name="poll-{{ post.poll.id }}" id="option-{{ option.id }}" value="{{ option.id }}" {% if user_poll_votes|get_item:post.poll.id and option.id in user_poll_votes|get_item:post.poll.id %}checked{% endif %}>
-                        {% endif %}
-                        <div class="barpoll" style="width: 100%;">
-                            <label for="option-{{ option.id }}">{{ option.option_text }}</label>
-                            <div class="progress-container">
-                                <div class="progress-bar" id="bar-{{ option.id }}" data-width="{{ percent }}"></div>
-                                <span id="percent-{{ option.id }}" style="position: absolute; right: 8px; top: 0; height: 100%; display: flex; align-items: center; color: #333; font-size: 13px;">{{ percent }}%</span>
-                            </div>
-                        </div>
-                        <span class="vote-count" id="votes-{{ option.id }}" style="margin-left: 10px; color: #888; font-size: 13px;">{{ option.get_vote_count }} votes</span>
-                    </div>
-                    {% endwith %}
-                {% endfor %}
-                {# Remove the Vote button for SPA experience #}
+    </div>
+
+    {% if post.category == 'newcomer' and post.newcomer %}
+        {% with nc=post.newcomer photo=post.newcomer|photo_url %}
+        <div class="fd-welcome">
+            <div class="fd-welcome__photo">
+                {% if photo %}<img src="{{ photo }}" alt="{{ nc.get_full_name }}">{% else %}<span>{{ nc.get_full_name|initials }}</span>{% endif %}
             </div>
+            <div class="fd-welcome__body">
+                <div class="fd-welcome__eyebrow">Bienvenue à</div>
+                <div class="fd-welcome__name">{{ nc.get_full_name }}</div>
+                <div class="fd-welcome__role">
+                    {% if nc.employee_work_info.job_position_id %}{{ nc.employee_work_info.job_position_id }}{% endif %}{% if nc.employee_work_info.job_position_id and nc.employee_work_info.location %} · {% endif %}{% if nc.employee_work_info.location %}{{ nc.employee_work_info.location }}{% endif %}
+                </div>
+                {% if post.welcome_note %}<div class="fd-welcome__note">{{ post.welcome_note }}</div>{% endif %}
+            </div>
+        </div>
+        {% endwith %}
+    {% endif %}
+
+    {% if post.category == 'result' and post.kpi1_value or post.category == 'result' and post.kpi2_value %}
+    <div class="fd-kpis">
+        {% if post.kpi1_value %}<div class="fd-kpi"><div class="fd-kpi__value">{{ post.kpi1_value }}</div><div class="fd-kpi__label">{{ post.kpi1_label }}</div></div>{% endif %}
+        {% if post.kpi2_value %}<div class="fd-kpi"><div class="fd-kpi__value">{{ post.kpi2_value }}</div><div class="fd-kpi__label">{{ post.kpi2_label }}</div></div>{% endif %}
+    </div>
+    {% endif %}
+
+    {% if post.content %}<div class="fd-post__text post-text">{{ post.content }}</div>{% endif %}
+
+    {% if post.category == 'event' and post.event_date %}
+    <div class="fd-event">
+        <span class="fd-event__day">{{ post.event_date|short_date }}{% if post.event_end_date and post.event_end_date != post.event_date %} – {{ post.event_end_date|short_date }}{% endif %}</span>
+        <span>{{ post.event_date|jour|capfirst }}{% if post.event_end_date and post.event_end_date != post.event_date %} au {{ post.event_end_date|jour }}{% endif %}</span>
+    </div>
+    {% endif %}
+
+    {% with photos=post.gallery_photos %}
+    {% if photos %}
+        <div class="fd-gallery fd-gallery--{% if photos|length > 4 %}4{% else %}{{ photos|length }}{% endif %}">
+            {% for url in photos|slice:":4" %}
+            <a href="{{ url }}" target="_blank" class="fd-gallery__item">
+                <img src="{{ url }}" alt="Photo {{ forloop.counter }}" class="post-image">
+                {% if forloop.last and photos|length > 4 %}<span class="fd-gallery__more">+{{ photos|length|add:"-4" }}</span>{% endif %}
+            </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    {% with docs=post.attached_documents %}
+    {% if docs %}
+        <div class="fd-docs">
+            {% for url, name in docs %}
+            <a class="fd-post__doc" href="{{ url }}" target="_blank"><i class="fas fa-file-alt"></i> {{ name }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    {% if post.post_type == 'poll' and post.poll %}
+        <div class="fd-poll poll-options" id="poll-options-{{ post.poll.id }}">
+            <p class="fd-poll__question">{{ post.poll.question }}</p>
+            {% for option in post.poll.options.all %}
+                {% with percent=option.get_vote_percentage|floatformat:0 %}
+                <label class="fd-poll__option" for="option-{{ option.id }}">
+                    <span class="fd-poll__bar progress-bar" id="bar-{{ option.id }}" data-width="{{ percent }}"></span>
+                    {% if post.poll.is_multiple_choice %}
+                        <input type="checkbox" name="poll-{{ post.poll.id }}" id="option-{{ option.id }}" value="{{ option.id }}" {% if user_poll_votes|get_item:post.poll.id and option.id in user_poll_votes|get_item:post.poll.id %}checked{% endif %}>
+                    {% else %}
+                        <input type="radio" name="poll-{{ post.poll.id }}" id="option-{{ option.id }}" value="{{ option.id }}" {% if user_poll_votes|get_item:post.poll.id and option.id in user_poll_votes|get_item:post.poll.id %}checked{% endif %}>
+                    {% endif %}
+                    <span class="fd-poll__text">{{ option.option_text }}</span>
+                    <span class="fd-poll__votes vote-count" id="votes-{{ option.id }}">{{ option.get_vote_count }} votes</span>
+                    <span class="fd-poll__pct" id="percent-{{ option.id }}">{{ percent }}%</span>
+                </label>
+                {% endwith %}
+            {% endfor %}
+        </div>
             <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // Set progress bar widths based on data-width attributes
@@ -170,31 +212,46 @@
                 }
             });
             </script>
-        {% endif %}
+    {% endif %}
+
+    <div class="fd-post__stats post-interactions">
+        <span class="likes-summary" id="likes-summary-{{ post.id }}" {% if post.likes_summary %}onclick="showLikers('{{ post.id }}', 'post', event)"{% endif %}>{{ post.likes_summary }}</span>
+        <button type="button" class="comment-btn" onclick="openCommentsModal('{{ post.id }}')">
+            <span class="comment-count" id="comment-count-{{ post.id }}">{{ post.comments_summary }}</span>
+        </button>
     </div>
-    <div class="post-interactions">
-        <!-- Like count display above the button -->
-        {% if post.get_likes_count > 0 %}
-        <div class="likes-count-display">
-            <span class="likes-count-number" onclick="showLikers('{{ post.id }}', 'post', event)">
-                <i class="fas fa-thumbs-up"></i>
-                {{ post.get_likes_count }}
-            </span>
+
+    <div class="fd-post__actions">
+        <button type="button" class="fd-action like-btn {% if post.id in liked_post_ids %}liked{% endif %}" data-post-id="{{ post.id }}">
+            {% if post.category == 'newcomer' %}
+                <i class="far fa-thumbs-up"></i> <span class="like-text">Souhaiter la bienvenue</span>
+            {% else %}
+                <i class="far fa-heart"></i> <span class="like-text">J'aime</span>
+            {% endif %}
+        </button>
+        <button type="button" class="fd-action" onclick="openCommentsModal('{{ post.id }}')">
+            <i class="far fa-comment"></i> Commenter
+        </button>
+        <button type="button" class="fd-action" onclick="sharePost('{{ post.id }}')">
+            <i class="fas fa-share"></i> Partager
+        </button>
+    </div>
+
+    {% if post.latest_comment %}
+    {% with comment=post.latest_comment %}
+    <div class="fd-comment-preview" onclick="openCommentsModal('{{ post.id }}')">
+        {% with photo=comment.author|photo_url name=comment.author.get_full_name %}
+        <div class="fd-avatar fd-avatar--sm fd-avatar--soft">
+            {% if photo %}<img src="{{ photo }}" alt="{{ name }}">{% else %}{{ name|initials }}{% endif %}
         </div>
-        {% endif %}
-        
-        <div class="post-actions">
-            <button class="like-btn {% if post.id in liked_post_ids %}liked{% endif %}" data-post-id="{{ post.id }}">
-                <i class="far fa-heart"></i>
-                <span class="like-text">J'aime</span>
-            </button>
-            <button class="comment-btn" onclick="openCommentsModal('{{ post.id }}')">
-                <i class="far fa-comment"></i>
-                <span class="comment-text">Commentaires</span>
-                <span class="comment-count" id="comment-count-{{ post.id }}">({{ post.get_comments_count }})</span>
-            </button>
+        {% endwith %}
+        <div class="fd-comment-preview__bubble">
+            <strong>{{ comment.author.get_full_name }}</strong> <small>· {{ comment.created_at|il_y_a }}</small>
+            <p>{{ comment.content|truncatechars:220 }}</p>
         </div>
     </div>
+    {% endwith %}
+    {% endif %}
     <!-- Comments Modal -->
     <div id="comments-modal-{{ post.id }}" class="comments-modal" style="display:none;">
         <div class="comments-modal-overlay"></div>
@@ -440,7 +497,7 @@
             const commentCountSpan = commentButton.querySelector('.comment-count');
             
             if (commentCountSpan) {
-                commentCountSpan.textContent = '(' + totalComments + ')';
+                commentCountSpan.textContent = totalComments ? totalComments + (totalComments > 1 ? ' commentaires' : ' commentaire') : '';
             }
             
             // Update the modal title as well
@@ -467,7 +524,7 @@
             const commentCountSpan = mainPost.querySelector('#comment-count-' + postId);
             
             if (commentCountSpan) {
-                commentCountSpan.textContent = '(' + totalComments + ')';
+                commentCountSpan.textContent = totalComments ? totalComments + (totalComments > 1 ? ' commentaires' : ' commentaire') : '';
             }
             
             // Also update the modal title

@@ -328,13 +328,14 @@ function checkSequence(element) {
         stage.type != "cancelled"
     ) {
         Swal.fire({
-            title: "Confirm",
+            title: "Confirmation",
             text: `Êtes-vous sûr de vouloir changer le candidat de ${preStage.stage} vers ${stage.stage}`,
             icon: "info",
             showCancelButton: true,
             confirmButtonColor: "#008000",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Confirm",
+            confirmButtonText: "Confirmer",
+            cancelButtonText: "Annuler",
         }).then(function (result) {
             if (result.isConfirmed) {
                 updateCandStage(canIds, stageId, preStageId);

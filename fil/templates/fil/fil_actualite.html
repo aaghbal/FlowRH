@@ -1,134 +1,183 @@
 {% extends 'index.html' %}
 {% load static %}
 {% load i18n %}
+{% load fil_extras %}
 {% block styles %}
 {{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="{% static 'fil/css/fil_actualite.css' %}">
+<link rel="stylesheet" href="{% static 'css/fil_feed.css' %}">
 {% endblock styles %}
 
 
 {% block content %}
-<div class="feed-container">
-    <div class="feed-header">
-        <h1>Fil d'actualité</h1>
-    </div>
-    
-    <div class="post-creation">
-        <form class="post-form">
-            <textarea name="post_content" id="post_content" rows="4" 
-                          class="form-control" 
-                          placeholder="Qu'est-ce qui vous préoccupe ?"
-                          wrap="hard"></textarea>
-            
-            <!-- Poll Creation Section -->
-            <div id="pollSection" class="poll-section" style="display: none;">
-                <div class="poll-header">
-                    <i class="fas fa-poll"></i>
-                    <span>{% trans "Créer un sondage" %}</span>
-                </div>
-                <div class="poll-options">
-                    <div class="poll-option">
-                        <i class="fas fa-circle"></i>
-                        <input type="text" placeholder="Option 1" class="poll-option-input">
-                        <button type="button" class="remove-option-btn">
-                            <i class="fas fa-times"></i>
-                        </button>
+<div class="fd-feed">
+    <header class="fd-head">
+        <div>
+            <h1 class="fd-head__title">Fil d'actualité</h1>
+            <p class="fd-head__sub">L'actualité du réseau M-Automotiv</p>
+        </div>
+        <label class="fd-head__filter">
+            Afficher
+            <select class="fd-select" id="siteFilter">
+                <option value="">Tous les sites</option>
+                {% for site in available_sites %}<option value="{{ site }}">{{ site }}</option>{% endfor %}
+            </select>
+        </label>
+    </header>
+
+    <nav class="fd-tabs" id="feedTabs">
+        <button type="button" class="fd-tab is-active" data-filter="all">Tout</button>
+        <button type="button" class="fd-tab" data-filter="announcement">Annonces</button>
+        <button type="button" class="fd-tab" data-filter="newcomer">Nouveaux arrivants</button>
+        <button type="button" class="fd-tab" data-filter="result">Résultats</button>
+        <button type="button" class="fd-tab" data-filter="event">Événements</button>
+        <button type="button" class="fd-tab" data-filter="poll">Sondages</button>
+    </nav>
+
+    <div class="fd-layout">
+        <main>
+            <!-- Composer -->
+            <form class="fd-card fd-composer post-form" id="postForm" autocomplete="off">
+                {% csrf_token %}
+                <div class="fd-composer__row">
+                    {% with photo=current_employee|photo_url name=current_employee.get_full_name %}
+                    <div class="fd-avatar fd-avatar--tone-1">
+                        {% if photo %}<img src="{{ photo }}" alt="{{ name }}">{% else %}{{ name|initials }}{% endif %}
                     </div>
-                    <div class="poll-option">
-                        <i class="fas fa-circle"></i>
-                        <input type="text" placeholder="Option 2" class="poll-option-input">
-                        <button type="button" class="remove-option-btn">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- File upload previews container -->
-            <div id="upload-previews" class="mt-2" style="display: none;">
-                <!-- Image preview will be shown here -->
-                <div id="image-preview" class="file-preview">
-                    <img id="preview-image" src="#" alt="Preview" style="max-width: 100px; max-height: 100px; border-radius: 4px; display: none;">
-                    <div class="file-info">
-                        <span id="image-file-name" class="file-name"></span>
-                        <button type="button" class="remove-file-btn" onclick="removeFile('imageInput', 'image-preview')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <!-- Document preview will be shown here -->
-                <div id="document-preview" class="file-preview">
-                    <i class="fas fa-file-alt fa-2x"></i>
-                    <div class="file-info">
-                        <span id="document-file-name" class="file-name"></span>
-                        <button type="button" class="remove-file-btn" onclick="removeFile('documentInput', 'document-preview')">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Site Selection -->
-            <div class="site-selection-container mt-3" style="display: none;">
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fas fa-map-marker-alt"></i>
-                        {% trans "Choisir les sites" %}
-                    </label>
-                    <div class="sites-dropdown">
-                        <button type="button" class="sites-dropdown-toggle" id="sitesDropdownToggle">
-                            <span id="selectedSitesText">{% trans "Tous les sites" %}</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="sites-dropdown-content" id="sitesDropdownContent">
-                            <div class="site-option">
-                                <input type="checkbox" id="allSites" value="" checked>
-                                <label for="allSites">{% trans "Tous les sites" %}</label>
+                    {% endwith %}
+                    <div class="fd-composer__body">
+                        <textarea name="content" id="post_content" rows="3" placeholder="Partagez une actualité avec vos collègues…"></textarea>
+
+                        <div class="fd-composer__tools">
+                            <button type="button" class="fd-tool" onclick="document.getElementById('imageInput').click();"><i class="far fa-image"></i> Photo</button>
+                            <button type="button" class="fd-tool" onclick="document.getElementById('documentInput').click();"><i class="far fa-file"></i> Document</button>
+                            <button type="button" class="fd-tool" onclick="openPollModal()"><i class="fas fa-chart-bar"></i> Sondage</button>
+                            <button type="button" class="fd-tool" id="targetToggle"><i class="fas fa-map-marker-alt"></i> Cibler sites et départements</button>
+                            <input type="file" id="imageInput" accept="image/*" multiple hidden>
+                            <input type="file" id="documentInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" multiple hidden>
+                        </div>
+
+                        <div class="fd-previews" id="uploadPreviews"></div>
+
+                        <!-- Extra fields per category -->
+                        <div class="fd-panel" data-panel="newcomer">
+                            <p class="fd-panel__title">Nouvel arrivant</p>
+                            <div class="fd-fields">
+                                <div class="fd-field">
+                                    <label for="newcomerSelect">Collaborateur *</label>
+                                    <select id="newcomerSelect" name="newcomer">
+                                        <option value="">Choisir…</option>
+                                        {% for emp in employees %}<option value="{{ emp.id }}">{{ emp.get_full_name }}</option>{% endfor %}
+                                    </select>
+                                </div>
+                                <div class="fd-field">
+                                    <label for="welcomeNote">Note (facultatif)</label>
+                                    <input type="text" id="welcomeNote" name="welcome_note" maxlength="200" placeholder="Welcome Day lundi 2 novembre, 9h00">
+                                </div>
                             </div>
-                            {% for site in available_sites %}
-                            <div class="site-option">
-                                <input type="checkbox" name="sites" value="{{ site }}" id="site_{{ forloop.counter }}">
-                                <label for="site_{{ forloop.counter }}">{{ site }}</label>
+                        </div>
+                        <div class="fd-panel" data-panel="result">
+                            <p class="fd-panel__title">Chiffres clés</p>
+                            <div class="fd-fields">
+                                <div class="fd-field"><label>Chiffre 1</label><input type="text" name="kpi1_value" maxlength="20" placeholder="+18 %"></div>
+                                <div class="fd-field"><label>Libellé 1</label><input type="text" name="kpi1_label" maxlength="100" placeholder="vs objectif ventes VN d'octobre"></div>
+                                <div class="fd-field"><label>Chiffre 2</label><input type="text" name="kpi2_value" maxlength="20" placeholder="14"></div>
+                                <div class="fd-field"><label>Libellé 2</label><input type="text" name="kpi2_label" maxlength="100" placeholder="livraisons pour Salma Raji"></div>
                             </div>
-                            {% endfor %}
+                        </div>
+                        <div class="fd-panel" data-panel="event">
+                            <p class="fd-panel__title">Événement</p>
+                            <div class="fd-fields">
+                                <div class="fd-field"><label>Date *</label><input type="date" name="event_date"></div>
+                                <div class="fd-field"><label>Jusqu'au (facultatif)</label><input type="date" name="event_end_date"></div>
+                            </div>
+                        </div>
+
+                        <!-- Targeting -->
+                        <div class="fd-panel" id="targetPanel">
+                            <p class="fd-panel__title">Sites</p>
+                            <div class="fd-checks">
+                                {% for site in available_sites %}
+                                <label class="fd-check"><input type="checkbox" name="target_sites" value="{{ site }}"> {{ site }}</label>
+                                {% endfor %}
+                            </div>
+                            {% if available_departments %}
+                            <p class="fd-panel__title" style="margin-top: 14px;">Départements</p>
+                            <div class="fd-checks">
+                                {% for dep in available_departments %}
+                                <label class="fd-check"><input type="checkbox" name="target_departments" value="{{ dep }}"> {{ dep }}</label>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <p class="fd-side__empty" style="margin-top: 10px;">Rien de coché = visible par tout le monde.</p>
+                        </div>
+
+                        <div class="fd-composer__footer">
+                            <button type="submit" class="fd-btn" id="publishBtn">Publier</button>
+                            <select class="fd-category" name="category" id="categorySelect" aria-label="Type de publication">
+                                <option value="general">Publication</option>
+                                <option value="announcement">Annonce</option>
+                                <option value="newcomer">Nouvel arrivant</option>
+                                <option value="result">Résultats</option>
+                                <option value="event">Événement</option>
+                            </select>
+                            {% if is_admin %}
+                            <label class="fd-pin-toggle"><input type="checkbox" name="is_pinned" id="pinInput"> <i class="fas fa-thumbtack"></i> Épingler</label>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
-            <div class="post-actions">
-                <div class="post-attachments">
-                    <button type="button" class="attach-btn" onclick="document.getElementById('imageInput').click();">
-                        <i class="fas fa-image"></i> <span>Photo</span>
-                    </button>
-                    <button type="button" class="attach-btn" onclick="document.getElementById('documentInput').click();">
-                        <i class="fas fa-file-alt"></i> <span>Document</span>
-                    </button>
-                    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleFileSelect('imageInput', 'image-preview', 'image')">
-                    <input type="file" id="documentInput" accept=".pdf,.doc,.docx,.txt" style="display: none;" onchange="handleFileSelect('documentInput', 'document-preview', 'document')">
-                    <button type="button" class="attach-btn" onclick="openPollModal()">
-                        <i class="fas fa-poll"></i>
-                        <span>{% trans "Sondage" %}</span>
-                    </button>
-                    <button type="button" class="attach-btn" onclick="toggleSiteSelection()">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>{% trans "Sites" %}</span>
-                    </button>          
+            <!-- Feed -->
+            <div class="fd-card fd-list feed-posts" id="feedList">
+                {% for post in posts %}
+                    {% include 'fil/post.html' with post=post liked_comment_ids=liked_comment_ids %}
+                {% endfor %}
+                <div class="fd-empty" id="feedEmpty" {% if posts %}hidden{% endif %}>
+                    <i class="far fa-newspaper"></i>
+                    Aucune publication à afficher pour le moment.
                 </div>
-                <button type="submit" class="post-btn">
-                    <i class="fas fa-paper-plane"></i>
-                    {% trans "Publier" %}
-                </button>
             </div>
-        </form>
-    </div>
-    <!-- Feed Posts -->
-    <div class="feed-posts">
-        {% for post in posts %}
-            {% include 'fil/post.html' with post=post liked_comment_ids=liked_comment_ids %}
-        {% empty %}
-            <p>{% trans "Aucun post à afficher." %}</p>
-        {% endfor %}
+        </main>
+
+        <!-- Right column -->
+        <aside class="fd-card fd-side">
+            <div class="fd-side__block">
+                <h2 class="fd-side__title">Nouveaux arrivants</h2>
+                {% for emp in newcomers %}
+                <div class="fd-person">
+                    {% with photo=emp|photo_url name=emp.get_full_name %}
+                    <div class="fd-avatar fd-avatar--soft">
+                        {% if photo %}<img src="{{ photo }}" alt="{{ name }}">{% else %}{{ name|initials }}{% endif %}
+                    </div>
+                    {% endwith %}
+                    <div>
+                        <p class="fd-person__name">{{ emp.get_full_name }}</p>
+                        <div class="fd-person__role">
+                            {% if emp.employee_work_info.job_position_id %}{{ emp.employee_work_info.job_position_id }}{% endif %}{% if emp.employee_work_info.job_position_id and emp.employee_work_info.location %} · {% endif %}{% if emp.employee_work_info.location %}{{ emp.employee_work_info.location }}{% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="fd-side__empty">Aucun nouvel arrivant récemment.</p>
+                {% endfor %}
+            </div>
+            <div class="fd-side__block">
+                <h2 class="fd-side__title">À venir</h2>
+                {% if upcoming_events %}
+                <dl class="fd-upcoming">
+                    {% for event in upcoming_events %}
+                    <dt>{{ event.event_date|short_date }}{% if event.event_end_date and event.event_end_date != event.event_date %}–{{ event.event_end_date.day }}{% endif %}</dt>
+                    <dd><a href="#post-{{ event.id }}" style="color: inherit; text-decoration: none;">{{ event.content|truncatechars:60 }}</a></dd>
+                    {% endfor %}
+                </dl>
+                {% else %}
+                <p class="fd-side__empty">Aucun événement prévu. Publiez un « Événement » pour qu'il apparaisse ici.</p>
+                {% endif %}
+            </div>
+        </aside>
     </div>
 </div>
 <!-- Poll Creation Modal -->
@@ -242,924 +291,317 @@
     </div>
 </div>
 <script>
-    // Avatar Generation Functions
-    function generateUserInitials(firstName, lastName) {
-        const first = firstName ? firstName.charAt(0).toUpperCase() : '';
-        const last = lastName ? lastName.charAt(0).toUpperCase() : '';
-        return first + last || '??';
+function csrfToken() {
+    var input = document.querySelector('input[name="csrfmiddlewaretoken"]');
+    return input ? input.value : '';
+}
+
+/* ── Tabs + site filter ── */
+(function () {
+    var currentTab = 'all';
+    var tabs = document.querySelectorAll('#feedTabs .fd-tab');
+    var siteFilter = document.getElementById('siteFilter');
+    function applyFilters() {
+        var site = siteFilter.value;
+        var shown = 0;
+        document.querySelectorAll('#feedList .fd-post').forEach(function (post) {
+            var sites = (post.dataset.sites || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+            var matchTab = currentTab === 'all' || post.dataset.category === currentTab;
+            var matchSite = !site || !sites.length || sites.indexOf(site) !== -1;
+            post.hidden = !(matchTab && matchSite);
+            if (!post.hidden) shown++;
+        });
+        document.getElementById('feedEmpty').hidden = shown > 0;
     }
-
-    function getUserColorClass(fullName) {
-        // Generate consistent color based on user's name
-        let hash = 0;
-        for (let i = 0; i < fullName.length; i++) {
-            hash = fullName.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        const colorIndex = Math.abs(hash % 10) + 1;
-        return `color-${colorIndex}`;
-    }
-
-    function createUserAvatar(user, size = 'medium') {
-        const avatarDiv = document.createElement('div');
-        avatarDiv.className = `user-avatar size-${size}`;
-        
-        // Check if user has a valid avatar image
-        if (user.avatar_url && 
-            user.avatar_url !== '/static/images/ui/avatar.png' && 
-            user.avatar_url !== '' && 
-            user.avatar_url !== 'None' &&
-            !user.avatar_url.includes('default') &&
-            !user.avatar_url.includes('ui-avatars.com')) {
-            
-            // User has a custom avatar
-            const img = document.createElement('img');
-            img.src = user.avatar_url;
-            img.alt = user.full_name;
-            
-            img.onload = function() {
-                // Image loaded successfully
-                console.log('Avatar loaded for:', user.full_name);
-            };
-            
-            img.onerror = function() {
-                // If image fails to load, fallback to initials
-                console.log('Avatar failed to load for:', user.full_name, 'falling back to initials');
-                this.parentElement.innerHTML = generateUserInitials(user.first_name, user.last_name);
-                this.parentElement.classList.add('initials', getUserColorClass(user.full_name));
-            };
-            
-            avatarDiv.appendChild(img);
-        } else {
-            // No avatar, use initials
-            avatarDiv.textContent = generateUserInitials(user.first_name, user.last_name);
-            avatarDiv.classList.add('initials', getUserColorClass(user.full_name));
-        }
-        
-        return avatarDiv;
-    }
-
-    function initializeAvatars() {
-        // Find all avatar placeholders
-        document.querySelectorAll('[data-user-name]').forEach(element => {
-            const fullName = element.getAttribute('data-user-name') || '';
-            const firstName = element.getAttribute('data-user-firstname') || '';
-            const lastName = element.getAttribute('data-user-lastname') || '';
-            const avatarUrl = element.getAttribute('data-user-avatar') || '';
-            const size = element.getAttribute('data-avatar-size') || 'medium';
-            
-            const user = {
-                full_name: fullName,
-                first_name: firstName,
-                last_name: lastName,
-                avatar_url: avatarUrl
-            };
-            
-            const avatar = createUserAvatar(user, size);
-            
-            // Replace the placeholder
-            if (element.tagName === 'IMG') {
-                element.parentElement.replaceChild(avatar, element);
-            } else {
-                element.innerHTML = '';
-                element.appendChild(avatar);
-            }
-        });
-    }
-
-    // Poll Modal Functions
-    function openPollModal() {
-        document.getElementById('pollModal').style.display = 'block';
-        document.body.classList.add('modal-open'); // Prevent background scroll
-    }
-
-    function closePollModal() {
-        document.getElementById('pollModal').style.display = 'none';
-        document.body.classList.remove('modal-open'); // Restore background scroll
-    }
-
-    // Update your existing togglePollSection function
-    function togglePollSection() {
-        openPollModal();
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        const modal = document.getElementById('pollModal');
-        if (event.target == modal) {
-            closePollModal();
-        }
-    }
-
-    // Close modal on Escape key press
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' || e.keyCode === 27) {
-            const modal = document.getElementById('pollModal');
-            if (modal && modal.style.display === 'block') {
-                closePollModal();
-            }
-        }
-    });
-
-    // Add Option functionality
-    document.getElementById('addOption').addEventListener('click', function() {
-        const pollOptions = document.getElementById('pollOptions');
-        const optionCount = pollOptions.children.length + 1;
-        
-        if (optionCount <= 10) { // Maximum 10 options
-            const newOption = document.createElement('div');
-            newOption.className = 'form-group poll-option';
-            newOption.innerHTML = `
-                <input type="text" 
-                       name="choice${optionCount}" 
-                       class="form-input" 
-                       placeholder="Option ${optionCount}"
-                       required>
-                <button type="button" class="remove-option">
-                </button>
-            `;
-            pollOptions.appendChild(newOption);
-        }
-        
-        updateRemoveButtons();
-    });
-
-    // Remove Option functionality
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.remove-option')) {
-            const option = e.target.closest('.poll-option');
-            option.remove();
-            updateRemoveButtons();
-        }
-    });
-
-    function updateRemoveButtons() {
-        const options = document.querySelectorAll('.poll-option');
-        options.forEach(option => {
-            const removeBtn = option.querySelector('.remove-option');
-            if (options.length <= 2) {
-                removeBtn.style.display = 'none';
-            } else {
-                removeBtn.style.display = 'block';
-            }
-        });
-    }
-
-    // Form submission
-    document.getElementById('pollForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        
-        // Add selected sites for poll
-        const selectedSites = getSelectedSites('pollForm');
-        selectedSites.forEach(site => {
-            formData.append('sites[]', site);
-        });
-        
-        // AJAX poll creation
-        fetch('/create-poll/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                closePollModal();
-                // Optionally reload posts or show a success message
-                location.reload();
-            } else {
-                alert(data.error || 'Erreur lors de la création du sondage.');
-            }
-        })
-        .catch(() => {
-            alert('Erreur lors de la création du sondage.');
+    tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            tabs.forEach(function (t) { t.classList.remove('is-active'); });
+            tab.classList.add('is-active');
+            currentTab = tab.dataset.filter;
+            applyFilters();
         });
     });
+    siteFilter.addEventListener('change', applyFilters);
+})();
 
-    // Initialize remove buttons on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize avatars first
-        initializeAvatars();
-        
-        updateRemoveButtons();
-    });
-    document.head.innerHTML += '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">';
+/* ── Composer ── */
+(function () {
+    var form = document.getElementById('postForm');
+    var category = document.getElementById('categorySelect');
+    var imageInput = document.getElementById('imageInput');
+    var documentInput = document.getElementById('documentInput');
+    var previews = document.getElementById('uploadPreviews');
+    var targetToggle = document.getElementById('targetToggle');
+    var targetPanel = document.getElementById('targetPanel');
 
-    // Handle likes
-    document.querySelectorAll('.like-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            this.classList.toggle('liked');
-        });
-    });
-
-    // Handle comments
-    document.querySelectorAll('.comment-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const commentSection = this.parentElement.querySelector('.comment-section');
-            commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+    category.addEventListener('change', function () {
+        form.querySelectorAll('.fd-panel[data-panel]').forEach(function (panel) {
+            panel.classList.toggle('is-open', panel.dataset.panel === category.value);
         });
     });
-
-    // Handle comment submission
-    document.querySelectorAll('.submit-comment').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const commentInput = this.parentElement.querySelector('.comment-input');
-            const commentsList = this.parentElement.querySelector('.comments-list');
-            
-            if (commentInput.value.trim() !== '') {
-                const comment = document.createElement('p');
-                comment.textContent = commentInput.value;
-                commentsList.appendChild(comment);
-                commentInput.value = '';
-            }
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        const replyBtn = document.querySelector('.reply-btn');
-        const likeBtn = document.querySelector('.like-btn');
-        const replyInput = document.querySelector('.reply-input');
-    
-        // Handle reply button click
-        replyBtn.addEventListener('click', function() {
-            replyInput.style.display = replyInput.style.display === 'none' ? 'block' : 'none';
-        });
-    
-        // Handle like button click
-        likeBtn.addEventListener('click', function() {
-            this.classList.toggle('liked');
-        });
-    
-        // Handle reply submission
-        const submitReply = document.querySelector('.submit-reply');
-        submitReply.addEventListener('click', function() {
-            const replyText = document.querySelector('textarea').value;
-            if (replyText.trim()) {
-                // Here you would typically send the reply to your backend
-                alert('Réponse envoyée: ' + replyText);
-                document.querySelector('textarea').value = '';
-                replyInput.style.display = 'none';
-            }
-        });
+    targetToggle.addEventListener('click', function () {
+        targetPanel.classList.toggle('is-open');
+        targetToggle.classList.toggle('is-active', targetPanel.classList.contains('is-open'));
     });
 
-    // Handle post creation (text, image, document)
-    document.querySelector('.post-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const form = this;
-        const formData = new FormData();
-        // Add content
-        const content = form.querySelector('textarea').value;
-        formData.append('content', content);
-        // Add image and document if selected
-        const imageInput = document.getElementById('imageInput');
-        const documentInput = document.getElementById('documentInput');
-        if (imageInput && imageInput.files.length > 0) {
-            formData.append('image', imageInput.files[0]);
-        }
-        if (documentInput && documentInput.files.length > 0) {
-            formData.append('document', documentInput.files[0]);
-        }
-        
-        // Add selected sites
-        const selectedSites = getSelectedSites('mainForm');
-        selectedSites.forEach(site => {
-            formData.append('sites[]', site);
-        });
-        
-        // Add CSRF token if present
-        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
-        if (csrfToken) {
-            formData.append('csrfmiddlewaretoken', csrfToken.value);
-        }
-        fetch('/create-post/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': formData.get('csrfmiddlewaretoken') || (csrfToken ? csrfToken.value : '')
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                form.reset();
-                if (imageInput) imageInput.value = '';
-                if (documentInput) documentInput.value = '';
-                location.reload();
-            } else {
-                alert(data.error || 'Erreur lors de la création du post.');
-            }
-        })
-        .catch(() => {
-            alert('Erreur lors de la création du post.');
-        });
-    });
+    // Files picked so far: each click on Photo / Document adds to these lists
+    var MAX_IMAGES = 10, MAX_DOCUMENTS = 5;
+    var selected = { image: [], document: [] };
 
-    // Add this after DOMContentLoaded or at the end of your <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.poll-option input[type="radio"], .poll-option input[type="checkbox"]').forEach(function(input) {
-            input.addEventListener('change', function() {
-                const pollId = this.name.replace('poll-', '');
-                let selectedOptions = [];
-                document.querySelectorAll('input[name="' + this.name + '"]:checked').forEach(function(opt) {
-                    selectedOptions.push(opt.value);
-                });
-                // AJAX vote
-                fetch('/vote-poll/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': (document.querySelector('input[name="csrfmiddlewaretoken"]') || {}).value || ''
-                    },
-                    body: JSON.stringify({ poll_id: pollId, option_ids: selectedOptions })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update poll results in the DOM
-                        if (data.options) {
-                            data.options.forEach(function(opt) {
-                                const percentSpan = document.querySelector(`#option-${opt.id} ~ .progress-container span`);
-                                const bar = document.querySelector(`#option-${opt.id} ~ .progress-container .progress-bar`);
-                                const voteCount = document.querySelector(`#option-${opt.id}`).closest('.poll-option').querySelector('.vote-count');
-                                if (percentSpan) percentSpan.textContent = opt.percent + '%';
-                                if (bar) bar.style.width = opt.percent + '%';
-                                if (voteCount) voteCount.textContent = opt.votes + ' votes';
-                            });
-                        }
-                    } else {
-                        alert(data.error || 'Erreur lors du vote.');
-                    }
-                })
-                .catch(() => {
-                    alert('Erreur lors du vote.');
-                });
+    function renderPreviews() {
+        previews.innerHTML = '';
+        ['image', 'document'].forEach(function (kind) {
+            selected[kind].forEach(function (file, index) {
+                var item = document.createElement('div');
+                item.className = 'fd-preview';
+                if (kind === 'image') {
+                    var img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    item.appendChild(img);
+                } else {
+                    item.insertAdjacentHTML('beforeend', '<i class="fas fa-file-alt"></i>');
+                }
+                var name = document.createElement('span');
+                name.textContent = file.name;
+                item.appendChild(name);
+                var remove = document.createElement('button');
+                remove.type = 'button';
+                remove.title = 'Retirer';
+                remove.innerHTML = '<i class="fas fa-times"></i>';
+                remove.onclick = function () { selected[kind].splice(index, 1); renderPreviews(); };
+                item.appendChild(remove);
+                previews.appendChild(item);
             });
         });
+    }
+    function addFiles(input, kind, max) {
+        Array.from(input.files).forEach(function (file) {
+            var duplicate = selected[kind].some(function (f) { return f.name === file.name && f.size === file.size; });
+            if (!duplicate) selected[kind].push(file);
+        });
+        input.value = '';  // so the same file can be picked again after being removed
+        if (selected[kind].length > max) {
+            selected[kind] = selected[kind].slice(0, max);
+            alert('Maximum ' + max + (kind === 'image' ? ' photos' : ' documents') + ' par publication.');
+        }
+        renderPreviews();
+    }
+    imageInput.addEventListener('change', function () { addFiles(imageInput, 'image', MAX_IMAGES); });
+    documentInput.addEventListener('change', function () { addFiles(documentInput, 'document', MAX_DOCUMENTS); });
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData();
+        data.append('content', form.querySelector('[name=content]').value);
+        data.append('category', category.value);
+        var panel = form.querySelector('.fd-panel[data-panel="' + category.value + '"]');
+        if (panel) {
+            panel.querySelectorAll('input[name], select[name]').forEach(function (field) {
+                data.append(field.name, field.value);
+            });
+        }
+        form.querySelectorAll('input[name=target_sites]:checked').forEach(function (cb) { data.append('sites[]', cb.value); });
+        form.querySelectorAll('input[name=target_departments]:checked').forEach(function (cb) { data.append('departments[]', cb.value); });
+        var pin = document.getElementById('pinInput');
+        if (pin && pin.checked) data.append('is_pinned', 'true');
+        selected.image.forEach(function (file) { data.append('images', file); });
+        selected.document.forEach(function (file) { data.append('documents', file); });
+
+        var button = document.getElementById('publishBtn');
+        button.disabled = true;
+        fetch('/create-post/', { method: 'POST', body: data, headers: { 'X-CSRFToken': csrfToken() } })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.success) { location.reload(); return; }
+                alert(res.error || 'Erreur lors de la publication.');
+                button.disabled = false;
+            })
+            .catch(function () { alert('Erreur lors de la publication.'); button.disabled = false; });
     });
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.like-btn[data-post-id]').forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-            // Don't handle if click is on the like count (likers modal trigger)
-            if (e.target.classList.contains('clickable-like-count')) {
+})();
+
+/* ── Post likes ── */
+document.addEventListener('click', function (e) {
+    var button = e.target.closest('.like-btn[data-post-id]');
+    if (!button) return;
+    e.preventDefault();
+    var postId = button.dataset.postId;
+    fetch('/toggle-like/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken() },
+        body: JSON.stringify({ post_id: postId })
+    })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            if (!res.success) { alert(res.error || 'Erreur lors du like.'); return; }
+            button.classList.toggle('liked', res.liked);
+            var summary = document.getElementById('likes-summary-' + postId);
+            if (summary) {
+                summary.textContent = res.summary;
+                summary.onclick = res.summary ? function (ev) { showLikers(postId, 'post', ev); } : null;
+            }
+        })
+        .catch(function () { alert('Erreur lors du like.'); });
+});
+
+/* ── Pin / share ── */
+function togglePin(postId) {
+    fetch('/toggle-pin/' + postId + '/', { method: 'POST', headers: { 'X-CSRFToken': csrfToken() } })
+        .then(function (r) { return r.json(); })
+        .then(function (res) { if (res.success) location.reload(); else alert(res.error || 'Action impossible.'); });
+}
+function sharePost(postId) {
+    var url = location.origin + location.pathname + '#post-' + postId;
+    var done = function () {
+        if (typeof showToast === 'function') showToast('Lien copié dans le presse-papiers');
+        else alert('Lien copié : ' + url);
+    };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(done, function () { prompt('Copiez ce lien :', url); });
+    else prompt('Copiez ce lien :', url);
+}
+document.addEventListener('DOMContentLoaded', function () {
+    if (location.hash.indexOf('#post-') === 0) {
+        var target = document.querySelector(location.hash);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.style.transition = 'background .6s';
+            target.style.background = '#fbf8ff';
+            setTimeout(function () { target.style.background = ''; }, 2000);
+        }
+    }
+});
+
+/* ── Poll creation modal ── */
+function openPollModal() {
+    document.getElementById('pollModal').style.display = 'block';
+    document.body.classList.add('modal-open');
+}
+function closePollModal() {
+    document.getElementById('pollModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
+}
+(function () {
+    var modal = document.getElementById('pollModal');
+    var options = document.getElementById('pollOptions');
+    function updateRemoveButtons() {
+        var items = options.querySelectorAll('.poll-option');
+        items.forEach(function (item) {
+            var btn = item.querySelector('.remove-option');
+            if (btn) btn.style.display = items.length <= 2 ? 'none' : 'block';
+        });
+    }
+    modal.addEventListener('click', function (e) { if (e.target === modal) closePollModal(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.style.display === 'block') closePollModal(); });
+    document.getElementById('addOption').addEventListener('click', function () {
+        var count = options.children.length + 1;
+        if (count > 10) return;
+        var item = document.createElement('div');
+        item.className = 'form-group poll-option';
+        item.innerHTML = '<input type="text" name="choice' + count + '" class="form-input" placeholder="Option ' + count + '" required>' +
+            '<button type="button" class="remove-option"></button>';
+        options.appendChild(item);
+        updateRemoveButtons();
+    });
+    options.addEventListener('click', function (e) {
+        if (e.target.closest('.remove-option')) { e.target.closest('.poll-option').remove(); updateRemoveButtons(); }
+    });
+    updateRemoveButtons();
+
+    // Sites dropdown in the poll modal
+    var toggle = document.getElementById('pollSitesDropdownToggle');
+    var content = document.getElementById('pollSitesDropdownContent');
+    var allSites = document.getElementById('pollAllSites');
+    var siteBoxes = content.querySelectorAll('input[name="sites"]');
+    function refreshLabel() {
+        var checked = Array.from(siteBoxes).filter(function (cb) { return cb.checked; });
+        allSites.checked = checked.length === 0;
+        document.getElementById('pollSelectedSitesText').textContent =
+            !checked.length ? 'Tous les sites' :
+            checked.length <= 3 ? checked.map(function (cb) { return cb.value; }).join(', ') :
+            checked.length + ' sites sélectionnés';
+    }
+    toggle.addEventListener('click', function (e) { e.preventDefault(); content.classList.toggle('show'); toggle.classList.toggle('active'); });
+    allSites.addEventListener('change', function () { if (allSites.checked) siteBoxes.forEach(function (cb) { cb.checked = false; }); refreshLabel(); });
+    siteBoxes.forEach(function (cb) { cb.addEventListener('change', refreshLabel); });
+    document.addEventListener('click', function (e) {
+        if (!toggle.contains(e.target) && !content.contains(e.target)) { content.classList.remove('show'); toggle.classList.remove('active'); }
+    });
+
+    document.getElementById('pollForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(this);
+        data.delete('sites');
+        Array.from(siteBoxes).filter(function (cb) { return cb.checked; }).forEach(function (cb) { data.append('sites[]', cb.value); });
+        fetch('/create-poll/', { method: 'POST', body: data, headers: { 'X-CSRFToken': csrfToken() } })
+            .then(function (r) { return r.json(); })
+            .then(function (res) { if (res.success) location.reload(); else alert(res.error || 'Erreur lors de la création du sondage.'); })
+            .catch(function () { alert('Erreur lors de la création du sondage.'); });
+    });
+})();
+
+/* ── Who liked ── */
+window.showLikers = function (id, type, event) {
+    if (event) { event.preventDefault(); event.stopPropagation(); }
+    var modal = document.getElementById('global-likers-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'global-likers-modal';
+        modal.className = 'likers-modal';
+        modal.innerHTML =
+            '<div class="likers-modal-overlay"></div>' +
+            '<div class="likers-modal-content">' +
+            '  <div class="likers-modal-header"><h3>Réactions</h3>' +
+            '    <button type="button" class="likers-modal-close" onclick="closeGlobalLikersModal()">&times;</button></div>' +
+            '  <div class="likers-modal-body"><div class="likers-list" id="global-likers-list"></div></div>' +
+            '</div>';
+        modal.querySelector('.likers-modal-overlay').addEventListener('click', closeGlobalLikersModal);
+        document.body.appendChild(modal);
+    }
+    var list = document.getElementById('global-likers-list');
+    list.innerHTML = '<div class="no-likers"><p>Chargement…</p></div>';
+    modal.style.display = 'block';
+    document.body.classList.add('modal-open');
+    fetch('/get-likers/?' + new URLSearchParams(type === 'post' ? { post_id: id } : { comment_id: id }))
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+            list.innerHTML = '';
+            if (!res.success || !res.likers.length) {
+                list.innerHTML = '<div class="no-likers"><p>' + (res.success ? 'Aucune réaction pour le moment' : 'Erreur de chargement') + '</p></div>';
                 return;
             }
-            
-            e.preventDefault();
-            var postId = this.getAttribute('data-post-id');
-            // Only handle post likes (those with data-post-id)
-            if (!postId) return;
-            
-            var button = this;
-            fetch('/toggle-like/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': (document.querySelector('input[name="csrfmiddlewaretoken"]') || {}).value || ''
-                },
-                body: JSON.stringify({ post_id: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update like count in button if it exists
-                    var likeCountSpan = button.querySelector('.like-count, .clickable-like-count');
-                    if (likeCountSpan) likeCountSpan.textContent = data.like_count;
-                    
-                    // Update like count display above button
-                    var postElement = button.closest('.post');
-                    if (postElement) {
-                        var likesCountDisplay = postElement.querySelector('.likes-count-display');
-                        var likesCountNumber = postElement.querySelector('.likes-count-number');
-                        
-                        if (data.like_count > 0) {
-                            if (!likesCountDisplay) {
-                                // Create the like count display
-                                likesCountDisplay = document.createElement('div');
-                                likesCountDisplay.className = 'likes-count-display';
-                                likesCountDisplay.innerHTML = `
-                                    <span class="likes-count-number" onclick="showLikers('${postId}', 'post', event)">
-                                        <i class="fas fa-thumbs-up"></i>
-                                        ${data.like_count}
-                                    </span>
-                                `;
-                                var postInteractions = postElement.querySelector('.post-interactions');
-                                postInteractions.insertBefore(likesCountDisplay, postInteractions.firstChild);
-                            } else {
-                                // Update existing count
-                                likesCountNumber.innerHTML = `
-                                    <i class="fas fa-thumbs-up"></i>
-                                    ${data.like_count}
-                                `;
-                            }
-                        } else {
-                            // Remove like count display if no likes
-                            if (likesCountDisplay) {
-                                likesCountDisplay.remove();
-                            }
-                        }
-                    }
-                    
-                    // Update button style
-                    if (data.liked) {
-                        button.classList.add('liked');
-                    } else {
-                        button.classList.remove('liked');
-                    }
+            res.likers.forEach(function (liker) {
+                var item = document.createElement('div');
+                item.className = 'liker-item';
+                var avatar = document.createElement('div');
+                avatar.className = 'fd-avatar fd-avatar--soft';
+                if (liker.profile_image) {
+                    var img = document.createElement('img');
+                    img.src = liker.profile_image;
+                    avatar.appendChild(img);
                 } else {
-                    alert(data.error || 'Erreur lors du like.');
+                    avatar.textContent = liker.name.split(' ').filter(Boolean).map(function (p) { return p[0]; }).slice(0, 2).join('').toUpperCase();
                 }
-            })
-            .catch(() => {
-                alert('Erreur lors du like.');
+                var info = document.createElement('div');
+                info.className = 'liker-info';
+                var name = document.createElement('p');
+                name.className = 'liker-name';
+                name.textContent = liker.name;
+                var job = document.createElement('p');
+                job.className = 'liker-job-position';
+                job.textContent = liker.job_position || '';
+                info.appendChild(name);
+                info.appendChild(job);
+                item.appendChild(avatar);
+                item.appendChild(info);
+                list.appendChild(item);
             });
-        });
-    });
-    
-    // Likers modal functions for main page
-    window.showLikers = function(id, type, event) {
-        // Stop event propagation to prevent like button from triggering
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-        }
-        
-        // Build the query parameters
-        var params = new URLSearchParams();
-        if (type === 'post') {
-            params.append('post_id', id);
-        } else {
-            params.append('comment_id', id);
-        }
-        
-        // Create and show modal
-        var modal = document.getElementById('global-likers-modal');
-        if (!modal) {
-            // Create modal if it doesn't exist
-            modal = document.createElement('div');
-            modal.id = 'global-likers-modal';
-            modal.className = 'likers-modal';
-            modal.style.display = 'none';
-            modal.innerHTML = `
-                <div class="likers-modal-overlay"></div>
-                <div class="likers-modal-content">
-                    <div class="likers-modal-header">
-                        <h3>Reactions</h3>
-                        <button onclick="closeGlobalLikersModal()" class="likers-modal-close">&times;</button>
-                    </div>
-                    <div class="likers-modal-body">
-                        <div class="likers-list" id="global-likers-list">
-                            <!-- Likers will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-        
-        modal.style.display = 'block';
-        document.body.classList.add('modal-open');
-        
-        // Load likers data
-        fetch('/get-likers/?' + params.toString())
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    displayGlobalLikers(data.likers);
-                } else {
-                    console.error('Error loading likers:', data.error);
-                    displayGlobalLikers([], 'Error loading likers');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                displayGlobalLikers([], 'Error loading likers');
-            });
-    };
-    
-    window.displayGlobalLikers = function(likers, errorMessage) {
-        var likersList = document.getElementById('global-likers-list');
-        if (!likersList) return;
-        
-        likersList.innerHTML = '';
-        
-        if (errorMessage) {
-            likersList.innerHTML = `
-                <div class="no-likers">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>${errorMessage}</p>
-                </div>
-            `;
-            return;
-        }
-        
-        if (likers.length === 0) {
-            likersList.innerHTML = `
-                <div class="no-likers">
-                    <i class="far fa-heart"></i>
-                    <p>No likes yet</p>
-                </div>
-            `;
-            return;
-        }
-        
-        // Create liker items directly (no summary)
-        likers.forEach(liker => {
-            var likerItem = document.createElement('div');
-            likerItem.className = 'liker-item';
-            
-            var avatarDiv = document.createElement('div');
-            avatarDiv.className = 'liker-avatar';
-            
-            // Create avatar using the existing avatar system
-            var user = {
-                full_name: liker.name,
-                first_name: liker.name.split(' ')[0] || '',
-                last_name: liker.name.split(' ').slice(1).join(' ') || '',
-                avatar_url: liker.profile_image
-            };
-            
-            var avatar = createUserAvatar(user, 'large');
-            avatarDiv.appendChild(avatar);
-            
-            var infoDiv = document.createElement('div');
-            infoDiv.className = 'liker-info';
-            
-            var nameP = document.createElement('p');
-            nameP.className = 'liker-name';
-            nameP.textContent = liker.name;
-            
-            var timeP = document.createElement('p');
-            timeP.className = 'liker-time';
-            timeP.textContent = liker.created_at; // Already formatted in backend
-            
-            // Add job position instead of mutual friends
-            var jobP = document.createElement('p');
-            jobP.className = 'liker-job-position';
-            jobP.innerHTML = `<i class="fas fa-briefcase"></i> ${liker.job_position || 'Employee'}`;
-            
-            infoDiv.appendChild(nameP);
-            infoDiv.appendChild(timeP);
-            infoDiv.appendChild(jobP);
-            
-            // No follow button - just append avatar and info
-            likerItem.appendChild(avatarDiv);
-            likerItem.appendChild(infoDiv);
-            
-            likersList.appendChild(likerItem);
-        });
-    };
-    
-    window.closeGlobalLikersModal = function() {
-        var modal = document.getElementById('global-likers-modal');
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.classList.remove('modal-open');
-        }
-    };
-    
-    window.formatTimeAgo = function(dateString) {
-        var date = new Date(dateString);
-        var now = new Date();
-        var diffMs = now - date;
-        var diffSecs = Math.floor(diffMs / 1000);
-        var diffMins = Math.floor(diffSecs / 60);
-        var diffHours = Math.floor(diffMins / 60);
-        var diffDays = Math.floor(diffHours / 24);
-        
-        if (diffDays > 0) {
-            return diffDays + ' day' + (diffDays > 1 ? 's' : '') + ' ago';
-        } else if (diffHours > 0) {
-            return diffHours + ' hour' + (diffHours > 1 ? 's' : '') + ' ago';
-        } else if (diffMins > 0) {
-            return diffMins + ' minute' + (diffMins > 1 ? 's' : '') + ' ago';
-        } else {
-            return 'Just now';
-        }
-    };
-    
-    // Close likers modal on outside click
-    document.addEventListener('click', function(e) {
-        var modal = document.getElementById('global-likers-modal');
-        if (modal && (e.target === modal || e.target.classList.contains('likers-modal-overlay'))) {
-            closeGlobalLikersModal();
-        }
-    });
-    
-    // Close likers modal on Escape key press
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' || e.keyCode === 27) {
-            var modal = document.getElementById('global-likers-modal');
-            if (modal && modal.style.display === 'block') {
-                closeGlobalLikersModal();
-            }
-        }
-    });
-});
-
-</script>
-
-
-<script>
-// File Upload Preview Functions
-function handleFileSelect(inputId, previewId, fileType) {
-    const input = document.getElementById(inputId);
-    const previewContainer = document.getElementById(previewId);
-    const uploadPreviews = document.getElementById('upload-previews');
-    
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const fileName = file.name;
-        
-        // Show the upload previews container if it's hidden
-        if (uploadPreviews.style.display === 'none') {
-            uploadPreviews.style.display = 'flex';
-        }
-        
-        // Update the file name
-        const fileNameElement = document.getElementById(`${fileType}-file-name`);
-        if (fileNameElement) {
-            fileNameElement.textContent = fileName;
-        }
-        
-        // Handle image preview
-        if (fileType === 'image') {
-            const reader = new FileReader();
-            const imagePreview = document.getElementById('preview-image');
-            
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-            }
-            
-            reader.readAsDataURL(file);
-        }
-        
-        // Show the preview container
-        previewContainer.style.display = 'flex';
-    }
-}
-
-function removeFile(inputId, previewId) {
-    const input = document.getElementById(inputId);
-    const previewContainer = document.getElementById(previewId);
-    const uploadPreviews = document.getElementById('upload-previews');
-    
-    // Reset the file input
-    input.value = '';
-    
-    // Hide the preview container
-    previewContainer.style.display = 'none';
-    
-    // If it's an image, also reset the image preview
-    if (inputId === 'imageInput') {
-        const imagePreview = document.getElementById('preview-image');
-        if (imagePreview) {
-            imagePreview.src = '#';
-            imagePreview.style.display = 'none';
-        }
-    }
-    
-    // Hide the upload previews container if no files are selected
-    const hasVisiblePreviews = Array.from(document.querySelectorAll('.file-preview'))
-        .some(el => el.style.display !== 'none');
-    
-    if (!hasVisiblePreviews) {
-        uploadPreviews.style.display = 'none';
-    }
-}
-
-// Initialize the file input change events
-document.addEventListener('DOMContentLoaded', function() {
-    // Clear file inputs when the form is submitted
-    const postForm = document.querySelector('.post-form');
-    if (postForm) {
-        postForm.addEventListener('submit', function() {
-            // Reset file inputs
-            document.getElementById('imageInput').value = '';
-            document.getElementById('documentInput').value = '';
-            
-            // Hide all previews
-            const previews = document.querySelectorAll('.file-preview');
-            previews.forEach(preview => {
-                preview.style.display = 'none';
-            });
-            
-            // Hide the previews container
-            const uploadPreviews = document.getElementById('upload-previews');
-            if (uploadPreviews) {
-                uploadPreviews.style.display = 'none';
-            }
-            
-            // Reset image preview
-            const imagePreview = document.getElementById('preview-image');
-            if (imagePreview) {
-                imagePreview.src = '#';
-                imagePreview.style.display = 'none';
-            }
-            
-            // Reset site selection
-            resetSiteSelection();
-        });
-    }
-    
-    // Initialize site selection dropdowns
-    initializeSiteSelection();
-});
-
-// Site Selection Functions
-function toggleSiteSelection() {
-    const container = document.querySelector('.site-selection-container');
-    const button = document.querySelector('.attach-btn[onclick="toggleSiteSelection()"]');
-    
-    if (container.style.display === 'none' || !container.style.display) {
-        container.style.display = 'block';
-        button.classList.add('active');
-    } else {
-        container.style.display = 'none';
-        button.classList.remove('active');
-    }
-}
-
-function initializeSiteSelection() {
-    // Main post form site selection
-    const mainToggle = document.getElementById('sitesDropdownToggle');
-    const mainContent = document.getElementById('sitesDropdownContent');
-    const mainAllSites = document.getElementById('allSites');
-    const mainSiteCheckboxes = document.querySelectorAll('.site-selection-container input[name="sites"]');
-    
-    if (mainToggle) {
-        mainToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            mainContent.classList.toggle('show');
-            mainToggle.classList.toggle('active');
-        });
-    }
-    
-    if (mainAllSites) {
-        mainAllSites.addEventListener('change', function() {
-            if (this.checked) {
-                mainSiteCheckboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-                updateSelectedSitesText('mainForm');
-            }
-        });
-    }
-    
-    mainSiteCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                mainAllSites.checked = false;
-            }
-            
-            // If no specific sites are selected, check "All Sites"
-            const checkedSites = Array.from(mainSiteCheckboxes).filter(cb => cb.checked);
-            if (checkedSites.length === 0) {
-                mainAllSites.checked = true;
-            }
-            
-            updateSelectedSitesText('mainForm');
-        });
-    });
-    
-    // Poll modal site selection
-    const pollToggle = document.getElementById('pollSitesDropdownToggle');
-    const pollContent = document.getElementById('pollSitesDropdownContent');
-    const pollAllSites = document.getElementById('pollAllSites');
-    const pollSiteCheckboxes = document.querySelectorAll('#pollSitesDropdownContent input[name="sites"]');
-    
-    if (pollToggle) {
-        pollToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            pollContent.classList.toggle('show');
-            pollToggle.classList.toggle('active');
-        });
-    }
-    
-    if (pollAllSites) {
-        pollAllSites.addEventListener('change', function() {
-            if (this.checked) {
-                pollSiteCheckboxes.forEach(checkbox => {
-                    checkbox.checked = false;
-                });
-                updateSelectedSitesText('pollForm');
-            }
-        });
-    }
-    
-    pollSiteCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', function() {
-            if (this.checked) {
-                pollAllSites.checked = false;
-            }
-            
-            // If no specific sites are selected, check "All Sites"
-            const checkedSites = Array.from(pollSiteCheckboxes).filter(cb => cb.checked);
-            if (checkedSites.length === 0) {
-                pollAllSites.checked = true;
-            }
-            
-            updateSelectedSitesText('pollForm');
-        });
-    });
-    
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(e) {
-        if (mainToggle && !mainToggle.contains(e.target) && !mainContent.contains(e.target)) {
-            mainContent.classList.remove('show');
-            mainToggle.classList.remove('active');
-        }
-        
-        if (pollToggle && !pollToggle.contains(e.target) && !pollContent.contains(e.target)) {
-            pollContent.classList.remove('show');
-            pollToggle.classList.remove('active');
-        }
-    });
-}
-
-function updateSelectedSitesText(formType) {
-    let selectedSitesText, allSitesCheckbox, siteCheckboxes;
-    
-    if (formType === 'mainForm') {
-        selectedSitesText = document.getElementById('selectedSitesText');
-        allSitesCheckbox = document.getElementById('allSites');
-        siteCheckboxes = document.querySelectorAll('.site-selection-container input[name="sites"]');
-    } else {
-        selectedSitesText = document.getElementById('pollSelectedSitesText');
-        allSitesCheckbox = document.getElementById('pollAllSites');
-        siteCheckboxes = document.querySelectorAll('#pollSitesDropdownContent input[name="sites"]');
-    }
-    
-    if (allSitesCheckbox && allSitesCheckbox.checked) {
-        selectedSitesText.textContent = 'Tous les sites';
-        return;
-    }
-    
-    const checkedSites = Array.from(siteCheckboxes).filter(cb => cb.checked);
-    
-    if (checkedSites.length === 0) {
-        selectedSitesText.textContent = 'Tous les sites';
-    } else if (checkedSites.length === 1) {
-        selectedSitesText.textContent = checkedSites[0].value;
-    } else if (checkedSites.length <= 3) {
-        selectedSitesText.textContent = checkedSites.map(cb => cb.value).join(', ');
-    } else {
-        selectedSitesText.textContent = `${checkedSites.length} sites sélectionnés`;
-    }
-}
-
-function resetSiteSelection() {
-    // Reset main form site selection
-    const mainAllSites = document.getElementById('allSites');
-    const mainSiteCheckboxes = document.querySelectorAll('.site-selection-container input[name="sites"]');
-    
-    if (mainAllSites) {
-        mainAllSites.checked = true;
-    }
-    
-    mainSiteCheckboxes.forEach(checkbox => {
-        checkbox.checked = false;
-    });
-    
-    updateSelectedSitesText('mainForm');
-    
-    // Hide site selection container
-    const container = document.querySelector('.site-selection-container');
-    const button = document.querySelector('.attach-btn[onclick="toggleSiteSelection()"]');
-    
-    if (container) {
-        container.style.display = 'none';
-    }
-    
-    if (button) {
-        button.classList.remove('active');
-    }
-}
-
-function getSelectedSites(formType) {
-    let allSitesCheckbox, siteCheckboxes;
-    
-    if (formType === 'mainForm') {
-        allSitesCheckbox = document.getElementById('allSites');
-        siteCheckboxes = document.querySelectorAll('.site-selection-container input[name="sites"]');
-    } else {
-        allSitesCheckbox = document.getElementById('pollAllSites');
-        siteCheckboxes = document.querySelectorAll('#pollSitesDropdownContent input[name="sites"]');
-    }
-    
-    if (allSitesCheckbox && allSitesCheckbox.checked) {
-        return []; // Empty array means all sites
-    }
-    
-    return Array.from(siteCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-}
+        })
+        .catch(function () { list.innerHTML = '<div class="no-likers"><p>Erreur de chargement</p></div>'; });
+};
+window.closeGlobalLikersModal = function () {
+    var modal = document.getElementById('global-likers-modal');
+    if (modal) { modal.style.display = 'none'; document.body.classList.remove('modal-open'); }
+};
 </script>
 
 {% endblock content %}
