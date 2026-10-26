@@ -183,6 +183,25 @@
 </script>
 
 <script>
+  // Cards overview <-> pipeline of one recruitment (keeps the current filters and view)
+  function showRecruitment(recId) {
+    $("#pipelineRecId").val(recId || "");
+    var params = new URLSearchParams(window.location.search);
+    if (recId) { params.set("rec_id", recId); } else { params.delete("rec_id"); }
+    params.delete("page");
+    var query = params.toString();
+    history.replaceState(null, "", window.location.pathname + (query ? "?" + query : ""));
+    var formButton = $("#filterForm .filterButton").first();
+    if (formButton.length) {
+      formButton.click();
+    } else {
+      htmx.ajax("GET", "{% url 'pipeline-search' %}?" + query, { target: "#pipelineSearchContainer", swap: "innerHTML" });
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function openRecruitmentPipeline(recId) { showRecruitment(recId); }
+  function backToRecruitments() { showRecruitment(""); }
+
   function submitForm(elem) {
     $(elem).siblings(".add_more_submit").click();
   }

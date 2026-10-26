@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if selected_rec %}
+<div class="oh-wrapper" style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; margin-bottom: 16px;">
+  <a href="{% if card %}{% url 'kanban-view' %}{% else %}{% url 'onboarding-view' %}{% endif %}?{{ back_query }}" class="oh-btn oh-btn--light-bkg" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+    <ion-icon name="arrow-back-outline"></ion-icon> {% trans "Tous les recrutements" %}
+  </a>
+  <div>
+    <div style="font-size: 18px; font-weight: 700; color: #290054; line-height: 1.2;">{{ selected_rec.title|default:selected_rec }}</div>
+    <div style="font-size: 12.5px; color: #6b6480;">
+      {% if selected_rec.closed %}{% trans "Fermé" %}{% else %}{% trans "Ouvert" %}{% endif %}{% if selected_rec.site %} · {{ selected_rec.site.site_name }}{% endif %}
+    </div>
+  </div>
+</div>
+{% endif %}

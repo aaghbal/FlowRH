@@ -28,7 +28,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMessage, send_mail
 from django.core.paginator import Paginator
 from django.db import IntegrityError
-from django.db.models import ProtectedError, Q
+from django.db.models import Count, Prefetch, ProtectedError, Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
@@ -839,6 +839,65 @@ def onboarding_query_grouper(request, queryset):
     return groups
 
 
+def _query_without(request, *keys):
+    query = request.GET.copy()
+    for key in keys:
+        query.pop(key, None)
+    return query.urlencode()
+
+
+def onboarding_cards(request, recruitments, status, card=False):
+    """
+    Overview of the onboarding: one card per recruitment, opening one
+    (?rec_id=) shows its onboarding stages in the list or kanban view.
+    """
+    recruitments = recruitments.select_related("site", "company_id").prefetch_related(
+        "recruitment_managers",
+        Prefetch(
+            "onboarding_stage",
+            queryset=OnboardingStage.objects.annotate(
+                active_candidates=Count(
+                    "candidate", filter=Q(candidate__candidate_id__is_active=True)
+                )
+            ).order_by("sequence"),
+        ),
+    ).order_by("closed", "-id")
+    # 20 = full rows whether the grid shows 5, 4, 2 or 1 cards per row
+    page_obj = Paginator(recruitments, 20).get_page(request.GET.get("page"))
+    for rec in page_obj:
+        stages = list(rec.onboarding_stage.all())
+        rec.card_total = sum(stage.active_candidates for stage in stages)
+        rec.card_done = sum(
+            stage.active_candidates for stage in stages if stage.is_final_stage
+        )
+        for stage in stages:
+            stage.share = (
+                round(stage.active_candidates * 100 / rec.card_total)
+                if rec.card_total
+                else 0
+            )
+        rec.card_stages = stages
+    query = request.GET.copy()
+    query.pop("page", None)
+    query.pop("rec_id", None)
+    filter_dict = parse_qs(query.urlencode())
+    for key, val in filter_dict.copy().items():
+        if val[0] == "unknown" or key == "view":
+            del filter_dict[key]
+    return render(
+        request,
+        "onboarding/recruitment_cards.html",
+        {
+            "recruitments": page_obj,
+            "rec_filter_obj": RecruitmentFilter(request.GET),
+            "filter_dict": filter_dict,
+            "status": status,
+            "card": card,
+            "query": query.urlencode(),
+        },
+    )
+
+
 @login_required
 @all_manager_can_enter("onboarding.view_candidatestage")
 def onboarding_view(request):
@@ -878,6 +937,11 @@ def onboarding_view(request):
     if not status:
         recruitments = recruitments.filter(closed=False)
 
+    rec_id = request.GET.get("rec_id")
+    if not rec_id:
+        return onboarding_cards(request, recruitments, status)
+    recruitments = recruitments.filter(id=rec_id)
+
     onboarding_stages = OnboardingStage.objects.all()
     choices = CandidateTask.choice
     previous_data = request.GET.urlencode()
@@ -908,6 +972,8 @@ def onboarding_view(request):
             "filter_dict": filter_dict,
             "status": status,
             "pd": previous_data,
+            "selected_rec": page_obj.object_list[0] if page_obj.object_list else None,
+            "back_query": _query_without(request, "rec_id", "page"),
         },
     )
 
@@ -946,6 +1012,11 @@ def kanban_view(request):
     if not status:
         recruitments = recruitments.filter(closed=False)
 
+    rec_id = request.GET.get("rec_id")
+    if not rec_id:
+        return onboarding_cards(request, recruitments, status, card=True)
+    recruitments = recruitments.filter(id=rec_id)
+
     onboarding_stages = OnboardingStage.objects.all()
     choices = CandidateTask.choice
     stage_form = OnboardingViewStageForm()
@@ -983,6 +1054,8 @@ def kanban_view(request):
             "choices": choices,
             "pd": previous_data,
             "card": True,
+            "selected_rec": page_obj.object_list[0] if page_obj.object_list else None,
+            "back_query": _query_without(request, "rec_id", "page"),
         },
     )
 

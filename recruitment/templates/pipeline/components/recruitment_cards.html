@@ -1,0 +1,130 @@
+{% load i18n recruitmentfilters %}
+{% include 'pipeline/components/recruitment_cards_style.html' %}
+
+{% include "filter_tags.html" %}
+
+{% if recruitment.object_list %}
+<div class="rc-toolbar">
+  <span class="rc-toolbar__info">
+    {{ recruitment.paginator.count }} {% trans "recrutement" %}{{ recruitment.paginator.count|pluralize }}{% if recruitment.paginator.num_pages > 1 %} · {% trans "Page" %} {{ recruitment.number }} {% trans "sur" %} {{ recruitment.paginator.num_pages }}{% endif %}
+  </span>
+  {% if recruitment.paginator.num_pages > 1 %}
+  <nav class="rc-pager">
+    <a class="{% if not recruitment.has_previous %}is-disabled{% endif %}" hx-target="#pipelineSearchContainer"
+       {% if recruitment.has_previous %}hx-get="{% url 'pipeline-search' %}?{{ pd }}&page={{ recruitment.previous_page_number }}"{% endif %}>
+      <ion-icon name="chevron-back-outline"></ion-icon> {% trans "Précédente" %}
+    </a>
+    <a class="{% if not recruitment.has_next %}is-disabled{% endif %}" hx-target="#pipelineSearchContainer"
+       {% if recruitment.has_next %}hx-get="{% url 'pipeline-search' %}?{{ pd }}&page={{ recruitment.next_page_number }}"{% endif %}>
+      {% trans "Suivante" %} <ion-icon name="chevron-forward-outline"></ion-icon>
+    </a>
+  </nav>
+  {% endif %}
+</div>
+<div class="rc-grid">
+  {% for rec in recruitment %}
+  {% if request.user|stage_manages:rec or perms.recruitment.view_recruitment or request.user|heads_department_of:rec %}
+  <div class="rc-card {% if request.user|recruitment_manages:rec %}rc-card--mine{% endif %} {% if rec.closed %}rc-card--closed{% endif %}"
+       role="button" tabindex="0"
+       onclick="openRecruitmentPipeline({{ rec.id }})"
+       onkeydown="if (event.key === 'Enter') openRecruitmentPipeline({{ rec.id }})">
+    <div class="rc-top">
+      {% if rec.closed %}
+        <span class="rc-status rc-status--closed"><i></i>{% trans "Fermé" %}</span>
+      {% else %}
+        <span class="rc-status rc-status--open"><i></i>{% trans "Ouvert" %}</span>
+      {% endif %}
+
+      {% if perms.recruitment.change_recruitment or request.user|recruitment_manages:rec or perms.recruitment.add_candidate or perms.recruitment.delete_recruitment %}
+      <div class="oh-dropdown" x-data="{open: false}" onclick="event.stopPropagation()">
+        <button class="oh-btn oh-btn--transparent oh-accordion-meta__btn" @click="open = !open" @click.outside="open = false" title="{% trans 'Actions' %}">
+          <ion-icon name="ellipsis-vertical"></ion-icon>
+        </button>
+        <div class="oh-dropdown__menu oh-dropdown__menu--right" x-show="open" style="display: none;">
+          <ul class="oh-dropdown__items">
+            {% if perms.recruitment.change_recruitment or request.user|recruitment_manages:rec %}
+            <li class="oh-dropdown__item">
+              <a hx-get="{% url 'recruitment-update-pipeline' rec.id %}" hx-target="#objectUpdateModalTarget" data-toggle="oh-modal-toggle" data-target="#objectUpdateModal" class="oh-dropdown__link">{% trans "Modifier" %}</a>
+            </li>
+            {% endif %}
+            {% if not rec.closed %}
+              {% if perms.recruitment.change_recruitment or request.user|recruitment_manages:rec %}
+              <li class="oh-dropdown__item">
+                <a href="{% url 'recruitment-close-pipeline' rec.id %}" class="oh-dropdown__link" onclick="return confirm('{% trans "Voulez-vous vraiment fermer ce recrutement ?" %}');">{% trans "Fermer" %}</a>
+              </li>
+              {% endif %}
+              {% if perms.recruitment.add_candidate or request.user|recruitment_manages:rec %}
+              <li class="oh-dropdown__item">
+                <a hx-get="{% url 'view-bulk-resume' %}?rec_id={{ rec.id }}" hx-target="#bulkResumeUploadBody" data-toggle="oh-modal-toggle" data-target="#bulkResumeUpload" class="oh-dropdown__link">{% trans "Sélection CV" %}</a>
+              </li>
+              {% endif %}
+            {% elif perms.recruitment.change_recruitment or request.user|recruitment_manages:rec %}
+            <li class="oh-dropdown__item">
+              <a href="{% url 'recruitment-reopen-pipeline' rec.id %}" class="oh-dropdown__link" onclick="return confirm('{% trans "Voulez-vous vraiment rouvrir ce recrutement ?" %}');">{% trans "Rouvrir" %}</a>
+            </li>
+            {% endif %}
+            {% if perms.recruitment.delete_recruitment %}
+            <li class="oh-dropdown__item">
+              <form action="{% url 'recruitment-delete-pipeline' rec.id %}" method="post" onsubmit="return confirm('{% trans "Voulez-vous vraiment supprimer ce recrutement ?" %}');">
+                {% csrf_token %}
+                <button type="submit" class="oh-dropdown__link oh-dropdown__link--danger">{% trans "Supprimer" %}</button>
+              </form>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <h3 class="rc-title">{{ rec }}</h3>
+    <p class="rc-sub">
+      {% if rec.site %}<span><ion-icon name="location-outline"></ion-icon>{{ rec.site.site_name }}</span>{% endif %}
+      {% if rec.company_id %}<span><ion-icon name="business-outline"></ion-icon>{{ rec.company_id }}</span>{% endif %}
+    </p>
+
+    <div class="rc-stats">
+      <div class="rc-stat"><b>{{ rec.card_total }}</b><small>{% trans "Candidats" %}</small></div>
+      <div class="rc-stat"><b>{{ rec.card_hired }}{% if rec.vacancy %}<span style="font-size: 13px; color: #6b6480; font-weight: 500;">/{{ rec.vacancy }}</span>{% endif %}</b><small>{% trans "Embauchés" %}</small></div>
+      <div class="rc-stat"><b>{{ rec.card_stages|length }}</b><small>{% trans "Étapes" %}</small></div>
+    </div>
+
+    <div class="rc-bar" title="{% trans 'Répartition des candidats par étape' %}">
+      {% for stage in rec.card_stages %}
+        {% if stage.active_candidates %}
+        <span class="{% if stage.stage_type == 'hired' %}rc-tone-hired{% elif stage.stage_type == 'cancelled' %}rc-tone-cancelled{% else %}rc-stage-{{ forloop.counter0 }}{% endif %}" style="width: {{ stage.share }}%" title="{{ stage }} : {{ stage.active_candidates }}"></span>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="rc-stages">
+      {% for stage in rec.card_stages %}
+        {% if stage.active_candidates %}
+        <span><i class="{% if stage.stage_type == 'hired' %}rc-tone-hired{% elif stage.stage_type == 'cancelled' %}rc-tone-cancelled{% else %}rc-stage-{{ forloop.counter0 }}{% endif %}"></i>{{ stage }} {{ stage.active_candidates }}</span>
+        {% endif %}
+      {% empty %}
+        <span>{% trans "Aucune étape" %}</span>
+      {% endfor %}
+      {% if rec.card_stages and not rec.card_total %}<span>{% trans "Aucun candidat pour le moment" %}</span>{% endif %}
+    </div>
+
+    <div class="rc-foot">
+      <div class="rc-avatars">
+        {% for manager in rec.recruitment_managers.all|slice:":4" %}
+          <img src="{{ manager.get_avatar }}" alt="{{ manager.get_full_name }}" title="{{ manager.get_full_name }}">
+        {% endfor %}
+      </div>
+      <span>
+        {% if rec.end_date %}{% trans "Jusqu'au" %} {{ rec.end_date|date:"d/m/Y" }}{% else %}<span class="rc-open">{% trans "Voir le pipeline" %} <ion-icon name="arrow-forward-outline"></ion-icon></span>{% endif %}
+      </span>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="rc-empty">
+  <ion-icon name="briefcase-outline" style="font-size: 32px;"></ion-icon>
+  <p>{% trans "Aucun recrutement ne correspond à votre recherche." %}</p>
+</div>
+{% endif %}

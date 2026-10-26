@@ -1,4 +1,6 @@
 {% load i18n recruitmentfilters %}
+{% include 'pipeline/components/pipeline_back_header.html' %}
+{% if not selected_rec %}
 <!-- Paginator Section -->
   <div class="oh-pagination" style="margin-top: 0; margin-bottom: 1rem;">
   <span
@@ -51,6 +53,7 @@
       </ul>
     </nav>
   </div>
+{% endif %}
 {% include 'pipeline/pipeline_tabs.html' %}
 {% include "filter_tags.html" %}
 

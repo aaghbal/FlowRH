@@ -43,6 +43,7 @@
 
 </div>
 {% include "onboarding/onboarding_view_nav.html" %}
+{% include 'onboarding/back_header.html' %}
 <div class="oh-wrapper oh-filter-tag-container filter-value"></div>
 <div class="oh-wrapper">
     {% if recruitments %}
@@ -75,7 +76,7 @@
         </div>
     </div>
      <!-- Paginator Section -->
-     <div class="oh-pagination">
+     <div class="oh-pagination" {% if selected_rec %}hidden{% endif %}>
         <span
           class="oh-pagination__page"
           data-toggle="modal"

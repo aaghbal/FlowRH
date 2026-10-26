@@ -108,6 +108,8 @@
         hx-target="#pipelineSearchContainer"
         id="filterForm"
     >
+        {% comment %}Recruitment opened from the cards overview (empty = show the cards){% endcomment %}
+        <input type="hidden" name="rec_id" id="pipelineRecId" value="{{ request.GET.rec_id }}" />
         <div class="oh-main__titlebar oh-main__titlebar--right">
             <div
                 class="oh-input-group oh-input__search-group"

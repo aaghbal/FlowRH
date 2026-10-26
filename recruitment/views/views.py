@@ -31,7 +31,7 @@ from django.core import serializers
 from django.core.cache import cache as CACHE
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
-from django.db.models import Case, IntegerField, ProtectedError, Q, When
+from django.db.models import Case, Count, IntegerField, Prefetch, ProtectedError, Q, When
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
@@ -491,6 +491,51 @@ def filter_pipeline(request):
     )
 
     previous_data = request.GET.urlencode()
+    rec_id = request.GET.get("rec_id")
+
+    if not rec_id:
+        # Overview: one card per recruitment, open one to see its pipeline
+        recruitments = recruitments.select_related(
+            "site", "company_id", "job_position_id"
+        ).prefetch_related(
+            "open_positions",
+            "recruitment_managers",
+            Prefetch(
+                "stage_set",
+                queryset=Stage.objects.annotate(
+                    active_candidates=Count(
+                        "candidate", filter=Q(candidate__is_active=True)
+                    )
+                ).order_by("sequence"),
+            ),
+        ).order_by("closed", "-id")
+        # 20 = full rows whether the grid shows 5, 4, 2 or 1 cards per row
+        page_obj = Paginator(recruitments, 20).get_page(request.GET.get("page"))
+        for rec in page_obj:
+            stages = list(rec.stage_set.all())
+            rec.card_total = sum(stage.active_candidates for stage in stages)
+            rec.card_hired = sum(
+                stage.active_candidates for stage in stages if stage.stage_type == "hired"
+            )
+            for stage in stages:
+                stage.share = (
+                    round(stage.active_candidates * 100 / rec.card_total)
+                    if rec.card_total
+                    else 0
+                )
+            rec.card_stages = stages
+        return render(
+            request,
+            "pipeline/components/recruitment_cards.html",
+            {
+                "recruitment": page_obj,
+                "filter_dict": filter_dict,
+                "view": view,
+                "pd": request.GET.copy().urlencode(),
+            },
+        )
+
+    recruitments = recruitments.filter(id=rec_id)
     # prefetch stage_set before paginating so template's rec.stage_set.all hits no extra queries
     if hasattr(recruitments, "prefetch_related"):
         recruitments = recruitments.prefetch_related("stage_set")
@@ -506,6 +551,7 @@ def filter_pipeline(request):
         template,
         {
             "recruitment": page_obj,
+            "selected_rec": page_obj.object_list[0] if page_obj.object_list else None,
             "stage_filter_obj": stage_filter,
             "candidate_filter_obj": candidate_filter,
             "filter_dict": filter_dict,
