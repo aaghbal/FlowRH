@@ -2939,9 +2939,11 @@ def get_mail_log(request):
         "recruitment.view_candidate"
     ) and department_head_denied(request.user, candidate.recruitment_id):
         return render(request, "decorator_404.html")
-    tracked_mails = EmailLog.objects.filter(to__icontains=candidate.email).order_by(
-        "-created_at"
-    )
+    tracked_mails = EmailLog.objects.none()
+    if candidate.email:
+        tracked_mails = EmailLog.objects.filter(
+            to__icontains=candidate.email
+        ).order_by("-created_at")
     return render(request, "candidate/mail_log.html", {"tracked_mails": tracked_mails})
 
 

@@ -597,6 +597,9 @@ class Candidate(HorillaModel):
         """
         from base.models import EmailLog
 
+        # the email is optional (imported candidates, onboarding creations)
+        if not self.email:
+            return None
         return (
             EmailLog.objects.filter(to__icontains=self.email)
             .order_by("-created_at")
