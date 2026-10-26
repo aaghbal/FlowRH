@@ -18,6 +18,7 @@ import json
 import os
 import random
 import re
+import unicodedata
 from datetime import date, datetime
 from itertools import chain
 from urllib.parse import parse_qs
@@ -1788,6 +1789,14 @@ def candidate_view_individual(request, cand_id, **kwargs):
     )
 
 
+def _plain(text):
+    """
+    Lowercase text without accents, to compare recruitment and position names
+    """
+    text = unicodedata.normalize("NFKD", text or "")
+    return "".join(c for c in text if not unicodedata.combining(c)).lower().strip()
+
+
 @login_required
 @manager_can_enter(perm="recruitment.add_candidate")
 def candidate_apply_other(request, cand_id):
@@ -1807,14 +1816,31 @@ def candidate_apply_other(request, cand_id):
         Recruitment.objects.filter(is_active=True, closed=False)
         .exclude(id=candidate_obj.recruitment_id_id)
         .exclude(id__in=list(applied_recruitments))
+        .select_related("site")
         .prefetch_related("open_positions")
-        .order_by("title")
+        .order_by("site__site_name", "title")
     )
-    choices = [
-        (f"{rec.id}:{position.id}", rec, position)
-        for rec in recruitments
-        for position in rec.open_positions.all()
-    ]
+    # options grouped by site; the position is only shown when it differs from
+    # the recruitment title, and same-label recruitments get their start date
+    groups = {}
+    for rec in recruitments:
+        title = str(rec).strip()
+        options = groups.setdefault(rec.site.site_name if rec.site else _("Sans site"), [])
+        for position in rec.open_positions.all():
+            name = position.job_position.strip()
+            label = title
+            if _plain(name).startswith(_plain(title)):
+                # same job, or a title cut by its 30 characters limit
+                label = name
+            elif _plain(name) not in _plain(title):
+                label = f"{title} — {name}"
+            options.append([f"{rec.id}:{position.id}", label, rec])
+    for options in groups.values():
+        labels = [label for _value, label, _rec in options]
+        for option in options:
+            if labels.count(option[1]) > 1 and option[2].start_date:
+                option[1] += f" (du {option[2].start_date:%d/%m/%Y})"
+    choices = [(site, [(value, label) for value, label, _rec in options]) for site, options in groups.items()]
 
     error = None
     if request.method == "POST":

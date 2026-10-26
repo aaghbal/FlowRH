@@ -426,6 +426,7 @@ class CandidateCreationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["source"].initial = "software"
+        self.fields["email"].required = True
         self.fields["profile"].widget.attrs["accept"] = ".jpg, .jpeg, .png"
         self.fields["profile"].required = False
         self.fields["resume"].widget.attrs["accept"] = ".pdf"
@@ -636,6 +637,7 @@ class ApplicationForm(RegistrationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         request = getattr(_thread_locals, "request", None)
+        self.fields["email"].required = True
         self.fields["profile"].widget.attrs["accept"] = ".jpg, .jpeg, .png"
         self.fields["profile"].required = False
         self.fields["resume"].widget.attrs["accept"] = ".pdf"
@@ -726,6 +728,8 @@ class AddCandidateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # without an email the candidate gets no mail and duplicates go unnoticed
+        self.fields["email"].required = True
         initial = kwargs["initial"].get("stage_id")
         if initial:
             recruitment = Stage.objects.get(id=initial).recruitment_id

@@ -12,11 +12,15 @@
   {% if choices %}
   <form hx-post="{% url 'candidate-apply-other' candidate.id %}" hx-target="#objectCreateModalTarget">
     {% csrf_token %}
-    <label class="oh-label" for="applyOtherSelect">{% trans "Recrutement et poste" %}</label>
+    <label class="oh-label" for="applyOtherSelect">{% trans "Recrutement (par site)" %}</label>
     <select name="application" id="applyOtherSelect" class="oh-select w-100" required>
       <option value="">{% trans "Choisir…" %}</option>
-      {% for value, rec, position in choices %}
-      <option value="{{ value }}">{{ rec }} — {{ position }}</option>
+      {% for site, options in choices %}
+      <optgroup label="{{ site }}">
+        {% for value, label in options %}
+        <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+      </optgroup>
       {% endfor %}
     </select>
     {% if error %}<div class="errorlist" style="color: #e3342f; font-size: 13px; margin-top: 6px;">{{ error }}</div>{% endif %}
