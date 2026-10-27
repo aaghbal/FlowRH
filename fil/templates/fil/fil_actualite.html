@@ -13,9 +13,12 @@
 {% block content %}
 <div class="fd-feed">
     <header class="fd-head">
-        <div>
-            <h1 class="fd-head__title">Fil d'actualité</h1>
-            <p class="fd-head__sub">L'actualité du réseau M-Automotiv</p>
+        <div class="fd-head__brand">
+            <img class="fd-head__logo" src="{% static 'images/ui/m-community-logo.png' %}" alt="M-Community">
+            <div>
+                <h1 class="fd-head__title">Fil d'actualité</h1>
+                <p class="fd-head__sub">L'actualité du réseau M-Automotiv</p>
+            </div>
         </div>
         <label class="fd-head__filter">
             Afficher

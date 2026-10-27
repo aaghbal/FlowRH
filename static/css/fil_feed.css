@@ -19,6 +19,9 @@
 
 /* ── Header ── */
 .fd-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.fd-head__brand { display: flex; align-items: center; gap: 16px; }
+.fd-head__logo { height: 64px; width: auto; flex-shrink: 0; }
+@media (max-width: 576px) { .fd-head__logo { height: 48px; } }
 .fd-head__title { font-size: 28px; font-weight: 700; color: var(--fd-purple); margin: 0; line-height: 1.2; }
 .fd-head__sub { color: var(--fd-muted); margin: 4px 0 0; font-size: 14px; }
 .fd-head__filter { display: flex; align-items: center; gap: 10px; color: var(--fd-muted); font-size: 13.5px; }
