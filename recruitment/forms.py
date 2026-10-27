@@ -29,6 +29,7 @@ from typing import Any
 
 from django import forms
 from django.apps import apps
+from django.db.models import Q
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
@@ -77,6 +78,24 @@ def already_applied(email, recruitment, exclude_id=None):
     if exclude_id:
         applications = applications.exclude(id=exclude_id)
     return applications.exists()
+
+
+def already_hired(email):
+    """
+    The person behind this email was already hired (hired candidate, candidate
+    converted to employee, or active employee)
+    """
+    if not email:
+        return False
+    hired = Candidate.objects.get_all().filter(email__iexact=email).filter(
+        Q(hired=True) | Q(converted=True) | Q(converted_employee_id__isnull=False)
+    )
+    return (
+        hired.exists()
+        or Employee.objects.get_all()
+        .filter(email__iexact=email, is_active=True)
+        .exists()
+    )
 
 
 DUPLICATE_APPLICATION_MESSAGE = _(
@@ -668,7 +687,12 @@ class ApplicationForm(RegistrationForm):
             errors["resume"] = _("This field is required")
         if not profile and not recruitment.optional_profile_image:
             errors["profile"] = _("This field is required")
-        if already_applied(cleaned_data.get("email"), recruitment):
+        if already_hired(cleaned_data.get("email")):
+            errors["email"] = _(
+                "Cet email appartient à une personne déjà embauchée : "
+                "la candidature n'est pas possible."
+            )
+        elif already_applied(cleaned_data.get("email"), recruitment):
             errors["email"] = _("Vous avez déjà postulé à cette offre.")
         if errors:
             raise ValidationError(errors)
